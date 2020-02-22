@@ -1,0 +1,86 @@
+\documentclass{IEEEtran}
+
+\input{info.tex}
+\input{packages.tex}
+
+\begin{document}
+
+    \begin{section} {System Model}
+        Consider a IRS-aided multiuser MISO SWIPT system where the IRS not only assists the primal transmission but also retrieves channel state information (CSI) and harvests energy for its own operation. The $M$-antenna transmitter delivers information and power simultaneously, through the $U$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. It is assumed that the IRS performs channel estimation in the first subframe and supports information and power transfer in the second subframe \cite{Zheng2019}. Due to the passive characteristics of IRS, we consider a time-division duplexing (TDD) protocol where the CSI can be obtained by exploiting channel reciprocity. Perfect CSI is assumed at the AP and IRS to investigate the analytical upper-bound of the proposed system. The signals reflected by IRS for two and more times are assumed negligible and thus not considered. The channel is assumed to be unchanged within each transmission frame and the quasi-static frequency-selective model is used for both the user-AP and user-IRS-AP links. A superposition of multicarrier modulated and unmodulated waveforms, both transmitted on the same frequency bands, are adapted to the CSI to maximize the rate-energy tradeoff \cite{Clerckx2018b}. Note that although frequency selective surface (FSS) has received much attention for wideband communications, active FSS requires RF-chains thus prohibitive while passive FSS is not reconfigurable with fixed physical characteristics \cite{Kim2006,Xu2014,Anwar2018}. Therefore, we assume a frequency-flat IRS with same reflection coefficients for all subbands.
+
+        \begin{subsection} {Transmitted Signal}
+
+            \begin{subsubsection} {Modulated Information Waveform}
+                Assume the carrier are evenly spaced with equal bandwidth $B_s$ such that the frequency of the $n$-th subband is $f_n = f_0+n \Delta f$ ($n = 1,\dots,N$). The information symbol $\tilde{x}_{I,n}$ on subband $n$ is a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) variable with zero mean and unit variance (i.e. $\tilde{x}_{I,n} \sim \mathcal{CN}(0,1)$). Denote $w_{I,n,m} = s_{I,n,m} e^{j\phi_{I,n,m}}$ as the information weight on the $n$-th subcarrier of the $m$-th ($m = 1,\dots,M$) transmit antenna with magnitude $s_{I,n,m}$ and phase $\phi_{I,n,m}$, the corresponding modulated symbol can be expressed as $x_{I,n,m} = \tilde{s}_{I,n,m} e^{j\tilde{\phi}_{I,n,m}}$, with $\tilde{s}_{I,n,m} = s_{I,n,m} \lvert\tilde{x}_{I,n}\rvert$ and $\tilde{\phi}_{I,n,m} = \phi_{I,n,m} + \angle{\tilde{x}_n}$, which also follows zero-mean CSCG distribution with variance equal to the subcarrier power (i.e. $x_{I,n,m} \sim \mathcal{CN}(0,s_{I,n,m}^2)$). Therefore, the transmit information waveform on the antenna $m$ at time $t$ writes as
+                \begin{equation} \label{eq:x_{I,m}(t)}
+                    \begin{split}
+                        x_{I,m}(t)
+                        &= \sum_{n=1}^{N} \tilde{s}_{I,n,m}(t) \cos \left( 2 \pi f_n t + \tilde{\phi}_{I,n,m}(t) \right) \\
+                        &= \Re \left\{ \sum_{n=1}^{N} x_{I,n,m}(t) e^{j2 \pi f_n t} \right\} \\
+                        &= \Re \left\{ \sum_{n=1}^{N} w_{I,n,m} \tilde{x}_{I,n}(t) e^{j2 \pi f_n t} \right\}
+                    \end{split}
+                \end{equation}
+            \end{subsubsection}
+
+            \begin{subsubsection} {Unmodulated Power Waveform}
+                As suggested in \cite{Clerckx2018b,Clerckx2016a}, we use deterministic multisine waveform to boost the harvested energy. It has no randomness over time and the equivalent input power symbol $\tilde{x}_{P,n}$ on subband $n$ is a constant (i.e. $\tilde{x}_{P,n} = 1$). Therefore, on the $n$-th subcarrier of the $m$-th transmit antenna, the power weight $w_{P,n,m} = s_{P,n,m} e^{j\phi_{P,n,m}}$ represents the complex-valued sinewave (i.e. $x_{P,n,m}(t) = w_{P,n,m}$) in the baseband. The transmit power waveform on the antenna $m$ at time $t$ is given by
+                \begin{equation} \label{eq:x{P,m}(t)}
+                    \begin{split}
+                        x_{P,m}(t)
+                        &= \sum_{n=1}^{N} s_{P,n,m}(t) \cos \left( 2 \pi f_n t + \phi_{P,n,m}(t) \right) \\
+                        &= \Re \left\{ \sum_{n=1}^{N} x_{P,n,m}(t) e^{j2 \pi f_n t} \right\} \\
+                        &= \Re \left\{ \sum_{n=1}^{N} w_{P,n,m} e^{j2 \pi f_n t} \right\}
+                    \end{split}
+                \end{equation}
+            \end{subsubsection}
+
+            \begin{subsubsection} {Superposed Waveform}
+                At time $t$, a superposition of the information and power waveform on antenna $m$ over subband $n$ gives
+                \begin{equation} \label{eq:x_{n,m}(t)}
+                    \begin{split}
+                        x_{n,m}(t)
+                        &= x_{I,n,m}(t)+x_{P,n,m}(t) \\
+                        &= w_{I,n,m} \tilde{x}_{I,n}(t)+w_{P,n,m}
+                    \end{split}
+                \end{equation}
+                The transmitted signal on antenna $m$ at time $t$ is a summation over all subbands
+                \begin{equation} \label{eq:x_m(t)}
+                    \begin{split}
+                        x_m(t)
+                        &= x_{I,m}(t)+x_{P,m}(t) \\
+                        &= \Re \left\{ \sum_{n=1}^{N} (w_{I,n,m} \tilde{x}_{I,n}(t)+w_{P,n,m}) e^{j2 \pi f_n t} \right\}
+                    \end{split}
+                \end{equation}
+            \end{subsubsection}
+
+        \end{subsection}
+
+        \begin{subsection} {Composite Channel Model}
+            Consider a single-IRS scenario in a multipath environment. The frequency response of the AP-user (i.e. direct) channel between antenna $m$ and user $k$ at subband $n$ is $h_{D,n,m,k} = \sum_{l_{D,k}=1}^{L_{D,k}} \alpha_{l_{D,k}} e^{j\left( -2 \pi f_n \tau_{l_{D,k}}+\varsigma_{l_{D,k},n,m,k} \right)}$, where $L_{D,k}$ is the number of paths in the direct link of user $k$, $\alpha_{l_{D,k}}$ and $\tau_{l_{D,k}}$ are the delay and amplitude gain of the $l_{D,k}$-th path, $\varsigma_{l_{D,k},n,m,k}$ is the phase shift of the $l_{D,k}$-path between transmit antenna $m$ and the receive antenna of user $k$ at subband $n$. Similarly, the AP-IRS channel between antenna $m$ and element $u$ at subband $n$ writes as $g_{n,m,u} = \sum_{l_u=1}^{L_u} \alpha_{l_u} e^{j\left( -2 \pi f_n \tau_{l_u}+\varsigma_{l_u,n,m,u} \right)}$, and the IRS-user (i.e. reflective) channel between element $u$ and user $k$ is $h_{R,n,u,k} = \sum_{l_{R,k}=1}^{L_{R,k}} \alpha_{l_{R,k}} e^{j\left( -2 \pi f_n \tau_{l_{R,k}}+\varsigma_{l_{R,k},n,u,k} \right)}$. Assume that $\max_{l_{D,k} \neq l_{D,k}'} \lvert \tau_{l_{D,k}}-\tau_{l_{D,k}'} \rvert \ll 1/B_s$ and $\max_{l_u,l_{R,k} \neq l_u',l_{R,k}'} \lvert \left( \tau_{l_u}+\tau_{l_{R,k}} \right)-\left( \tau_{l_u'}+\tau_{l_{R,k}'} \right) \rvert \ll 1/B_s$ such that $\tilde{x}_n(t)$ and $x_{n,m}(t)$ are narrowband signals, namely $\tilde{x}_n(t-\tau_{l_D}) = \tilde{x}_n(t-\tau_{l_u}-\tau_{l_R}) = \tilde{x}_n(t)$ and $x_{n,m}(t-\tau_{l_D}) = x_{n,m}(t-\tau_{l_u}-\tau_{l_R}) = x_{n,m}(t)$.
+
+            Stack the entries and denote the baseband equivalent channel from the AP to user $k$ as $\boldsymbol{h}_{D,k} \in \mathbb{C}^{1 \times MN}$, from the AP to the IRS as $\boldsymbol{G} \in \mathbb{C}^{U \times MN}$, and from the IRS to user $k$ as $\boldsymbol{h}_{R,k} \in \mathbb{C}^{1 \times UN}$. Element $u$ of the IRS receives a superposed waveform transmitted by $M$ antennas after the multipath channel, then redistribute it by adjusting the reflection coefficient $r_u = \beta_u e^{j \theta_u}$ where $\beta_u \in [0,1]$ and $\theta_u \in [0,2\pi)$ are the amplitude reflection coefficient and phase shift. Note each passive reflector need to absorb a small portion ($1 - \beta_u$) of the signal and combine them to support information decoding and impedance matching. Construct a diagonal subband-wise IRS matrix by collecting the reflection coefficients of all reflectors onto the diagonal entries such that $\boldsymbol{R}_0 = \text{diag}(r_1, \dots, r_U) \in \mathbb{C}^{U \times U}$. With the assumption of frequency-flat IRS, we then construct the IRS reflecting coefficient matrix $\boldsymbol{R} = [\boldsymbol{R}_0^T,\dots,\boldsymbol{R}_0^T]^T \in \mathbb{C}^{UN \times U}$ by stacking $R_0$ over $N$ subbands. The IRS-aided extra link from the AP to user $k$ can be modeled as a concatenation of the AP-IRS channel, the IRS reflection, and the IRS-user $k$ channel. Both the direct link and the IRS-aided link contributes to the overall channel of user $k$, which writes as
+            \begin{equation} \label{eq:h_k}
+                \boldsymbol{h}_k = \left( \boldsymbol{h}_{D,k}+\boldsymbol{h}_{R,k} \boldsymbol{R} \boldsymbol{G} \right)
+            \end{equation}
+        \end{subsection}
+
+        \begin{subsection} {Received Signal}
+            In the signal received by the single antenna of user $k$, the component from transmit antenna $m$ through both direct and reflective links can be expressed as
+
+            \begin{equation} \label{eq:y_{m,k}(t)}
+                \begin{split}
+                    y_{m,k}(t)
+                    &= y_{I,m,k}(t)+y_{P,m,k}(t) \\
+                    &= \Re \left\{ \sum_{n=1}^{N} \sum_{l_{D,k}=1}^{L_{D,k}} \alpha_{l_{D,k}} x_{n,m}(t-\tau_{l_{D,k}}) e^{j \left( -2 \pi f_n (t-\tau_{l_{D,k}})+\varsigma_{l_{D,k},n,m,k}\right) } \right\} \\
+                    &\quad+ \Re \left\{ \sum_{n=1}^{N} \sum_{l_{R,k}=1}^{L_{R,k}} \sum_{u=1}^{U} \alpha_{l_{R,k}} \alpha_{l_u} x_{n,m}(t-\tau_{l_{R,k}}-\tau_{l_u}) e^{j \left( -2 \pi f_n (t-\tau_{l_{R,k}}-\tau_{l_u})+\varsigma_{l_{R,k},n,u,k}+\varsigma_{l_{R,k},n,m,u}\right)} \right\} \\
+                    &= \Re \left\{ \sum_{n=1}^{N} \sum_{u=1}^{U} (h_{D,n,m,k}(t)+h_{R,n,u,k}(t)g_{n,m,u}(t)) x_{n,m}(t) e^{j2 \pi f_n t} \right\}
+                \end{split}
+            \end{equation}
+
+            It captures the contribution of information and power waveform.
+        \end{subsection}
+    \end{section}
+
+    \bibliographystyle{IEEEtran}
+    \bibliography{library.bib}
+\end{document}
