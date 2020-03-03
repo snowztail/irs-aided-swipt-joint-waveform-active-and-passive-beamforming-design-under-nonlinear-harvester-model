@@ -20,6 +20,11 @@
                         &= \Re \left\{ \sum_{n=1}^{N} w_{I,n,m} \tilde{x}_{I,n}(t) e^{j2 \pi f_n t} \right\}
                     \end{split}
                 \end{equation}
+                On top of this, the information waveform vector is spread over $M$ antennas
+                \begin{equation} \label{eq:x_I(t)}
+                    \boldsymbol{x}_I(t) = \Re \left\{ \sum_{n=1}^{N} \boldsymbol{w}_{I,n}\tilde{x}_n(t) e^{j2{\pi}{f_n}t} \right\}
+                \end{equation}
+                where $\boldsymbol{w}_{I,n}=[w_{I,n,1},\dots,w_{I,n,M}]^T$.
             \end{subsubsection}
 
             \begin{subsubsection} {Unmodulated Power Waveform}
@@ -32,6 +37,11 @@
                         &= \Re \left\{ \sum_{n=1}^{N} w_{P,n,m} e^{j2 \pi f_n t} \right\}
                     \end{split}
                 \end{equation}
+                The corresponding power waveform vector is stacked across $M$ transmit antennas as
+                \begin{equation} \label{eq:x_P(t)}
+                    \boldsymbol{x}_P(t) = \Re \left\{ \sum_{n=1}^{N} \boldsymbol{w}_{P,n} e^{j2{\pi}{f_n}t} \right\}
+                \end{equation}
+                where $\boldsymbol{w}_{P,n}=[w_{P,n,1},\dots,w_{P,n,M}]^T$.
             \end{subsubsection}
 
             \begin{subsubsection} {Superposed Waveform}
@@ -51,12 +61,20 @@
                         &= \Re \left\{ \sum_{n=1}^{N} (w_{I,n,m} \tilde{x}_{I,n}(t)+w_{P,n,m}) e^{j2 \pi f_n t} \right\}
                     \end{split}
                 \end{equation}
+                Hence, the composite transmit signal vector is
+                \begin{equation} \label{x(t)}
+                    \begin{split}
+                        \boldsymbol{x}(t)
+                        &=\boldsymbol{x}_I(t)+\boldsymbol{x}_P(t) \\
+                        &=\Re \left\{ \sum_{n=1}^{N} (\boldsymbol{w}_{I,n}\tilde{x}_n(t)+\boldsymbol{w}_{P,n}) e^{j2{\pi}{f_n}t} \right\}
+                    \end{split}
+                \end{equation}
             \end{subsubsection}
 
         \end{subsection}
 
         \begin{subsection} {Composite Channel Model}
-            Consider a single-IRS scenario in a multipath environment. The frequency response of the AP-user (i.e. direct) channel between antenna $m$ and user $k$ at subband $n$ is $h_{D,n,m,k} = \sum_{l_{D,k}=1}^{L_{D,k}} \alpha_{l_{D,k}} e^{j\left( -2 \pi f_n \tau_{l_{D,k}}+\varsigma_{l_{D,k},n,m,k} \right)}$, where $L_{D,k}$ is the number of paths in the direct link of user $k$, $\alpha_{l_{D,k}}$ and $\tau_{l_{D,k}}$ are the delay and amplitude gain of the $l_{D,k}$-th path, $\varsigma_{l_{D,k},n,m,k}$ is the phase shift of the $l_{D,k}$-path between transmit antenna $m$ and the receive antenna of user $k$ at subband $n$. Similarly, the AP-IRS (i.e. incident) channel between antenna $m$ and element $u$ at subband $n$ writes as $h_{I,n,m,u} = \sum_{l_{I,u}=1}^{L_{I,u}} \alpha_{l_{I,u}} e^{j\left( -2 \pi f_n \tau_{l_{I,u}}+\varsigma_{l_{I,u},n,m,u} \right)}$, and the IRS-user (i.e. reflective) channel between element $u$ and user $k$ is $h_{R,n,u,k} = \sum_{l_{R,k}=1}^{L_{R,k}} \alpha_{l_{R,k}} e^{j\left( -2 \pi f_n \tau_{l_{R,k}}+\varsigma_{l_{R,k},n,u,k} \right)}$. Assume that $\max_{l_{D,k} \neq l_{D,k}'} \lvert \tau_{l_{D,k}}-\tau_{l_{D,k}'} \rvert \ll 1/B_s$ and $\max_{l_{I,u},l_{R,k} \neq l_{I,u}',l_{R,k}'} \lvert \left( \tau_{l_{I,u}}+\tau_{l_{R,k}} \right)-\left( \tau_{l_{I,u}'}+\tau_{l_{R,k}'} \right) \rvert \ll 1/B_s$ such that $\tilde{x}_n(t)$ and $x_{n,m}(t)$ are narrowband signals, namely $\tilde{x}_n(t-\tau_{l_D}) = \tilde{x}_n(t-\tau_{l_{I}}-\tau_{l_R}) = \tilde{x}_n(t)$ and $x_{n,m}(t-\tau_{l_D}) = x_{n,m}(t-\tau_{l_{I}}-\tau_{l_R}) = x_{n,m}(t)$.
+            Consider a single-IRS scenario in a multipath environment. The frequency response of the AP-user (i.e. direct) channel between antenna $m$ and user $k$ at subband $n$ is $h_{D,n,m,k}=A_{D,n,m,k}e^{j\bar{\psi}_{D,n,m,k}}=\sum_{l_{D,k}=1}^{L_{D,k}} \alpha_{l_{D,k}} e^{j\left( -2 \pi f_n \tau_{l_{D,k}}+\varsigma_{l_{D,k},n,m,k} \right)}$, where $L_{D,k}$ is the number of paths in the direct link of user $k$, $\alpha_{l_{D,k}}$ and $\tau_{l_{D,k}}$ are the delay and amplitude gain of the $l_{D,k}$-th path, $\varsigma_{l_{D,k},n,m,k}$ is the phase shift of the $l_{D,k}$-path between transmit antenna $m$ and the receive antenna of user $k$ at subband $n$. Similarly, the AP-IRS (i.e. incident) channel between antenna $m$ and element $u$ at subband $n$ writes as $h_{I,n,m,u}=A_{I,n,m,u}e^{j\bar{\psi}_{I,n,m,u}}=\sum_{l_{I,u}=1}^{L_{I,u}} \alpha_{l_{I,u}} e^{j\left( -2 \pi f_n \tau_{l_{I,u}}+\varsigma_{l_{I,u},n,m,u} \right)}$, and the IRS-user (i.e. reflective) channel between element $u$ and user $k$ is $h_{R,n,u,k}=A_{R,n,u,k}e^{j\bar{\psi}_{R,n,u,k}}=\sum_{l_{R,k}=1}^{L_{R,k}} \alpha_{l_{R,k}} e^{j\left( -2 \pi f_n \tau_{l_{R,k}}+\varsigma_{l_{R,k},n,u,k} \right)}$. Assume that $\max_{l_{D,k} \neq l_{D,k}'} \lvert \tau_{l_{D,k}}-\tau_{l_{D,k}'} \rvert \ll 1/B_s$ and $\max_{l_{I,u},l_{R,k} \neq l_{I,u}',l_{R,k}'} \lvert \left( \tau_{l_{I,u}}+\tau_{l_{R,k}} \right)-\left( \tau_{l_{I,u}'}+\tau_{l_{R,k}'} \right) \rvert \ll 1/B_s$ such that $\tilde{x}_n(t)$ and $x_{n,m}(t)$ are narrowband signals, namely $\tilde{x}_n(t-\tau_{l_D}) = \tilde{x}_n(t-\tau_{l_{I}}-\tau_{l_R}) = \tilde{x}_n(t)$ and $x_{n,m}(t-\tau_{l_D}) = x_{n,m}(t-\tau_{l_{I}}-\tau_{l_R}) = x_{n,m}(t)$.
 
             Stack the entries and denote the baseband equivalent channel from the AP to user $k$ as $\boldsymbol{h}_{D,k} \in \mathbb{C}^{1 \times MN}$, from the AP to the IRS as $\boldsymbol{h}_I \in \mathbb{C}^{U \times MN}$, and from the IRS to user $k$ as $\boldsymbol{h}_{R,k} \in \mathbb{C}^{1 \times UN}$. Element $u$ of the IRS receives a superposed waveform transmitted by $M$ antennas after the multipath channel, then redistribute it by adjusting the reflection coefficient $r_u = \beta_u e^{j \theta_u}$ where $\beta_u \in [0,1]$ and $\theta_u \in [0,2\pi)$ are the amplitude reflection coefficient and phase shift. Note each passive reflector need to absorb a small portion ($1 - \beta_u$) of the signal, then combine and harvest it to support information decoding and impedance matching. Construct a diagonal subband-wise IRS matrix by collecting the reflection coefficients of all reflectors onto the diagonal entries such that $\boldsymbol{R}_0 = \text{diag}(r_1, \dots, r_U) \in \mathbb{C}^{U \times U}$. With the assumption of frequency-flat IRS, the IRS reflecting coefficient matrix $\boldsymbol{R} = [\boldsymbol{R}_0^T,\dots,\boldsymbol{R}_0^T]^T \in \mathbb{C}^{UN \times U}$ is obtained by stacking $R_0$ over $N$ subbands. The IRS-aided extra link from the AP to user $k$ can be modeled as a concatenation of the AP-IRS channel, the IRS reflection, and the IRS-user channel. Both the direct link and the IRS-aided link contributes to the overall channel of user $k$ and the composite channel for user $k$ writes as
             \begin{equation} \label{eq:h_k}
@@ -71,11 +89,18 @@
                     y_{m,k}(t)
                     &= \Re \left\{ \sum_{n=1}^{N} \sum_{l_{D,k}=1}^{L_{D,k}} \alpha_{l_{D,k}} x_{n,m}(t-\tau_{l_{D,k}}) e^{j \left( -2 \pi f_n (t-\tau_{l_{D,k}})+\varsigma_{l_{D,k},n,m,k}\right) } \right\} \\
                     &\quad+ \Re \left\{ \sum_{n=1}^{N} \sum_{l_{R,k}=1}^{L_{R,k}} \sum_{u=1}^{U} \alpha_{l_{R,k}} r_u \alpha_{l_{I,u}} x_{n,m}(t-\tau_{l_{R,k}}-\tau_{l_{I,u}}) e^{j \left( -2 \pi f_n (t-\tau_{l_{R,k}}-\tau_{l_{I,u}})+\varsigma_{l_{R,k},n,u,k}+\varsigma_{l_{I,u},n,m,u}\right)} \right\} \\
-                    &\approx \Re \left\{ \sum_{n=1}^{N} \sum_{u=1}^{U} (h_{D,n,m,k}(t)+h_{R,n,u,k}(t) r_u h_{I,n,m,u}(t)) x_{n,m}(t) e^{j2 \pi f_n t} \right\} \\
-                    &= \Re \left\{ \sum_{n=1}^{N} \sum_{u=1}^{U} (h_{D,n,m,k}(t)+h_{R,n,u,k}(t) \beta_u e^{j\theta_u} h_{I,n,m,u}(t)) \left( w_{I,n,m} \tilde{x}_{I,n}(t)+w_{P,n,m} \right) e^{j2{\pi} {f_n}{t}} \right\}
+                    &\approx \Re \left\{ \sum_{n=1}^{N} h_{D,n,m,k}(t) x_{n,m}(t) e^{j2 \pi f_n t} \right\} \\
+                    &\quad+ \Re \left\{ \sum_{n=1}^{N} \sum_{u=1}^{U} h_{R,n,u,k}(t) r_u h_{I,n,m,u}(t) x_{n,m}(t) e^{j2 \pi f_n t} \right\} \\
+                    &= \Re \left\{ \sum_{n=1}^{N} {s_{P,n,m}}{A_{D,n,m,k}} e^{j\left( 2{\pi}{f_n}{t}+\phi_{P,n,m}+\bar{\psi}_{D,n,m,k} \right)} \right\} \\
+                    &\quad+ \Re \left\{ \sum_{n=1}^{N} \sum_{u=1}^{U} {s_{P,n,m}}{A_{R,n,u,k}}{\beta_u}{A_{I,n,m,u}} e^{j\left( 2{\pi}{f_n}{t}+\phi_{P,n,m}+\bar{\psi}_{R,n,u,k}+\theta_u+\bar{\psi}_{I,n,m,u} \right)} \right\} \\
+                    &\quad+ \Re \left\{ \sum_{n=1}^{N} {\tilde{s}_{I,n,m}}{A_{D,n,m,k}} e^{j\left( 2{\pi}{f_n}{t}+\tilde{\phi}_{I,n,m}+\bar{\psi}_{D,n,m,k} \right)} \right\} \\
+                    &\quad+ \Re \left\{ \sum_{n=1}^{N} \sum_{u=1}^{U} {\tilde{s}_{I,n,m}}{A_{R,n,u,k}}{\beta_u}{A_{I,n,m,u}} e^{j\left( 2{\pi}{f_n}{t}+\tilde{\phi}_{I,n,m}+\bar{\psi}_{R,n,u,k}+\theta_u+\bar{\psi}_{I,n,m,u} \right)} \right\}
                 \end{split}
             \end{equation}
-
+            Therefore, the RF signal input to the antenna at user $k$ is
+            \begin{equation} \label{eq:y_{k}(t)}
+                y_{k}(t) = \sum_{m=1}^{M} y_{m,k}(t)
+            \end{equation}
         \end{subsection}
     \end{section}
 
