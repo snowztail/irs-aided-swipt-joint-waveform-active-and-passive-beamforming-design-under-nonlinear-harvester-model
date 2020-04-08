@@ -76,15 +76,24 @@
 	\begin{subsection}	{Composite Channel Model}
 		% Consider a single-IRS scenario in a multipath environment. The frequency response of the AP-user (i.e. direct) channel between antenna $m$ and user $k$ at subband $n$ is $h_{D,n,m,k}=A_{D,n,m,k}e^{j\bar{\psi}_{D,n,m,k}}=\sum_{l_{D,k}=1}^{L_{D,k}} \alpha_{l_{D,k}} e^{j\left( -2 \pi f_n \tau_{l_{D,k}}+\varsigma_{l_{D,k},n,m,k} \right)}$, where $L_{D,k}$ is the number of paths in the direct link of user $k$, $\alpha_{l_{D,k}}$ and $\tau_{l_{D,k}}$ are the delay and amplitude gain of the $l_{D,k}$-th path, $\varsigma_{l_{D,k},n,m,k}$ is the phase shift of the $l_{D,k}$-path between transmit antenna $m$ and the receive antenna of user $k$ at subband $n$. Similarly, the AP-IRS (i.e. incident) channel between antenna $m$ and element $l$ at subband $n$ writes as $h_{I,n,m,u}=A_{I,n,m,u}e^{j\bar{\psi}_{I,n,m,u}}=\sum_{l_{I,u}=1}^{L_{I,u}} \alpha_{l_{I,u}} e^{j\left( -2 \pi f_n \tau_{l_{I,u}}+\varsigma_{l_{I,u},n,m,u} \right)}$, and the IRS-user (i.e. reflective) channel between element $l$ and user $k$ is $h_{R,n,l,k}=A_{R,n,l,k}e^{j\bar{\psi}_{R,n,l,k}}=\sum_{l_{R,k}=1}^{L_{R,k}} \alpha_{l_{R,k}} e^{j\left( -2 \pi f_n \tau_{l_{R,k}}+\varsigma_{l_{R,k},n,l,k} \right)}$. Assume that $\max_{l_{D,k} \neq l_{D,k}'} \lvert \tau_{l_{D,k}}-\tau_{l_{D,k}'} \rvert \ll 1/B_s$ and $\max_{l_{I,u},l_{R,k} \neq l_{I,u}',l_{R,k}'} \lvert \left( \tau_{l_{I,u}}+\tau_{l_{R,k}} \right)-\left( \tau_{l_{I,u}'}+\tau_{l_{R,k}'} \right) \rvert \ll 1/B_s$ such that $\tilde{x}_n(t)$ and $x_{n,m}(t)$ are narrowband signals, namely $\tilde{x}_n(t-\tau_{l_D}) = \tilde{x}_n(t-\tau_{l_{I}}-\tau_{l_R}) = \tilde{x}_n(t)$ and $x_{n,m}(t-\tau_{l_D}) = x_{n,m}(t-\tau_{l_{I}}-\tau_{l_R}) = x_{n,m}(t)$.;
 
-		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R \in \mathbb{C}^{K \times NL}$ respectively. At subband $n$, the frequency response of direct and reflective links are $\boldsymbol{h}_{D,n}=[h_{D,n,1},\dots,h_{D,n,K}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{h}_{R,n}=[\boldsymbol{h}_{R,n,1},\dots,\boldsymbol{h}_{R,n,L}] \in \mathbb{C}^{K \times L}$, with $\boldsymbol{h}_{R,n,l}=[h_{R,n,l,1},\dots,h_{R,n,l,k}]^T \in \mathbb{C}^{K \times 1}$. 'Similarly, the $n$-th incident channel matrix writes as $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^T \in \mathbb{C}^{L \times 1}$. Element $l$ of the IRS receives a superposed waveform through the multipath channel and redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. Construct a diagonal subband-wise IRS matrix by collecting all reflection coefficients onto the diagonal entries such that $\boldsymbol{\Theta}_0 = \text{diag}(\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}) \in \mathbb{C}^{L \times L}$. With the assumption of frequency-flat reflection, the IRS matrix is formed by stacking $\boldsymbol{\Theta}_0$ over $N$ subbands such that $\boldsymbol{\Theta} = [\boldsymbol{\Theta}_0^T,\dots,\boldsymbol{\Theta}_0^T]^T \in \mathbb{C}^{NL \times L}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and AP-IRS-user link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
+		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R \in \mathbb{C}^{K \times NL}$ respectively. Specifically, the frequency response of direct and reflective links at subband $n$ are $\boldsymbol{h}_{D,n}=[h_{D,1,n},\dots,h_{D,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{H}_{R,n}=[\boldsymbol{h}_{R,n,1},\dots,\boldsymbol{h}_{R,n,L}] \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,n,l}=[h_{R,1,n,l},\dots,h_{R,K,n,l}]^T \in \mathbb{C}^{K \times 1}$. Similarly, the $n$-th incident channel matrix writes as $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^T \in \mathbb{C}^{L \times 1}$. We also denote the direct and reflective links of user $k$ as $\boldsymbol{h}_{D,k}=[h_{D,k,1},\dots,h_{D,k,N}] \in \mathbb{C}^{1 \times N}$ and $\boldsymbol{h}_{R,k}=[\boldsymbol{h}_{R,k,1},\dots,\boldsymbol{h}_{R,k,N}] \in \mathbb{C}^{1 \times NL}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Therefore, it holds that $\boldsymbol{H}_D=[\boldsymbol{h}_{D,1},\dots,\boldsymbol{h}_{D,N}]=[\boldsymbol{h}_{D,1}^T,\dots,\boldsymbol{h}_{D,K}^T]^T$, $\boldsymbol{H}_I=[\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}]$, and $\boldsymbol{H}_R=[\boldsymbol{H}_{R,1},\dots,\boldsymbol{H}_{R,N}]=[\boldsymbol{h}_{R,1}^T,\dots,\boldsymbol{h}_{R,K}^T]^T$.
+		Element $l$ of the IRS receives a superposed waveform through the multipath channel and redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. We construct a diagonal subband-wise IRS matrix by collecting the reflection coefficients onto the diagonal entries such that $\boldsymbol{\Theta}_0 = \text{diag}(\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}) \in \mathbb{C}^{L \times L}$. With the assumption of frequency-flat reflection, the IRS matrix is formed by stacking $\boldsymbol{\Theta}_0$ over $N$ subbands as $\boldsymbol{\Theta} = [\boldsymbol{\Theta}_0^T,\dots,\boldsymbol{\Theta}_0^T]^T \in \mathbb{C}^{NL \times L}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and AP-IRS-user link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
 		\begin{equation}	\label{eq:H}
 			\boldsymbol{H} = \boldsymbol{H}_D+\boldsymbol{H}_R\boldsymbol{\Theta}\boldsymbol{H}_I
 		\end{equation}
-		Hence, the $n$-th subchannel $\boldsymbol{h}_n \in \mathbb{C}^{K \times 1}$ is
-		\begin{equation}	\label{eq:h_n}
-			\boldsymbol{h}_n=\boldsymbol{h}_D+\boldsymbol{H}_{R}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}
+		whose $(k,n)$-th entry
+		\begin{equation}	\label{eq:h_{k,n}}
+			h_{k,n}=h_{D,n,k}+\boldsymbol{h}_{R,k}\boldsymbol{\Theta}\boldsymbol{h}_{I,n}
 		\end{equation}
-		It is interesting to notice that the reflective channel across all $N$ subbands influences the overall frequency response at subband $n$.
+		represents the overall channel gain of user $k$ at subband $n$. Hence, the $n$-th subchannel $\boldsymbol{h}_n \in \mathbb{C}^{K \times 1}$ is
+		\begin{equation}	\label{eq:h_n}
+			\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{H}_{R}\boldsymbol{\Theta}\boldsymbol{h}_{I,n}
+		\end{equation}
+		It is interesting to notice that the total frequency response at subband $n$ depends on the reflective channel across all $N$ subbands such that the frequency selectivity only comes from the direct and incident links. From another perspective, the composite channel $\boldsymbol{h}_k \in \mathbb{C}^{1 \times N}$ for user $k$ writes as
+		\begin{equation}	\label{eq:h_k}
+			\boldsymbol{h}_k=\boldsymbol{h}_{D,k}+\boldsymbol{h}_{R,k}\boldsymbol{\Theta}\boldsymbol{H}_I
+		\end{equation}
+		Therefore, we have $\boldsymbol{H}=[\boldsymbol{h}_1,\dots,\boldsymbol{h}_N]=[\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_K^T]^T$.
 	\end{subsection}
 
 	\begin{subsection}	{Received Signal}
@@ -92,10 +101,9 @@
 		\begin{equation}	\label{eq:y_{k}(t)}
 			\begin{split}
 				y_{k}(t)
-				&=\sum_{m=1}^M{y_{k,m}(t)}	\\
-				&=\Re\left\{\sum_{m=1}^M{\sum_{n=1}^N{(w_{I,n,m}\tilde{x}_{I,n}(t)+w_{P,n,m})h_{k,n,m}e^{j2{\pi}{f_n}t}}}\right\}	\\
-				&=\Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{k,n}(\boldsymbol{w}_{P,n}+\boldsymbol{w}_{I,n}\tilde{x}_n)e^{j2{\pi}{f_n}t}}\right\}	\\
-				&=y_{I,k}(t)+y_{P,k}(t)
+				&=y_{I,k}(t)+y_{P,k}(t)	\\
+				&=\Re\left\{{\sum_{n=1}^N{(w_{I,n}\tilde{x}_{I,n}(t)+w_{P,n})h_{k,n}e^{j2{\pi}{f_n}t}}}\right\}
+				% &=\Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{k,n}(\boldsymbol{w}_{P,n}+\boldsymbol{w}_{I,n}\tilde{x}_n)e^{j2{\pi}{f_n}t}}\right\}
 			\end{split}
 		\end{equation}
 	\end{subsection}
