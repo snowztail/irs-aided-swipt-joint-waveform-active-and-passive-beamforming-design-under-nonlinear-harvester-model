@@ -11,7 +11,7 @@
 	\begin{subsection}	{Transmitted Signal}
 
 		\begin{subsubsection} {Modulated Information Waveform}
-			Assume the carrier are evenly spaced with equal bandwidth $B_s$ such that the frequency of the $n$-th subband is $f_n = f_0+(n-1) \Delta f$ ($n = 1,\dots,N$). The information symbol $\tilde{x}_{I,n}$ on subband $n$ is a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) variable with zero mean and unit variance (i.e. $\tilde{x}_{I,n} \sim \mathcal{CN}(0,1)$). Denote $w_{I,n} = s_{I,n} e^{j\phi_{I,n}}$ as the information weight on the $n$-th subcarrier with magnitude $s_{I,n}$ and phase $\phi_{I,n}$, the corresponding modulated symbol can be expressed as $x_{I,n} = \tilde{s}_{I,n} e^{j\tilde{\phi}_{I,n}}$, with $\tilde{s}_{I,n} = s_{I,n} \lvert\tilde{x}_{I,n}\rvert$ and $\tilde{\phi}_{I,n} = \phi_{I,n} + \angle{\tilde{x}_n}$, which also follows zero-mean CSCG distribution with variance equal to the subcarrier power (i.e. $x_{I,n} \sim \mathcal{CN}(0,s_{I,n}^2)$). Therefore, the transmit information waveform at time $t$ writes as
+			Assume the carrier are evenly spaced with equal bandwidth $B_s$ such that the frequency of the $n$-th subband is $f_n = f_0+(n-1) \Delta f$ ($n = 1,\dots,N$). The information symbol $\tilde{x}_{I,n}$ on subband $n$ is a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) variable with zero mean and unit variance (i.e. $\tilde{x}_{I,n} \sim \mathcal{CN}(0,1)$). Denote $w_{I,n} = s_{I,n} e^{j\phi_{I,n}}$ as the information weight on the $n$-th subcarrier with magnitude $s_{I,n}$ and phase $\phi_{I,n}$, the corresponding modulated symbol can be expressed as $x_{I,n} = \tilde{s}_{I,n} e^{j\tilde{\phi}_{I,n}}$, with $\tilde{s}_{I,n} = s_{I,n} \lvert\tilde{x}_{I,n}\rvert$ and $\tilde{\phi}_{I,n} = \phi_{I,n} + \angle{\tilde{x}_n}$, which also follows zero-mean CSCG distribution with variance equal to the subcarrier power (i.e. $x_{I,n} \sim \mathcal{CN}(0,s_{I,n}^2)$). Collect $\boldsymbol{w}_I=[w_{I,1},\dots,w_{I,N}]^T \in \mathbb{C}^{N \times 1}$. Therefore, the transmit information waveform at time $t$ writes as
 			\begin{equation}	\label{eq:x_{I}(t)}
 				\begin{split}
 					x_{I}(t)
@@ -28,7 +28,7 @@
 		\end{subsubsection}
 
 		\begin{subsubsection} {Unmodulated Power Waveform}
-			As suggested in \cite{Clerckx2018b,Clerckx2016a}, we use deterministic multisine waveform to boost the harvested energy. It has no randomness over time and the equivalent input power symbol $\tilde{x}_{P,n}$ is a constant (i.e. $\tilde{x}_{P,n} = 1$). Therefore, the power weight $w_{P,n} = s_{P,n} e^{j\phi_{P,n}}$ represents the complex-valued sinewave (i.e. $x_{P,n}(t) = w_{P,n}$) in the baseband (BB). The transmit power waveform at time $t$ is given by
+			As suggested in \cite{Clerckx2018b,Clerckx2016a}, we use deterministic multisine waveform to boost the harvested energy. It has no randomness over time and the equivalent input power symbol $\tilde{x}_{P,n}$ is a constant (i.e. $\tilde{x}_{P,n} = 1$). Therefore, the power weight $w_{P,n} = s_{P,n} e^{j\phi_{P,n}}$ represents the complex-valued sinewave (i.e. $x_{P,n}(t) = w_{P,n}$) in the baseband (BB). Collect $\boldsymbol{w}_P=[w_{P,1},\dots,w_{P,N}]^T \in \mathbb{C}^{N \times 1}$. The transmit power waveform at time $t$ is given by
 			\begin{equation}	\label{eq:x{P}(t)}
 				\begin{split}
 					x_{P}(t)
@@ -89,7 +89,7 @@
 		\begin{equation}	\label{eq:h_n}
 			\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{H}_{R}\boldsymbol{\Theta}\boldsymbol{h}_{I,n}
 		\end{equation}
-		It is interesting to notice that the total frequency response at subband $n$ depends on the reflective channel across all $N$ subbands such that the frequency selectivity only comes from the direct and incident links. From another perspective, the composite channel $\boldsymbol{h}_k \in \mathbb{C}^{1 \times N}$ for user $k$ writes as
+		It is interesting to notice that the frequency response at subband $n$ depends on the reflective channel across all $N$ subbands such that the frequency selectivity only comes from the direct and incident links. From another perspective, the composite channel $\boldsymbol{h}_k \in \mathbb{C}^{1 \times N}$ for user $k$ writes as
 		\begin{equation}	\label{eq:h_k}
 			\boldsymbol{h}_k=\boldsymbol{h}_{D,k}+\boldsymbol{h}_{R,k}\boldsymbol{\Theta}\boldsymbol{H}_I
 		\end{equation}
@@ -98,14 +98,21 @@
 
 	\begin{subsection}	{Received Signal}
 		The RF signal received by user $k$ captures the contribution of information and power waveforms through both direct and reflective links as
-		\begin{equation}	\label{eq:y_{k}(t)}
+		\begin{equation}	\label{eq:y_k(t)}
 			\begin{split}
-				y_{k}(t)
+				y_k(t)
 				&=y_{I,k}(t)+y_{P,k}(t)	\\
 				&=\Re\left\{{\sum_{n=1}^N{(w_{I,n}\tilde{x}_{I,n}(t)+w_{P,n})h_{k,n}e^{j2{\pi}{f_n}t}}}\right\}
 				% &=\Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{k,n}(\boldsymbol{w}_{P,n}+\boldsymbol{w}_{I,n}\tilde{x}_n)e^{j2{\pi}{f_n}t}}\right\}
 			\end{split}
 		\end{equation}
+
+		% \begin{equation}	\label{eq:y_k**2(t)}
+		% 	\begin{split}
+		% 		\mathcal{A}\left\{y_{P,k}^2(t)=\frac{1}{2}\right\}
+		% 		&=\Re\left\{\sum_{n_1,n_2}\right\}
+		% 	\end{split}
+		% \end{equation}
 	\end{subsection}
 
 	\begin{subsection}	{Information Decoder}
@@ -113,28 +120,43 @@
 		\begin{equation}	\label{eq:I_k}
 			\begin{split}
 				I_k(\boldsymbol{w}_I,\boldsymbol{\Theta},\rho)
-				&=\sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert\boldsymbol{h}_{k,n}\boldsymbol{w}_{I,n}\rvert^2}{\sigma_n^2}\right)}	\\
-				&=?
+				% &=\sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert\boldsymbol{h}_{k,n}\boldsymbol{w}_{I,n}\rvert^2}{\sigma_n^2}\right)}	\\
+				&=\sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)(h_{k,n}w_{I,n})(h_{k,n}w_{I,n})^*}{\sigma_n^2}\right)}
 			\end{split}
 		\end{equation}
 		where $\sigma_n^2$ is the sum variance of the Gaussian noise at the RF-band and those introduced during the RF-to-BB conversion on subband $n$. A significant conclusion in \cite{Clerckx2018b} indicates that the rate \ref{eq:I_k} is always achievable with or without waveform cancellation, by subtracting the deterministic power component or constructing a translated codebook.
 	\end{subsection}
 
 	\begin{subsection}	{Energy Harvester}
-		Although the power term $y_{P,k}(t)$ have no impact on communication, both $y_{I,k}(t)$ and $y_{P,k}(t)$ contribute to energy delivery in different manner. Consider the nonlinear diode model based on the Taylor expansion of a small signal model \cite{Clerckx2018b,Clerckx2016a}, which highlights the dependency between the harvester output DC current and the received waveform by
+		Note that the information and power component $y_{I,k}(t)$ and $y_{P,k}(t)$ contribute to power transfer in different manners. Consider a nonlinear diode model based on the Taylor expansion of a small signal model \cite{Clerckx2018b,Clerckx2016a}, which highlights the dependency between the harvester output DC current and the received waveform by
 		\begin{equation}	\label{eq:i_k}
-			i_{\text{out},k}\approx\sum_{i=0}^{\infty}{k_i'}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{y_k(t)^i\right\}}
+			i_{\text{out},k}\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}_{\tilde{x}_n}\left\{{\mathcal{A}\left\{y_k(t)^i\right\}}\right\}
 		\end{equation}
-		where $k_i'$ depends on $i_{\text{out},k}$ and diode characteristics, $R_{\text{ant}}$ is the impedance of receive antenna. With the assumption of evenly spaced frequencies, $\mathcal{E}\left\{y(t)^i\right\}=0$ for odd $i$ which has no contribution to DC components. \cite{Clerckx2016a} also demonstrated that to maximize $i_{\text{out},k}$, it suffices to maximize the monotonic target function truncated to the $n_0$ order
-		\begin{equation}	\label{eq:z_{DC,k}}
-			\begin{split}
-				z_{DC,k}
-				&=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{y_k(t)^i\right\}}	\\
-				&=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{y_{P,k}(t)^i\right\}}	\\
-				&+\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)^i\right\}\right\}}
-			\end{split}
+		where $k_i'$ depends on $i_{\text{out},k}$ and diode characteristics, $R_{\text{ant}}$ is the impedance of receive antenna. Once the composite channel response $h_{k,n}$ is fixed, the corresponding information and power weight $\boldsymbol{w}_I$, $\boldsymbol{w}_P$ are determined such that the randomness comes from the input distribution $\tilde{x}_n$. Therefore, we first extract the DC component based on $h_{k,n}$, $\boldsymbol{w}_I$, $\boldsymbol{w}_P$ by $\mathcal{A}\left\{.\right\}$ and then consider the expectation over $\tilde{x}_n$ by $\mathcal{E}\left\{.\right\}$. With the assumption of evenly spaced frequencies, $\mathcal{E}\left\{y^i(t)\right\}=0$ for odd $i$ which has no contribution to DC components. \cite{Clerckx2016a} also demonstrated that to maximize $i_{\text{out},k}$, it suffices to maximize the monotonic target function truncated to the $n_0$ order
+		\begin{equation}	\label{eq:z_k}
+			z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{y_k(t)^i\right\}}
 		\end{equation}
-		where $k_i=i_s/i!(nv_t)^i$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage.
+		where $k_i=i_s/i!(nv_t)^i$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. We take $n_0=4$ to investigate the fundamental impact of diode nonlinearity on energy delivery. Since $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^3(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}^3(t)\right\}\right\}=0$ and $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)y_{P,k}^2(t)\right\}\right\}=\mathcal{A}\left\{\mathcal{E}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}$, the target function $z_k$ reduces to \ref{eq:z_k_truncated}	\\
+		\begin{strip}
+			\begin{equation}	\label{eq:z_k_truncated}
+				\begin{split}
+					z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta},\rho)
+					&={k_2}{\rho}{R_{\text{ant}}}\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+{k_4}{\rho^2}{R_{\text{ant}}^2}\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}	\\
+					&\quad+{k_2}{\rho}{R_{\text{ant}}}\mathcal{A}\left\{y_{P,k}^2(t)\right\}+{k_4}{\rho^2}{R_{\text{ant}}^2}\mathcal{A}\left\{y_{P,k}^4(t)\right\}	\\
+					&\quad+6{k_4}{\rho^2}{R_{\text{ant}}^2}\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}
+				\end{split}
+			\end{equation}
+		\end{strip}
+		whose terms are expressed in \ref{eq:E{A{y_{I,k}**2}}} -- \ref{eq:A{y_{P,k}**4}}	\\
+		\begin{strip}
+			\begin{align}
+				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\} & =\frac{1}{2}\sum_n{(w_{I,n}h_{k,n})(w_{I,n}h_{k,n})^*}	\label{eq:E{A{y_{I,k}**2}}}                                                                                                                                                  \\
+				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\} & =\frac{3}{4}\sum_{{n_1},{n_2}}{(w_{I,{n_1}}h_{k,{n_1}})(w_{I,{n_2}}h_{k,{n_2}})(w_{I,{n_1}}h_{k,{n_1}})^*(w_{I,{n_2}}h_{k,{n_2}})^*}	\label{eq:E{A{y_{I,k}**4}}}                                                                    \\
+				\mathcal{A}\left\{y_{P,k}^2(t)\right\}                           & =\frac{1}{2}\sum_n{(w_{P,n}h_{k,n})(w_{P,n}h_{k,n})^*}	\label{eq:A{y_{P,k}**2}}                                                                                                                                                     \\
+				\mathcal{A}\left\{y_{P,k}^4(t)\right\}                           & =\frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(w_{P,{n_1}}h_{k,{n_1}})(w_{P,{n_2}}h_{k,{n_2}})(w_{P,{n_3}}h_{k,{n_3}})^*(w_{P,{n_4}}h_{k,{n_4}})^*}	\label{eq:A{y_{P,k}**4}}
+			\end{align}
+		\end{strip}
+		Note that $\mathcal{E}\left\{\lvert\tilde{x}_n\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_n\rvert^4\right\}=2$. The latter provides a modulation gain to the nonlinear terms in the output DC current.
 
 
 	\end{subsection}
