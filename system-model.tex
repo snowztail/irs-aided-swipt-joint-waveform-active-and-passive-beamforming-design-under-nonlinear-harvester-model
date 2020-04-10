@@ -76,24 +76,27 @@
 	\begin{subsection}	{Composite Channel Model}
 		% Consider a single-IRS scenario in a multipath environment. The frequency response of the AP-user (i.e. direct) channel between antenna $m$ and user $k$ at subband $n$ is $h_{D,n,m,k}=A_{D,n,m,k}e^{j\bar{\psi}_{D,n,m,k}}=\sum_{l_{D,k}=1}^{L_{D,k}} \alpha_{l_{D,k}} e^{j\left( -2 \pi f_n \tau_{l_{D,k}}+\varsigma_{l_{D,k},n,m,k} \right)}$, where $L_{D,k}$ is the number of paths in the direct link of user $k$, $\alpha_{l_{D,k}}$ and $\tau_{l_{D,k}}$ are the delay and amplitude gain of the $l_{D,k}$-th path, $\varsigma_{l_{D,k},n,m,k}$ is the phase shift of the $l_{D,k}$-path between transmit antenna $m$ and the receive antenna of user $k$ at subband $n$. Similarly, the AP-IRS (i.e. incident) channel between antenna $m$ and element $l$ at subband $n$ writes as $h_{I,n,m,u}=A_{I,n,m,u}e^{j\bar{\psi}_{I,n,m,u}}=\sum_{l_{I,u}=1}^{L_{I,u}} \alpha_{l_{I,u}} e^{j\left( -2 \pi f_n \tau_{l_{I,u}}+\varsigma_{l_{I,u},n,m,u} \right)}$, and the IRS-user (i.e. reflective) channel between element $l$ and user $k$ is $h_{R,n,l,k}=A_{R,n,l,k}e^{j\bar{\psi}_{R,n,l,k}}=\sum_{l_{R,k}=1}^{L_{R,k}} \alpha_{l_{R,k}} e^{j\left( -2 \pi f_n \tau_{l_{R,k}}+\varsigma_{l_{R,k},n,l,k} \right)}$. Assume that $\max_{l_{D,k} \neq l_{D,k}'} \lvert \tau_{l_{D,k}}-\tau_{l_{D,k}'} \rvert \ll 1/B_s$ and $\max_{l_{I,u},l_{R,k} \neq l_{I,u}',l_{R,k}'} \lvert \left( \tau_{l_{I,u}}+\tau_{l_{R,k}} \right)-\left( \tau_{l_{I,u}'}+\tau_{l_{R,k}'} \right) \rvert \ll 1/B_s$ such that $\tilde{x}_n(t)$ and $x_{n,m}(t)$ are narrowband signals, namely $\tilde{x}_n(t-\tau_{l_D}) = \tilde{x}_n(t-\tau_{l_{I}}-\tau_{l_R}) = \tilde{x}_n(t)$ and $x_{n,m}(t-\tau_{l_D}) = x_{n,m}(t-\tau_{l_{I}}-\tau_{l_R}) = x_{n,m}(t)$.;
 
-		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R \in \mathbb{C}^{K \times NL}$ respectively. Specifically, the frequency response of direct and reflective links at subband $n$ are $\boldsymbol{h}_{D,n}=[h_{D,1,n},\dots,h_{D,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{H}_{R,n}=[\boldsymbol{h}_{R,n,1},\dots,\boldsymbol{h}_{R,n,L}] \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,n,l}=[h_{R,1,n,l},\dots,h_{R,K,n,l}]^T \in \mathbb{C}^{K \times 1}$. Similarly, the $n$-th incident channel matrix writes as $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^T \in \mathbb{C}^{L \times 1}$. We also denote the direct and reflective links of user $k$ as $\boldsymbol{h}_{D,k}=[h_{D,k,1},\dots,h_{D,k,N}] \in \mathbb{C}^{1 \times N}$ and $\boldsymbol{h}_{R,k}=[\boldsymbol{h}_{R,k,1},\dots,\boldsymbol{h}_{R,k,N}] \in \mathbb{C}^{1 \times NL}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Therefore, it holds that $\boldsymbol{H}_D=[\boldsymbol{h}_{D,1},\dots,\boldsymbol{h}_{D,N}]=[\boldsymbol{h}_{D,1}^T,\dots,\boldsymbol{h}_{D,K}^T]^T$, $\boldsymbol{H}_I=[\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}]$, and $\boldsymbol{H}_R=[\boldsymbol{H}_{R,1},\dots,\boldsymbol{H}_{R,N}]=[\boldsymbol{h}_{R,1}^T,\dots,\boldsymbol{h}_{R,K}^T]^T$.
-		Element $l$ of the IRS receives a superposed waveform through the multipath channel and redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. We construct a diagonal subband-wise IRS matrix by collecting the reflection coefficients onto the diagonal entries such that $\boldsymbol{\Theta}_0 = \text{diag}(\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}) \in \mathbb{C}^{L \times L}$. With the assumption of frequency-flat reflection, the IRS matrix is formed by stacking $\boldsymbol{\Theta}_0$ over $N$ subbands as $\boldsymbol{\Theta} = [\boldsymbol{\Theta}_0^T,\dots,\boldsymbol{\Theta}_0^T]^T \in \mathbb{C}^{NL \times L}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and AP-IRS-user link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
+		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I' \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R \in \mathbb{C}^{K \times NL}$ respectively. At subband $n$, the frequency response of direct and reflective links write as $\boldsymbol{h}_{D,n}=[h_{D,1,n},\dots,h_{D,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{H}_{R,n}=[\boldsymbol{h}_{R,1,n}^T,\dots,\boldsymbol{h}_{R,K,n}^T]^T \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Similarly, the $n$-th incident channel is given by $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^T \in \mathbb{C}^{L \times 1}$. To decouple the impact of IRS operation on the incident link, we construct a block-diagonal matrix $\boldsymbol{H}_I \triangleq \text{diag}\left\{\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}\right\} \in \mathbb{C}^{NL \times N}$. Element $l$ of the IRS receives a superposed waveform through the multipath channel, then redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. On top of this, the IRS matrix of each subband is constructed by collecting the reflection coefficients onto its diagonal entries as $\boldsymbol{\Theta}_0 = \text{diag}\left\{\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}\right\} \in \mathbb{C}^{L \times L}$. Finally, the IRS matrix is formed by $\boldsymbol{\Theta} = \text{diag}\{\underbrace{\boldsymbol{\Theta}_0,\dots,\boldsymbol{\Theta}_0}_{N\text{ times}}\} \in \mathbb{C}^{NL \times NL}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and IRS-aided link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
+
+		% We also denote the direct and reflective links of user $k$ as $\boldsymbol{h}_{D,k}=[h_{D,k,1},\dots,h_{D,k,N}] \in \mathbb{C}^{1 \times N}$ and $\boldsymbol{h}_{R,k}=[\boldsymbol{h}_{R,k,1},\dots,\boldsymbol{h}_{R,k,N}] \in \mathbb{C}^{1 \times NL}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Therefore, it holds that $\boldsymbol{H}_D=[\boldsymbol{h}_{D,1},\dots,\boldsymbol{h}_{D,N}]=[\boldsymbol{h}_{D,1}^T,\dots,\boldsymbol{h}_{D,K}^T]^T$, $\boldsymbol{H}_I=[\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}]$, and $\boldsymbol{H}_R=[\boldsymbol{H}_{R,1},\dots,\boldsymbol{H}_{R,N}]=[\boldsymbol{h}_{R,1}^T,\dots,\boldsymbol{h}_{R,K}^T]^T$.
+
+		% [\boldsymbol{h}_{R,n,1},\dots,\boldsymbol{h}_{R,n,L}] \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,n,l}=[h_{R,1,n,l},\dots,h_{R,K,n,l}]^T \in \mathbb{C}^{K \times 1}$.
+		% , which is further divided into horizontal submatrices $\boldsymbol{\Theta}_n \in \mathbb{C}^{NL \times L}$ such that $\boldsymbol{\Theta}=[\boldsymbol{\Theta}_1,\dots,\boldsymbol{\Theta}_N]$.
+		% , which is then divided into $N$ vertical submatrices $\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times N}$ such that $\boldsymbol{H}_{I}=[\boldsymbol{H}_{I,1}^T,\dots,\boldsymbol{H}_{I,N}^T]^T$.
+		% whose $n$-th column denotes the zero-padded incident subchannel $\boldsymbol{h}_{I,n}=[\boldsymbol{0}_{1 \times (n-1)L}^T, \boldsymbol{h}_{I,n}'^T,\boldsymbol{0}_{1 \times (N-n)L}^T]^T \in \mathbb{C}^{NL \times 1}$.
+
+
 		\begin{equation}	\label{eq:H}
 			\boldsymbol{H} = \boldsymbol{H}_D+\boldsymbol{H}_R\boldsymbol{\Theta}\boldsymbol{H}_I
 		\end{equation}
 		whose $(k,n)$-th entry
 		\begin{equation}	\label{eq:h_{k,n}}
-			h_{k,n}=h_{D,n,k}+\boldsymbol{h}_{R,k}\boldsymbol{\Theta}\boldsymbol{h}_{I,n}
+			h_{k,n}=h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}
 		\end{equation}
-		represents the overall channel gain of user $k$ at subband $n$. Hence, the $n$-th subchannel $\boldsymbol{h}_n \in \mathbb{C}^{K \times 1}$ is
+		represents the overall channel gain of user $k$ at subband $n$. On top of this, the $n$-th subchannel for all users $\boldsymbol{h}_n \in \mathbb{C}^{K \times 1}$ can be expressed as
 		\begin{equation}	\label{eq:h_n}
-			\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{H}_{R}\boldsymbol{\Theta}\boldsymbol{h}_{I,n}
+			\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{H}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}
 		\end{equation}
-		It is interesting to notice that the frequency response at subband $n$ depends on the reflective channel across all $N$ subbands such that the frequency selectivity only comes from the direct and incident links. From another perspective, the composite channel $\boldsymbol{h}_k \in \mathbb{C}^{1 \times N}$ for user $k$ writes as
-		\begin{equation}	\label{eq:h_k}
-			\boldsymbol{h}_k=\boldsymbol{h}_{D,k}+\boldsymbol{h}_{R,k}\boldsymbol{\Theta}\boldsymbol{H}_I
-		\end{equation}
-		Therefore, we have $\boldsymbol{H}=[\boldsymbol{h}_1,\dots,\boldsymbol{h}_N]=[\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_K^T]^T$.
 	\end{subsection}
 
 	\begin{subsection}	{Received Signal}
@@ -136,8 +139,9 @@
 		\begin{equation}	\label{eq:z_k}
 			z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{y_k(t)^i\right\}}
 		\end{equation}
-		where $k_i=i_s/i!(nv_t)^i$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. We take $n_0=4$ to investigate the fundamental impact of diode nonlinearity on energy delivery. Since $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^3(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}^3(t)\right\}\right\}=0$ and $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)y_{P,k}^2(t)\right\}\right\}=\mathcal{A}\left\{\mathcal{E}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}$, the target function $z_k$ reduces to \ref{eq:z_k_truncated}	\\
-		\begin{strip}
+		where $k_i=i_s/i!(nv_t)^i$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. We take $n_0=4$ to investigate the fundamental impact of diode nonlinearity on energy delivery. Since $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^3(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}^3(t)\right\}\right\}=0$ and $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)y_{P,k}^2(t)\right\}\right\}=\mathcal{A}\left\{\mathcal{E}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}$, the target function $z_k$ reduces to \ref{eq:z_k_truncated}, whose terms are further expressed in \ref{eq:E{A{y_{I,k}**2}}} -- \ref{eq:A{y_{P,k}**4'}}.
+		\begin{figure*}[b]
+			\hrule
 			\begin{equation}	\label{eq:z_k_truncated}
 				\begin{split}
 					z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta},\rho)
@@ -146,16 +150,27 @@
 					&\quad+6{k_4}{\rho^2}{R_{\text{ant}}^2}\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}
 				\end{split}
 			\end{equation}
-		\end{strip}
-		whose terms are expressed in \ref{eq:E{A{y_{I,k}**2}}} -- \ref{eq:A{y_{P,k}**4}}	\\
-		\begin{strip}
+		\end{figure*}
+		\begin{figure*}[b]
+			\hrule
+
 			\begin{align}
-				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\} & =\frac{1}{2}\sum_n{(w_{I,n}h_{k,n})(w_{I,n}h_{k,n})^*}	\label{eq:E{A{y_{I,k}**2}}}                                                                                                                                                  \\
-				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\} & =\frac{3}{4}\sum_{{n_1},{n_2}}{(w_{I,{n_1}}h_{k,{n_1}})(w_{I,{n_2}}h_{k,{n_2}})(w_{I,{n_1}}h_{k,{n_1}})^*(w_{I,{n_2}}h_{k,{n_2}})^*}	\label{eq:E{A{y_{I,k}**4}}}                                                                    \\
-				\mathcal{A}\left\{y_{P,k}^2(t)\right\}                           & =\frac{1}{2}\sum_n{(w_{P,n}h_{k,n})(w_{P,n}h_{k,n})^*}	\label{eq:A{y_{P,k}**2}}                                                                                                                                                     \\
-				\mathcal{A}\left\{y_{P,k}^4(t)\right\}                           & =\frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(w_{P,{n_1}}h_{k,{n_1}})(w_{P,{n_2}}h_{k,{n_2}})(w_{P,{n_3}}h_{k,{n_3}})^*(w_{P,{n_4}}h_{k,{n_4}})^*}	\label{eq:A{y_{P,k}**4}}
+				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}
+				 & =\frac{1}{2}\sum_n{(w_{I,n}h_{k,n})(w_{I,n}h_{k,n})^*}\label{eq:E{A{y_{I,k}**2}}}                                                                                                                                                                                                                                               \\
+				 & =\frac{1}{2}\sum_n{\left[w_{I,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]\left[w_{I,n}(h_{D,n,k}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]^*}                                                                                                            \\
+				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}
+				 & =\frac{3}{4}\sum_{{n_1},{n_2}}{(w_{I,{n_1}}h_{k,{n_1}})(w_{I,{n_2}}h_{k,{n_2}})(w_{I,{n_1}}h_{k,{n_1}})^*(w_{I,{n_2}}h_{k,{n_2}})^*}                                                                                                                                                                                            \\
+				 & =\frac{3}{4}\sum_{{n_1},{n_2}}\left[w_{I,{n_1}}(h_{D,k,n_1}+\boldsymbol{h}_{R,k,n_1}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_1})\right]\left[w_{I,{n_2}}(h_{D,k,n_2}+\boldsymbol{h}_{R,k,n_2}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_2})\right]\nonumber                                                                       \\
+				 & \quad\left[w_{I,{n_1}}(h_{D,k,n_1}+\boldsymbol{h}_{R,k,n_1}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_1})\right]^*\left[w_{I,{n_2}}(h_{D,k,n_2}+\boldsymbol{h}_{R,k,n_2}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_2})\right]^*                                                                                                     \\
+				\mathcal{A}\left\{y_{P,k}^2(t)\right\}
+				 & =\frac{1}{2}\sum_n{(w_{P,n}h_{k,n})(w_{P,n}h_{k,n})^*}                                                                                                                                                                                                                                                                          \\
+				 & =\frac{1}{2}\sum_n{\left[w_{P,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]\left[w_{P,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]^*}                                                                                                            \\
+				\mathcal{A}\left\{y_{P,k}^4(t)\right\}
+				 & =\frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(w_{P,{n_1}}h_{k,{n_1}})(w_{P,{n_2}}h_{k,{n_2}})(w_{P,{n_3}}h_{k,{n_3}})^*(w_{P,{n_4}}h_{k,{n_4}})^*}                                                                                                                      \\
+				 & =\frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}\left[w_{P,{n_1}}(h_{D,k,n_1}+\boldsymbol{h}_{R,k,n_1}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_1})\right]\left[w_{P,{n_2}}(h_{D,k,n_2}+\boldsymbol{h}_{R,k,n_2}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_2})\right]\nonumber \\
+				 & \quad\left[w_{P,{n_3}}(h_{D,k,n_3}+\boldsymbol{h}_{R,k,n_3}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_3})\right]^*\left[w_{P,{n_4}}(h_{D,k,n_4}+\boldsymbol{h}_{R,k,n_4}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_4})\right]^*\label{eq:A{y_{P,k}**4'}}
 			\end{align}
-		\end{strip}
+		\end{figure*}
 		Note that $\mathcal{E}\left\{\lvert\tilde{x}_n\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_n\rvert^4\right\}=2$. The latter provides a modulation gain to the nonlinear terms in the output DC current.
 
 
