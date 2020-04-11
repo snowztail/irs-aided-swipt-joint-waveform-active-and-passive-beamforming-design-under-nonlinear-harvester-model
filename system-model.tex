@@ -5,155 +5,126 @@
 
 \begin{document}
 
-\begin{section} {System Model}
-	Consider an IRS-aided multiuser SISO SWIPT system where the IRS not only assists the primal transmission but also retrieves Channel State Information (CSI) and harvests energy for its own operation. The single-antenna transmitter delivers information and power simultaneously, through the $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. It is assumed that the IRS performs channel estimation in the first subframe and supports information and power transfer in the second subframe \cite{Zheng2019}. Due to the passive characteristics of IRS, we consider a Time-Division Duplexing (TDD) protocol where the CSI can be obtained by exploiting channel reciprocity. Perfect CSI is assumed at the AP and IRS to investigate the analytical upper-bound of the proposed system. The signals reflected by IRS for two and more times are assumed negligible and thus not considered. A quasi-static frequency-selective model is used for both the AP-user and AP-IRS-user links where the channels are assumed unchanged within each transmission frame. A superposition of multicarrier modulated and unmodulated waveforms, both transmitted on the same frequency bands, are designed adaptively to maximize the rate-energy tradeoff \cite{Clerckx2018b}. Note that although Frequency Selective Surface (FSS) has received much attention for wideband communications, active FSS requires RF-chains thus becomes prohibitive in IRS \cite{Kim2006,Xu2014}. Since passive FSS is not reconfigurable with fixed physical characteristics \cite{Anwar2018}, we assume a frequency-flat IRS with same reflection coefficients for all subbands. Two practical receiver architectures proposed in \cite{Zhang2013}, namely Time Switching (TS) and Power Splitting (PS), are investigated for the co-located information decoder and energy harvester. In the TS strategy, each transmission subframe is further divided into orthogonal data and energy slots with duration ratio $(1 - \alpha)$ and $\alpha$ respectively. Hence, the achievable rate-energy region can be obtained through a direct time sharing between wireless power transfer (WPT) with $\alpha=1$ and wireless information transfer (WIT) with $\alpha=0$. The adjustment of $\alpha$ has no impact on the transmit waveform and IRS elements design, since they are optimized individually in data and energy slots. In comparison, the PS scheme splits the received signal into data and energy streams with power ratio $(1 - \rho)$ and $\rho$. As $\rho$ is coupled with waveform and IRS design, we investigate the rate-energy region by placing different rate constraints and optimizing waveform, PS ratio and reflectors accordingly. Perfect synchronization is assumed among the three parties in both scenario.
+\begin{section}{System Model}
+	Consider an IRS-aided multiuser SISO SWIPT system where the IRS not only assists the primal transmission but also retrieves Channel State Information (CSI) and harvests energy for its own operation. The single-antenna transmitter delivers information and power simultaneously, through the $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. It is assumed that the IRS performs channel estimation in the first subframe and supports information and power transfer in the second subframe \cite{Zheng2019}. Due to the passive characteristics of IRS, we consider a Time-Division Duplexing (TDD) protocol where the CSI can be obtained by exploiting channel reciprocity. Perfect CSI is assumed at the AP and IRS to investigate the analytical upper-bound of the proposed system. The signals reflected by IRS for two and more times are assumed negligible and thus not considered. A quasi-static frequency-selective model is used for both the AP-user and AP-IRS-user links where the channels are assumed unchanged within each transmission frame. A superposition of multicarrier modulated and unmodulated waveforms, both transmitted on the same frequency bands, are designed adaptively to maximize the rate-energy tradeoff \cite{Clerckx2018b}. Note that although Frequency Selective Surface (FSS) has received much attention for wideband communications, active FSS requires RF-chains thus becomes prohibitive in IRS \cite{Kim2006,Xu2014}. Since passive FSS is not reconfigurable with fixed physical characteristics \cite{Anwar2018}, we assume a frequency-flat IRS with same reflection coefficients for all subbands. Two practical receiver architectures proposed in \cite{Zhang2013}, namely Time Switching (TS) and Power Splitting (PS), are investigated for the co-located information decoder and energy harvester. In the TS strategy, each transmission subframe is further divided into orthogonal data and energy slots with duration ratio $(1-\alpha)$ and $\alpha$ respectively. Hence, the achievable rate-energy region can be obtained through a direct time sharing between wireless power transfer (WPT) with $\alpha=1$ and wireless information transfer (WIT) with $\alpha=0$. The adjustment of $\alpha$ has no impact on the transmit waveform and IRS elements design, since they are optimized individually in data and energy slots. In comparison, the PS scheme splits the received signal into data and energy streams with power ratio $(1-\rho)$ and $\rho$. As $\rho$ is coupled with waveform and IRS design, we investigate the rate-energy region by placing different rate constraints and optimizing waveform, PS ratio and reflectors accordingly. Perfect synchronization is assumed among the three parties in both scenario.
 
-	\begin{subsection}	{Transmitted Signal}
-
+	\begin{subsection}{Transmitted Signal}
 		\begin{subsubsection} {Modulated Information Waveform}
-			Assume the carrier are evenly spaced with equal bandwidth $B_s$ such that the frequency of the $n$-th subband is $f_n = f_0+(n-1) \Delta f$ ($n = 1,\dots,N$). The information symbol $\tilde{x}_{I,n}$ on subband $n$ is a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) variable with zero mean and unit variance (i.e. $\tilde{x}_{I,n} \sim \mathcal{CN}(0,1)$). Denote $w_{I,n} = s_{I,n} e^{j\phi_{I,n}}$ as the information weight on the $n$-th subcarrier with magnitude $s_{I,n}$ and phase $\phi_{I,n}$, the corresponding modulated symbol can be expressed as $x_{I,n} = \tilde{s}_{I,n} e^{j\tilde{\phi}_{I,n}}$, with $\tilde{s}_{I,n} = s_{I,n} \lvert\tilde{x}_{I,n}\rvert$ and $\tilde{\phi}_{I,n} = \phi_{I,n} + \angle{\tilde{x}_n}$, which also follows zero-mean CSCG distribution with variance equal to the subcarrier power (i.e. $x_{I,n} \sim \mathcal{CN}(0,s_{I,n}^2)$). Collect $\boldsymbol{w}_I=[w_{I,1},\dots,w_{I,N}]^T \in \mathbb{C}^{N \times 1}$. Therefore, the transmit information waveform at time $t$ writes as
-			\begin{equation}	\label{eq:x_{I}(t)}
+			Assume the carrier are evenly spaced with equal bandwidth $B_s$ such that the frequency of the $n$-th subband is $f_n=f_0+(n-1){\Delta}{f}$ ($n=1,\dots,N$). The information symbol $\tilde{x}_{I,k,n}\sim\mathcal{CN}(0,1)$ of user $k$ over subband $n$ is a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) variable with zero mean and unit variance. Therefore, the baseband (BB) transmit information signal at subband $n$ can be expressed as
+			\begin{equation}\label{eq:x_{I,n}(t)}
+				x_{I,n}(t)=\sum_{k=1}^K{w_{I,k,n}\tilde{x}_{I,k,n}(t)}
+			\end{equation}
+			where $w_{I,k,n}$ is the corresponding information weight. Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}] \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$. On top of this, the RF transmit information waveform at time $t$ writes as
+			\begin{equation}\label{eq:x_I(t)}
 				\begin{split}
-					x_{I}(t)
-					&= \sum_{n=1}^{N} \tilde{s}_{I,n}(t) \cos \left( 2 \pi f_n t + \tilde{\phi}_{I,n}(t) \right)	\\
-					&= \Re \left\{ \sum_{n=1}^{N} x_{I,n}(t) e^{j2 \pi f_n t} \right\}	\\
-					&= \Re \left\{ \sum_{n=1}^{N} w_{I,n} \tilde{x}_{I,n}(t) e^{j2 \pi f_n t} \right\}
+					x_I(t)
+					&=\sum_{n=1}^N{x_{I,n}(t){e^{j2{\pi}{f_n}{t}}}}\\
+					&=\sum_{k=1}^K\sum_{n=1}^N{w_{I,k,n}\tilde{x}_{I,k,n}(t){e^{j2{\pi}{f_n}{t}}}}
+					% &=\Re\left\{\sum_{n=1}^N{x_{I,n}(t){e^{j2{\pi}{f_n}{t}}}}\right\}\\
+					% &=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{w_{I,k,n}\tilde{x}_{I,k,n}(t){e^{j2{\pi}{f_n}{t}}}}\right\}
 				\end{split}
 			\end{equation}
-			% On top of this, the information waveform vector is spread over $M$ antennas
-			% \begin{equation}	\label{eq:x_I(t)}
-			% 	\boldsymbol{x}_I(t) = \Re \left\{ \sum_{n=1}^{N} \boldsymbol{w}_{I,n}\tilde{x}_n(t) e^{j2{\pi}{f_n}t} \right\}
-			% \end{equation}
-			% where $\boldsymbol{w}_{I,n}=[w_{I,n,1},\dots,w_{I,n,M}]^T \in \mathbb{C}^{M \times 1}$.
 		\end{subsubsection}
 
-		\begin{subsubsection} {Unmodulated Power Waveform}
-			As suggested in \cite{Clerckx2018b,Clerckx2016a}, we use deterministic multisine waveform to boost the harvested energy. It has no randomness over time and the equivalent input power symbol $\tilde{x}_{P,n}$ is a constant (i.e. $\tilde{x}_{P,n} = 1$). Therefore, the power weight $w_{P,n} = s_{P,n} e^{j\phi_{P,n}}$ represents the complex-valued sinewave (i.e. $x_{P,n}(t) = w_{P,n}$) in the baseband (BB). Collect $\boldsymbol{w}_P=[w_{P,1},\dots,w_{P,N}]^T \in \mathbb{C}^{N \times 1}$. The transmit power waveform at time $t$ is given by
-			\begin{equation}	\label{eq:x{P}(t)}
+		\begin{subsubsection}{Unmodulated Power Waveform}
+			As suggested in \cite{Clerckx2018b,Clerckx2016a}, we use deterministic multisine waveform to boost the harvested energy. It has no randomness over time such that the baseband transmit power signal at subband $n$ is
+			\begin{equation}\label{eq:x_{P,n}}
+				x_{P,n}=\sum_{k=1}^K{w_{P,k,n}}
+			\end{equation}
+			where $w_{P,k,n}$ is the corresponding power weight. Let $\boldsymbol{W}_P=[\boldsymbol{w}_{P,1},\dots,\boldsymbol{w}_{P,N}] \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{P,n}=[w_{P,1,n},\dots,w_{P,K,n}]^T \in \mathbb{C}^{K \times 1}$. Then, the transmit power signal at time $t$ is given by
+			\begin{equation}\label{eq:x_P(t)}
 				\begin{split}
-					x_{P}(t)
-					&= \sum_{n=1}^{N} s_{P,n}(t) \cos \left( 2 \pi f_n t + \phi_{P,n}(t) \right)	\\
-					&= \Re \left\{ \sum_{n=1}^{N} x_{P,n}(t) e^{j2 \pi f_n t} \right\}	\\
-					&= \Re \left\{ \sum_{n=1}^{N} w_{P,n} e^{j2 \pi f_n t} \right\}
+					x_P(t)
+					&=\sum_{n=1}^N{x_{P,n}{e^{j2{\pi}{f_n}{t}}}}\\
+					&=\sum_{k=1}^K\sum_{n=1}^N{w_{P,k,n}{e^{j2{\pi}{f_n}{t}}}}
+					% &=\Re\left\{\sum_{n=1}^N{x_{P,n}{e^{j2{\pi}{f_n}{t}}}}\right\}\\
+					% &=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{w_{P,k,n}{e^{j2{\pi}{f_n}{t}}}}\right\}
 				\end{split}
 			\end{equation}
-			% Similarly, the corresponding power waveform vector is stacked across $M$ transmit antennas as
-			% \begin{equation}	\label{eq:x_P(t)}
-			% 	\boldsymbol{x}_P(t) = \Re \left\{ \sum_{n=1}^{N} \boldsymbol{w}_{P,n} e^{j2{\pi}{f_n}t} \right\}
-			% \end{equation}
-			% where $\boldsymbol{w}_{P,n}=[w_{P,n,1},\dots,w_{P,n,M}]^T \in \mathbb{C}^{M \times 1}$.
 		\end{subsubsection}
 
-		\begin{subsubsection} {Superposed Waveform}
+		\begin{subsubsection}{Superposed Waveform}
 			At time $t$, a superposition of the information and power waveform at subband $n$ writes as
-			\begin{equation}	\label{eq:x_{n}(t)}
-				\begin{split}
-					x_{n}(t)
-					&= x_{I,n}(t)+x_{P,n}(t)	\\
-					&= w_{I,n} \tilde{x}_{I,n}(t)+w_{P,n}
-				\end{split}
+			\begin{equation}\label{eq:x_n(t)}
+				x_n(t)=\sum_{k=1}^K{(w_{I,k,n}\tilde{x}_{I,k,n}(t)+w_{P,k,n}){e^{j2{\pi}{f_n}{t}}}}
 			\end{equation}
-			Hence, the transmitted signal is summed over all subbands
-			\begin{equation}	\label{eq:x(t)}
-				\begin{split}
-					x(t)
-					&= x_{I}(t)+x_{P}(t)	\\
-					&= \Re \left\{ \sum_{n=1}^{N} (w_{I,n} \tilde{x}_{I,n}(t)+w_{P,n}) e^{j2 \pi f_n t} \right\}
-				\end{split}
+			Hence, the transmitted RF signal is
+			\begin{equation}\label{eq:x(t)}
+				x(t)=\sum_{k=1}^K\sum_{n=1}^N{(w_{I,k,n}\tilde{x}_{I,k,n}(t)+w_{P,k,n}){e^{j2{\pi}{f_n}{t}}}}
+				% x(t)=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{(w_{I,k,n}\tilde{x}_{I,k,n}(t)+w_{P,k,n}){e^{j2{\pi}{f_n}{t}}}}\right\}
 			\end{equation}
-			% Therefore, the composite transmit signal vector is
-			% \begin{equation}	\label{x(t)}
-			% 	\begin{split}
-			% 		\boldsymbol{x}(t)
-			% 		&=\boldsymbol{x}_I(t)+\boldsymbol{x}_P(t)	\\
-			% 		&=\Re \left\{ \sum_{n=1}^{N} (\boldsymbol{w}_{I,n}\tilde{x}_n(t)+\boldsymbol{w}_{P,n}) e^{j2{\pi}{f_n}t} \right\}
-			% 	\end{split}
-			% \end{equation}
 		\end{subsubsection}
-
 	\end{subsection}
 
-	\begin{subsection}	{Composite Channel Model}
-		% Consider a single-IRS scenario in a multipath environment. The frequency response of the AP-user (i.e. direct) channel between antenna $m$ and user $k$ at subband $n$ is $h_{D,n,m,k}=A_{D,n,m,k}e^{j\bar{\psi}_{D,n,m,k}}=\sum_{l_{D,k}=1}^{L_{D,k}} \alpha_{l_{D,k}} e^{j\left( -2 \pi f_n \tau_{l_{D,k}}+\varsigma_{l_{D,k},n,m,k} \right)}$, where $L_{D,k}$ is the number of paths in the direct link of user $k$, $\alpha_{l_{D,k}}$ and $\tau_{l_{D,k}}$ are the delay and amplitude gain of the $l_{D,k}$-th path, $\varsigma_{l_{D,k},n,m,k}$ is the phase shift of the $l_{D,k}$-path between transmit antenna $m$ and the receive antenna of user $k$ at subband $n$. Similarly, the AP-IRS (i.e. incident) channel between antenna $m$ and element $l$ at subband $n$ writes as $h_{I,n,m,u}=A_{I,n,m,u}e^{j\bar{\psi}_{I,n,m,u}}=\sum_{l_{I,u}=1}^{L_{I,u}} \alpha_{l_{I,u}} e^{j\left( -2 \pi f_n \tau_{l_{I,u}}+\varsigma_{l_{I,u},n,m,u} \right)}$, and the IRS-user (i.e. reflective) channel between element $l$ and user $k$ is $h_{R,n,l,k}=A_{R,n,l,k}e^{j\bar{\psi}_{R,n,l,k}}=\sum_{l_{R,k}=1}^{L_{R,k}} \alpha_{l_{R,k}} e^{j\left( -2 \pi f_n \tau_{l_{R,k}}+\varsigma_{l_{R,k},n,l,k} \right)}$. Assume that $\max_{l_{D,k} \neq l_{D,k}'} \lvert \tau_{l_{D,k}}-\tau_{l_{D,k}'} \rvert \ll 1/B_s$ and $\max_{l_{I,u},l_{R,k} \neq l_{I,u}',l_{R,k}'} \lvert \left( \tau_{l_{I,u}}+\tau_{l_{R,k}} \right)-\left( \tau_{l_{I,u}'}+\tau_{l_{R,k}'} \right) \rvert \ll 1/B_s$ such that $\tilde{x}_n(t)$ and $x_{n,m}(t)$ are narrowband signals, namely $\tilde{x}_n(t-\tau_{l_D}) = \tilde{x}_n(t-\tau_{l_{I}}-\tau_{l_R}) = \tilde{x}_n(t)$ and $x_{n,m}(t-\tau_{l_D}) = x_{n,m}(t-\tau_{l_{I}}-\tau_{l_R}) = x_{n,m}(t)$.;
-
-		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I' \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R \in \mathbb{C}^{K \times NL}$ respectively. At subband $n$, the frequency response of direct and reflective links write as $\boldsymbol{h}_{D,n}=[h_{D,1,n},\dots,h_{D,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{H}_{R,n}=[\boldsymbol{h}_{R,1,n}^T,\dots,\boldsymbol{h}_{R,K,n}^T]^T \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Similarly, the $n$-th incident channel is given by $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^T \in \mathbb{C}^{L \times 1}$. To decouple the impact of IRS operation on the incident link, we construct a block-diagonal matrix $\boldsymbol{H}_I \triangleq \text{diag}\left\{\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}\right\} \in \mathbb{C}^{NL \times N}$. Element $l$ of the IRS receives a superposed waveform through the multipath channel, then redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. On top of this, the IRS matrix of each subband is constructed by collecting the reflection coefficients onto its diagonal entries as $\boldsymbol{\Theta}_0 = \text{diag}\left\{\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}\right\} \in \mathbb{C}^{L \times L}$. Finally, the IRS matrix is formed by $\boldsymbol{\Theta} = \text{diag}\{\underbrace{\boldsymbol{\Theta}_0,\dots,\boldsymbol{\Theta}_0}_{N\text{ times}}\} \in \mathbb{C}^{NL \times NL}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and IRS-aided link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
-
-		% We also denote the direct and reflective links of user $k$ as $\boldsymbol{h}_{D,k}=[h_{D,k,1},\dots,h_{D,k,N}] \in \mathbb{C}^{1 \times N}$ and $\boldsymbol{h}_{R,k}=[\boldsymbol{h}_{R,k,1},\dots,\boldsymbol{h}_{R,k,N}] \in \mathbb{C}^{1 \times NL}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Therefore, it holds that $\boldsymbol{H}_D=[\boldsymbol{h}_{D,1},\dots,\boldsymbol{h}_{D,N}]=[\boldsymbol{h}_{D,1}^T,\dots,\boldsymbol{h}_{D,K}^T]^T$, $\boldsymbol{H}_I=[\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}]$, and $\boldsymbol{H}_R=[\boldsymbol{H}_{R,1},\dots,\boldsymbol{H}_{R,N}]=[\boldsymbol{h}_{R,1}^T,\dots,\boldsymbol{h}_{R,K}^T]^T$.
-
-		% [\boldsymbol{h}_{R,n,1},\dots,\boldsymbol{h}_{R,n,L}] \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,n,l}=[h_{R,1,n,l},\dots,h_{R,K,n,l}]^T \in \mathbb{C}^{K \times 1}$.
-		% , which is further divided into horizontal submatrices $\boldsymbol{\Theta}_n \in \mathbb{C}^{NL \times L}$ such that $\boldsymbol{\Theta}=[\boldsymbol{\Theta}_1,\dots,\boldsymbol{\Theta}_N]$.
-		% , which is then divided into $N$ vertical submatrices $\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times N}$ such that $\boldsymbol{H}_{I}=[\boldsymbol{H}_{I,1}^T,\dots,\boldsymbol{H}_{I,N}^T]^T$.
-		% whose $n$-th column denotes the zero-padded incident subchannel $\boldsymbol{h}_{I,n}=[\boldsymbol{0}_{1 \times (n-1)L}^T, \boldsymbol{h}_{I,n}'^T,\boldsymbol{0}_{1 \times (N-n)L}^T]^T \in \mathbb{C}^{NL \times 1}$.
-
-
-		\begin{equation}	\label{eq:H}
+	\begin{subsection}{Composite Channel Model}
+		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I' \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R \in \mathbb{C}^{K \times NL}$ respectively. At subband $n$, the frequency response of direct and reflective links write as $\boldsymbol{h}_{D,n}=[h_{D,1,n},\dots,h_{D,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{H}_{R,n}=[\boldsymbol{h}_{R,1,n}^T,\dots,\boldsymbol{h}_{R,K,n}^T]^T \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Similarly, the $n$-th incident channel is given by $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^T \in \mathbb{C}^{L \times 1}$. To decouple the impact of IRS operation on the incident link, we construct a block-diagonal matrix $\boldsymbol{H}_I \triangleq \text{diag}\left\{\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}\right\} \in \mathbb{C}^{NL \times N}$. Element $l$ of the IRS receives a superposed waveform through the multipath channel, then redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. On top of this, the IRS matrix per subband is constructed by collecting the reflection coefficients onto its diagonal entries as $\boldsymbol{\Theta}_0 = \text{diag}\left\{\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}\right\} \in \mathbb{C}^{L \times L}$. Finally, the IRS matrix is formed by $\boldsymbol{\Theta} = \text{diag}\{\underbrace{\boldsymbol{\Theta}_0,\dots,\boldsymbol{\Theta}_0}_{N\text{ times}}\} \in \mathbb{C}^{NL \times NL}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and IRS-aided link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
+		\begin{equation}\label{eq:H}
 			\boldsymbol{H} = \boldsymbol{H}_D+\boldsymbol{H}_R\boldsymbol{\Theta}\boldsymbol{H}_I
 		\end{equation}
 		whose $(k,n)$-th entry
-		\begin{equation}	\label{eq:h_{k,n}}
+		\begin{equation}\label{eq:h_{k,n}}
 			h_{k,n}=h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}
 		\end{equation}
 		represents the overall channel gain of user $k$ at subband $n$. On top of this, the $n$-th subchannel for all users $\boldsymbol{h}_n \in \mathbb{C}^{K \times 1}$ can be expressed as
-		\begin{equation}	\label{eq:h_n}
+		\begin{equation}\label{eq:h_n}
 			\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{H}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}
 		\end{equation}
 	\end{subsection}
 
-	\begin{subsection}	{Received Signal}
+	\begin{subsection}{Received Signal}
 		The RF signal received by user $k$ captures the contribution of information and power waveforms through both direct and reflective links as
-		\begin{equation}	\label{eq:y_k(t)}
-			\begin{split}
-				y_k(t)
-				&=y_{I,k}(t)+y_{P,k}(t)	\\
-				&=\Re\left\{{\sum_{n=1}^N{(w_{I,n}\tilde{x}_{I,n}(t)+w_{P,n})h_{k,n}e^{j2{\pi}{f_n}t}}}\right\}
-				% &=\Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{k,n}(\boldsymbol{w}_{P,n}+\boldsymbol{w}_{I,n}\tilde{x}_n)e^{j2{\pi}{f_n}t}}\right\}
-			\end{split}
+		\begin{equation}\label{eq:y_k(t)}
+			y_k(t)=\sum_{j=1}^K\sum_{n=1}^N(w_{I,j,n}\tilde{x}_{I,j,n}+w_{P,j,n})h_{k,n}{e^{j2{\pi}{f_n}{t}}}
+		\end{equation}
+		with the information and power components equal
+		\begin{equation}\label{eq:y_{I,k}(t)}
+			y_{I,k}(t)=\sum_{j=1}^K\sum_{n=1}^N{w_{I,j,n}\tilde{x}_{I,j,n}}h_{k,n}{e^{j2{\pi}{f_n}{t}}}
+		\end{equation}
+		\begin{equation}\label{eq:y_{P,k}(t)}
+			y_{P,k}(t)=\sum_{j=1}^K\sum_{n=1}^N{w_{P,j,n}}h_{k,n}{e^{j2{\pi}{f_n}{t}}}
 		\end{equation}
 
-		% \begin{equation}	\label{eq:y_k**2(t)}
-		% 	\begin{split}
-		% 		\mathcal{A}\left\{y_{P,k}^2(t)=\frac{1}{2}\right\}
-		% 		&=\Re\left\{\sum_{n_1,n_2}\right\}
-		% 	\end{split}
-		% \end{equation}
 	\end{subsection}
 
-	\begin{subsection}	{Information Decoder}
-		One major benefit of using proposed waveform is that the deterministic power term $y_{P,k}(t)$ bears no information and creates no interference to the modulated information term $y_{I,k}(t)$. Therefore, the achievable rate of user $k$ is expressed as
-		\begin{equation}	\label{eq:I_k}
-			\begin{split}
-				I_k(\boldsymbol{w}_I,\boldsymbol{\Theta},\rho)
-				% &=\sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert\boldsymbol{h}_{k,n}\boldsymbol{w}_{I,n}\rvert^2}{\sigma_n^2}\right)}	\\
-				&=\sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)(h_{k,n}w_{I,n})(h_{k,n}w_{I,n})^*}{\sigma_n^2}\right)}
-			\end{split}
+	\begin{subsection}{Information Decoder}
+		One major benefit of using proposed waveform is that the deterministic power term $y_{P,k}(t)$ bears no information and creates no interference to the modulated information term $y_{I,k}(t)$. Besides, each user treats the information signals from other users as interference such that the SINR at subband $n$ of user $k$ is
+		\begin{equation}\label{eq:gamma_{k,n}}
+			\gamma_{k,n}=\frac{(1-\rho)(w_{I,k,n}h_{k,n})(w_{I,k,n}h_{k,n})^*}{\sum_{j=1,j{\ne}k}^N{(1-\rho)(w_{I,j,n}h_{I,k,n})(w_{I,j,n}h_{I,k,n})^*+\sigma_n^2}}
 		\end{equation}
-		where $\sigma_n^2$ is the sum variance of the Gaussian noise at the RF-band and those introduced during the RF-to-BB conversion on subband $n$. A significant conclusion in \cite{Clerckx2018b} indicates that the rate \ref{eq:I_k} is always achievable with or without waveform cancellation, by subtracting the deterministic power component or constructing a translated codebook.
+		where $\sigma_n^2$ is the sum variance of the Gaussian noise at the RF-band and those introduced during the RF-to-BB conversion on subband $n$. Therefore, the achievable rate of user $k$ is expressed as
+		\begin{equation}\label{eq:R_k}
+			R_k(\boldsymbol{W}_I,\boldsymbol{\Theta},\rho)=\sum_{n=1}^N{\log_2(1+\gamma_{k,n})}
+		\end{equation}
+		A significant conclusion in \cite{Clerckx2018b} indicates that the rate \ref{eq:R_k} is always achievable with or without waveform cancellation, by subtracting the deterministic power component or constructing a translated codebook. Hence, the weighted sum rate is
+		\begin{equation}\label{eq:R}
+			R=\sum_{k=1}^K{u_kR_k}
+		\end{equation}
+		where $u_k$ is the weight of user $k$.
 	\end{subsection}
 
-	\begin{subsection}	{Energy Harvester}
+	\begin{subsection}{Energy Harvester}
 		Note that the information and power component $y_{I,k}(t)$ and $y_{P,k}(t)$ contribute to power transfer in different manners. Consider a nonlinear diode model based on the Taylor expansion of a small signal model \cite{Clerckx2018b,Clerckx2016a}, which highlights the dependency between the harvester output DC current and the received waveform by
-		\begin{equation}	\label{eq:i_k}
-			i_{\text{out},k}\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}_{\tilde{x}_n}\left\{{\mathcal{A}\left\{y_k(t)^i\right\}}\right\}
+		\begin{equation}\label{eq:i_k}
+			i_k\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}_{\tilde{x}_n}\left\{{\mathcal{A}\left\{y_k(t)^i\right\}}\right\}
 		\end{equation}
-		where $k_i'$ depends on $i_{\text{out},k}$ and diode characteristics, $R_{\text{ant}}$ is the impedance of receive antenna. Once the composite channel response $h_{k,n}$ is fixed, the corresponding information and power weight $\boldsymbol{w}_I$, $\boldsymbol{w}_P$ are determined such that the randomness comes from the input distribution $\tilde{x}_n$. Therefore, we first extract the DC component based on $h_{k,n}$, $\boldsymbol{w}_I$, $\boldsymbol{w}_P$ by $\mathcal{A}\left\{.\right\}$ and then consider the expectation over $\tilde{x}_n$ by $\mathcal{E}\left\{.\right\}$. With the assumption of evenly spaced frequencies, $\mathcal{E}\left\{y^i(t)\right\}=0$ for odd $i$ which has no contribution to DC components. \cite{Clerckx2016a} also demonstrated that to maximize $i_{\text{out},k}$, it suffices to maximize the monotonic target function truncated to the $n_0$ order
-		\begin{equation}	\label{eq:z_k}
+		where $k_i'$ depends on $i_k$ and diode characteristics, $R_{\text{ant}}$ is the impedance of receive antenna. Once the composite channel response $h_{k,n}$ is fixed, the corresponding information and power weight $\boldsymbol{w}_I$, $\boldsymbol{w}_P$ are determined such that the randomness comes from the input distribution $\tilde{x}_n$. Therefore, we first extract the DC component based on $h_{k,n}$, $\boldsymbol{w}_I$, $\boldsymbol{w}_P$ by $\mathcal{A}\left\{.\right\}$ and then consider the expectation over $\tilde{x}_n$ by $\mathcal{E}\left\{.\right\}$. With the assumption of evenly spaced frequencies, $\mathcal{E}\left\{y^i(t)\right\}=0$ for odd $i$ which has no contribution to DC components. \cite{Clerckx2016a} also demonstrated that to maximize $i_k$, it suffices to maximize the monotonic target function truncated to the $n_0$ order
+		\begin{equation}\label{eq:z_k}
 			z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{y_k(t)^i\right\}}
 		\end{equation}
 		where $k_i=i_s/i!(nv_t)^i$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. We take $n_0=4$ to investigate the fundamental impact of diode nonlinearity on energy delivery. Since $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^3(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}^3(t)\right\}\right\}=0$ and $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)y_{P,k}^2(t)\right\}\right\}=\mathcal{A}\left\{\mathcal{E}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}$, the target function $z_k$ reduces to \ref{eq:z_k_truncated}, whose terms are further expressed in \ref{eq:E{A{y_{I,k}**2}}} -- \ref{eq:A{y_{P,k}**4'}}.
 		\begin{figure*}[b]
 			\hrule
-			\begin{equation}	\label{eq:z_k_truncated}
+			\begin{equation}\label{eq:z_k_truncated}
 				\begin{split}
 					z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta},\rho)
-					&={k_2}{\rho}{R_{\text{ant}}}\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+{k_4}{\rho^2}{R_{\text{ant}}^2}\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}	\\
-					&\quad+{k_2}{\rho}{R_{\text{ant}}}\mathcal{A}\left\{y_{P,k}^2(t)\right\}+{k_4}{\rho^2}{R_{\text{ant}}^2}\mathcal{A}\left\{y_{P,k}^4(t)\right\}	\\
+					&={k_2}{\rho}{R_{\text{ant}}}\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+{k_4}{\rho^2}{R_{\text{ant}}^2}\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}\\
+					&\quad+{k_2}{\rho}{R_{\text{ant}}}\mathcal{A}\left\{y_{P,k}^2(t)\right\}+{k_4}{\rho^2}{R_{\text{ant}}^2}\mathcal{A}\left\{y_{P,k}^4(t)\right\}\\
 					&\quad+6{k_4}{\rho^2}{R_{\text{ant}}^2}\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}
 				\end{split}
 			\end{equation}
 		\end{figure*}
 		\begin{figure*}[b]
 			\hrule
-
 			\begin{align}
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}
 				 & =\frac{1}{2}\sum_n{(w_{I,n}h_{k,n})(w_{I,n}h_{k,n})^*}\label{eq:E{A{y_{I,k}**2}}}                                                                                                                                                                                                                                               \\
@@ -172,8 +143,16 @@
 			\end{align}
 		\end{figure*}
 		Note that $\mathcal{E}\left\{\lvert\tilde{x}_n\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_n\rvert^4\right\}=2$. The latter provides a modulation gain to the nonlinear terms in the output DC current.
+	\end{subsection}
+\end{section}
 
-
+\begin{section}{Problem Formulation}
+	In this section, we first define the weighted sum rate-energy (WSR-E) region then formulate specific waveform and IRS optimization problems.
+	\begin{subsection}{Weighted Sum Rate-Energy Region}
+		We define the achievable WSR-E region as
+		\begin{equation}
+			C_{R-I}(P) \triangleq \left\{(R,I):\right\}
+		\end{equation}
 	\end{subsection}
 \end{section}
 
