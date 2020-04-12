@@ -14,7 +14,8 @@
 			\begin{equation}\label{eq:x_{I,n}(t)}
 				x_{I,n}(t)=\sum_{k=1}^K{w_{I,k,n}\tilde{x}_{I,k,n}(t)}
 			\end{equation}
-			where $w_{I,k,n}$ is the corresponding information weight. Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}] \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$. On top of this, the RF transmit information waveform at time $t$ writes as
+			where $w_{I,k,n}$ is the corresponding information weight. Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1}^T,\dots,\boldsymbol{w}_{I,K}^T]^T \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{I,k}=[w_{I,k,1},\dots,w_{I,k,N}] \in \mathbb{C}^{1 \times N}$. On top of this, the RF transmit information waveform at time $t$ writes as
+			% Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}] \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$.
 			\begin{equation}\label{eq:x_I(t)}
 				\begin{split}
 					x_I(t)
@@ -31,7 +32,7 @@
 			\begin{equation}\label{eq:x_{P,n}}
 				x_{P,n}=\sum_{k=1}^K{w_{P,k,n}}
 			\end{equation}
-			where $w_{P,k,n}$ is the corresponding power weight. Let $\boldsymbol{W}_P=[\boldsymbol{w}_{P,1},\dots,\boldsymbol{w}_{P,N}] \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{P,n}=[w_{P,1,n},\dots,w_{P,K,n}]^T \in \mathbb{C}^{K \times 1}$. Then, the transmit power signal at time $t$ is given by
+			where $w_{P,k,n}$ is the corresponding power weight. Let $\boldsymbol{W}_P=[\boldsymbol{w}_{P,1}^T,\dots,\boldsymbol{w}_{P,K}^T]^T \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{P,k}=[w_{P,k,1},\dots,w_{P,k,N}] \in \mathbb{C}^{1 \times N}$. Then, the transmit power signal at time $t$ is given by
 			\begin{equation}\label{eq:x_P(t)}
 				\begin{split}
 					x_P(t)
@@ -87,15 +88,15 @@
 	\end{subsection}
 
 	\begin{subsection}{Information Decoder}
-		One major benefit of using proposed waveform is that the deterministic power term $y_{P,k}(t)$ bears no information and creates no interference to the modulated information term $y_{I,k}(t)$. Besides, each user treats the information signals from other users as interference such that the SINR at subband $n$ of user $k$ is
+		One major benefit of using proposed waveform is that the deterministic power term $y_{P,k}(t)$ bears no information and creates no interference to the modulated information term $y_{I,k}(t)$. Hence, each user treats the information signals from other users as interference such that the SINR at subband $n$ of user $k$ is
 		\begin{equation}\label{eq:gamma_{k,n}}
-			\gamma_{k,n}=\frac{(1-\rho)(w_{I,k,n}h_{k,n})(w_{I,k,n}h_{k,n})^*}{\sum_{j=1,j{\ne}k}^N{(1-\rho)(w_{I,j,n}h_{I,k,n})(w_{I,j,n}h_{I,k,n})^*+\sigma_n^2}}
+			\gamma_{k,n}=\frac{(1-\rho)(w_{I,k,n}h_{k,n})(w_{I,k,n}h_{k,n})^*}{\sum_{j=1,j{\ne}k}^K{(1-\rho)(w_{I,j,n}h_{I,k,n})(w_{I,j,n}h_{I,k,n})^*+\sigma_n^2}}
 		\end{equation}
 		where $\sigma_n^2$ is the sum variance of the Gaussian noise at the RF-band and those introduced during the RF-to-BB conversion on subband $n$. Therefore, the achievable rate of user $k$ is expressed as
 		\begin{equation}\label{eq:R_k}
 			R_k(\boldsymbol{W}_I,\boldsymbol{\Theta},\rho)=\sum_{n=1}^N{\log_2(1+\gamma_{k,n})}
 		\end{equation}
-		A significant conclusion in \cite{Clerckx2018b} indicates that the rate \ref{eq:R_k} is always achievable with or without waveform cancellation, by subtracting the deterministic power component or constructing a translated codebook. Hence, the weighted sum rate is
+		A significant conclusion in \cite{Clerckx2018b} indicates that the rate \ref{eq:R_k} is always achievable with or without waveform cancellation, through either subtracting the deterministic power component or constructing a translated codebook. Therefore, the weighted sum rate is
 		\begin{equation}\label{eq:R}
 			R=\sum_{k=1}^K{u_kR_k}
 		\end{equation}
@@ -103,15 +104,15 @@
 	\end{subsection}
 
 	\begin{subsection}{Energy Harvester}
-		Note that the information and power component $y_{I,k}(t)$ and $y_{P,k}(t)$ contribute to power transfer in different manners. Consider a nonlinear diode model based on the Taylor expansion of a small signal model \cite{Clerckx2018b,Clerckx2016a}, which highlights the dependency between the harvester output DC current and the received waveform by
+		Note that the information and power component $y_{I,k}(t)$ and $y_{P,k}(t)$ have different influence on the output DC current. Consider a nonlinear diode model based on the Taylor expansion of a small signal model \cite{Clerckx2018b,Clerckx2016a}, which highlights the dependency of the harvester output DC current on the received waveform as
 		\begin{equation}\label{eq:i_k}
-			i_k\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}_{\tilde{x}_n}\left\{{\mathcal{A}\left\{y_k(t)^i\right\}}\right\}
+			i_k\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y_k(t)^i\right\}}\right\}
 		\end{equation}
-		where $k_i'$ depends on $i_k$ and diode characteristics, $R_{\text{ant}}$ is the impedance of receive antenna. Once the composite channel response $h_{k,n}$ is fixed, the corresponding information and power weight $\boldsymbol{w}_I$, $\boldsymbol{w}_P$ are determined such that the randomness comes from the input distribution $\tilde{x}_n$. Therefore, we first extract the DC component based on $h_{k,n}$, $\boldsymbol{w}_I$, $\boldsymbol{w}_P$ by $\mathcal{A}\left\{.\right\}$ and then consider the expectation over $\tilde{x}_n$ by $\mathcal{E}\left\{.\right\}$. With the assumption of evenly spaced frequencies, $\mathcal{E}\left\{y^i(t)\right\}=0$ for odd $i$ which has no contribution to DC components. \cite{Clerckx2016a} also demonstrated that to maximize $i_k$, it suffices to maximize the monotonic target function truncated to the $n_0$ order
+		where $R_{\text{ant}}$ is the impedance of the receive antenna, $k_0'=i_s(e^{-i_kR_{\text{ant}}/nv_t}-1)$, $k_i'=i_se^{-i_kR_{\text{ant}}/nv_t}/i!(nv_t)^i$ for $i=1,\dots,\infty$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. Once the composite channel response $h_{k,n}$ is fixed, the corresponding information and power weight $w_{I,k,n}$, $w_{P,k,n}$ are thus optimized such that the randomness comes from the input distribution $\tilde{x}_{k,n}$. Therefore, we first extract the DC component based on $h_{k,n}$, $w_{I,k,n}$, $w_{P,k,n}$ by $\mathcal{A}\left\{.\right\}$ and then take the expectation over $\tilde{x}_{k,n}$ by $\mathcal{E}\left\{.\right\}$. With the assumption of evenly spaced frequencies, $\mathcal{E}\left\{y^i(t)\right\}=0$ for odd $i$ and the related terms has zero contribution to DC components. \cite{Clerckx2016a} also demonstrated that to maximize $i_k$, it suffices to maximize the monotonic target function truncated to the $n_0$ order
 		\begin{equation}\label{eq:z_k}
-			z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{y_k(t)^i\right\}}
+			z_k(\boldsymbol{W}_I,\boldsymbol{W}_P,\boldsymbol{\Theta},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{y_k(t)^i\right\}}
 		\end{equation}
-		where $k_i=i_s/i!(nv_t)^i$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. We take $n_0=4$ to investigate the fundamental impact of diode nonlinearity on energy delivery. Since $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^3(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}^3(t)\right\}\right\}=0$ and $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)y_{P,k}^2(t)\right\}\right\}=\mathcal{A}\left\{\mathcal{E}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}$, the target function $z_k$ reduces to \ref{eq:z_k_truncated}, whose terms are further expressed in \ref{eq:E{A{y_{I,k}**2}}} -- \ref{eq:A{y_{P,k}**4'}}.
+		where $k_i=i_s/i!(nv_t)^i$. We take $n_0=4$ to investigate the fundamental impact of diode nonlinearity on power transfer. Since $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^3(t)y_{P,k}(t)\right\}\right\}=\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}(t)y_{P,k}^3(t)\right\}\right\}=0$ and $\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)y_{P,k}^2(t)\right\}\right\}=\mathcal{A}\left\{\mathcal{E}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}$, the target function $z_k$ reduces to \ref{eq:z_k_truncated}, whose terms are further expressed in \ref{eq:E{A{y_{I,k}**2}}} -- \ref{eq:A{y_{P,k}**4'}}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{equation}\label{eq:z_k_truncated}
@@ -127,27 +128,27 @@
 			\hrule
 			\begin{align}
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}
-				 & =\frac{1}{2}\sum_n{(w_{I,n}h_{k,n})(w_{I,n}h_{k,n})^*}\label{eq:E{A{y_{I,k}**2}}}                                                                                                                                                                                                                                               \\
-				 & =\frac{1}{2}\sum_n{\left[w_{I,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]\left[w_{I,n}(h_{D,n,k}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]^*}                                                                                                            \\
+				 & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{(w_{I,j_1,n}h_{k,n})(w_{I,j_2,n}h_{k,n})^*}\label{eq:E{A{y_{I,k}**2}}}                                                                                                                                                                                                                                                           \\
+				 & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{\left[w_{I,j_1,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]\left[w_{I,j_2,n}(h_{D,n,k}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]^*}                                                                                                                        \\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}
-				 & =\frac{3}{4}\sum_{{n_1},{n_2}}{(w_{I,{n_1}}h_{k,{n_1}})(w_{I,{n_2}}h_{k,{n_2}})(w_{I,{n_1}}h_{k,{n_1}})^*(w_{I,{n_2}}h_{k,{n_2}})^*}                                                                                                                                                                                            \\
-				 & =\frac{3}{4}\sum_{{n_1},{n_2}}\left[w_{I,{n_1}}(h_{D,k,n_1}+\boldsymbol{h}_{R,k,n_1}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_1})\right]\left[w_{I,{n_2}}(h_{D,k,n_2}+\boldsymbol{h}_{R,k,n_2}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_2})\right]\nonumber                                                                       \\
-				 & \quad\left[w_{I,{n_1}}(h_{D,k,n_1}+\boldsymbol{h}_{R,k,n_1}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_1})\right]^*\left[w_{I,{n_2}}(h_{D,k,n_2}+\boldsymbol{h}_{R,k,n_2}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_2})\right]^*                                                                                                     \\
+				 & =\frac{3}{4}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(w_{I,{j_1},{n_1}}h_{k,{n_1}})(w_{I,{j_2},{n_2}}h_{k,{n_2}})(w_{I,{j_3},{n_3}}h_{k,{n_3}})^*(w_{I,{j_4},{n_4}}h_{k,{n_4}})^*}                                                                                                          \\
+				 & =\frac{3}{4}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}\left[w_{I,{j_1},{n_1}}(h_{D,k,n_1}+\boldsymbol{h}_{R,k,n_1}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_1})\right]\left[w_{I,{j_2},{n_2}}(h_{D,k,n_2}+\boldsymbol{h}_{R,k,n_2}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_2})\right]\nonumber \\
+				 & \quad\left[w_{I,{j_3},{n_3}}(h_{D,k,n_3}+\boldsymbol{h}_{R,k,n_3}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_3})\right]^*\left[w_{I,{j_4},{n_4}}(h_{D,k,n_4}+\boldsymbol{h}_{R,k,n_4}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_4})\right]^*                                                                                                                           \\
 				\mathcal{A}\left\{y_{P,k}^2(t)\right\}
-				 & =\frac{1}{2}\sum_n{(w_{P,n}h_{k,n})(w_{P,n}h_{k,n})^*}                                                                                                                                                                                                                                                                          \\
-				 & =\frac{1}{2}\sum_n{\left[w_{P,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]\left[w_{P,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]^*}                                                                                                            \\
+				 & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{(w_{P,j_1,n}h_{k,n})(w_{P,j_2,n}h_{k,n})^*}                                                                                                                                                                                                                                                                                      \\
+				 & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{\left[w_{P,j_1,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]\left[w_{P,j_2,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]^*}                                                                                                                        \\
 				\mathcal{A}\left\{y_{P,k}^4(t)\right\}
-				 & =\frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(w_{P,{n_1}}h_{k,{n_1}})(w_{P,{n_2}}h_{k,{n_2}})(w_{P,{n_3}}h_{k,{n_3}})^*(w_{P,{n_4}}h_{k,{n_4}})^*}                                                                                                                      \\
-				 & =\frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}\left[w_{P,{n_1}}(h_{D,k,n_1}+\boldsymbol{h}_{R,k,n_1}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_1})\right]\left[w_{P,{n_2}}(h_{D,k,n_2}+\boldsymbol{h}_{R,k,n_2}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_2})\right]\nonumber \\
-				 & \quad\left[w_{P,{n_3}}(h_{D,k,n_3}+\boldsymbol{h}_{R,k,n_3}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_3})\right]^*\left[w_{P,{n_4}}(h_{D,k,n_4}+\boldsymbol{h}_{R,k,n_4}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_4})\right]^*\label{eq:A{y_{P,k}**4'}}
+				 & =\frac{3}{8}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(w_{P,{j_1},{n_1}}h_{k,{n_1}})(w_{P,{j_2},{n_2}}h_{k,{n_2}})(w_{P,{j_3},{n_3}}h_{k,{n_3}})^*(w_{P,{j_4},{n_4}}h_{k,{n_4}})^*}                                                                                                          \\
+				 & =\frac{3}{8}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}\left[w_{P,{j_1},{n_1}}(h_{D,k,n_1}+\boldsymbol{h}_{R,k,n_1}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_1})\right]\left[w_{P,{j_2},{n_2}}(h_{D,k,n_2}+\boldsymbol{h}_{R,k,n_2}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_2})\right]\nonumber \\
+				 & \quad\left[w_{P,{j_3},{n_3}}(h_{D,k,n_3}+\boldsymbol{h}_{R,k,n_3}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_3})\right]^*\left[w_{P,{j_4},{n_4}}(h_{D,k,n_4}+\boldsymbol{h}_{R,k,n_4}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_4})\right]^*\label{eq:A{y_{P,k}**4'}}
 			\end{align}
 		\end{figure*}
-		Note that $\mathcal{E}\left\{\lvert\tilde{x}_n\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_n\rvert^4\right\}=2$. The latter provides a modulation gain to the nonlinear terms in the output DC current.
+		Since $\mathcal{E}\left\{\lvert\tilde{x}_{k,n}\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_{k,n}\rvert^4\right\}=2$, modulation provides a power gain to the nonlinear terms in the output DC current.
 	\end{subsection}
 \end{section}
 
 \begin{section}{Problem Formulation}
-	In this section, we first define the weighted sum rate-energy (WSR-E) region then formulate specific waveform and IRS optimization problems.
+	In this section, we first define the weighted sum rate-energy (WSR-E) region then formulate waveform and IRS optimization problems.
 	\begin{subsection}{Weighted Sum Rate-Energy Region}
 		We define the achievable WSR-E region as
 		\begin{equation}
