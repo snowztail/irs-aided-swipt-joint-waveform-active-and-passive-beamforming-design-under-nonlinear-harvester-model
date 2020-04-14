@@ -91,7 +91,7 @@
 	\begin{subsection}{Information Decoder}
 		One major benefit of using proposed waveform is that the deterministic power term $y_{P,k}(t)$ bears no information and creates no interference to the modulated information term $y_{I,k}(t)$. Hence, each user treats the information signals from other users as interference such that the SINR at subband $n$ of user $k$ is
 		\begin{equation}\label{eq:gamma_{k,n}}
-			\gamma_{k,n}=\frac{(1-\rho)(w_{I,k,n}h_{k,n})(w_{I,k,n}h_{k,n})^*}{\sum_{j=1,j{\ne}k}^K{(1-\rho)(w_{I,j,n}h_{I,k,n})(w_{I,j,n}h_{I,k,n})^*+\sigma_n^2}}
+			\gamma_{k,n}=\frac{(1-\rho)(w_{I,k,n}h_{k,n})(w_{I,k,n}h_{k,n})^*}{\sum_{j=1,j{\ne}k}^K{(1-\rho)(w_{I,j,n}h_{k,n})(w_{I,j,n}h_{k,n})^*+\sigma_n^2}}
 		\end{equation}
 		where $\sigma_n^2$ is the sum variance of the Gaussian noise at the RF-band and those introduced during the RF-to-BB conversion on subband $n$. Therefore, the achievable rate of user $k$ is expressed as
 		\begin{equation}\label{eq:R_k}
