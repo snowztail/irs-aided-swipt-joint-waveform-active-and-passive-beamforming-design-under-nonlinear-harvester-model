@@ -164,9 +164,13 @@
 	\begin{subsection}{Weighted Sum Rate-Energy Region}
 		We define the achievable WSR-E region as
 		\begin{equation}
-			C_{R-I}(P) \triangleq \left\{(R,I):R\le\sum_{k=1}^K{u_{I,k}R_k},I\le\sum_{k=1}^K{u_{P,k}i_k,?}\right\}
+			\begin{split}
+				C_{R-I}(P)
+				&\triangleq \biggl\{(R,I):R\le\sum_{k=1}^K{u_{I,k}R_k},I\le\sum_{k=1}^K u_{P,k}z_k,\\
+				&\quad \frac{1}{2}\left(\Vert{\boldsymbol{W}_I}\Vert_F^2+\Vert{\boldsymbol{W}_P}\Vert_F^2\right){\le}P\biggr\}
+			\end{split}
 		\end{equation}
-		where $u_{I,k},u_{P,k}$ denote the information and power priority of user $k$.
+		where $u_{I,k},u_{P,k}$ denote the information and power weight of user $k$.
 	\end{subsection}
 \end{section}
 
