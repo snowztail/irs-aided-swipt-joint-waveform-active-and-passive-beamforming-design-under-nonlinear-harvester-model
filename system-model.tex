@@ -14,7 +14,8 @@
 			\begin{equation}\label{eq:x_{I,n}(t)}
 				x_{I,n}(t)=\sum_{k=1}^K{w_{I,k,n}\tilde{x}_{I,k,n}(t)}
 			\end{equation}
-			where $w_{I,k,n}$ is the corresponding information weight. Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}]=[\boldsymbol{w}_{I,1}^T,\dots,\boldsymbol{w}_{I,K}^T]^T \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{w}_{I,k}=[w_{I,k,1},\dots,w_{I,k,N}] \in \mathbb{C}^{1 \times N}$. On top of this, the RF transmit information waveform at time $t$ writes as
+			where $w_{I,k,n}$ is the corresponding information weight. Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}]^T \in \mathbb{C}^{N \times K}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$. On top of this, the overall frequency weight is denoted as $w_{I,n}=\sum_k{w_{I,k,n}}$ and collected into $\boldsymbol{w}_I=[w_{I,1},\dots,w_{I,N}]^T \in \mathbb{C}^{N \times 1}$. The RF transmit information waveform at time $t$ writes as
+			% Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}]=[\boldsymbol{w}_{I,1}^T,\dots,\boldsymbol{w}_{I,K}^T]^T \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{w}_{I,k}=[w_{I,k,1},\dots,w_{I,k,N}] \in \mathbb{C}^{1 \times N}$.
 			% Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}] \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$.
 			\begin{equation}\label{eq:x_I(t)}
 				\begin{split}
@@ -32,7 +33,8 @@
 			\begin{equation}\label{eq:x_{P,n}}
 				x_{P,n}=\sum_{k=1}^K{w_{P,k,n}}
 			\end{equation}
-			where $w_{P,k,n}$ is the corresponding power weight. Let $\boldsymbol{W}_P=[\boldsymbol{w}_{P,1},\dots,\boldsymbol{w}_{P,N}]=[\boldsymbol{w}_{P,1}^T,\dots,\boldsymbol{w}_{P,K}^T]^T \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{P,n}=[w_{P,1,n},\dots,w_{P,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{w}_{P,k}=[w_{P,k,1},\dots,w_{P,k,N}] \in \mathbb{C}^{1 \times N}$. Then, the transmit power signal at time $t$ is given by
+			where $w_{P,k,n}$ is the corresponding power weight. Let $\boldsymbol{W}_P=[\boldsymbol{w}_{P,1},\dots,\boldsymbol{w}_{P,N}]^T \in \mathbb{C}^{N \times K}$ with $\boldsymbol{w}_{P,n}=[w_{P,1,n},\dots,w_{P,K,n}]^T \in \mathbb{C}^{K \times 1}$. Similarly, the overall frequency weight is denoted as $w_{P,n}=\sum_k{w_{P,k,n}}$ and collected into $\boldsymbol{w}_P=[w_{P,1},\dots,w_{P,N}]^T \in \mathbb{C}^{N \times 1}$. The transmit power signal at time $t$ is given by
+			% Let $\boldsymbol{W}_P=[\boldsymbol{w}_{P,1},\dots,\boldsymbol{w}_{P,N}]=[\boldsymbol{w}_{P,1}^T,\dots,\boldsymbol{w}_{P,K}^T]^T \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{P,n}=[w_{P,1,n},\dots,w_{P,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{w}_{P,k}=[w_{P,k,1},\dots,w_{P,k,N}] \in \mathbb{C}^{1 \times N}$.
 			\begin{equation}\label{eq:x_P(t)}
 				\begin{split}
 					x_P(t)
@@ -76,14 +78,14 @@
 	\begin{subsection}{Received Signal}
 		The RF signal received by user $k$ captures the contribution of information and power waveforms through both direct and reflective links as
 		\begin{equation}\label{eq:y_k(t)}
-			y_k(t)=\sum_{j=1}^K\sum_{n=1}^N(w_{I,j,n}\tilde{x}_{I,j,n}+w_{P,j,n})h_{k,n}{e^{j2{\pi}{f_n}{t}}}
+			y_k(t)=\sum_{j=1}^K\sum_{n=1}^N{h_{k,n}}(w_{I,j,n}\tilde{x}_{I,j,n}+w_{P,j,n}){e^{j2{\pi}{f_n}{t}}}
 		\end{equation}
 		with the information and power components of
 		\begin{equation}\label{eq:y_{I,k}(t)}
-			y_{I,k}(t)=\sum_{j=1}^K\sum_{n=1}^N{w_{I,j,n}\tilde{x}_{I,j,n}}h_{k,n}{e^{j2{\pi}{f_n}{t}}}
+			y_{I,k}(t)=\sum_{j=1}^K\sum_{n=1}^N{h_{k,n}w_{I,j,n}\tilde{x}_{I,j,n}}{e^{j2{\pi}{f_n}{t}}}
 		\end{equation}
 		\begin{equation}\label{eq:y_{P,k}(t)}
-			y_{P,k}(t)=\sum_{j=1}^K\sum_{n=1}^N{w_{P,j,n}}h_{k,n}{e^{j2{\pi}{f_n}{t}}}
+			y_{P,k}(t)=\sum_{j=1}^K\sum_{n=1}^N{h_{k,n}w_{P,j,n}}{e^{j2{\pi}{f_n}{t}}}
 		\end{equation}
 
 	\end{subsection}
@@ -91,7 +93,7 @@
 	\begin{subsection}{Information Decoder}
 		One major benefit of using proposed waveform is that the deterministic power term $y_{P,k}(t)$ bears no information and creates no interference to the modulated information term $y_{I,k}(t)$. Hence, each user treats the information signals from other users as interference such that the SINR at subband $n$ of user $k$ is
 		\begin{equation}\label{eq:gamma_{k,n}}
-			\gamma_{k,n}=\frac{(1-\rho)(w_{I,k,n}h_{k,n})(w_{I,k,n}h_{k,n})^*}{\sum_{j=1,j{\ne}k}^K{(1-\rho)(w_{I,j,n}h_{k,n})(w_{I,j,n}h_{k,n})^*+\sigma_n^2}}
+			\gamma_{k,n}=\frac{(1-\rho)(h_{k,n}w_{I,k,n})(h_{k,n}w_{I,k,n})^*}{\sum_{j=1,j{\ne}k}^K{(1-\rho)(h_{k,n}w_{I,j,n})(h_{k,n}w_{I,j,n})^*+\sigma_n^2}}
 		\end{equation}
 		where $\sigma_n^2$ is the sum variance of the Gaussian noise at the RF-band and those introduced during the RF-to-BB conversion on subband $n$. Therefore, the achievable rate of user $k$ is expressed as
 		\begin{equation}\label{eq:R_k}
@@ -114,23 +116,23 @@
 			\hrule
 			\begin{align}
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}
-				 & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{(w_{I,j_1,n}h_{k,n})(w_{I,j_2,n}h_{k,n})^*}\label{eq:E{A{y_{I,k}**2}}}                                                                                                                                                                        \\
+				 & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{(h_{k,n}w_{I,j_1,n})(h_{k,n}w_{I,j_2,n})^*}\label{eq:E{A{y_{I,k}**2}}}                                                                                                                                                                        \\
 				%  & =\frac{1}{2}\sum_n{{\boldsymbol{w}_{I,n}^H}{\boldsymbol{h}_{k,n}^*}{\boldsymbol{h}_{k,n}^T}{\boldsymbol{w}_{I,n}}}                                                                                                                                                                                                      \\
 				 & =\frac{1}{2}\sum_n{h_{k,n}h_{k,n}^*{\boldsymbol{w}_{I,n}^H}{\boldsymbol{J}_{K}}{\boldsymbol{w}_{I,n}}}                                                                                                                                                                         \\
 				%  & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{\left[w_{I,j_1,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]\left[w_{I,j_2,n}(h_{D,n,k}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]^*}                                                                                                                        \\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}
-				 & =\frac{3}{4}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(w_{I,{j_1},{n_1}}h_{k,{n_1}})(w_{I,{j_2},{n_2}}h_{k,{n_2}})(w_{I,{j_3},{n_3}}h_{k,{n_3}})^*(w_{I,{j_4},{n_4}}h_{k,{n_4}})^*}                       \\
+				 & =\frac{3}{4}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{I,{j_1},{n_1}})(h_{k,{n_2}}w_{I,{j_2},{n_2}})(h_{k,{n_3}}w_{I,{j_3},{n_3}})^*(h_{k,{n_4}}w_{I,{j_4},{n_4}})^*}                       \\
 				%  & = \frac{3}{4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{({\boldsymbol{w}_{I,n_3}^H}{\boldsymbol{h}_{k,n_3}^*}{\boldsymbol{h}_{k,n_1}^T}{\boldsymbol{w}_{I,n_1}})({\boldsymbol{w}_{I,n_4}^H}{\boldsymbol{h}_{k,n_4}^*}{\boldsymbol{h}_{k,n_2}^T}{\boldsymbol{w}_{I,n_2}})} \\
 				 & =\frac{3}{4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{h_{k,n_3}^*h_{k,n_1}h_{k,n_4}^*h_{k,n_2}(\boldsymbol{w}_{I,n_3}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_1})(\boldsymbol{w}_{I,n_4}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_2})} \\
 				%  & =\frac{3}{4}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}\left[w_{I,{j_1},{n_1}}(h_{D,k,n_1}+\boldsymbol{h}_{R,k,n_1}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_1})\right]\left[w_{I,{j_2},{n_2}}(h_{D,k,n_2}+\boldsymbol{h}_{R,k,n_2}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_2})\right]\nonumber \\
 				%  & \quad\left[w_{I,{j_3},{n_3}}(h_{D,k,n_3}+\boldsymbol{h}_{R,k,n_3}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_3})\right]^*\left[w_{I,{j_4},{n_4}}(h_{D,k,n_4}+\boldsymbol{h}_{R,k,n_4}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_4})\right]^*                                                                                                                           \\
 				\mathcal{A}\left\{y_{P,k}^2(t)\right\}
-				 & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{(w_{P,j_1,n}h_{k,n})(w_{P,j_2,n}h_{k,n})^*}                                                                                                                                                                                                   \\
+				 & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{(h_{k,n}w_{P,j_1,n})(h_{k,n}w_{P,j_2,n})^*}                                                                                                                                                                                                   \\
 				%  & = \frac{1}{2}\sum_n{{\boldsymbol{w}_{P,n}^H}{\boldsymbol{h}_{k,n}^*}{\boldsymbol{h}_{k,n}^T}{\boldsymbol{w}_{P,n}}}                                                                                                                                                                                                     \\
 				 & =\frac{1}{2}\sum_n{h_{k,n}h_{k,n}^*{\boldsymbol{w}_{P,n}^H}{\boldsymbol{J}_{K}}{\boldsymbol{w}_{P,n}}}                                                                                                                                                                         \\
 				%  & =\frac{1}{2}\sum_{j_1,j_2}\sum_n{\left[w_{P,j_1,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]\left[w_{P,j_2,n}(h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})\right]^*}                                                                                                                        \\
 				\mathcal{A}\left\{y_{P,k}^4(t)\right\}
-				 & =\frac{3}{8}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(w_{P,{j_1},{n_1}}h_{k,{n_1}})(w_{P,{j_2},{n_2}}h_{k,{n_2}})(w_{P,{j_3},{n_3}}h_{k,{n_3}})^*(w_{P,{j_4},{n_4}}h_{k,{n_4}})^*}                       \\
+				 & =\frac{3}{8}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{P,{j_1},{n_1}})(h_{k,{n_2}}w_{P,{j_2},{n_2}})(h_{k,{n_3}}w_{P,{j_3},{n_3}})^*(h_{k,{n_4}}w_{P,{j_4},{n_4}})^*}                       \\
 				%  & =\frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{({\boldsymbol{w}_{P,n_3}^H}{\boldsymbol{h}_{k,n_3}^*}{\boldsymbol{h}_{k,n_1}^T}{\boldsymbol{w}_{P,n_1}})({\boldsymbol{w}_{P,n_4}^H}{\boldsymbol{h}_{k,n_4}^*}{\boldsymbol{h}_{k,n_2}^T}{\boldsymbol{w}_{P,n_2}})}  \\
 				 & =\frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{h_{k,n_3}^*h_{k,n_1}h_{k,n_4}^*h_{k,n_2}(\boldsymbol{w}_{P,n_3}^H\boldsymbol{J}_K\boldsymbol{w}_{P,n_1})(\boldsymbol{w}_{P,n_4}^H\boldsymbol{J}_K\boldsymbol{w}_{P,n_2})}
 				\label{eq:A{y_{P,k}**4'}}
@@ -167,7 +169,8 @@
 			\begin{split}
 				C_{R-I}(P)
 				&\triangleq \biggl\{(R,I):R\le\sum_{k=1}^K{u_{I,k}R_k},I\le\sum_{k=1}^K u_{P,k}z_k,\\
-				&\quad \frac{1}{2}\left(\Vert{\boldsymbol{W}_I}\Vert_F^2+\Vert{\boldsymbol{W}_P}\Vert_F^2\right){\le}P\biggr\}
+				&\quad \frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P}){\le}P\biggr\}
+				% &\quad \frac{1}{2}\left(\Vert{\boldsymbol{W}_I}\Vert_F^2+\Vert{\boldsymbol{W}_P}\Vert_F^2\right){\le}P\biggr\}
 			\end{split}
 		\end{equation}
 		where $u_{I,k},u_{P,k}$ denote the information and power weight of user $k$.
