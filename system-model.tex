@@ -60,7 +60,7 @@
 	\end{subsection}
 
 	\begin{subsection}{Composite Channel Model}
-		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I' \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R \in \mathbb{C}^{K \times NL}$ respectively. At subband $n$, the frequency response of direct and reflective links write as $\boldsymbol{h}_{D,n}=[h_{D,1,n},\dots,h_{D,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{H}_{R,n}=[\boldsymbol{h}_{R,1,n}^T,\dots,\boldsymbol{h}_{R,K,n}^T]^T \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Similarly, the $n$-th incident channel is given by $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^T \in \mathbb{C}^{L \times 1}$. To decouple the impact of IRS operation on the incident link, we construct a block-diagonal matrix $\boldsymbol{H}_I \triangleq \text{diag}\left\{\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}\right\} \in \mathbb{C}^{NL \times N}$. Element $l$ of the IRS receives a superposed waveform through the multipath channel, then redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. On top of this, the IRS matrix per subband is constructed by collecting the reflection coefficients onto its diagonal entries as $\boldsymbol{\Theta}_0 = \text{diag}\left\{\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}\right\} \in \mathbb{C}^{L \times L}$. Finally, the IRS matrix is formed by $\boldsymbol{\Theta} = \text{diag}\{\underbrace{\boldsymbol{\Theta}_0,\dots,\boldsymbol{\Theta}_0}_{N\text{ times}}\} \in \mathbb{C}^{NL \times NL}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and IRS-aided link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
+		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I' \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R \in \mathbb{C}^{K \times NL}$ respectively. At subband $n$, the frequency response of direct and reflective links write as $\boldsymbol{h}_{D,n}=[h_{D,1,n},\dots,h_{D,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{H}_{R,n}=[\boldsymbol{h}_{R,1,n}^T,\dots,\boldsymbol{h}_{R,K,n}^T]^T \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Similarly, the $n$-th incident channel is given by $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^T \in \mathbb{C}^{L \times 1}$. To decouple the impact of IRS operation on the incident link, we construct a block-diagonal matrix $\boldsymbol{H}_I \triangleq \mathrm{diag}\left\{\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}\right\} \in \mathbb{C}^{NL \times N}$. Element $l$ of the IRS receives a superposed waveform through the multipath channel, then redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. On top of this, the IRS matrix per subband is constructed by collecting the reflection coefficients onto its diagonal entries as $\boldsymbol{\Theta}_0 = \mathrm{diag}\left\{\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}\right\} \in \mathbb{C}^{L \times L}$. Finally, the IRS matrix is formed by $\boldsymbol{\Theta} = \mathrm{diag}\{\underbrace{\boldsymbol{\Theta}_0,\dots,\boldsymbol{\Theta}_0}_{N\text{ times}}\} \in \mathbb{C}^{NL \times NL}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and IRS-aided link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
 		\begin{equation}\label{eq:H}
 			\boldsymbol{H} = \boldsymbol{H}_D+\boldsymbol{H}_R\boldsymbol{\Theta}\boldsymbol{H}_I
 		\end{equation}
@@ -97,9 +97,9 @@
 		\end{equation}
 		where $\sigma_n^2$ is the sum variance of the Gaussian noise at the RF-band and those introduced during the RF-to-BB conversion on subband $n$. Therefore, the achievable rate of user $k$ is expressed as
 		\begin{equation}\label{eq:R_k}
-			R_k(\boldsymbol{W}_I,\boldsymbol{\Theta},\rho)=\sum_{n=1}^N{\log_2(1+\gamma_{k,n})}
+			R_k(\boldsymbol{W}_I,\boldsymbol{\Theta}_0,\rho)=\sum_{n=1}^N{\log_2(1+\gamma_{k,n})}
 		\end{equation}
-		A significant conclusion in \cite{Clerckx2018b} indicates that the rate \ref{eq:R_k} is always achievable with or without waveform cancellation, through either subtracting the deterministic power component or constructing a translated codebook.
+		A significant conclusion in \cite{Clerckx2018b} indicates that the rate \ref{eq:R_k} is always achievable with or without waveform cancellation, through either subtracting the determaxistic power component or constructing a translated codebook.
 	\end{subsection}
 
 	\begin{subsection}{Energy Harvester}
@@ -109,7 +109,7 @@
 		\end{equation}
 		where $R_{\text{ant}}$ is the impedance of the receive antenna, $k_0'=i_s(e^{-i_kR_{\text{ant}}/nv_t}-1)$, $k_i'=i_se^{-i_kR_{\text{ant}}/nv_t}/i!(nv_t)^i$ for $i=1,\dots,\infty$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. Once the composite channel response $h_{k,n}$ is fixed, the corresponding information and power weight $w_{I,k,n}$, $w_{P,k,n}$ are thus optimized such that the randomness comes from the input distribution $\tilde{x}_{k,n}$. Therefore, we first extract the DC component based on $h_{k,n}$, $w_{I,k,n}$, $w_{P,k,n}$ by $\mathcal{A}\left\{.\right\}$ and then take the expectation over $\tilde{x}_{k,n}$ by $\mathcal{E}\left\{.\right\}$. With the assumption of evenly spaced frequencies, $\mathcal{E}\left\{y^i(t)\right\}=0$ for odd $i$ and the related terms has zero contribution to DC components. \cite{Clerckx2016a} also demonstrated that to maximize $i_k$, it suffices to maximize the monotonic target function truncated to the $n_0$ order
 		\begin{equation}\label{eq:z_k}
-			z_k(\boldsymbol{W}_I,\boldsymbol{W}_P,\boldsymbol{\Theta},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y_k(t)^i\right\}\right\}}
+			z_k(\boldsymbol{W}_I,\boldsymbol{W}_P,\boldsymbol{\Theta}_0,\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y_k(t)^i\right\}\right\}}
 		\end{equation}
 		where $k_i=i_s/i!(nv_t)^i$. We take $n_0=4$ to investigate the fundamental impact of diode nonlinearity on power transfer. Note that $\mathcal{E}\{\mathcal{A}\{y_{I,k}(t)y_{P,k}(t)\}\}=\mathcal{E}\{\mathcal{A}\{y_{I,k}^3(t)y_{P,k}(t)\}\}=\mathcal{E}\{\mathcal{A}\{y_{I,k}(t)y_{P,k}^3(t)\}\}=0$, $\mathcal{E}\{\mathcal{A}\{y_{I,k}^2(t)y_{P,k}^2(t)\}\}=\mathcal{A}\{\mathcal{E}\{y_{I,k}^2(t)\}\}\mathcal{A}\{y_{P,k}^2(t)\}$, and the remaining terms are expressed by \ref{eq:E{A{y_{I,k}**2}}} -- \ref{eq:A{y_{P,k}**4'}}. It is noteworthy that modulation provides a power gain to the nonlinear terms in the output DC current as $\mathcal{E}\left\{\lvert\tilde{x}_{k,n}\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_{k,n}\rvert^4\right\}=2$.
 		\begin{figure*}[b]
@@ -153,7 +153,7 @@
 					% &\quad+\frac{3}{2}{k_4'}{\rho^2}{R_{\text{ant}}^2}\sum_n({\boldsymbol{w}_{I,n}^H}{\boldsymbol{h}_{k,n}^*}{\boldsymbol{h}_{k,n}^T}{\boldsymbol{w}_{I,n}})({\boldsymbol{w}_{P,n}^H}{\boldsymbol{h}_{k,n}^*}{\boldsymbol{h}_{k,n}^T}{\boldsymbol{w}_{P,n}})\\
 					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}\sum_n{h_{k,n}h_{k,n}^*(\boldsymbol{w}_{I,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{I,n}+\boldsymbol{w}_{P,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{P,n})}\\
 					&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{h_{k,n_3}^*h_{k,n_1}h_{k,n_4}^*h_{k,n_2}\left(2(\boldsymbol{w}_{I,n_3}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_1})(\boldsymbol{w}_{I,n_4}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_2})+(\boldsymbol{w}_{P,n_3}^H\boldsymbol{J}_K\boldsymbol{w}_{P,n_1})(\boldsymbol{w}_{P,n_4}^H\boldsymbol{J}_K\boldsymbol{w}_{P,n_2})\right)}\\
-					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{h_{k,n}h_{k,n}^*(\boldsymbol{w}_{I,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{I,n})(\boldsymbol{w}_{P,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{P,n})}
+					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{h_{k,n}^2h_{k,n}^{*2}(\boldsymbol{w}_{I,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{I,n})(\boldsymbol{w}_{P,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{P,n})}
 				\end{split}
 			\end{equation}
 		\end{figure*}
@@ -176,12 +176,46 @@
 		where $u_{I,k},u_{P,k}$ denote the information and power weight of user $k$.
 	\end{subsection}
 
-	\begin{subsection}{Single-user optimization}
-		In this section, we first characterize the rate-energy region in the single-user setup. Define $w_{I,n}=s_{I,n}e^{j{\phi}_n}$ and $w_{P,n}=s_{P,n}e^{j{\phi}_n}$, it can be observed from \ref{eq:R_k} and \ref{eq:z_k_standard} that the optimal information and power phase are matched to frequency response as
-		\begin{equation}\label{eq:phi_n}
-			\phi_{I,n}^\star=\phi_{P,n}^\star=-\angle{h_n}
+	\begin{subsection}{Single-User Optimization}
+		In this section, we first characterize the rate-energy region in the single-user setup. Let $h_n={A_n}{e^{j{\bar{\psi}_n}}}$, $w_{I,n}=s_{I,n}e^{j{\phi}_n}$, and $w_{P,n}=s_{P,n}e^{j{\phi}_n}$. Consider the rate maximization problem subject to transmit power and output DC current constraints
+		\begin{maxi}
+			{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta}_0,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{(h_{D,n}+\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})w_{I,n}}\rvert^2}{\sigma_n^2}\right)}}{\label{op:1}}{}
+			\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
+			\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta}_0,\rho)\ge{\bar{z}}}
+			\addConstraint{0\le{\theta_l}\le{2{\pi}},\quad l=1,\dots,L}
+		\end{maxi}
+		Although the problem is non-convex, the target function can be reformed using the triangle inequality
+		\begin{equation}
+			\lvert{(h_{D,n}+\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}w_{I,n}}\rvert
 		\end{equation}
-		\ref{eq:phi_n} maximizes rate and energy simultaneously and depends on the IRS design.
+		where the equality holds if and only if the direct and IRS-aided links align with each other. In such case, we have $A_n=A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n}$ and and $\bar{\psi}_n=\angle{h_{D,n}}=\angle{\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}}$. Therefore, the optimal phase shift at the $l$-th reflect element is obtained in closed form
+
+		\begin{equation}
+			\theta_l^\star=\angle{h_{D,n}}-\angle{h_{R,n,l}}-\angle{h_{I,n,l}}
+		\end{equation}
+		Besides, it can be concluded from \ref{eq:R_k} and \ref{eq:z_k_standard} that the optimal information and power phases coincide at subband $n$, being matched to composite frequency response as
+		\begin{equation}\label{eq:phi_n}
+			\phi_{I,n}^\star=\phi_{P,n}^\star=-\bar{\psi}_n
+		\end{equation}
+		Therefore, \ref{op:1} is transformed to
+		\begin{maxi}
+			% {\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)(A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n})^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
+			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)A_n^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
+			\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
+			\addConstraint{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)\ge{\bar{z}}}
+		\end{maxi}
+		with $z$ reduced to \ref{eq:z_gp}.
+
+		\begin{figure*}[b]
+			\hrule
+			\begin{equation}\label{eq:z_gp}
+				\begin{split}
+					z
+					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}\sum_n{A_n^2(s_{I,n}^2+s_{P,n}^2)}+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{A_{n_1}A_{n_2}A_{n_3}A_{n_4}(2s_{I,n_1}s_{I,n_2}s_{I,n_3}s_{I,n_4}+s_{P,n_1}s_{P,n_2}s_{P,n_3}s_{P,n_4})}\\
+					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{{A_n^4}{s_{I,n}^2}{s_{P,n}^2}}
+				\end{split}
+			\end{equation}
+		\end{figure*}
 	\end{subsection}
 \end{section}
 
