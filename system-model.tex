@@ -184,18 +184,31 @@
 			\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta}_0,\rho)\ge{\bar{z}}}
 			\addConstraint{0\le{\theta_l}\le{2{\pi}},\quad l=1,\dots,L}
 		\end{maxi}
-		Although the problem is non-convex, the target function can be reformed using the triangle inequality
-		\begin{equation}
-			\lvert{(h_{D,n}+\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}w_{I,n}}\rvert
-		\end{equation}
-		where the equality holds if and only if the direct and IRS-aided links align with each other. In such case, we have $A_n=A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n}$ and and $\bar{\psi}_n=\angle{h_{D,n}}=\angle{\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}}$. Therefore, the optimal phase shift at the $l$-th reflect element is obtained in closed form
-		\begin{equation}
-			\theta_l^\star=\angle{h_{D,n}}-\angle{h_{R,n,l}}-\angle{h_{I,n,l}}
-		\end{equation}
-		Besides, it can be concluded from \ref{eq:R_k} and \ref{eq:z_k_standard} that the optimal information and power phases coincide at subband $n$, being matched to composite frequency response as
-		\begin{equation}\label{eq:phi_n}
-			\phi_{I,n}^\star=\phi_{P,n}^\star=-\bar{\psi}_n
-		\end{equation}
+		Since the objective function is non-convex with $\Theta_0$ and $\boldsymbol{w}_I$ coupled, \ref{op:1} is a non-convex problem. To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that updates the information weight at the transmitter and the phase shifts at the IRS iteratively until convergence. It leads to a local optimum and is sensitive to the initialization of $\Theta_0$, $\boldsymbol{w}_I$ and $\boldsymbol{w}_P$.
+		% Moreover, a feasible phase design strategy that maximizes the effective composite channel is used for phase shift initialization.
+
+
+
+
+
+
+		% Define $\boldsymbol{v}=[e^{j{\theta_1}},\dots,e^{j{\theta_L}}]^H \in \mathbb{C}^{L \times 1}$ and $\Phi=\mathrm{diag}\left\{\boldsymbol{h}_{R,n}\right\}\boldsymbol{h}_{I,n} \in \mathbb{C}^{L \times 1}$. On top of this, \ref{eq:h_{k,n}} can be expressed as
+		% \begin{equation}
+		% 	\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{v}^H{\Phi}
+		% \end{equation}
+
+		% Although the problem is non-convex, the target function can be reformulated using the triangle inequality
+		% \begin{equation}
+		% 	\lvert{(h_{D,n}+\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}w_{I,n}}\rvert
+		% \end{equation}
+		% where the equality holds if and only if the direct and IRS-aided links align with each other. In such case, we have $A_n=A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n}$ and and $\bar{\psi}_n=\angle{h_{D,n}}=\angle{\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}}$. Therefore, the optimal phase shift at the $l$-th reflect element is obtained in closed form
+		% \begin{equation}
+		% 	\theta_l^\star=\angle{h_{D,n}}-\angle{h_{R,n,l}}-\angle{h_{I,n,l}}
+		% \end{equation}
+		% Besides, it can be concluded from \ref{eq:R_k} and \ref{eq:z_k_standard} that the optimal information and power phases coincide at subband $n$, being matched to composite frequency response as
+		% \begin{equation}\label{eq:phi_n}
+		% 	\phi_{I,n}^\star=\phi_{P,n}^\star=-\bar{\psi}_n
+		% \end{equation}
 		Therefore, \ref{op:1} is transformed to
 		\begin{maxi}
 			% {\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)(A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n})^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
