@@ -187,24 +187,42 @@
 			\addConstraint{\lvert{v_l}\rvert=1,\quad l=1,\dots,L}
 			% \addConstraint{0\le{\theta_l}\le{2{\pi}},\quad l=1,\dots,L}
 		\end{maxi}
-		\ref{op:1} is nontrivial due to the non-convex objective function, unit-modulus constraint, and coupled variables. To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that updates the phase shifts at the IRS and the information weight at the transmitter iteratively until convergence.
+		\ref{op:1} is intricate due to the non-convex objective function, unit-modulus constraints, and coupled variables. To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that updates the phase shifts at the IRS and the information weight at the transmitter iteratively until convergence.
 
-		The phase optimization problem can be formed as follows. For a fixed information weight $\boldsymbol{w}_I$ and power-splitting ratio $\rho$, problem \ref{op:1} reduces to
+		The phase optimization problem is formed as follows. For a fixed information weight $\boldsymbol{w}_I$ and power-splitting ratio $\rho$, problem \ref{op:1} reduces to
 		\begin{maxi}
-			{\boldsymbol{\boldsymbol{v}}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(h_{D,n}+\boldsymbol{v}^H{\boldsymbol{\Phi}_n})\rvert^2\lvert{w}_{I,n}\rvert^2}{\sigma_n^2}\right)}}{}{}
+			{\boldsymbol{v}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\lvert(h_{D,n}+\boldsymbol{v}^H{\boldsymbol{\Phi}_n})\rvert^2}{\sigma_n^2}\right)}}{\label{op:temp}}{}
+			% \addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
+			\addConstraint{\lvert{v_l}\rvert=1,\quad l=1,\dots,L}
 		\end{maxi}
-
+		Note that $\lvert(h_{D,n}+\boldsymbol{v}^H{\boldsymbol{\Phi}_n})\rvert^2=\lvert{h}_{D,n}\rvert^2+h_{D,n}\boldsymbol{\Phi}_n^H\boldsymbol{v}+\boldsymbol{v}^H\boldsymbol{\Phi}_n{h_{D,n}^*}+\boldsymbol{v}^H\boldsymbol{\Phi}\boldsymbol{\Phi}^H\boldsymbol{v}$. Introduce an auxiliary variable $t$ with unit modulus and rewrite \ref{op:temp} as
+		\begin{maxi}
+			{\bar{\boldsymbol{v}}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2(\lvert{h_{D,n}}\rvert^2+\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}})}{\sigma_n^2}\right)}}{\label{op:temp1}}{}
+			\addConstraint{\lvert{\bar{v}_l}\rvert=1,\quad l=1,\dots,L+1}
+		\end{maxi}
+		where
+		\begin{equation}
+			\boldsymbol{R}=
+			\begin{bmatrix}
+				\boldsymbol{\Phi}_n\boldsymbol{\Phi}_n^H & \boldsymbol{\Phi}_n{h}_{D,n}^* \\
+				h_{D,n}\boldsymbol{\Phi}_n               & 0
+			\end{bmatrix},
+			\quad \bar{\boldsymbol{v}}=
+			\begin{bmatrix}
+				\boldsymbol{v} \\
+				t
+			\end{bmatrix}
+		\end{equation}
+		However, problem \ref{op:temp1} is still non-convex. We further define a positive semidefinite matrix $\boldsymbol{V}=\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H$ with $\mathrm{rank}(\boldsymbol{V})=1$ such that $\bar{\boldsymbol{v}}\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})$.
+		A semidefinite programming (SDP) problem is then formulated by applying SDR to drop the rank-one constraint as
+		\begin{maxi}
+			{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2(\lvert{h_{D,n}}\rvert^2+\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V}))}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
+			\addConstraint{\boldsymbol{V}_{l,l}=1,l=1,\dots,L+1}
+			\addConstraint{\boldsymbol{V}\succeq{0}}
+		\end{maxi}
+		which can be solved by softwares as CVX \cite{Grant2013}.
 		% It leads to a local optimum and is sensitive to the initialization of $\Theta_0$, $\boldsymbol{w}_I$ and $\boldsymbol{w}_P$.
 		% Moreover, a feasible phase design strategy that maximizes the effective composite channel is used for phase shift initialization.
-
-
-
-
-		% Define $\boldsymbol{v}=[e^{j{\theta_1}},\dots,e^{j{\theta_L}}]^H \in \mathbb{C}^{L \times 1}$ and $\Phi=\mathrm{diag}\left\{\boldsymbol{h}_{R,n}\right\}\boldsymbol{h}_{I,n} \in \mathbb{C}^{L \times 1}$. On top of this, \ref{eq:h_{k,n}} can be expressed as
-		% \begin{equation}
-		% 	\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{v}^H{\Phi}
-		% \end{equation}
-
 		% Although the problem is non-convex, the target function can be reformulated using the triangle inequality
 		% \begin{equation}
 		% 	\lvert{(h_{D,n}+\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}w_{I,n}}\rvert
@@ -217,7 +235,8 @@
 		% \begin{equation}\label{eq:phi_n}
 		% 	\phi_{I,n}^\star=\phi_{P,n}^\star=-\bar{\psi}_n
 		% \end{equation}
-		Therefore, \ref{op:1} is transformed to
+
+		Once a feasible phase shift set is obtained, the original problem \ref{op:1} can be reduced to
 		\begin{maxi}
 			% {\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)(A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n})^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
 			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)A_n^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
