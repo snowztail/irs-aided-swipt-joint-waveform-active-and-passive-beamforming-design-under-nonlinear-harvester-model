@@ -60,18 +60,22 @@
 	\end{subsection}
 
 	\begin{subsection}{Composite Channel Model}
-		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I' \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R \in \mathbb{C}^{K \times NL}$ respectively. At subband $n$, the frequency response of direct and reflective links write as $\boldsymbol{h}_{D,n}=[h_{D,1,n},\dots,h_{D,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{H}_{R,n}=[\boldsymbol{h}_{R,1,n}^T,\dots,\boldsymbol{h}_{R,K,n}^T]^T \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,k,n}=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Similarly, the $n$-th incident channel is given by $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^T \in \mathbb{C}^{L \times 1}$. To decouple the impact of IRS operation on the incident link, we construct a block-diagonal matrix $\boldsymbol{H}_I \triangleq \mathrm{diag}\left\{\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}\right\} \in \mathbb{C}^{NL \times N}$. Element $l$ of the IRS receives a superposed waveform through the multipath channel, then redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. On top of this, the IRS matrix per subband is constructed by collecting the reflection coefficients onto its diagonal entries as $\boldsymbol{\Theta}_0 = \mathrm{diag}\left\{\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}\right\} \in \mathbb{C}^{L \times L}$. Finally, the IRS matrix is formed by $\boldsymbol{\Theta} = \mathrm{diag}\{\underbrace{\boldsymbol{\Theta}_0,\dots,\boldsymbol{\Theta}_0}_{N\text{ times}}\} \in \mathbb{C}^{NL \times NL}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and IRS-aided link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
+		Denote the baseband equivalent channels from the AP to users, from the AP to the IRS, and from the IRS to users as $\boldsymbol{H}_D \in \mathbb{C}^{K \times N}$, $\boldsymbol{H}_I' \in \mathbb{C}^{L \times N}$, and $\boldsymbol{H}_R^H \in \mathbb{C}^{K \times NL}$ respectively. At subband $n$, the frequency response of direct and reflective links write as $\boldsymbol{h}_{D,n}=[h_{D,1,n},\dots,h_{D,K,n}]^H \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{H}_{R,n}^H=[\boldsymbol{h}_{R,1,n},\dots,\boldsymbol{h}_{R,K,n}]^H \in \mathbb{C}^{K \times L}$ with $\boldsymbol{h}_{R,k,n}^H=[h_{R,k,n,1},\dots,h_{R,k,n,L}] \in \mathbb{C}^{1 \times L}$. Similarly, the $n$-th incident channel is given by $\boldsymbol{h}_{I,n}=[h_{I,n,1},\dots,h_{I,n,L}]^H \in \mathbb{C}^{L \times 1}$. To decouple the impact of IRS operation on the incident link, we construct a block-diagonal matrix $\boldsymbol{H}_I \triangleq \mathrm{diag}\left\{\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}\right\} \in \mathbb{C}^{NL \times N}$. Element $l$ of the IRS receives a superposed waveform through the multipath channel, then redistributes it by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$. Each passive reflector absorbs a small portion ($1 - \beta_l$) of the signal to support CSI decoding and impedance matching. On top of this, the IRS matrix per subband is constructed by collecting the reflection coefficients onto its diagonal entries as $\boldsymbol{\Theta}_0 = \mathrm{diag}\left\{\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}\right\} \in \mathbb{C}^{L \times L}$. Finally, the IRS matrix is formed by $\boldsymbol{\Theta} = \mathrm{diag}\{\underbrace{\boldsymbol{\Theta}_0,\dots,\boldsymbol{\Theta}_0}_{N\text{ times}}\} \in \mathbb{C}^{NL \times NL}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, the IRS reflection matrix, and the IRS-user channel. Both direct and IRS-aided link contributes to the composite channel $\boldsymbol{H} \in \mathbb{C}^{K \times N}$ as
 		\begin{equation}\label{eq:H}
-			\boldsymbol{H} = \boldsymbol{H}_D+\boldsymbol{H}_R\boldsymbol{\Theta}\boldsymbol{H}_I
+			\boldsymbol{H} = \boldsymbol{H}_D+\boldsymbol{H}_R^H\boldsymbol{\Theta}\boldsymbol{H}_I
 		\end{equation}
 		whose $(k,n)$-th entry
 		\begin{equation}\label{eq:h_{k,n}}
-			h_{k,n}=h_{D,k,n}+\boldsymbol{h}_{R,k,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}
+			h_{k,n}=h_{D,k,n}+\boldsymbol{h}_{R,k,n}^H\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}
 		\end{equation}
 		represents the overall channel gain of user $k$ at subband $n$. On top of this, the $n$-th subchannel for all users $\boldsymbol{h}_n \in \mathbb{C}^{K \times 1}$ can be expressed as
 		% We further define $\boldsymbol{h}_{k,n}=[\underbrace{h_{k,n},\dots,h_{k,n}}_{N\text{ times}}]^T \in \mathbb{C}^{K \times 1}$.s
 		\begin{equation}\label{eq:h_n}
-			\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{H}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}
+			\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{H}_{R,n}^H\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n}
+		\end{equation}
+		Define $\boldsymbol{v}=[e^{j{\theta_1}},\dots,e^{j{\theta_L}}]^H \in \mathbb{C}^{L \times 1}$ and $\boldsymbol{\Phi}_n^H=\boldsymbol{H}_{R,n}^H\mathrm{diag}\left\{\boldsymbol{h}_{I,n}\right\} \in \mathbb{C}^{K \times L}$. Therefore, \ref{eq:h_n} rewrites as
+		\begin{equation}
+			\boldsymbol{h}_n=\boldsymbol{h}_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}
 		\end{equation}
 	\end{subsection}
 
@@ -177,11 +181,10 @@
 	\end{subsection}
 
 	\begin{subsection}{Single-User Optimization}
-		In this section, we first characterize the rate-energy region in the single-user setup. Define $h_n={A_n}{e^{j{\bar{\psi}_n}}}$, $w_{I,n}=s_{I,n}e^{j{\phi}_n}$, $w_{P,n}=s_{P,n}e^{j{\phi}_n}$
-		, $\boldsymbol{v}=[e^{j{\theta_1}},\dots,e^{j{\theta_L}}]^H \in \mathbb{C}^{L \times 1}$, and $\boldsymbol{\Phi}_n=\mathrm{diag}\left\{\boldsymbol{h}_{R,n}\right\}\boldsymbol{h}_{I,n} \in \mathbb{C}^{L \times 1}$. On top of this, the composite channel \ref{eq:h_{k,n}} can be expressed as $h_n=h_{D,n}+\boldsymbol{v}^H{\boldsymbol{\Phi}_n}$. The WSR-E region can be obtained through a rate maximization problem subject to transmit power and output DC current constraints
+		In this section, we first characterize the rate-energy region in the single-user setup. Let $h_n={A_n}{e^{j{\bar{\psi}_n}}}$, $w_{I,n}=s_{I,n}e^{j{\phi}_n}$, $w_{P,n}=s_{P,n}e^{j{\phi}_n}$. The WSR-E region can be obtained through a rate maximization problem subject to transmit power and output DC current constraints
 		\begin{maxi}
 			% {\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta}_0,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{(h_{D,n}+\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})w_{I,n}}\rvert^2}{\sigma_n^2}\right)}}{\label{op:1}}{}
-			{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(h_{D,n}+\boldsymbol{v}^H{\boldsymbol{\Phi}_n})w_{I,n}\rvert^2}{\sigma_n^2}\right)}}{\label{op:1}}{}
+			{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v})w_{I,n}\rvert^2}{\sigma_n^2}\right)}}{\label{op:1}}{}
 			\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
 			\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
 			\addConstraint{\lvert{v_l}\rvert=1,\quad l=1,\dots,L}
@@ -191,21 +194,21 @@
 
 		The phase optimization problem is formed as follows. For a fixed information weight $\boldsymbol{w}_I$ and power-splitting ratio $\rho$, problem \ref{op:1} reduces to
 		\begin{maxi}
-			{\boldsymbol{v}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\lvert(h_{D,n}+\boldsymbol{v}^H{\boldsymbol{\Phi}_n})\rvert^2}{\sigma_n^2}\right)}}{\label{op:temp}}{}
+			{\boldsymbol{v}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2}{\sigma_n^2}\right)}}{\label{op:temp}}{}
 			% \addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
 			\addConstraint{\lvert{v_l}\rvert=1,\quad l=1,\dots,L}
 		\end{maxi}
-		Note that $\lvert(h_{D,n}+\boldsymbol{v}^H{\boldsymbol{\Phi}_n})\rvert^2=\lvert{h}_{D,n}\rvert^2+h_{D,n}\boldsymbol{\Phi}_n^H\boldsymbol{v}+\boldsymbol{v}^H\boldsymbol{\Phi}_n{h_{D,n}^*}+\boldsymbol{v}^H\boldsymbol{\Phi}\boldsymbol{\Phi}^H\boldsymbol{v}$. Introduce an auxiliary variable $t$ with unit modulus and rewrite \ref{op:temp} as
+		Since $\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2=\lvert{h_{D,n}}\rvert^2+h_{D,n}^*\boldsymbol{\Phi}_n^H\boldsymbol{v}+\boldsymbol{v}^H\boldsymbol{\Phi}_n{h_{D,n}}+\boldsymbol{v}^H\boldsymbol{\Phi}\boldsymbol{\Phi}^H\boldsymbol{v}$, we introduce an auxiliary variable $t$ with unit modulus and transform \ref{op:temp} to
 		\begin{maxi}
-			{\bar{\boldsymbol{v}}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2(\lvert{h_{D,n}}\rvert^2+\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}})}{\sigma_n^2}\right)}}{\label{op:temp1}}{}
+			{\bar{\boldsymbol{v}}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2(\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}})}{\sigma_n^2}\right)}}{\label{op:temp1}}{}
 			\addConstraint{\lvert{\bar{v}_l}\rvert=1,\quad l=1,\dots,L+1}
 		\end{maxi}
 		where
 		\begin{equation}
 			\boldsymbol{R}=
 			\begin{bmatrix}
-				\boldsymbol{\Phi}_n\boldsymbol{\Phi}_n^H & \boldsymbol{\Phi}_n{h}_{D,n}^* \\
-				h_{D,n}\boldsymbol{\Phi}_n               & 0
+				\boldsymbol{\Phi}_n\boldsymbol{\Phi}_n^H & h_{D,n}^*{\boldsymbol{\Phi}_n^H} \\
+				\boldsymbol{\Phi}_n{h_{D,n}}             & h_{D,n}^*{h_{D,n}}
 			\end{bmatrix},
 			\quad \bar{\boldsymbol{v}}=
 			\begin{bmatrix}
@@ -214,13 +217,13 @@
 			\end{bmatrix}
 		\end{equation}
 		However, problem \ref{op:temp1} is still non-convex. We further define a positive semidefinite matrix $\boldsymbol{V}=\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H$ with $\mathrm{rank}(\boldsymbol{V})=1$ such that $\bar{\boldsymbol{v}}\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})$.
-		A semidefinite programming (SDP) problem is then formulated by applying SDR to drop the rank-one constraint as
+		A semidefinite programming (SDP) problem is then formulated by dropping the rank-one constraint
 		\begin{maxi}
-			{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2(\lvert{h_{D,n}}\rvert^2+\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V}))}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
+			{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
 			\addConstraint{\boldsymbol{V}_{l,l}=1,l=1,\dots,L+1}
 			\addConstraint{\boldsymbol{V}\succeq{0}}
 		\end{maxi}
-		which can be solved by softwares as CVX \cite{Grant2013}.
+		which can be solved by softwares as CVX \cite{Grant2013}. [Use random vector or rank reduction method to extract $\boldsymbol{v}$ from $\boldsymbol{V}$]
 		% It leads to a local optimum and is sensitive to the initialization of $\Theta_0$, $\boldsymbol{w}_I$ and $\boldsymbol{w}_P$.
 		% Moreover, a feasible phase design strategy that maximizes the effective composite channel is used for phase shift initialization.
 		% Although the problem is non-convex, the target function can be reformulated using the triangle inequality
@@ -236,7 +239,7 @@
 		% 	\phi_{I,n}^\star=\phi_{P,n}^\star=-\bar{\psi}_n
 		% \end{equation}
 
-		Once a feasible phase shift set is obtained, the original problem \ref{op:1} can be reduced to
+		Once a feasible phase shift set is obtained, the original problem \ref{op:1} is reduced to
 		\begin{maxi}
 			% {\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)(A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n})^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
 			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)A_n^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
