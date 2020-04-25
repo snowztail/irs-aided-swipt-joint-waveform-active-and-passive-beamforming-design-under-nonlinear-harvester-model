@@ -207,8 +207,8 @@
 		\begin{equation}
 			\boldsymbol{R}=
 			\begin{bmatrix}
-				\boldsymbol{\Phi}_n\boldsymbol{\Phi}_n^H & h_{D,n}^*{\boldsymbol{\Phi}_n^H} \\
-				\boldsymbol{\Phi}_n{h_{D,n}}             & h_{D,n}^*{h_{D,n}}
+				\boldsymbol{\Phi}_n\boldsymbol{\Phi}_n^H & \boldsymbol{\Phi}_n{h_{D,n}} \\
+				h_{D,n}^*{\boldsymbol{\Phi}_n^H}         & h_{D,n}^*{h_{D,n}}
 			\end{bmatrix},
 			\quad \bar{\boldsymbol{v}}=
 			\begin{bmatrix}
@@ -216,7 +216,7 @@
 				t
 			\end{bmatrix}
 		\end{equation}
-		However, problem \ref{op:temp1} is still non-convex. We further define a positive semidefinite matrix $\boldsymbol{V}=\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H$ with $\mathrm{rank}(\boldsymbol{V})=1$ such that $\bar{\boldsymbol{v}}\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})$.
+		However, problem \ref{op:temp1} is still non-convex. We further define a positive semidefinite matrix $\boldsymbol{V}=\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H$ with $\mathrm{rank}(\boldsymbol{V})=1$ such that $\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})$.
 		A semidefinite programming (SDP) problem is then formulated by dropping the rank-one constraint
 		\begin{maxi}
 			{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
