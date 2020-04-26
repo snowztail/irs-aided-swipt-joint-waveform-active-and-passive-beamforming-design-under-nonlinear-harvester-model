@@ -144,10 +144,10 @@
 				%  & \quad\left[w_{P,{j_3},{n_3}}(h_{D,k,n_3}+\boldsymbol{h}_{R,k,n_3}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_3})\right]^*\left[w_{P,{j_4},{n_4}}(h_{D,k,n_4}+\boldsymbol{h}_{R,k,n_4}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n_4})\right]^*\label{eq:A{y_{P,k}**4'}}
 			\end{align}
 		\end{figure*}
-		Therefore, \ref{eq:z_k} reduces to \ref{eq:z_k_standard}.
+		Therefore, \ref{eq:z_k} reduces to \ref{eq:z_k_truncated}.
 		\begin{figure*}[b]
 			\hrule
-			\begin{equation}\label{eq:z_k_standard}
+			\begin{equation}\label{eq:z_k_truncated}
 				\begin{split}
 					% z_k(\boldsymbol{W}_I,\boldsymbol{W}_P,\boldsymbol{\Theta},\rho)
 					z_k
@@ -161,7 +161,6 @@
 				\end{split}
 			\end{equation}
 		\end{figure*}
-
 	\end{subsection}
 \end{section}
 
@@ -190,17 +189,19 @@
 			\addConstraint{\lvert{v_l}\rvert=1,\quad l=1,\dots,L}
 			% \addConstraint{0\le{\theta_l}\le{2{\pi}},\quad l=1,\dots,L}
 		\end{maxi}
-		\ref{op:1} is intricate due to the non-convex objective function, unit-modulus constraints, and coupled variables. To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that updates the phase shifts at the IRS and the information weight at the transmitter iteratively until convergence.
-
-		The phase optimization problem is formed as follows. For a fixed information weight $\boldsymbol{w}_I$ and power-splitting ratio $\rho$, problem \ref{op:1} reduces to
+		Problem \ref{op:1} is intricate due to the non-convex rate function, unit-modulus constraint, and non-convex DC current requirement with coupled variables.
+		% To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that updates the phase shifts at the IRS and the information weight at the transmitter iteratively until convergence.
+		% The phase optimization problem is formed as follows. For a fixed information weight $\boldsymbol{w}_I$ and power-splitting ratio $\rho$, problem \ref{op:1} reduces to
+		% \begin{maxi}
+		% 	{\boldsymbol{v}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2}{\sigma_n^2}\right)}}{\label{op:temp}}{}
+		% 	% \addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
+		% 	\addConstraint{\lvert{v_l}\rvert=1,\quad l=1,\dots,L}
+		% \end{maxi}
+		Since $\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2=\lvert{h_{D,n}}\rvert^2+h_{D,n}^*\boldsymbol{\Phi}_n^H\boldsymbol{v}+\boldsymbol{v}^H\boldsymbol{\Phi}_n{h_{D,n}}+\boldsymbol{v}^H\boldsymbol{\Phi}\boldsymbol{\Phi}^H\boldsymbol{v}$, we introduce an auxiliary variable $t$ with unit modulus and transform \ref{op:1} to
 		\begin{maxi}
-			{\boldsymbol{v}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2}{\sigma_n^2}\right)}}{\label{op:temp}}{}
-			% \addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
-			\addConstraint{\lvert{v_l}\rvert=1,\quad l=1,\dots,L}
-		\end{maxi}
-		Since $\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2=\lvert{h_{D,n}}\rvert^2+h_{D,n}^*\boldsymbol{\Phi}_n^H\boldsymbol{v}+\boldsymbol{v}^H\boldsymbol{\Phi}_n{h_{D,n}}+\boldsymbol{v}^H\boldsymbol{\Phi}\boldsymbol{\Phi}^H\boldsymbol{v}$, we introduce an auxiliary variable $t$ with unit modulus and transform \ref{op:temp} to
-		\begin{maxi}
-			{\bar{\boldsymbol{v}}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2(\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}})}{\sigma_n^2}\right)}}{\label{op:temp1}}{}
+			{\boldsymbol{w}_I,\boldsymbol{w}_P,\bar{\boldsymbol{v}},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2(\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}})}{\sigma_n^2}\right)}}{\label{op:temp1}}{}
+			\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
+			\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
 			\addConstraint{\lvert{\bar{v}_l}\rvert=1,\quad l=1,\dots,L+1}
 		\end{maxi}
 		where
@@ -216,13 +217,51 @@
 				t
 			\end{bmatrix}
 		\end{equation}
-		However, problem \ref{op:temp1} is still non-convex. We further define a positive semidefinite matrix $\boldsymbol{V}=\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H$ with $\mathrm{rank}(\boldsymbol{V})=1$ such that $\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})$.
-		A semidefinite programming (SDP) problem is then formulated by dropping the rank-one constraint
+		However, problem \ref{op:temp1} is still non-convex. We further define a rank-one positive semidefinite matrix $\boldsymbol{V}=\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H$ such that $\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})$. Hence, \ref{op:temp1} is transformed to
 		\begin{maxi}
-			{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
+			{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{V},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
+			\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
+			\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
 			\addConstraint{\boldsymbol{V}_{l,l}=1,l=1,\dots,L+1}
 			\addConstraint{\boldsymbol{V}\succeq{0}}
+			\addConstraint{\mathrm{rank}(\boldsymbol{V})=1}
 		\end{maxi}
+		To tackle the non-convex current constraint, we introduce channel matrices $\boldsymbol{M}=\boldsymbol{h}^*\boldsymbol{h}^T \in \mathbb{C}^{N \times N}$, whose $(n_1,n_2)$ entry equals
+		\begin{equation}
+			\begin{split}
+				{h_{n_1}^*}{h_{n_2}}
+				&=(h_{D,n_1}^*+\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*)(h_{D,n_2}+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*})\\
+				&={h_{D,n_2}}{h_{D,n_1}^*}+{h_{D,n_2}}\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*}h_{D,n_1}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*}\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*\\
+				&=\bar{\boldsymbol{v}}^T\boldsymbol{R}_{n_1,n_2}\bar{\boldsymbol{v}}^*
+			\end{split}
+		\end{equation}
+		where
+		\begin{equation}
+			\boldsymbol{R}_{n_1,n_2}=
+			\begin{bmatrix}
+				\boldsymbol{\Phi}_{n_2}^*\boldsymbol{\Phi}_{n_1}^T & \boldsymbol{\Phi}_{n_2}^*{h_{D,n_1}^*} \\
+				h_{D,n_2}^*{\boldsymbol{\Phi}_{n_1}^T}             & h_{D,n_2}^*{h_{D,n_1}^*}
+			\end{bmatrix}
+		\end{equation}
+		On top of this, $\boldsymbol{M}_n$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_{-n}=\boldsymbol{M}_{n}^H$ for $n{\ne}0$ \cite{Huang2017}.
+		\begin{figure*}[b]
+			\hrule
+			\begin{equation}\label{eq:z_k_su}
+				\begin{split}
+					z
+					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}{\boldsymbol{w}_I\boldsymbol{M}_0}
+				\end{split}
+			\end{equation}
+		\end{figure*}
+
+
+
+
+
+
+		% A semidefinite programming (SDP) problem is then formulated by dropping the rank-one constraint
+
+
 		which can be solved by softwares as CVX \cite{Grant2013}. [Use random vector or rank reduction method to extract $\boldsymbol{v}$ from $\boldsymbol{V}$]
 		% It leads to a local optimum and is sensitive to the initialization of $\Theta_0$, $\boldsymbol{w}_I$ and $\boldsymbol{w}_P$.
 		% Moreover, a feasible phase design strategy that maximizes the effective composite channel is used for phase shift initialization.
@@ -234,7 +273,7 @@
 		% \begin{equation}
 		% 	\theta_l^\star=\angle{h_{D,n}}-\angle{h_{R,n,l}}-\angle{h_{I,n,l}}
 		% \end{equation}
-		% Besides, it can be concluded from \ref{eq:R_k} and \ref{eq:z_k_standard} that the optimal information and power phases coincide at subband $n$, being matched to composite frequency response as
+		% Besides, it can be concluded from \ref{eq:R_k} and \ref{eq:z_k_truncated} that the optimal information and power phases coincide at subband $n$, being matched to composite frequency response as
 		% \begin{equation}\label{eq:phi_n}
 		% 	\phi_{I,n}^\star=\phi_{P,n}^\star=-\bar{\psi}_n
 		% \end{equation}
