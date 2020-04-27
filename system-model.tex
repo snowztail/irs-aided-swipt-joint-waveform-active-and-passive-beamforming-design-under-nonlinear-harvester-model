@@ -226,13 +226,46 @@
 			\addConstraint{\boldsymbol{V}\succeq{0}}
 			\addConstraint{\mathrm{rank}(\boldsymbol{V})=1}
 		\end{maxi}
-		To tackle the non-convex current constraint, we introduce channel matrices $\boldsymbol{M}=\boldsymbol{h}^*\boldsymbol{h}^T \in \mathbb{C}^{N \times N}$, whose $(n_1,n_2)$ entry equals
+		% To tackle the non-convex current constraint, we expand and rewrite the coupled channel terms in \ref{eq:z_k_truncated} as
+		% \begin{equation}
+		% 	\begin{split}
+		% 		{h_{n_3}^*}{h_{n_1}}
+		% 		&=(h_{D,n_3}^*+\boldsymbol{\Phi}_{n_3}^T\boldsymbol{v}^*)(h_{D,n_1}+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_1}^*})\\
+		% 		&={h_{D,n_1}}{h_{D,n_3}^*}+{h_{D,n_1}}\boldsymbol{\Phi}_{n_3}^T\boldsymbol{v}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_1}^*}h_{D,n_3}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_1}^*}\boldsymbol{\Phi}_{n_3}^T\boldsymbol{v}^*\\
+		% 		&=\bar{\boldsymbol{v}}^T\boldsymbol{R}_{n_3,n_1}\bar{\boldsymbol{v}}^*\\
+		% 		&=\mathrm{Tr}(\boldsymbol{R}_{n_3,n_1}\boldsymbol{V}^*)
+		% 	\end{split}
+		% \end{equation}
+		% where
+		% \begin{equation}
+		% 	\boldsymbol{R}_{n_3,n_1}=
+		% 	\begin{bmatrix}
+		% 		\boldsymbol{\Phi}_{n_1}^*\boldsymbol{\Phi}_{n_3}^T & \boldsymbol{\Phi}_{n_1}^*{h_{D,n_3}^*} \\
+		% 		h_{D,n_1}{\boldsymbol{\Phi}_{n_3}^T}               & h_{D,n_1}{h_{D,n_3}^*}
+		% 	\end{bmatrix}
+		% \end{equation}
+		% Similarly, we have ${h_{n_4}^*}{h_{n_2}}=\mathrm{Tr}(\boldsymbol{R}_{n_4,n_2}\boldsymbol{V}^*)$ and ${h_n^*}{h_n}=\mathrm{Tr}(\boldsymbol{R}_{n,n}\boldsymbol{V}^*)$. Thus, \ref{eq:z_k_truncated} is equivalent to
+		% \begin{figure*}[b]
+		% 	\hrule
+		% 	\begin{equation}\label{eq:z_k_su_temp}
+		% 		\begin{split}
+		% 			z
+		% 			&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}\sum_n{\mathrm{Tr}(\boldsymbol{R}_{n,n}\boldsymbol{V}^*)(\boldsymbol{w}_{I,n}^H\boldsymbol{w}_{I,n}+\boldsymbol{w}_{P,n}^H\boldsymbol{w}_{P,n})}\\
+		% 			&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}\mathrm{Tr}(\boldsymbol{R}_{n_3,n_1}\boldsymbol{V}^*)\mathrm{Tr}(\boldsymbol{R}_{n_4,n_2}\boldsymbol{V}^*)\left(2(\boldsymbol{w}_{I,n_3}^H\boldsymbol{w}_{I,n_1})(\boldsymbol{w}_{I,n_4}^H\boldsymbol{w}_{I,n_2})+(\boldsymbol{w}_{P,n_3}^H\boldsymbol{w}_{P,n_1})(\boldsymbol{w}_{P,n_4}^H\boldsymbol{w}_{P,n_2})\right)\\
+		% 			&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{\mathrm{Tr}(\boldsymbol{R}_{n,n}\boldsymbol{V}^*)^2(\boldsymbol{w}_{I,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{w}_{P,n}^H\boldsymbol{w}_{P,n})}
+		% 		\end{split}
+		% 	\end{equation}
+		% \end{figure*}
+
+
+		To tackle the non-convex current constraint, we introduce a channel matrix $\boldsymbol{M}=\boldsymbol{h}^*\boldsymbol{h}^T \in \mathbb{C}^{N \times N}$ whose $(n_1,n_2)$ entry equals
 		\begin{equation}
 			\begin{split}
 				{h_{n_1}^*}{h_{n_2}}
 				&=(h_{D,n_1}^*+\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*)(h_{D,n_2}+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*})\\
 				&={h_{D,n_2}}{h_{D,n_1}^*}+{h_{D,n_2}}\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*}h_{D,n_1}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*}\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*\\
-				&=\bar{\boldsymbol{v}}^T\boldsymbol{R}_{n_1,n_2}\bar{\boldsymbol{v}}^*
+				&=\bar{\boldsymbol{v}}^T\boldsymbol{R}_{n_1,n_2}\bar{\boldsymbol{v}}^*\\
+				&=\mathrm{Tr}(\boldsymbol{R}_{n_1,n_2}\boldsymbol{V}^*)
 			\end{split}
 		\end{equation}
 		where
@@ -240,16 +273,20 @@
 			\boldsymbol{R}_{n_1,n_2}=
 			\begin{bmatrix}
 				\boldsymbol{\Phi}_{n_2}^*\boldsymbol{\Phi}_{n_1}^T & \boldsymbol{\Phi}_{n_2}^*{h_{D,n_1}^*} \\
-				h_{D,n_2}^*{\boldsymbol{\Phi}_{n_1}^T}             & h_{D,n_2}^*{h_{D,n_1}^*}
+				h_{D,n_2}{\boldsymbol{\Phi}_{n_1}^T}               & h_{D,n_2}{h_{D,n_1}^*}
 			\end{bmatrix}
 		\end{equation}
-		On top of this, $\boldsymbol{M}_n$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_{-n}=\boldsymbol{M}_{n}^H$ for $n{\ne}0$ \cite{Huang2017}.
+		On top of this, $\boldsymbol{M}_n$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_0 \succeq 0$ and $\boldsymbol{M}_{-n}=\boldsymbol{M}_{n}^H$ for $n{\ne}0$ \cite{Huang2017}. Therefore, \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_su}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{equation}\label{eq:z_k_su}
 				\begin{split}
 					z
-					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}{\boldsymbol{w}_I\boldsymbol{M}_0}
+					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(\boldsymbol{w}_I^H\boldsymbol{M}_0\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{M}_0\boldsymbol{w}_P)\\
+					% &\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
+					% &\quad+\frac{3}{4}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_n}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
+					&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}\left(2\boldsymbol{w}_I^H\boldsymbol{M}_n\boldsymbol{w}_I(\boldsymbol{w}_I^H\boldsymbol{M}_n\boldsymbol{w}_I)^H+\boldsymbol{w}_P^H\boldsymbol{M}_n\boldsymbol{w}_P(\boldsymbol{w}_P^H\boldsymbol{M}_n\boldsymbol{w}_P)^H\right)\\
+					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}{(\boldsymbol{w}_I^H\boldsymbol{M}_0\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{M}_0\boldsymbol{w}_P)}
 				\end{split}
 			\end{equation}
 		\end{figure*}
