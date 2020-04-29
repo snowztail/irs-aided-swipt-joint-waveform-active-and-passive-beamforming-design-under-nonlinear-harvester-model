@@ -20,12 +20,6 @@ noisePower = rxPower / db2pow(snrDb);
 %% * Channel
 % AP-user distance
 directDistance = 0.5;
-incidentDistance = 0.4;
-reflectiveDistance = directDistance - incidentDistance;
-% pathlosses
-[directPathloss] = large_scale_fading(directDistance);
-[incidentPathloss] = large_scale_fading(incidentDistance);
-[reflectivePathloss] = large_scale_fading(reflectiveDistance);
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -41,10 +35,10 @@ nReflectors = 10;
 
 %% * Algorithm
 % rate constraint per subband
-rateConstraint = 0: 0.1: 1;
+rateConstraint = 0: 0.05: 1;
 % minimum current gain per iteration
 tolerance = 1e-8;
 
 %% * Variables
-% number of reflecting elements in IRS
-Variable.nReflectors = 5 : 5 : 25;
+% AP-IRS distance
+Variable.distance = 0.05 : 0.05 : 0.25;

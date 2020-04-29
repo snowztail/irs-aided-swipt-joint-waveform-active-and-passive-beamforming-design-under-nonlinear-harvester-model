@@ -1,4 +1,4 @@
-function [channel] = channel_tgn_e(pathloss, nTxs, nSubbands, nUsers, carrierFrequency, fadingType)
+function [fading] = channel_tgn_e(nTxs, nSubbands, nUsers, carrierFrequency, fadingType)
     % Function:
     %   - simulate channel using the power delay profile of the IEEE TGn NLOS channel model E
     %
@@ -11,12 +11,11 @@ function [channel] = channel_tgn_e(pathloss, nTxs, nSubbands, nUsers, carrierFre
     %   - fadingType: "flat" or "selective"
     %
     % OutputArg(s):
-    %   - channel [\boldsymbol{h}] (nTxs * nSubbands * nUsers): channel frequency response at each subband
+    %   - fading [\boldsymbol{h}] (nTxs * nSubbands * nUsers): fading at each subband
     %
     % Comment(s):
     %   - assume single receive antenna
     %   - the model only considers power delay profile of clusters
-    %   - the reference pass loss is set to 60.046 dB for a distance of 10 m
     %
     % Reference(s):
     %   - V. Erceg et al., "TGn channel models," in Version 4. IEEE 802.11–03/940r4, May 2004.
@@ -54,6 +53,5 @@ function [channel] = channel_tgn_e(pathloss, nTxs, nSubbands, nUsers, carrierFre
             end
         end
     end
-    channel = fading ./ sqrt(reshape(pathloss, [1 1 nUsers]));
 
 end

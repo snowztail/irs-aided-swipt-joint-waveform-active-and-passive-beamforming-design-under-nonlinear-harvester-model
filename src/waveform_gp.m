@@ -60,7 +60,7 @@ function [infoWaveform, powerWaveform, rate, current] = waveform_gp(k2, k4, resi
             [rate_, ~, rateExponent] = info_component(noisePower, channelAmplitude, infoAmplitude, infoRatio);
             [current_, ~, currentExponent] = power_component(k2, k4, resistance, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);
         else
-            isSolvable = false;
+            break;
         end
 
         isConverged = (current_ - current) <= tolerance;
