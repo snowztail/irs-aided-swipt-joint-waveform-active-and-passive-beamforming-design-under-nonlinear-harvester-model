@@ -10,15 +10,15 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit and receive power
-txPower = db2pow(- 20 - 30);
-rxPower = db2pow(- 20 - 30);
+txPower = db2pow(0 - 30);
+rxPower = db2pow(0 - 30);
 % SNR
 snrDb = 20;
 % average noise power
 noisePower = rxPower / db2pow(snrDb);
 % distances
-directDistance = 10;
-incidentDistance = 9;
+directDistance = 1;
+incidentDistance = 0.9;
 reflectiveDistance = directDistance - incidentDistance;
 % pathlosses
 [directPathloss] = large_scale_fading(directDistance);
@@ -43,6 +43,6 @@ nReflectors = 10;
 % rate constraint per subband
 rateConstraint = 0: 0.5: 10;
 % minimum current gain per iteration
-tolerance = 5e-8;
+tolerance = 1e-7;
 
 %% * Variables

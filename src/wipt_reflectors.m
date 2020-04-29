@@ -14,3 +14,5 @@ end
 [irs] = irs_selective(directChannel, incidentChannel, reflectiveChannel);
 % K * N
 [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+compositeChannel = compositeChannel';
+[infoWaveform, powerWaveform, rate, current] = waveform_gp(k2, k4, resistance, txPower, noisePower, rateConstraint(1), tolerance, compositeChannel);
