@@ -257,7 +257,23 @@
 		% 	\end{equation}
 		% \end{figure*}
 
+		% ? AO: optimize phase shifts with given weights
+		Define waveform matrices $\boldsymbol{M}_I=\boldsymbol{w}_I^*\boldsymbol{w}_I^T$ and $\boldsymbol{M}_P=\boldsymbol{w}_P^*\boldsymbol{w}_P^T$. Also, let $\boldsymbol{M}_{I/P, n}$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}_{I/P}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_{I/P,0} \succeq 0$ and $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$ for $n{\ne}0$ \cite{Huang2017}. Therefore, \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_phase}.
+		\begin{figure*}[b]
+			\hrule
+			\begin{equation}\label{eq:z_k_phase}
+				\begin{split}
+					z
+					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(\boldsymbol{h}^H\boldsymbol{M}_{I,0}\boldsymbol{h}+\boldsymbol{h}^H\boldsymbol{M}_{P,0}\boldsymbol{h})\\
+					% &\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
+					% &\quad+\frac{3}{4}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_n}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
+					&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})^H+(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})^H}\\
+					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}{(\boldsymbol{h}^H\boldsymbol{M}_{I,0}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{P,0}\boldsymbol{h})}
+				\end{split}
+			\end{equation}
+		\end{figure*}
 
+		% ? AO: optimize weights with given phase shifts
 		To tackle the non-convex current constraint, we introduce a channel matrix $\boldsymbol{M}=\boldsymbol{h}^*\boldsymbol{h}^T \in \mathbb{C}^{N \times N}$ whose $(n_1,n_2)$ entry equals
 		\begin{equation}
 			\begin{split}
@@ -276,10 +292,10 @@
 				h_{D,n_2}{\boldsymbol{\Phi}_{n_1}^T}               & h_{D,n_2}{h_{D,n_1}^*}
 			\end{bmatrix}
 		\end{equation}
-		On top of this, $\boldsymbol{M}_n$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_0 \succeq 0$ and $\boldsymbol{M}_{-n}=\boldsymbol{M}_{n}^H$ for $n{\ne}0$ \cite{Huang2017}. Therefore, \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_su}.
+		On top of this, $\boldsymbol{M}_n$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_0 \succeq 0$ and $\boldsymbol{M}_{-n}=\boldsymbol{M}_{n}^H$ for $n{\ne}0$ \cite{Huang2017}. Therefore, \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_waveform}.
 		\begin{figure*}[b]
 			\hrule
-			\begin{equation}\label{eq:z_k_su}
+			\begin{equation}\label{eq:z_k_waveform}
 				\begin{split}
 					z
 					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(\boldsymbol{w}_I^H\boldsymbol{M}_0\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{M}_0\boldsymbol{w}_P)\\
@@ -290,6 +306,16 @@
 				\end{split}
 			\end{equation}
 		\end{figure*}
+		We then introduce auxiliary vectors $\boldsymbol{t}_{I/P}=[t_{{I/P},0},\dots,t_{{I/P},N-1}]^T \in \mathbb{C}^{N \times 1}$ with $t_{{I/P},n}=\boldsymbol{w}_{I/P}^H\boldsymbol{M}_n\boldsymbol{w}_{I/P}=\mathrm{Tr}(\boldsymbol{M}_n\boldsymbol{W}_{I/P})$ and transform \ref{eq:z_k_waveform} to
+		% and define coefficient matrix $\boldsymbol{A}_0=\mathrm{diag}\{\}$
+		\begin{equation}\label{eq:z_k_su_compact}
+			\begin{split}
+				z
+				&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(t_{I,0}+t_{P,0})\\
+				&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}(4\boldsymbol{t}_I^H\boldsymbol{t}_I+2\boldsymbol{t}_P^H\boldsymbol{t}_P-2t_{I,0}t_{I,0}^*-t_{P,0}t_{P,0}^*)\\
+				&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}t_{I,0}t_{P,0}
+			\end{split}
+		\end{equation}
 
 
 
@@ -299,7 +325,7 @@
 		% A semidefinite programming (SDP) problem is then formulated by dropping the rank-one constraint
 
 
-		which can be solved by softwares as CVX \cite{Grant2013}. [Use random vector or rank reduction method to extract $\boldsymbol{v}$ from $\boldsymbol{V}$]
+		% which can be solved by softwares as CVX \cite{Grant2013}. [Use random vector or rank reduction method to extract $\boldsymbol{v}$ from $\boldsymbol{V}$]
 		% It leads to a local optimum and is sensitive to the initialization of $\Theta_0$, $\boldsymbol{w}_I$ and $\boldsymbol{w}_P$.
 		% Moreover, a feasible phase design strategy that maximizes the effective composite channel is used for phase shift initialization.
 		% Although the problem is non-convex, the target function can be reformulated using the triangle inequality
