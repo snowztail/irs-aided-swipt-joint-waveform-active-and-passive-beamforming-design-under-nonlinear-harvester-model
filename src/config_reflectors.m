@@ -36,12 +36,10 @@ nSubbands = 4;
 fadingType = 'selective';
 % carrier frequency
 [carrierFrequency] = carrier_frequency(centerFrequency, bandwidth, nSubbands);
-% number of reflecting elements in IRS
-nReflectors = 10;
 
 %% * Algorithm
 % rate constraint per subband
-rateConstraint = 0: 0.1: 1;
+rateConstraint = 0: 0.05: 1;
 % minimum current gain per iteration
 tolerance = 1e-8;
 

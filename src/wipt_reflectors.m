@@ -17,19 +17,23 @@ for iReflector = 1 : Variable.nReflectors(end)
     [reflectiveFading(iReflector : Variable.nReflectors(end) : end)] = channel_tgn_e(nTxs, nSubbands, nUsers, carrierFrequency, fadingType);
 end
 directChannel = directFading ./ sqrt(directPathloss);
+directChannel = directChannel.';
 
 %% * Waveform design without IRS
 for iConstraint = 1 : length(rateConstraint)
     [~, ~, directRate(iConstraint), directCurrent(iConstraint)] = waveform_gp(k2, k4, resistance, txPower, noisePower, rateConstraint(iConstraint), tolerance, directChannel);
+    if isnan(directCurrent(iConstraint))
+        break;
+    end
 end
 
 %% * Waveform design with IRS
 for iReflector = 1 : length(Variable.nReflectors)
     incidentChannel = incidentFading(1 : Variable.nReflectors(iReflector), :) ./ sqrt(incidentPathloss);
-    reflectiveChannel = zeros(Variable.nReflectors(iReflector), nSubbands);
+    reflectiveChannel = zeros(nUsers, Variable.nReflectors(iReflector) * nSubbands);
     for jReflector = 1 : Variable.nReflectors(iReflector)
         for iSubband = 1 : nSubbands
-            reflectiveChannel(jReflector + (iSubband - 1) * Variable.nReflectors(iReflector)) = reflectiveFading(jReflector + (iSubband - 1) * Variable.nReflectors(end)) ./ sqrt(incidentPathloss);
+            reflectiveChannel(jReflector + (iSubband - 1) * Variable.nReflectors(iReflector)) = reflectiveFading(jReflector + (iSubband - 1) * Variable.nReflectors(end)) / sqrt(reflectivePathloss);
         end
     end
     [irs] = irs_selective(directChannel, incidentChannel, reflectiveChannel);
@@ -45,10 +49,10 @@ for iReflector = 1 : length(Variable.nReflectors)
 end
 
 %% * Plot R-E region
-legendString = cell{length(Variable.nReflectors) + 1, 1};
+legendString = cell(length(Variable.nReflectors) + 1, 1);
 figure('Name', 'R-E region vs number of reflectors');
 plot(directRate, directCurrent * 1e6);
-legendString{1} = sprintf('Plain');
+legendString{1} = sprintf('No IRS');
 hold on;
 for iReflector = 1 : length(Variable.nReflectors)
     plot(compositeRate(iReflector, :), compositeCurrent(iReflector, :) * 1e6);
@@ -60,4 +64,4 @@ grid on; grid minor;
 legend(legendString);
 xlabel('Rate [bps/Hz]');
 ylabel('I_{DC} [\muA]');
-ylim([0, 6]);
+ylim([0 100])
