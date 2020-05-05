@@ -10,16 +10,13 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit and receive power
-txPower = db2pow(0 - 30);
-rxPower = db2pow(0 - 30);
-% SNR
-snrDb = 20;
+txPower = 10;
 % average noise power
-noisePower = rxPower / db2pow(snrDb);
+noisePower = db2pow(- 40 - 30);
 
 %% * Channel
 % AP-user distance
-directDistance = 0.5;
+directDistance = 10;
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -32,13 +29,15 @@ fadingType = 'selective';
 [carrierFrequency] = carrier_frequency(centerFrequency, bandwidth, nSubbands);
 % number of reflecting elements in IRS
 nReflectors = 10;
+% IRS gain on each reflecting element
+irsGain = db2pow(3);
 
 %% * Algorithm
 % rate constraint per subband
-rateConstraint = 0: 0.05: 1;
+rateConstraint = 0: 10;
 % minimum current gain per iteration
 tolerance = 1e-8;
 
 %% * Variables
 % AP-IRS distance
-Variable.distance = 0.05 : 0.05 : 0.25;
+Variable.distance = 1 : 5;

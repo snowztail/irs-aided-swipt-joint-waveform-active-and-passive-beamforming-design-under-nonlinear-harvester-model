@@ -10,22 +10,19 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit and receive power
-txPower = db2pow(0 - 30);
-rxPower = db2pow(0 - 30);
-% SNR
-snrDb = 20;
+txPower = 10;
 % average noise power
-noisePower = rxPower / db2pow(snrDb);
+noisePower = db2pow(- 40 - 30);
 
 %% * Channel
 % AP-user distance
-directDistance = 0.5;
-incidentDistance = 0.4;
+directDistance = 10;
+incidentDistance = 1;
 reflectiveDistance = directDistance - incidentDistance;
 % pathlosses
-[directPathloss] = large_scale_fading(directDistance);
-[incidentPathloss] = large_scale_fading(incidentDistance);
-[reflectivePathloss] = large_scale_fading(reflectiveDistance);
+[directPathloss] = large_scale_fading("direct", directDistance);
+[incidentPathloss] = large_scale_fading("incident", incidentDistance);
+[reflectivePathloss] = large_scale_fading("reflective", reflectiveDistance);
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -36,10 +33,12 @@ nSubbands = 4;
 fadingType = 'selective';
 % carrier frequency
 [carrierFrequency] = carrier_frequency(centerFrequency, bandwidth, nSubbands);
+% IRS gain on each reflecting element
+irsGain = db2pow(3);
 
 %% * Algorithm
 % rate constraint per subband
-rateConstraint = 0: 0.05: 1;
+rateConstraint = 0: 10;
 % minimum current gain per iteration
 tolerance = 1e-8;
 

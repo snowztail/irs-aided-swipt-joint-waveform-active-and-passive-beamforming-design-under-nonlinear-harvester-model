@@ -36,7 +36,7 @@ for iReflector = 1 : length(Variable.nReflectors)
             reflectiveChannel(jReflector + (iSubband - 1) * Variable.nReflectors(iReflector)) = reflectiveFading(jReflector + (iSubband - 1) * Variable.nReflectors(end)) / sqrt(reflectivePathloss);
         end
     end
-    [irs] = irs_selective(directChannel, incidentChannel, reflectiveChannel);
+    [irs] = irs_selective(directChannel, incidentChannel, reflectiveChannel, irsGain);
     [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
     compositeChannel = compositeChannel.';
     % rate and current

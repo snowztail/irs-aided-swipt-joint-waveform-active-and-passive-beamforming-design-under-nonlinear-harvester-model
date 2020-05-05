@@ -13,7 +13,7 @@ reflectiveFading = zeros(nUsers, nSubbands * nReflectors);
 for iReflector = 1 : nReflectors
     [reflectiveFading(iReflector : nReflectors : end)] = channel_tgn_e(nTxs, nSubbands, nUsers, carrierFrequency, fadingType);
 end
-[directPathloss] = large_scale_fading(directDistance);
+[directPathloss] = large_scale_fading("direct", directDistance);
 directChannel = directFading ./ sqrt(directPathloss);
 directChannel = directChannel.';
 
@@ -31,12 +31,12 @@ for iDistance = 1 : length(Variable.distance)
     incidentDistance = Variable.distance(iDistance);
     reflectiveDistance = directDistance - incidentDistance;
     % pathlosses
-    [incidentPathloss] = large_scale_fading(incidentDistance);
-    [reflectivePathloss] = large_scale_fading(reflectiveDistance);
+    [incidentPathloss] = large_scale_fading("incident", incidentDistance);
+    [reflectivePathloss] = large_scale_fading("reflective", reflectiveDistance);
     % channels
     incidentChannel = incidentFading ./ sqrt(incidentPathloss);
     reflectiveChannel = reflectiveFading ./ sqrt(reflectivePathloss);
-    [irs] = irs_selective(directChannel, incidentChannel, reflectiveChannel);
+    [irs] = irs_selective(directChannel, incidentChannel, reflectiveChannel, irsGain);
     [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
     compositeChannel = compositeChannel.';
     % rate and current

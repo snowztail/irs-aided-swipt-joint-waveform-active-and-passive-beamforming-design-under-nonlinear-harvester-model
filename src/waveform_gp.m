@@ -20,7 +20,6 @@ function [infoWaveform, powerWaveform, rate, current] = waveform_gp(k2, k4, resi
     %   - current: average output current
     %
     % Comment(s):
-    %   -
     %   - the phase is matched to the composite channel
     %
     % Author & Date: Yang (i@snowztail.com) - 29 Apr 20
