@@ -1,8 +1,9 @@
-function [largeScaleFading] = large_scale_fading(distance)
+function [largeScaleFading] = large_scale_fading(mode, distance)
     % Function:
     %   - calculate the large-scale fading
     %
     % InputArg(s):
+    %   - mode: channel mode (direct, incident and reflective)
     %   - distance: separation between the transmitter and the receiver
     %
     % OutputArg(s):
@@ -17,8 +18,12 @@ function [largeScaleFading] = large_scale_fading(distance)
 
 
     % * pathloss
-    pathlossExponent = 2;
-    pathloss = db2pow(60.046 + 10 * pathlossExponent * log10(distance / 10));
+    if mode == "direct"
+        pathlossExponent = 3.8;
+    elseif mode == "incident" || mode == "reflective"
+        pathlossExponent = 2.2;
+    end
+    pathloss = db2pow(30 + 10 * pathlossExponent * log10(distance / 1));
 
     % * shadowing
     % shadowingSd = 3;
