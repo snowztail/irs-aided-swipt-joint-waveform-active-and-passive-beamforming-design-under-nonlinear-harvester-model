@@ -248,12 +248,12 @@
 				\begin{split}
 					\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2
 					&=\lvert{h_{D,n}}\rvert^2+h_{D,n}^*\boldsymbol{\Phi}_n^H\boldsymbol{v}+\boldsymbol{v}^H\boldsymbol{\Phi}_n{h_{D,n}}+\boldsymbol{v}^H\boldsymbol{\Phi}\boldsymbol{\Phi}^H\boldsymbol{v}\\
-					&=\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})
+					&=\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}_n\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{V})
 				\end{split}
 			\end{equation}
 			where $t$ is an auxiliary variable with unit modulus and
 			\begin{equation}
-				\boldsymbol{R}=
+				\boldsymbol{R}_n=
 				\begin{bmatrix}
 					\boldsymbol{\Phi}_n\boldsymbol{\Phi}_n^H & \boldsymbol{\Phi}_n{h_{D,n}} \\
 					h_{D,n}^*{\boldsymbol{\Phi}_n^H}         & h_{D,n}^*{h_{D,n}}
@@ -267,7 +267,7 @@
 			\end{equation}
 			Hence, \ref{op:1} is transformed to
 			\begin{maxi}
-				{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{V},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
+				{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{V},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
 				\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
 				\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{V},\rho)\ge{\bar{z}}}
 				\addConstraint{\boldsymbol{V}_{l,l}=1,l=1,\dots,L+1}
@@ -276,14 +276,33 @@
 			\end{maxi}
 			To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that iteratively updates the phase shifts and the waveforms with the other being fixed.
 
+			% ? AO: optimize phase shifts with given waveform
 			The phase optimization subproblem is formed as follows. For a given waveform $\boldsymbol{w}_I,\boldsymbol{w}_P,\rho$, problem \ref{op:temp3} reduces to
 			\begin{maxi}
-				{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
+				{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
 				\addConstraint{z(\boldsymbol{V})\ge{\bar{z}}}
 				\addConstraint{\boldsymbol{V}_{l,l}=1,l=1,\dots,L+1}
 				\addConstraint{\boldsymbol{V}\succeq{0}}
 				\addConstraint{\mathrm{rank}(\boldsymbol{V})=1}
 			\end{maxi}
+			To tackle the non-convex current constraint, we define waveform matrices $\boldsymbol{M}_{I/P}=\boldsymbol{w}_{I/P}^*\boldsymbol{w}_{I/P}^T$. On top of this, let $\boldsymbol{M}_{I/P, n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}_{I/P}$ and nulls the remaining entries. Therefore, the current expression \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_irs}.
+			\begin{figure*}[b]
+				\hrule
+				\begin{equation}\label{eq:z_k_irs}
+					\begin{split}
+						z
+						&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(\boldsymbol{h}^H\boldsymbol{M}_{I,0}\boldsymbol{h}+\boldsymbol{h}^H\boldsymbol{M}_{P,0}\boldsymbol{h})\\
+						% &\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
+						% &\quad+\frac{3}{4}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_n}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
+						&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})^H+(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})^H}\\
+						&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}{(\boldsymbol{h}^H\boldsymbol{M}_{I,0}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{P,0}\boldsymbol{h})}
+					\end{split}
+				\end{equation}
+			\end{figure*}
+			Introduce auxiliary variables $t_{I/P,n}=\boldsymbol{h}^H\boldsymbol{M}_{I/P,n}\boldsymbol{h}=\mathrm{Tr}()$ and we have $t_{I/P,n}t_{I/P,n}^*=t_{I/P,-n}t_{I/P,-n}^*$ by noticing $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$. Further define $\boldsymbol{t}_{I/P}=[t_{I/P,1},\dots,t_{I/P,N-1}]^T \in \mathbb{C}^{N-1}$.
+
+
+			% * It holds that $\boldsymbol{M}_{I/P,0} \succeq 0$ and $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$ for $n{\ne}0$.
 
 			% To tackle the non-convex current constraint, we expand and rewrite the coupled channel terms in \ref{eq:z_k_truncated} as
 			% \begin{equation}
@@ -317,25 +336,6 @@
 			% \end{figure*}
 		\end{subsubsection}
 
-
-
-
-
-		% ? AO: optimize phase shifts with given weights
-		Define waveform matrices $\boldsymbol{M}_I=\boldsymbol{w}_I^*\boldsymbol{w}_I^T$ and $\boldsymbol{M}_P=\boldsymbol{w}_P^*\boldsymbol{w}_P^T$. Also, let $\boldsymbol{M}_{I/P, n}$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}_{I/P}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_{I/P,0} \succeq 0$ and $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$ for $n{\ne}0$ \cite{Huang2017}. Therefore, \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_phase}.
-		\begin{figure*}[b]
-			\hrule
-			\begin{equation}\label{eq:z_k_phase}
-				\begin{split}
-					z
-					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(\boldsymbol{h}^H\boldsymbol{M}_{I,0}\boldsymbol{h}+\boldsymbol{h}^H\boldsymbol{M}_{P,0}\boldsymbol{h})\\
-					% &\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
-					% &\quad+\frac{3}{4}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_n}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
-					&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})^H+(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})^H}\\
-					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}{(\boldsymbol{h}^H\boldsymbol{M}_{I,0}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{P,0}\boldsymbol{h})}
-				\end{split}
-			\end{equation}
-		\end{figure*}
 
 		% ? AO: optimize weights with given phase shifts
 		To tackle the non-convex current constraint, we introduce a channel matrix $\boldsymbol{M}=\boldsymbol{h}^*\boldsymbol{h}^T \in \mathbb{C}^{N \times N}$ whose $(n_1,n_2)$ entry equals
