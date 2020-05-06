@@ -190,6 +190,14 @@
 			% \addConstraint{0\le{\theta_l}\le{2{\pi}},\quad l=1,\dots,L}
 		\end{maxi}
 		Problem \ref{op:1} is intricate due to the non-convex rate function, unit-modulus constraint, and non-convex DC current requirement with coupled variables.
+
+		\begin{subsubsection}{Frequency-Selective IRS}
+			In frequency-selective IRS, each element is expected to provide adjustable subband-dependent reflection coefficients such that the total degree of freedom of IRS is $NL$. Therefore, $\boldsymbol{v}_n$ replaces $\boldsymbol{v}$ in \ref{op:1}. Note that $\lvert{(h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}_n)w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{\Phi}_n^H\boldsymbol{v}_nw_{I,n}}\rvert$ where the equality holds if and only if the direct and IRS-aided links align with each other, namely
+			\begin{equation}
+				\theta_{n,l}^\star = \angle{h}_{D,n} - \angle{\boldsymbol{\Phi}}
+			\end{equation}
+		\end{subsubsection}
+
 		% To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that updates the phase shifts at the IRS and the information weight at the transmitter iteratively until convergence.
 		% The phase optimization problem is formed as follows. For a fixed information weight $\boldsymbol{w}_I$ and power-splitting ratio $\rho$, problem \ref{op:1} reduces to
 		% \begin{maxi}
