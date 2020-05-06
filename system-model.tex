@@ -192,78 +192,134 @@
 		Problem \ref{op:1} is intricate due to the non-convex rate function, unit-modulus constraint, and non-convex DC current requirement with coupled variables.
 
 		\begin{subsubsection}{Frequency-Selective IRS}
-			In frequency-selective IRS, each element is expected to provide adjustable subband-dependent reflection coefficients such that the total degree of freedom of IRS is $NL$. Therefore, $\boldsymbol{v}_n$ replaces $\boldsymbol{v}$ in \ref{op:1}. Note that $\lvert{(h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}_n)w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{\Phi}_n^H\boldsymbol{v}_nw_{I,n}}\rvert$ where the equality holds if and only if the direct and IRS-aided links align with each other, namely
+			In frequency-selective IRS, each element is expected to provide adjustable subband-dependent reflection coefficients such that the total degree of freedom (DoF) of IRS is $NL$. Therefore, $\boldsymbol{v}_n$ replaces $\boldsymbol{v}$ in \ref{op:1}. Note that $\lvert{(h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}_n)w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{\Phi}_n^H\boldsymbol{v}_nw_{I,n}}\rvert$ where the equality holds if and only if the direct and IRS-aided links are aligned by
 			\begin{equation}
-				\theta_{n,l}^\star = \angle{h}_{D,n} - \angle{\boldsymbol{\Phi}}
+				\theta_{n,l}^\star = \angle{h}_{D,n} - \angle{h_{R,n,l}}-\angle{h_{I,n,l}}
 			\end{equation}
+			That is to say, the optimal phase shift is obtained in closed form in the single-user scenario. On top of this, it can be observed from \ref{eq:gamma_{k,n}}, \ref{eq:R_k} and \ref{eq:z_k_truncated} that the optimal phase of information and power waveforms are matched to composite frequency response as
+			\begin{equation}\label{eq:phi_n}
+				\phi_{I,n}^\star=\phi_{P,n}^\star=-\bar{\psi}_n
+			\end{equation}
+			With all the phases determined, the original problem \ref{op:1} is reduced to
+			\begin{maxi}
+				% {\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)(A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n})^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
+				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)A_n^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
+				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
+				\addConstraint{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)\ge{\bar{z}}}
+			\end{maxi}
+			\begin{figure*}[b]
+				\hrule
+				\begin{equation}\label{eq:z_gp}
+					\begin{split}
+						z
+						&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}\sum_n{A_n^2(s_{I,n}^2+s_{P,n}^2)}+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{A_{n_1}A_{n_2}A_{n_3}A_{n_4}(2s_{I,n_1}s_{I,n_2}s_{I,n_3}s_{I,n_4}+s_{P,n_1}s_{P,n_2}s_{P,n_3}s_{P,n_4})}\\
+						&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{{A_n^4}{s_{I,n}^2}{s_{P,n}^2}}
+					\end{split}
+				\end{equation}
+			\end{figure*}
+			with $z$ given by \ref{eq:z_gp}. It can be transformed to an equivalent problem by introducing an auxiliary variable $t_0$
+			\begin{mini}
+				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\frac{1}{t_0}}{\label{op:3}}{}
+				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
+				\addConstraint{\frac{t_0}{\prod_{n}{\left(1+\frac{(1-\rho){A_n^2}{s_{I,n}^2}}{\sigma_n^2}\right)}}\le{1}}
+				\addConstraint{\frac{\bar{z}}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}\le{1}}
+			\end{mini}
+			\ref{op:3} is a Reversed Geometric Program which can be transformed to standard Geometric Program (GP). The basic idea is to decompose the information and power posynomials as sum of monomials, then derive their upper bounds using Arithmetic Mean-Geometric Mean (AM-GM) inequality \cite{Clerckx2018b,Chiang2005}. Let $z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)=\sum_{{m_P}=1}^{M_P}{g_{P,m_P}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}$, problem \ref{op:3} is equivalent to
+			% $1+\bar{\rho}{A_n^2}{s_{I,n}^2}/\sigma_n^2=\sum_{{m_{I,n}}=1}^{M_{I,n}}{g_{I,m_{I,n}}(\boldsymbol{s}_I,\bar{\rho})}$
+			\begin{mini}
+				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\frac{1}{t_0}}{\label{op:4}}{}
+				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
+				\addConstraint{{t_0}\prod_{n}{\left(\frac{1}{\gamma_{I,n,1}}\right)^{-\gamma_{I,n,1}} \left(\frac{\bar{\rho}{A_n^2}{s_{I,n}^2}}{{\sigma_n^2}{\gamma_{I,n,2}}}\right)^{-\gamma_{I,n,2}}}\le{1}}
+				\addConstraint{\bar{z}\prod_{m_P}{\left(\frac{g_{P,m_P}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\gamma_{P,m_P}}\right)^{-\gamma_{P,m_P}}}\le{1}}
+				\addConstraint{\rho+\bar{\rho}\le{1}}
+			\end{mini}
+			where $\gamma_{I,n,1},\gamma_{I,n,2} \ge 0$, $\gamma_{I,n,1}+\gamma_{I,n,2}=1$, $\gamma_{P,m_P} \ge 0,\forall m_P=1,\dots,M_P$ and $\sum_{{m_P}=1}^{M_P}{\gamma_{m_P}}=1$. As suggested in \cite{Clerckx2018b}, the tightness of the AM-GM inequality depends on $\{\gamma_{I,n},\gamma_P\}$ that require iterative update. At iteration $i$, we choose
+			\begin{align}
+				\gamma_{I,n,1}^{(i)} & =\frac{1}{1+\frac{\bar{\rho}^{(i-1)}{A_n^2}{s_{I,n}^{(i-1)}}^2}{\sigma_n^2}},                                                                         &  & n=1,\dots,N,    \\
+				\gamma_{I,n,2}^{(i)} & =\frac{\frac{\bar{\rho}^{(i-1)}{A_n^2}{s_{I,n}^{(i-1)}}^2}{\sigma_n^2}}{1+\frac{\bar{\rho}^{(i-1)}{A_n^2}{s_{I,n}^{(i-1)}}^2}{\sigma_n^2}},           &  & n=1,\dots,N,    \\
+				\gamma_{P,m_P}^{(i)} & =\frac{g_{P,m_P}(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}, &  & m_P=1,\dots,M_P
+			\end{align}
+			and then solve problem \ref{op:4}.
 		\end{subsubsection}
 
-		% To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that updates the phase shifts at the IRS and the information weight at the transmitter iteratively until convergence.
-		% The phase optimization problem is formed as follows. For a fixed information weight $\boldsymbol{w}_I$ and power-splitting ratio $\rho$, problem \ref{op:1} reduces to
-		% \begin{maxi}
-		% 	{\boldsymbol{v}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2}{\sigma_n^2}\right)}}{\label{op:temp}}{}
-		% 	% \addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
-		% 	\addConstraint{\lvert{v_l}\rvert=1,\quad l=1,\dots,L}
-		% \end{maxi}
-		Since $\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2=\lvert{h_{D,n}}\rvert^2+h_{D,n}^*\boldsymbol{\Phi}_n^H\boldsymbol{v}+\boldsymbol{v}^H\boldsymbol{\Phi}_n{h_{D,n}}+\boldsymbol{v}^H\boldsymbol{\Phi}\boldsymbol{\Phi}^H\boldsymbol{v}$, we introduce an auxiliary variable $t$ with unit modulus and transform \ref{op:1} to
-		\begin{maxi}
-			{\boldsymbol{w}_I,\boldsymbol{w}_P,\bar{\boldsymbol{v}},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2(\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}})}{\sigma_n^2}\right)}}{\label{op:temp1}}{}
-			\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
-			\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
-			\addConstraint{\lvert{\bar{v}_l}\rvert=1,\quad l=1,\dots,L+1}
-		\end{maxi}
-		where
-		\begin{equation}
-			\boldsymbol{R}=
-			\begin{bmatrix}
-				\boldsymbol{\Phi}_n\boldsymbol{\Phi}_n^H & \boldsymbol{\Phi}_n{h_{D,n}} \\
-				h_{D,n}^*{\boldsymbol{\Phi}_n^H}         & h_{D,n}^*{h_{D,n}}
-			\end{bmatrix},
-			\quad \bar{\boldsymbol{v}}=
-			\begin{bmatrix}
-				\boldsymbol{v} \\
-				t
-			\end{bmatrix}
-		\end{equation}
-		However, problem \ref{op:temp1} is still non-convex. We further define a rank-one positive semidefinite matrix $\boldsymbol{V}=\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H$ such that $\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})$. Hence, \ref{op:temp1} is transformed to
-		\begin{maxi}
-			{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{V},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
-			\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
-			\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
-			\addConstraint{\boldsymbol{V}_{l,l}=1,l=1,\dots,L+1}
-			\addConstraint{\boldsymbol{V}\succeq{0}}
-			\addConstraint{\mathrm{rank}(\boldsymbol{V})=1}
-		\end{maxi}
-		% To tackle the non-convex current constraint, we expand and rewrite the coupled channel terms in \ref{eq:z_k_truncated} as
-		% \begin{equation}
-		% 	\begin{split}
-		% 		{h_{n_3}^*}{h_{n_1}}
-		% 		&=(h_{D,n_3}^*+\boldsymbol{\Phi}_{n_3}^T\boldsymbol{v}^*)(h_{D,n_1}+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_1}^*})\\
-		% 		&={h_{D,n_1}}{h_{D,n_3}^*}+{h_{D,n_1}}\boldsymbol{\Phi}_{n_3}^T\boldsymbol{v}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_1}^*}h_{D,n_3}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_1}^*}\boldsymbol{\Phi}_{n_3}^T\boldsymbol{v}^*\\
-		% 		&=\bar{\boldsymbol{v}}^T\boldsymbol{R}_{n_3,n_1}\bar{\boldsymbol{v}}^*\\
-		% 		&=\mathrm{Tr}(\boldsymbol{R}_{n_3,n_1}\boldsymbol{V}^*)
-		% 	\end{split}
-		% \end{equation}
-		% where
-		% \begin{equation}
-		% 	\boldsymbol{R}_{n_3,n_1}=
-		% 	\begin{bmatrix}
-		% 		\boldsymbol{\Phi}_{n_1}^*\boldsymbol{\Phi}_{n_3}^T & \boldsymbol{\Phi}_{n_1}^*{h_{D,n_3}^*} \\
-		% 		h_{D,n_1}{\boldsymbol{\Phi}_{n_3}^T}               & h_{D,n_1}{h_{D,n_3}^*}
-		% 	\end{bmatrix}
-		% \end{equation}
-		% Similarly, we have ${h_{n_4}^*}{h_{n_2}}=\mathrm{Tr}(\boldsymbol{R}_{n_4,n_2}\boldsymbol{V}^*)$ and ${h_n^*}{h_n}=\mathrm{Tr}(\boldsymbol{R}_{n,n}\boldsymbol{V}^*)$. Thus, \ref{eq:z_k_truncated} is equivalent to
-		% \begin{figure*}[b]
-		% 	\hrule
-		% 	\begin{equation}\label{eq:z_k_su_temp}
-		% 		\begin{split}
-		% 			z
-		% 			&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}\sum_n{\mathrm{Tr}(\boldsymbol{R}_{n,n}\boldsymbol{V}^*)(\boldsymbol{w}_{I,n}^H\boldsymbol{w}_{I,n}+\boldsymbol{w}_{P,n}^H\boldsymbol{w}_{P,n})}\\
-		% 			&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}\mathrm{Tr}(\boldsymbol{R}_{n_3,n_1}\boldsymbol{V}^*)\mathrm{Tr}(\boldsymbol{R}_{n_4,n_2}\boldsymbol{V}^*)\left(2(\boldsymbol{w}_{I,n_3}^H\boldsymbol{w}_{I,n_1})(\boldsymbol{w}_{I,n_4}^H\boldsymbol{w}_{I,n_2})+(\boldsymbol{w}_{P,n_3}^H\boldsymbol{w}_{P,n_1})(\boldsymbol{w}_{P,n_4}^H\boldsymbol{w}_{P,n_2})\right)\\
-		% 			&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{\mathrm{Tr}(\boldsymbol{R}_{n,n}\boldsymbol{V}^*)^2(\boldsymbol{w}_{I,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{w}_{P,n}^H\boldsymbol{w}_{P,n})}
-		% 		\end{split}
-		% 	\end{equation}
-		% \end{figure*}
+		\begin{subsubsection}{Frequency-Flat IRS}
+			In contrast, frequency-flat IRS reflects all subbands equally with a DoF of $L$. We observe that
+			\begin{equation}
+				\begin{split}
+					\lvert{h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}}\rvert^2
+					&=\lvert{h_{D,n}}\rvert^2+h_{D,n}^*\boldsymbol{\Phi}_n^H\boldsymbol{v}+\boldsymbol{v}^H\boldsymbol{\Phi}_n{h_{D,n}}+\boldsymbol{v}^H\boldsymbol{\Phi}\boldsymbol{\Phi}^H\boldsymbol{v}\\
+					&=\bar{\boldsymbol{v}}^H\boldsymbol{R}\bar{\boldsymbol{v}}=\mathrm{Tr}(\boldsymbol{R}\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H)=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})
+				\end{split}
+			\end{equation}
+			where $t$ is an auxiliary variable with unit modulus and
+			\begin{equation}
+				\boldsymbol{R}=
+				\begin{bmatrix}
+					\boldsymbol{\Phi}_n\boldsymbol{\Phi}_n^H & \boldsymbol{\Phi}_n{h_{D,n}} \\
+					h_{D,n}^*{\boldsymbol{\Phi}_n^H}         & h_{D,n}^*{h_{D,n}}
+				\end{bmatrix},
+				\quad \bar{\boldsymbol{v}}=\
+				\begin{bmatrix}
+					\boldsymbol{v} \\
+					t
+				\end{bmatrix},
+				\quad \bar{\boldsymbol{V}}=\bar{\boldsymbol{v}}\bar{\boldsymbol{v}}^H
+			\end{equation}
+			Hence, \ref{op:1} is transformed to
+			\begin{maxi}
+				{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{V},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
+				\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
+				\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{V},\rho)\ge{\bar{z}}}
+				\addConstraint{\boldsymbol{V}_{l,l}=1,l=1,\dots,L+1}
+				\addConstraint{\boldsymbol{V}\succeq{0}}
+				\addConstraint{\mathrm{rank}(\boldsymbol{V})=1}
+			\end{maxi}
+			To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that iteratively updates the phase shifts and the waveforms with the other being fixed.
+
+			The phase optimization subproblem is formed as follows. For a given waveform $\boldsymbol{w}_I,\boldsymbol{w}_P,\rho$, problem \ref{op:temp3} reduces to
+			\begin{maxi}
+				{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
+				\addConstraint{z(\boldsymbol{V})\ge{\bar{z}}}
+				\addConstraint{\boldsymbol{V}_{l,l}=1,l=1,\dots,L+1}
+				\addConstraint{\boldsymbol{V}\succeq{0}}
+				\addConstraint{\mathrm{rank}(\boldsymbol{V})=1}
+			\end{maxi}
+
+			% To tackle the non-convex current constraint, we expand and rewrite the coupled channel terms in \ref{eq:z_k_truncated} as
+			% \begin{equation}
+			% 	\begin{split}
+			% 		{h_{n_3}^*}{h_{n_1}}
+			% 		&=(h_{D,n_3}^*+\boldsymbol{\Phi}_{n_3}^T\boldsymbol{v}^*)(h_{D,n_1}+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_1}^*})\\
+			% 		&={h_{D,n_1}}{h_{D,n_3}^*}+{h_{D,n_1}}\boldsymbol{\Phi}_{n_3}^T\boldsymbol{v}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_1}^*}h_{D,n_3}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_1}^*}\boldsymbol{\Phi}_{n_3}^T\boldsymbol{v}^*\\
+			% 		&=\bar{\boldsymbol{v}}^T\boldsymbol{R}_{n_3,n_1}\bar{\boldsymbol{v}}^*\\
+			% 		&=\mathrm{Tr}(\boldsymbol{R}_{n_3,n_1}\boldsymbol{V}^*)
+			% 	\end{split}
+			% \end{equation}
+			% where
+			% \begin{equation}
+			% 	\boldsymbol{R}_{n_3,n_1}=
+			% 	\begin{bmatrix}
+			% 		\boldsymbol{\Phi}_{n_1}^*\boldsymbol{\Phi}_{n_3}^T & \boldsymbol{\Phi}_{n_1}^*{h_{D,n_3}^*} \\
+			% 		h_{D,n_1}{\boldsymbol{\Phi}_{n_3}^T}               & h_{D,n_1}{h_{D,n_3}^*}
+			% 	\end{bmatrix}
+			% \end{equation}
+			% Similarly, we have ${h_{n_4}^*}{h_{n_2}}=\mathrm{Tr}(\boldsymbol{R}_{n_4,n_2}\boldsymbol{V}^*)$ and ${h_n^*}{h_n}=\mathrm{Tr}(\boldsymbol{R}_{n,n}\boldsymbol{V}^*)$. Thus, \ref{eq:z_k_truncated} is equivalent to
+			% \begin{figure*}[b]
+			% 	\hrule
+			% 	\begin{equation}\label{eq:z_k_su_temp}
+			% 		\begin{split}
+			% 			z
+			% 			&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}\sum_n{\mathrm{Tr}(\boldsymbol{R}_{n,n}\boldsymbol{V}^*)(\boldsymbol{w}_{I,n}^H\boldsymbol{w}_{I,n}+\boldsymbol{w}_{P,n}^H\boldsymbol{w}_{P,n})}\\
+			% 			&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}\mathrm{Tr}(\boldsymbol{R}_{n_3,n_1}\boldsymbol{V}^*)\mathrm{Tr}(\boldsymbol{R}_{n_4,n_2}\boldsymbol{V}^*)\left(2(\boldsymbol{w}_{I,n_3}^H\boldsymbol{w}_{I,n_1})(\boldsymbol{w}_{I,n_4}^H\boldsymbol{w}_{I,n_2})+(\boldsymbol{w}_{P,n_3}^H\boldsymbol{w}_{P,n_1})(\boldsymbol{w}_{P,n_4}^H\boldsymbol{w}_{P,n_2})\right)\\
+			% 			&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{\mathrm{Tr}(\boldsymbol{R}_{n,n}\boldsymbol{V}^*)^2(\boldsymbol{w}_{I,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{w}_{P,n}^H\boldsymbol{w}_{P,n})}
+			% 		\end{split}
+			% 	\end{equation}
+			% \end{figure*}
+		\end{subsubsection}
+
+
+
+
 
 		% ? AO: optimize phase shifts with given weights
 		Define waveform matrices $\boldsymbol{M}_I=\boldsymbol{w}_I^*\boldsymbol{w}_I^T$ and $\boldsymbol{M}_P=\boldsymbol{w}_P^*\boldsymbol{w}_P^T$. Also, let $\boldsymbol{M}_{I/P, n}$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}_{I/P}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_{I/P,0} \succeq 0$ and $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$ for $n{\ne}0$ \cite{Huang2017}. Therefore, \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_phase}.
@@ -349,46 +405,7 @@
 		% 	\phi_{I,n}^\star=\phi_{P,n}^\star=-\bar{\psi}_n
 		% \end{equation}
 
-		Once a feasible phase shift set is obtained, the original problem \ref{op:1} is reduced to
-		\begin{maxi}
-			% {\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)(A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n})^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
-			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)A_n^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
-			\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
-			\addConstraint{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)\ge{\bar{z}}}
-		\end{maxi}
-		\begin{figure*}[b]
-			\hrule
-			\begin{equation}\label{eq:z_gp}
-				\begin{split}
-					z
-					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}\sum_n{A_n^2(s_{I,n}^2+s_{P,n}^2)}+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{A_{n_1}A_{n_2}A_{n_3}A_{n_4}(2s_{I,n_1}s_{I,n_2}s_{I,n_3}s_{I,n_4}+s_{P,n_1}s_{P,n_2}s_{P,n_3}s_{P,n_4})}\\
-					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{{A_n^4}{s_{I,n}^2}{s_{P,n}^2}}
-				\end{split}
-			\end{equation}
-		\end{figure*}
-		with $z$ given by \ref{eq:z_gp}. It can be transformed to an equivalent problem by introducing an auxiliary variable $t_0$
-		\begin{mini}
-			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\frac{1}{t_0}}{\label{op:3}}{}
-			\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
-			\addConstraint{\frac{t_0}{\prod_{n}{\left(1+\frac{(1-\rho){A_n^2}{s_{I,n}^2}}{\sigma_n^2}\right)}}\le{1}}
-			\addConstraint{\frac{\bar{z}}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}\le{1}}
-		\end{mini}
-		\ref{op:3} is a Reversed Geometric Program which can be transformed to standard Geometric Program (GP). The basic idea is to decompose the information and power posynomials as sum of monomials, then derive their upper bounds using Arithmetic Mean-Geometric Mean (AM-GM) inequality \cite{Clerckx2018b,Chiang2005}. Let $z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)=\sum_{{m_P}=1}^{M_P}{g_{P,m_P}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}$, problem \ref{op:3} is equivalent to
-		% $1+\bar{\rho}{A_n^2}{s_{I,n}^2}/\sigma_n^2=\sum_{{m_{I,n}}=1}^{M_{I,n}}{g_{I,m_{I,n}}(\boldsymbol{s}_I,\bar{\rho})}$
-		\begin{mini}
-			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\frac{1}{t_0}}{\label{op:4}}{}
-			\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
-			\addConstraint{{t_0}\prod_{n}{\left(\frac{1}{\gamma_{I,n,1}}\right)^{-\gamma_{I,n,1}} \left(\frac{\bar{\rho}{A_n^2}{s_{I,n}^2}}{{\sigma_n^2}{\gamma_{I,n,2}}}\right)^{-\gamma_{I,n,2}}}\le{1}}
-			\addConstraint{\bar{z}\prod_{m_P}{\left(\frac{g_{P,m_P}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\gamma_{P,m_P}}\right)^{-\gamma_{P,m_P}}}\le{1}}
-			\addConstraint{\rho+\bar{\rho}\le{1}}
-		\end{mini}
-		where $\gamma_{I,n,1},\gamma_{I,n,2} \ge 0$, $\gamma_{I,n,1}+\gamma_{I,n,2}=1$, $\gamma_{P,m_P} \ge 0,\forall m_P=1,\dots,M_P$ and $\sum_{{m_P}=1}^{M_P}{\gamma_{m_P}}=1$. As suggested in \cite{Clerckx2018b}, the tightness of the AM-GM inequality depends on $\{\gamma_{I,n},\gamma_P\}$ that require iterative update. At iteration $i$, we choose
-		\begin{align}
-			\gamma_{I,n,1}^{(i)} & =\frac{1}{1+\frac{\bar{\rho}^{(i-1)}{A_n^2}{s_{I,n}^{(i-1)}}^2}{\sigma_n^2}},                                                                         &  & n=1,\dots,N,    \\
-			\gamma_{I,n,2}^{(i)} & =\frac{\frac{\bar{\rho}^{(i-1)}{A_n^2}{s_{I,n}^{(i-1)}}^2}{\sigma_n^2}}{1+\frac{\bar{\rho}^{(i-1)}{A_n^2}{s_{I,n}^{(i-1)}}^2}{\sigma_n^2}},           &  & n=1,\dots,N,    \\
-			\gamma_{P,m_P}^{(i)} & =\frac{g_{P,m_P}(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}, &  & m_P=1,\dots,M_P
-		\end{align}
-		and then solve problem \ref{op:4}.
+
 	\end{subsection}
 \end{section}
 
