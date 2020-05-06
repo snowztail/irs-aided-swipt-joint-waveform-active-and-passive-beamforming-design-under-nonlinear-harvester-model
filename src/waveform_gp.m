@@ -28,14 +28,15 @@ function [infoWaveform, powerWaveform, rate, current] = waveform_gp(k2, k4, resi
 
     nSubbands = size(compositeChannel, 1);
     isConverged = false;
-    isSolvable = true;
     current = NaN;
     rate = NaN;
     [channelAmplitude, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize(txPower, compositeChannel);
     [~, ~, rateExponent] = info_component(noisePower, channelAmplitude, infoAmplitude, infoRatio);
     [~, ~, currentExponent] = power_component(k2, k4, resistance, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);
 
-    while ~isConverged && isSolvable
+    counter = 0;
+    while ~isConverged
+        counter = counter + 1;
         cvx_begin gp
             cvx_solver mosek
             variable t
@@ -62,7 +63,7 @@ function [infoWaveform, powerWaveform, rate, current] = waveform_gp(k2, k4, resi
             break;
         end
 
-        isConverged = (current_ - current) <= tolerance;
+        isConverged = (current_ - current) <= tolerance || counter >= 1e2;
         rate = rate_;
         current = current_;
     end
