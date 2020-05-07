@@ -285,7 +285,7 @@
 				\addConstraint{\boldsymbol{V}\succeq{0}}
 				\addConstraint{\mathrm{rank}(\boldsymbol{V})=1}
 			\end{maxi}
-			To tackle the non-convex current constraint, we define waveform matrices $\boldsymbol{M}_{I/P}=\boldsymbol{w}_{I/P}^*\boldsymbol{w}_{I/P}^T$. On top of this, let $\boldsymbol{M}_{I/P, n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}_{I/P}$ and nulls the remaining entries. Therefore, the current expression \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_irs}.
+			To tackle the non-convex current constraint, we define waveform matrices $\boldsymbol{M}_{I/P}=\boldsymbol{w}_{I/P}^*\boldsymbol{w}_{I/P}^T$. On top of this, let $\boldsymbol{M}_{I/P, n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}_{I/P}$ and nulls the remaining entries. Therefore, the current expression \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_irs} with $\boldsymbol{h}=\boldsymbol{h}_D+\boldsymbol{\Phi}^H\boldsymbol{v} \in \mathbb{C}^{N \times 1}$ and $\boldsymbol{\Phi}^H=[\boldsymbol{\Phi}_1,\dots,\boldsymbol{\Phi}_N]^H \in \mathbb{C}^{N \times L}$.
 			\begin{figure*}[b]
 				\hrule
 				\begin{equation}\label{eq:z_k_irs}
@@ -299,7 +299,10 @@
 					\end{split}
 				\end{equation}
 			\end{figure*}
-			Introduce auxiliary variables $t_{I/P,n}=\boldsymbol{h}^H\boldsymbol{M}_{I/P,n}\boldsymbol{h}=\mathrm{Tr}()$ and we have $t_{I/P,n}t_{I/P,n}^*=t_{I/P,-n}t_{I/P,-n}^*$ by noticing $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$. Further define $\boldsymbol{t}_{I/P}=[t_{I/P,1},\dots,t_{I/P,N-1}]^T \in \mathbb{C}^{N-1}$.
+			Introduce auxiliary variables $t_{I/P,n}=\boldsymbol{h}^H\boldsymbol{M}_{I/P,n}\boldsymbol{h}=\mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{M}_{I/P,n})=\mathrm{Tr}(\boldsymbol{H}\boldsymbol{M}_{I/P,n})$
+
+
+			and we have $t_{I/P,n}t_{I/P,n}^*=t_{I/P,-n}t_{I/P,-n}^*$ by noticing $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$. Further define $\boldsymbol{t}_{I/P}=[t_{I/P,1},\dots,t_{I/P,N-1}]^T \in \mathbb{C}^{N-1}$.
 
 
 			% * It holds that $\boldsymbol{M}_{I/P,0} \succeq 0$ and $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$ for $n{\ne}0$.
