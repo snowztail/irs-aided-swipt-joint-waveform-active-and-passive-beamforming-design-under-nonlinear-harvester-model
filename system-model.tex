@@ -299,10 +299,23 @@
 					\end{split}
 				\end{equation}
 			\end{figure*}
-			Introduce auxiliary variables $t_{I/P,n}=\boldsymbol{h}^H\boldsymbol{M}_{I/P,n}\boldsymbol{h}=\mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{M}_{I/P,n})=\mathrm{Tr}(\boldsymbol{H}\boldsymbol{M}_{I/P,n})$
-
-
-			and we have $t_{I/P,n}t_{I/P,n}^*=t_{I/P,-n}t_{I/P,-n}^*$ by noticing $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$. Further define $\boldsymbol{t}_{I/P}=[t_{I/P,1},\dots,t_{I/P,N-1}]^T \in \mathbb{C}^{N-1}$.
+			Introduce auxiliary variables
+			\begin{equation}\label{eq:t}
+				\begin{split}
+					t_{I/P,n}
+					&=\boldsymbol{h}^H\boldsymbol{M}_{I/P,n}\boldsymbol{h}=\mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{M}_{I/P,n})\\
+					&=\mathrm{Tr}(\boldsymbol{R}^H\boldsymbol{V}\boldsymbol{R}\boldsymbol{M}_{I/P,n})
+				\end{split}
+			\end{equation}
+			where $\boldsymbol{R}^H=[\boldsymbol{\Phi}^H,\boldsymbol{h}_D] \in \mathbb{C}^{N \times (L+1)}$. It holds that $t_{I/P,n}t_{I/P,n}^*=t_{I/P,-n}t_{I/P,-n}^*$ because $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$. On top of this, define $\boldsymbol{t}_{I/P}=[t_{I/P,1},\dots,t_{I/P,N-1}]^T \in \mathbb{C}^{(N-1) \times 1}$ and rewrite \ref{eq:z_k_irs} as
+			\begin{equation}\label{eq:z_k_irs_t}
+				\begin{split}
+					z
+					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(t_{I,0}+t_{P,0})\\
+					&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}(2t_{I,0}t_{I,0}^*+t_{P,0}t_{P,0}^*+4\boldsymbol{t}_I^H\boldsymbol{t}_I+2\boldsymbol{t}_P^H\boldsymbol{t}_P)\\
+					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}t_{I,0}t_{P,0}
+				\end{split}
+			\end{equation}
 
 
 			% * It holds that $\boldsymbol{M}_{I/P,0} \succeq 0$ and $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$ for $n{\ne}0$.
