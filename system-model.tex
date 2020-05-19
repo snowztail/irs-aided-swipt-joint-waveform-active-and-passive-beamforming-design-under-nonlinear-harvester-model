@@ -279,13 +279,13 @@
 			% ? AO: optimize phase shifts with given waveform
 			The phase optimization subproblem is formed as follows. For a given waveform $\boldsymbol{w}_I,\boldsymbol{w}_P,\rho$, problem \ref{op:temp3} reduces to
 			\begin{maxi}
-				{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp3}}{}
+				{\boldsymbol{V}}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp4}}{}
 				\addConstraint{z(\boldsymbol{V})\ge{\bar{z}}}
 				\addConstraint{\boldsymbol{V}_{l,l}=1,l=1,\dots,L+1}
 				\addConstraint{\boldsymbol{V}\succeq{0}}
 				\addConstraint{\mathrm{rank}(\boldsymbol{V})=1}
 			\end{maxi}
-			To tackle the non-convex current constraint, we define waveform matrices $\boldsymbol{M}_{I/P}=\boldsymbol{w}_{I/P}^*\boldsymbol{w}_{I/P}^T$. On top of this, let $\boldsymbol{M}_{I/P, n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}_{I/P}$ and nulls the remaining entries. Therefore, the current expression \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_irs} with $\boldsymbol{h}=\boldsymbol{h}_D+\boldsymbol{\Phi}^H\boldsymbol{v} \in \mathbb{C}^{N \times 1}$ and $\boldsymbol{\Phi}^H=[\boldsymbol{\Phi}_1,\dots,\boldsymbol{\Phi}_N]^H \in \mathbb{C}^{N \times L}$.
+			To tackle the non-convex current constraint, we collect the channel matrices into $\boldsymbol{\Phi}^H=[\boldsymbol{\Phi}_1,\dots,\boldsymbol{\Phi}_N]^H \in \mathbb{C}^{N \times L}$ and $\boldsymbol{h}=\boldsymbol{h}_D+\boldsymbol{\Phi}^H\boldsymbol{v} \in \mathbb{C}^{N \times 1}$. The fixed waveform matrices are defined as $\boldsymbol{M}_{I/P}=\boldsymbol{w}_{I/P}^*\boldsymbol{w}_{I/P}^T$. On top of this, let $\boldsymbol{M}_{I/P, n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}_{I/P}$ and null the remaining entries. Due to the positive definiteness of $\boldsymbol{M}_{I/P}$, we have $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$. Hence, the output current expression \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_irs}.
 			\begin{figure*}[b]
 				\hrule
 				\begin{equation}\label{eq:z_k_irs}
@@ -294,28 +294,204 @@
 						&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(\boldsymbol{h}^H\boldsymbol{M}_{I,0}\boldsymbol{h}+\boldsymbol{h}^H\boldsymbol{M}_{P,0}\boldsymbol{h})\\
 						% &\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
 						% &\quad+\frac{3}{4}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_n}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
-						&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})^H+(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})^H}\\
+						&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{I,n}\boldsymbol{h})^*+(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{P,n}\boldsymbol{h})^*}\\
 						&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}{(\boldsymbol{h}^H\boldsymbol{M}_{I,0}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{M}_{P,0}\boldsymbol{h})}
 					\end{split}
 				\end{equation}
 			\end{figure*}
-			Introduce auxiliary variables
+			We further simplify it by introducing auxiliary variables
 			\begin{equation}\label{eq:t}
 				\begin{split}
 					t_{I/P,n}
-					&=\boldsymbol{h}^H\boldsymbol{M}_{I/P,n}\boldsymbol{h}=\mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{M}_{I/P,n})\\
-					&=\mathrm{Tr}(\boldsymbol{R}^H\boldsymbol{V}\boldsymbol{R}\boldsymbol{M}_{I/P,n})
+					&=\boldsymbol{h}^H\boldsymbol{M}_{I/P,n}\boldsymbol{h}\\
+					&=\mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{M}_{I/P,n})\\
+					&=\mathrm{Tr}(\boldsymbol{R}^H\boldsymbol{V}\boldsymbol{R}\boldsymbol{M}_{I/P,n})\\
+					&=\mathrm{Tr}(\boldsymbol{R}\boldsymbol{M}_{I/P,n}\boldsymbol{R}^H\boldsymbol{V})\\
+					&=\mathrm{Tr}(\boldsymbol{C}_{I/P,n}\boldsymbol{V})
 				\end{split}
 			\end{equation}
-			where $\boldsymbol{R}^H=[\boldsymbol{\Phi}^H,\boldsymbol{h}_D] \in \mathbb{C}^{N \times (L+1)}$. It holds that $t_{I/P,n}t_{I/P,n}^*=t_{I/P,-n}t_{I/P,-n}^*$ because $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$. On top of this, define $\boldsymbol{t}_{I/P}=[t_{I/P,1},\dots,t_{I/P,N-1}]^T \in \mathbb{C}^{(N-1) \times 1}$ and rewrite \ref{eq:z_k_irs} as
+			where $\boldsymbol{R}^H=[\boldsymbol{\Phi}^H,\boldsymbol{h}_D] \in \mathbb{C}^{N \times (L+1)}$ and $\boldsymbol{C}_{I/P,n}=\boldsymbol{R}\boldsymbol{M}_{I/P,n}\boldsymbol{R}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Therefore, \ref{eq:z_k_irs} rewrites as
 			\begin{equation}\label{eq:z_k_irs_t}
 				\begin{split}
 					z
 					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(t_{I,0}+t_{P,0})\\
-					&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}(2t_{I,0}t_{I,0}^*+t_{P,0}t_{P,0}^*+4\boldsymbol{t}_I^H\boldsymbol{t}_I+2\boldsymbol{t}_P^H\boldsymbol{t}_P)\\
+					&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2t_{I,n}t_{I,n}^*+t_{P,n}t_{P,n}^*}\\
 					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}t_{I,0}t_{P,0}
 				\end{split}
 			\end{equation}
+
+			% It holds that $t_{I/P,n}^*t_{I/P,n}=t_{I/P,-n}^*t_{I/P,-n}$ since $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$. On top of this, denote $\boldsymbol{t}_{I/P}=[t_{I/P,1},\dots,t_{I/P,N-1}]^T \in \mathbb{C}^{(N-1) \times 1}$ and rewrite \ref{eq:z_k_irs} as
+			% \begin{equation}\label{eq:z_k_irs_t}
+			% 	\begin{split}
+			% 		z
+			% 		&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(t_{I,0}+t_{P,0})\\
+			% 		&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}(2t_{I,0}^*t_{I,0}+t_{P,0}^*t_{P,0}+4\boldsymbol{t}_I^H\boldsymbol{t}_I+2\boldsymbol{t}_P^H\boldsymbol{t}_P)\\
+			% 		&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}t_{I,0}t_{P,0}
+			% 	\end{split}
+			% \end{equation}
+			We use first-order Taylor expansion to approximate the second-order terms in \ref{eq:z_k_irs_t}. Based on the variables optimized at iteration $k - 1$, the local approximations at iteration $k$ are \cite{Adali2010}
+			\begin{equation}
+				\begin{split}
+					t_{I/P,n}^{(k)} (t_{I/P,n}^{(k)})^*
+					& \approx 2 \Re\left\{t_{I/P,n}^{(k)} (t_{I/P,n}^{(k-1)})^*\right\} - t_{I/P,n}^{(k-1)} (t_{I/P,n}^{(k-1)})^* \\
+					& = 2 \Re \left\{\mathrm{Tr}\left((t_{I/P,n}^{(k-1)})^*\boldsymbol{C}_{I/P,n}\boldsymbol{V}^{(k)}\right)\right\} - t_{I/P,n}^{(k-1)} (t_{I/P,n}^{(k-1)})^*\\
+					& = \mathrm{Tr}\left((t_{I/P,n}^{(k-1)})^*\boldsymbol{C}_{I/P,n}\boldsymbol{V}^{(k)}\right) + \mathrm{Tr}(t_{I/P,n}^{(k-1)}\boldsymbol{C}_{I/P,n}^H\boldsymbol{V}^{(k)})\\
+					& \quad- t_{I/P,n}^{(k-1)} (t_{I/P,n}^{(k-1)})^*
+				\end{split}
+			\end{equation}
+			and
+			\begin{equation}
+				\begin{split}
+					t_{I,0}^{(k)} t_{P,0}^{(k)}
+					& \approx t_{I,0}^{(k)} t_{P,0}^{(k-1)} + t_{I,0}^{(k-1)} t_{P,0}^{(k)} - t_{I,0}^{(k-1)} t_{P,0}^{(k-1)}\\
+					& = \mathrm{Tr}(t_{P,0}^{(k-1)}\boldsymbol{C}_{I,0}\boldsymbol{V}^{(k)}) + \mathrm{Tr}(t_{I,0}^{(k-1)}\boldsymbol{C}_{P,0}\boldsymbol{V}^{(k)}) - t_{I,0}^{(k-1)} t_{P,0}^{(k-1)}
+				\end{split}
+			\end{equation}
+			The second approximation holds since $t_{I/P,0}$ are real. Therefore, we have
+			\begin{equation}\label{eq:z_irs_approx}
+				\begin{split}
+					\tilde{z}(\boldsymbol{V}^{(k)})
+					& = \mathrm{Tr}(\boldsymbol{A}^{(k)}\boldsymbol{V}^{(k)}) \\
+					& - \frac{3 k_4 \rho^2 R_{\text{ant}}^2}{8} \sum_{n=-N+1}^{N-1} 2t_{I,n}^{(k-1)} (t_{I,n}^{(k-1)})^* + t_{P,n}^{(k-1)} (t_{P,n}^{(k-1)})^* \\
+					& - \frac{3{k_4}{\rho^2}{R_{\text{ant}}^2}}{2} t_{I,0}^{(k-1)} t_{P,0}^{(k-1)}
+				\end{split}
+			\end{equation}
+			where the Hermitian matrix $\boldsymbol{A}^{(k)}$ is
+			\begin{equation}\label{eq:A_k}
+				\begin{split}
+					\boldsymbol{A}^{(k)}
+					& = \frac{k_2 \rho R_{\text{ant}}}{2}(\boldsymbol{C}_{I,0}+\boldsymbol{C}_{P,0})\\
+					& \quad+ \frac{3 k_4 \rho^2 R_{\text{ant}}^2}{8}\sum_{n=-N+1}^{N-1} 2\left((t_{I,n}^{(k-1)})^*\boldsymbol{C}_{I,n} + t_{I,n}^{(k-1)}\boldsymbol{C}_{I,n}^H\right)\\
+					& \quad \quad + \left((t_{P,n}^{(k-1)})^*\boldsymbol{C}_{P,n} + t_{P,n}^{(k-1)}\boldsymbol{C}_{P,n}^H\right)\\
+					& \quad+ \frac{3{k_4}{\rho^2}{R_{\text{ant}}^2}}{2} (t_{P,0}^{(k-1)}\boldsymbol{C}_{I,0} + t_{I,0}^{(k-1)}\boldsymbol{C}_{P,0})
+				\end{split}
+			\end{equation}
+			Plug \ref{eq:z_irs_approx} into problem \ref{op:temp4} and solve it by iterative interior-point method. Denote the optimal IRS matrix as $\boldsymbol{V}^{\star}$. If $\mathrm{rank}(\boldsymbol{V}^{\star})=1$, the optimal phase shift vector $\bar{\boldsymbol{v}}^\star$ is attained by eigenvalue decomposition (EVD). Otherwise, a best feasible candidate $\bar{\boldsymbol{v}}^\star$ can be extracted through Gaussian randomization method \cite{Huang2010}. First, we perform EVD on $\boldsymbol{V}^{\star}$ as $\boldsymbol{V}^{\star}=\boldsymbol{U}_{\boldsymbol{V}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{V}^{\star}}\boldsymbol{U}_{\boldsymbol{V}^{\star}}^H$. Then, we generate $R$ random CSCG vectors $\boldsymbol{r}_r \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ r=1,\dots,R$ and construct the corresponding candidates $\bar{\boldsymbol{v}}_r=\boldsymbol{U}_{\boldsymbol{V}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{V}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_r$. Next, the optimal solution $\bar{\boldsymbol{v}}^\star$ is approximated by the one achieving maximum objective value of \ref{op:temp4}. Finally, we can retrieve the phase shift as $\theta_l=\arg(v_l^\star/v_{L+1}^\star)$. The algorithm for the phase optimization subproblem is summarized in Algorithm \ref{alg:irs}.
+
+			\begin{algorithm}
+				\caption{IRS Optimization}
+				\label{alg:irs}
+				\begin{algorithmic}[1]
+					\State \textbf{Input} $\boldsymbol{w}_I,\boldsymbol{w}_P,\rho$
+					\State \textbf{Initialize} $k=0$, $\boldsymbol{V}^{(0)}$, $t_{I/P,n}^{(0)} \ \forall n$
+					\Repeat
+					\State $k = k + 1$
+					\State Update SDR matrix $\boldsymbol{A}^{(k)}$ by \ref{eq:A_k}
+					\State Obtain IRS matrix $\boldsymbol{V}^{(k)}$ by solving problem \ref{op:temp4}
+					\State Update auxiliary $t_{I/P,n}^{(k)} \forall n$ by \ref{eq:t} for SCA
+					% \Until $\lVert \boldsymbol{V}^{(k)} - \boldsymbol{V}^{(k - 1)} \rVert_F / \lVert \boldsymbol{V}^{(k)} \rVert_F \le \epsilon$
+					\Until $R^{(k)}-R^{(k-1)} \le \epsilon$
+					\State Generate CSCG random vectors $\boldsymbol{r}_r \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}) \ \forall r$
+					\State Perform EVD $\boldsymbol{V}^{\star}=\boldsymbol{U}_{\boldsymbol{V}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{V}^{\star}}\boldsymbol{U}_{\boldsymbol{V}^{\star}}^H$
+					\State Construct candidate IRS vectors $\bar{\boldsymbol{v}}_r=\boldsymbol{U}_{\boldsymbol{V}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{V}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_r \forall r$ and corresponding matrices $\boldsymbol{V}_r=\bar{\boldsymbol{v}}_r\bar{\boldsymbol{v}}_r^H  \ \forall r$
+					\State Select the best solution $\boldsymbol{V}_r^\star$ for problem \ref{op:temp4} and corresponding $\boldsymbol{v}_r^\star$
+					\State Compute IRS phase shift by $\theta_l=\arg(v_l^\star/v_{L+1}^\star) \ \forall l$
+					\State \textbf{Output} $\theta_l, l = 1 , \dots L$
+				\end{algorithmic}
+			\end{algorithm}
+
+			The waveform optimization subproblem is formed as follows. For a given $\boldsymbol{V}$, problem \ref{op:temp3} reduces to
+			\begin{maxi}
+				{\boldsymbol{w}_I,\boldsymbol{w}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{V})}{\sigma_n^2}\right)}}{\label{op:temp5}}{}
+				\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
+				\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\rho)\ge{\bar{z}}}
+			\end{maxi}
+			Similarly, define $\boldsymbol{M}=\boldsymbol{h}^*\boldsymbol{h}^T$ and let $\boldsymbol{M}_n$ keep the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}$ and null the remaining entries. Since $\boldsymbol{M} \succ 0$, we have $\boldsymbol{M}_{-n}=\boldsymbol{M}_n^H$. Hence, \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_waveform}.
+			\begin{figure*}[b]
+				\hrule
+				\begin{equation}\label{eq:z_k_waveform}
+					\begin{split}
+						z
+						&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(\boldsymbol{w}_I^H\boldsymbol{M}_0\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{M}_0\boldsymbol{w}_P)\\
+						&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2(\boldsymbol{w}_I^H\boldsymbol{M}_{n}\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{M}_{n}\boldsymbol{w}_I)^*+(\boldsymbol{w}_P^H\boldsymbol{M}_{n}\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{M}_{n}\boldsymbol{w}_P)^*}\\
+						&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}{(\boldsymbol{w}_I^H\boldsymbol{M}_{0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{M}_{0}\boldsymbol{w}_P)}
+					\end{split}
+				\end{equation}
+			\end{figure*}
+			Introduce auxiliary variables
+			\begin{equation}\label{eq:t'}
+				\begin{split}
+					t'_{I/P,n}
+					& = \boldsymbol{w}_{I/P}^H\boldsymbol{M}_{n}\boldsymbol{w}_{I/P}\\
+					& = \mathrm{Tr}(\boldsymbol{M}_{n}\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H)\\
+					& = \mathrm{Tr}(\boldsymbol{M}_{n}\boldsymbol{W}_{I/P})
+				\end{split}
+			\end{equation}
+			where $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$. Therefore, \ref{eq:z_k_waveform} rewrites as
+			\begin{equation}\label{eq:z_k_waveform_t}
+				\begin{split}
+					z
+					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(t'_{I,0}+t'_{P,0})\\
+					&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2t'_{I,n}t_{I,n}^{\prime \ *}+t'_{P,n}t_{P,n}^{\prime \ *}}\\
+					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}t'_{I,0}t'_{P,0}
+				\end{split}
+			\end{equation}
+			At iteration $k$, the second-order terms are approximated by first-order Taylor series as
+			\begin{equation}
+				\begin{split}
+					t_{I/P,n}^{\prime \ (k)} (t_{I/P,n}^{\prime \ (k)})^*
+					& \approx 2 \Re\left\{t_{I/P,n}^{\prime \ (k)} (t_{I/P,n}^{\prime (k-1)})^*\right\} - t_{I/P,n}^{\prime (k-1)} (t_{I/P,n}^{\prime (k-1)})^* \\
+					& = 2 \Re \left\{\mathrm{Tr}((t_{I/P,n}^{\prime (k-1)})^*\boldsymbol{M}_{n}\boldsymbol{W}_{I/P}^{(k)})\right\} - t_{I/P,n}^{\prime (k-1)} (t_{I/P,n}^{\prime (k-1)})^*\\
+					& = \mathrm{Tr}\left((t_{I/P,n}^{\prime (k-1)})^*\boldsymbol{M}_{n}\boldsymbol{W}_{I/P}^{(k)}\right) + \mathrm{Tr}(t_{I/P,n}^{\prime (k-1)}\boldsymbol{M}_{n}^H\boldsymbol{W}_{I/P}^{(k)})\\
+					& \quad- t_{I/P,n}^{\prime (k-1)} (t_{I/P,n}^{\prime (k-1)})^*
+				\end{split}
+			\end{equation}
+			and
+			\begin{equation}
+				\begin{split}
+					t_{I,0}^{\prime \ (k)} t_{P,0}^{\prime \ (k)}
+					& \approx t_{I,0}^{\prime \ (k)} t_{P,0}^{\prime (k-1)} + t_{I,0}^{\prime (k-1)} t_{P,0}^{\prime \ (k)} - t_{I,0}^{\prime (k-1)} t_{P,0}^{\prime (k-1)}\\
+					& = \mathrm{Tr}\left(t_{P,0}^{\prime (k-1)}\boldsymbol{M}_{0}\boldsymbol{W}_{I,0}^{(k)}\right) + \mathrm{Tr}(t_{I,0}^{\prime (k-1)}\boldsymbol{M}_{0}\boldsymbol{W}_{P,0}^{(k)}) - t_{I,0}^{\prime (k-1)} t_{P,0}^{\prime (k-1)}
+				\end{split}
+			\end{equation}
+			Therefore, we have
+			\begin{equation}\label{eq:z_waveform_approx}
+				\begin{split}
+					\tilde{z}(\boldsymbol{W}_I^{(k)},\boldsymbol{W}_P^{(k)},\rho^{(k-1)})
+					& = \mathrm{Tr}(\boldsymbol{A}_I^{(k)}\boldsymbol{W}_I^{(k)}) + \mathrm{Tr}(\boldsymbol{A}_P^{(k)}\boldsymbol{W}_P^{(k)}) \\
+					& - \frac{3 k_4 (\rho^{(k-1)})^2 R_{\text{ant}}^2}{8} \sum_{n=-N+1}^{N-1} 2t_{I,n}^{\prime (k-1)} (t_{I,n}^{\prime (k-1)})^* + t_{P,n}^{\prime (k-1)} (t_{P,n}^{\prime (k-1)})^* \\
+					& - \frac{3{k_4}{(\rho^{(k-1)})^2}{R_{\text{ant}}^2}}{2} t_{I,0}^{\prime (k-1)} t_{P,0}^{\prime (k-1)}
+				\end{split}
+			\end{equation}
+			where the Hermitian matrices $\boldsymbol{A}_I^{(k)}$ and $\boldsymbol{A}_P^{(k)}$ are
+			\begin{equation}\label{eq:A_I,k}
+				\begin{split}
+					\boldsymbol{A}_I^{(k)}
+					& = \frac{k_2 \rho^{(k-1)} R_{\text{ant}}}{2}\boldsymbol{M}_0 \\
+					& + \frac{3 k_4 (\rho^{(k-1)})^2 R_{\text{ant}}^2}{8} \sum_{n=-N+1}^{N-1} 2\left((t_{I,n}^{\prime (k-1)})^*\boldsymbol{M}_{n} + t_{I,n}^{\prime (k-1)}\boldsymbol{M}_{n}^H\right) \\
+					& + \frac{3{k_4}{(\rho^{(k-1)})^2}{R_{\text{ant}}^2}}{2} t_{P,0}^{\prime (k-1)}\boldsymbol{M}_{0}
+				\end{split}
+			\end{equation}
+			\begin{equation}\label{eq:A_P,k}
+				\begin{split}
+					\boldsymbol{A}_P^{(k)}
+					& = \frac{k_2 \rho^{(k-1)} R_{\text{ant}}}{2}\boldsymbol{M}_0 \\
+					& + \frac{3 k_4 (\rho^{(k-1)})^2 R_{\text{ant}}^2}{8} \sum_{n=-N+1}^{N-1} (t_{P,n}^{\prime (k-1)})^*\boldsymbol{M}_{n} + t_{P,n}^{\prime (k-1)}\boldsymbol{M}_{n}^H \\
+					& + \frac{3{k_4}{(\rho^{(k-1)})^2}{R_{\text{ant}}^2}}{2} t_{I,0}^{\prime (k-1)}\boldsymbol{M}_{0}
+				\end{split}
+			\end{equation}
+			Plug \ref{eq:z_waveform_approx} into problem \ref{op:temp5} and solve it by iterative interior-point method. Given the optimal waveform matrices $\boldsymbol{W}_I$ and $\boldsymbol{W}_P$, the best rank-1 solution $\boldsymbol{w}_I$ and $\boldsymbol{w}_P$ can be obtained through randomization method. Details are omitted here. The algorithm for the waveform optimization subproblem is summarized in Algorithm ~.
+
+			\begin{algorithm}
+				\caption{Waveform Optimization}
+				\label{alg:waveform}
+				\begin{algorithmic}[1]
+					\State \textbf{Input} $\boldsymbol{V}$
+					\State \textbf{Initialize} $k=0$, $\boldsymbol{w}_{I/P}^{(0)}$, $\rho^{(0)}$, $t_{I/P,n}^{\prime (0)} \ \forall n$
+					\Repeat
+					\State $k = k + 1$
+					\State Update SDR matrices $\boldsymbol{A}_{I/P}^{(k)}$ by \ref{eq:A_I,k} and \ref{eq:A_P,k}
+					\State Obtain waveform matrices $\boldsymbol{W}_{I/P}^{(k)}$ and $\rho^{(k)}$ by solving problem \ref{op:temp5}
+					\State Update auxiliary $t_{I/P,n}^{\prime (k)} \forall n$ by \ref{eq:t'} for SCA
+					% \Until $\lVert \boldsymbol{W}_I^{(k)} - \boldsymbol{W}_I^{(k - 1)} \rVert_F / \lVert \boldsymbol{W}_I^{(k)} \rVert_F \le \epsilon$
+					\Until $R^{(k)}-R^{(k-1)} \le \epsilon$
+					\State Generate CSCG random vectors $\boldsymbol{r}_r \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{N}) \ \forall r$
+					\State Perform EVD $\boldsymbol{W}_{I/P}^{\star}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}^H$
+					\State Construct candidate waveform vectors $\boldsymbol{w}_{I/P,r}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_r \ \forall r$ and corresponding matrices $\boldsymbol{W}_{I/P,r}=\boldsymbol{w}_{I/P,r}\boldsymbol{w}_{I/P,r}^H  \ \forall r$
+					\State Select the best solution pair $\boldsymbol{W}_{I,r}^\star, \boldsymbol{W}_{P,r}^\star$ for problem \ref{op:temp5} and corresponding $\boldsymbol{w}_{I,r}^\star, \boldsymbol{w}_{P,r}^\star$
+					\State \textbf{Output} $\boldsymbol{w}_I^\star, \boldsymbol{w}_P^\star, \rho^\star$
+				\end{algorithmic}
+			\end{algorithm}
 
 
 			% * It holds that $\boldsymbol{M}_{I/P,0} \succeq 0$ and $\boldsymbol{M}_{I/P,-n}=\boldsymbol{M}_{I/P,n}^H$ for $n{\ne}0$.
@@ -353,49 +529,49 @@
 		\end{subsubsection}
 
 
-		% ? AO: optimize weights with given phase shifts
-		To tackle the non-convex current constraint, we introduce a channel matrix $\boldsymbol{M}=\boldsymbol{h}^*\boldsymbol{h}^T \in \mathbb{C}^{N \times N}$ whose $(n_1,n_2)$ entry equals
-		\begin{equation}
-			\begin{split}
-				{h_{n_1}^*}{h_{n_2}}
-				&=(h_{D,n_1}^*+\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*)(h_{D,n_2}+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*})\\
-				&={h_{D,n_2}}{h_{D,n_1}^*}+{h_{D,n_2}}\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*}h_{D,n_1}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*}\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*\\
-				&=\bar{\boldsymbol{v}}^T\boldsymbol{R}_{n_1,n_2}\bar{\boldsymbol{v}}^*\\
-				&=\mathrm{Tr}(\boldsymbol{R}_{n_1,n_2}\boldsymbol{V}^*)
-			\end{split}
-		\end{equation}
-		where
-		\begin{equation}
-			\boldsymbol{R}_{n_1,n_2}=
-			\begin{bmatrix}
-				\boldsymbol{\Phi}_{n_2}^*\boldsymbol{\Phi}_{n_1}^T & \boldsymbol{\Phi}_{n_2}^*{h_{D,n_1}^*} \\
-				h_{D,n_2}{\boldsymbol{\Phi}_{n_1}^T}               & h_{D,n_2}{h_{D,n_1}^*}
-			\end{bmatrix}
-		\end{equation}
-		On top of this, $\boldsymbol{M}_n$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_0 \succeq 0$ and $\boldsymbol{M}_{-n}=\boldsymbol{M}_{n}^H$ for $n{\ne}0$ \cite{Huang2017}. Therefore, \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_waveform}.
-		\begin{figure*}[b]
-			\hrule
-			\begin{equation}\label{eq:z_k_waveform}
-				\begin{split}
-					z
-					&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(\boldsymbol{w}_I^H\boldsymbol{M}_0\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{M}_0\boldsymbol{w}_P)\\
-					% &\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
-					% &\quad+\frac{3}{4}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_n}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
-					&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2(\boldsymbol{w}_I^H\boldsymbol{M}_n\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{M}_n\boldsymbol{w}_I)^H+(\boldsymbol{w}_P^H\boldsymbol{M}_n\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{M}_n\boldsymbol{w}_P)^H}\\
-					&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}{(\boldsymbol{w}_I^H\boldsymbol{M}_0\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{M}_0\boldsymbol{w}_P)}
-				\end{split}
-			\end{equation}
-		\end{figure*}
-		We then introduce auxiliary vectors $\boldsymbol{t}_{I/P}=[t_{{I/P},0},\dots,t_{{I/P},N-1}]^T \in \mathbb{C}^{N \times 1}$ with $t_{{I/P},n}=\boldsymbol{w}_{I/P}^H\boldsymbol{M}_n\boldsymbol{w}_{I/P}=\mathrm{Tr}(\boldsymbol{M}_n\boldsymbol{W}_{I/P})$ and transform \ref{eq:z_k_waveform} to
-		% and define coefficient matrix $\boldsymbol{A}_0=\mathrm{diag}\{\}$
-		\begin{equation}\label{eq:z_k_su_compact}
-			\begin{split}
-				z
-				&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(t_{I,0}+t_{P,0})\\
-				&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}(4\boldsymbol{t}_I^H\boldsymbol{t}_I+2\boldsymbol{t}_P^H\boldsymbol{t}_P-2t_{I,0}t_{I,0}^*-t_{P,0}t_{P,0}^*)\\
-				&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}t_{I,0}t_{P,0}
-			\end{split}
-		\end{equation}
+		% % ? AO: optimize weights with given phase shifts
+		% To tackle the non-convex current constraint, we introduce a channel matrix $\boldsymbol{M}=\boldsymbol{h}^*\boldsymbol{h}^T \in \mathbb{C}^{N \times N}$ whose $(n_1,n_2)$ entry equals
+		% \begin{equation}
+		% 	\begin{split}
+		% 		{h_{n_1}^*}{h_{n_2}}
+		% 		&=(h_{D,n_1}^*+\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*)(h_{D,n_2}+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*})\\
+		% 		&={h_{D,n_2}}{h_{D,n_1}^*}+{h_{D,n_2}}\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*}h_{D,n_1}^*+\boldsymbol{v}^T{\boldsymbol{\Phi}_{n_2}^*}\boldsymbol{\Phi}_{n_1}^T\boldsymbol{v}^*\\
+		% 		&=\bar{\boldsymbol{v}}^T\boldsymbol{R}_{n_1,n_2}\bar{\boldsymbol{v}}^*\\
+		% 		&=\mathrm{Tr}(\boldsymbol{R}_{n_1,n_2}\boldsymbol{V}^*)
+		% 	\end{split}
+		% \end{equation}
+		% where
+		% \begin{equation}
+		% 	\boldsymbol{R}_{n_1,n_2}=
+		% 	\begin{bmatrix}
+		% 		\boldsymbol{\Phi}_{n_2}^*\boldsymbol{\Phi}_{n_1}^T & \boldsymbol{\Phi}_{n_2}^*{h_{D,n_1}^*} \\
+		% 		h_{D,n_2}{\boldsymbol{\Phi}_{n_1}^T}               & h_{D,n_2}{h_{D,n_1}^*}
+		% 	\end{bmatrix}
+		% \end{equation}
+		% On top of this, $\boldsymbol{M}_n$ keeps the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{M}$ and nulls the remaining entries. It holds that $\boldsymbol{M}_0 \succeq 0$ and $\boldsymbol{M}_{-n}=\boldsymbol{M}_{n}^H$ for $n{\ne}0$ \cite{Huang2017}. Therefore, \ref{eq:z_k_truncated} is transformed to \ref{eq:z_k_waveform}.
+		% \begin{figure*}[b]
+		% 	\hrule
+		% 	\begin{equation}\label{eq:z_k_waveform}
+		% 		\begin{split}
+		% 			z
+		% 			&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(\boldsymbol{w}_I^H\boldsymbol{M}_0\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{M}_0\boldsymbol{w}_P)\\
+		% 			% &\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
+		% 			% &\quad+\frac{3}{4}{k_4}{\rho^2}{R_{\text{ant}}^2}\left({\boldsymbol{w}_I^H\boldsymbol{M}_n}\boldsymbol{w}_I({\boldsymbol{w}_I^H\boldsymbol{M}_0}\boldsymbol{w}_I)^H+{\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P({\boldsymbol{w}_P^H\boldsymbol{M}_0}\boldsymbol{w}_P)^H\right)
+		% 			&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{n=-N+1}^{N-1}{2(\boldsymbol{w}_I^H\boldsymbol{M}_n\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{M}_n\boldsymbol{w}_I)^H+(\boldsymbol{w}_P^H\boldsymbol{M}_n\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{M}_n\boldsymbol{w}_P)^H}\\
+		% 			&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}{(\boldsymbol{w}_I^H\boldsymbol{M}_0\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{M}_0\boldsymbol{w}_P)}
+		% 		\end{split}
+		% 	\end{equation}
+		% \end{figure*}
+		% We then introduce auxiliary vectors $\boldsymbol{t}_{I/P}=[t_{{I/P},0},\dots,t_{{I/P},N-1}]^T \in \mathbb{C}^{N \times 1}$ with $t_{{I/P},n}=\boldsymbol{w}_{I/P}^H\boldsymbol{M}_n\boldsymbol{w}_{I/P}=\mathrm{Tr}(\boldsymbol{M}_n\boldsymbol{W}_{I/P})$ and transform \ref{eq:z_k_waveform} to
+		% % and define coefficient matrix $\boldsymbol{A}_0=\mathrm{diag}\{\}$
+		% \begin{equation}\label{eq:z_k_su_compact}
+		% 	\begin{split}
+		% 		z
+		% 		&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}(t_{I,0}+t_{P,0})\\
+		% 		&\quad+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}(4\boldsymbol{t}_I^H\boldsymbol{t}_I+2\boldsymbol{t}_P^H\boldsymbol{t}_P-2t_{I,0}t_{I,0}^*-t_{P,0}t_{P,0}^*)\\
+		% 		&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}t_{I,0}t_{P,0}
+		% 	\end{split}
+		% \end{equation}
 
 
 
