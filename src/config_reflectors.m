@@ -29,17 +29,17 @@ centerFrequency = 5.18e9;
 bandwidth = 1e6;
 % number of frequency bands
 nSubbands = 4;
-% channel fading type ('flat' or 'selective')
-fadingType = 'selective';
+% channel fading mode ("flat" or "selective")
+fadingMode = "selective";
 % carrier frequency
-[carrierFrequency] = carrier_frequency(centerFrequency, bandwidth, nSubbands);
-% IRS gain on each reflecting element
+[subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
+% gain on each reflecting element
 irsGain = db2pow(3);
 
 %% * Algorithm
-% rate constraint per subband
-rateConstraint = 0: 10;
-% minimum current gain per iteration
+% output DC current constraint
+currentConstraint = 0;
+% minimum rate increase per iteration
 tolerance = 1e-8;
 
 %% * Variables

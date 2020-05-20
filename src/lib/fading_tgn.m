@@ -1,29 +1,29 @@
-function [fading] = channel_tgn_e(nTxs, nSubbands, nUsers, carrierFrequency, fadingType)
+function [fading] = fading_tgn(nSubbands, subbandFrequency, fadingMode)
     % Function:
     %   - simulate channel using the power delay profile of the IEEE TGn NLOS channel model E
     %
-    % InputArg(s):
-    %   - pathloss [\boldsymbol{\Lambda}] (1 * nUsers): large-scale channel strength reduction
-    %   - nTxs [M]: number of transmit antennas
-    %   - nSubbands [N]: number of subbands/subcarriers
-    %   - nUsers [K]: number of users
-    %   - carrierFrequency: center frequency at each subband
-    %   - fadingType: "flat" or "selective"
+    % Input:
+    %   - nTxs: number of transmit antennas
+    %   - nRxs: number of receive antennas
+    %   - nSubbands (N): number of subbands
+    %   - subbandFrequency (f_n): the center frequency of subbands
+    %   - fadingMode: fading mode "flat" or "selective"
     %
-    % OutputArg(s):
-    %   - fading [\boldsymbol{h}] (nTxs * nSubbands * nUsers): fading at each subband
+    % Output:
+    %   - fading (\boldsymbol{h}) (nTxs * nRxs * nSubbands): fading at each subband
     %
-    % Comment(s):
-    %   - assume single receive antenna
+    % Comment:
+    %   - for single-user MIMO
     %   - the model only considers power delay profile of clusters
     %
-    % Reference(s):
+    % Reference:
     %   - V. Erceg et al., "TGn channel models," in Version 4. IEEE 802.11–03/940r4, May 2004.
     %
     % Author & Date: Yang (i@snowztail.com) - 07 Mar 20
 
 
 
+    % * Define parameters
     nClusters = 4;
     nTaps = 18;
     tapDelay = 1e-9 * [0 10 20 30 50 80 110 140 180 230 280 330 380 430 490 560 640 730]';
@@ -33,23 +33,23 @@ function [fading] = channel_tgn_e(nTxs, nSubbands, nUsers, carrierFrequency, fad
     tapPower(:, 3) = db2pow([-inf -inf -inf -inf -inf -inf -inf -inf -7.9 -9.6 -14.2 -13.8 -18.6 -18.1 -22.8 -inf -inf -inf]');
     tapPower(:, 4) = db2pow([-inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -inf -20.6 -20.5 -20.7 -24.6]');
 
-    % model taps as i.i.d. CSCG variables
+    % * Model taps as i.i.d. CSCG variables
     tapGain = repmat(sqrt(tapPower / 2), [1 1 nTxs nUsers]) .* (randn(nTaps, nClusters, nTxs, nUsers) + 1i * randn(nTaps, nClusters, nTxs, nUsers));
     tapGain = permute(sum(tapGain, 2), [1 3 4 2]);
     fading = zeros(nTxs, nSubbands, nUsers);
-    switch fadingType
-    case 'selective'
+    switch fadingMode
+    case "selective"
         for iTx = 1 : nTxs
             for iSubband = 1 : nSubbands
                 for iUser = 1 : nUsers
-                    fading(iTx, iSubband, iUser) = sum(tapGain(:, iTx, iUser) .* exp(1i * 2 * pi * carrierFrequency(iSubband) * tapDelay));
+                    fading(iTx, iSubband, iUser) = sum(tapGain(:, iTx, iUser) .* exp(1i * 2 * pi * subbandFrequency(iSubband) * tapDelay));
                 end
             end
         end
-    case 'flat'
+    case "flat"
         for iTx = 1 : nTxs
             for iUser = 1 : nUsers
-                fading(iTx, :, iUser) = repmat(sum(tapGain(:, iTx, iUser) .* exp(1i * 2 * pi * mean(carrierFrequency) * tapDelay)), [1 nSubbands]);
+                fading(iTx, :, iUser) = repmat(sum(tapGain(:, iTx, iUser) .* exp(1i * 2 * pi * mean(subbandFrequency) * tapDelay)), [1 nSubbands]);
             end
         end
     end
