@@ -8,7 +8,7 @@ function [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSub
     %   - nSubbands (N): number of subbands
     %
     % Output:
-    %   - subbandFrequency (f_n): the center frequency of subbands
+    %   - subbandFrequency (f_n) [nSubbands]: the center frequency of subbands
     %
     % Comment:
     %   - assume equal spacing between subbands

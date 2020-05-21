@@ -19,10 +19,6 @@ noisePower = db2pow(- 40 - 30);
 directDistance = 10;
 incidentDistance = 1;
 reflectiveDistance = directDistance - incidentDistance;
-% pathlosses
-[directPathloss] = large_scale_fading("direct", directDistance);
-[incidentPathloss] = large_scale_fading("incident", incidentDistance);
-[reflectivePathloss] = large_scale_fading("reflective", reflectiveDistance);
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -35,6 +31,8 @@ fadingMode = "selective";
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % gain on each reflecting element
 irsGain = db2pow(3);
+
+nReflectors = 5;
 
 %% * Algorithm
 % output DC current constraint

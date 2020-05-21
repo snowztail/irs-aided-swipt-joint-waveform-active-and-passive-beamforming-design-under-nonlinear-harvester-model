@@ -7,7 +7,7 @@ function [pathloss] = path_loss(distance, linkMode)
     %   - linkMode: link mode "direct", "incident", or "reflective"
     %
     % Output:
-    %   - pathloss (\boldsymbol{\Lambda}): large-scale channel strength reduction
+    %   - pathloss (\Lambda): large-scale channel strength reduction
     %
     % Comment:
     %   - assume direct link is blocked so that its exponent is larger than indirect links
