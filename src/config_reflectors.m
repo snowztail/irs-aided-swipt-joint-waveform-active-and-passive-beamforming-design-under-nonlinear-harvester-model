@@ -10,7 +10,7 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit and receive power
-txPower = 10;
+txPower = 1;
 % average noise power
 noisePower = db2pow(- 40 - 30);
 
@@ -32,7 +32,7 @@ fadingMode = "selective";
 % gain on each reflecting element
 irsGain = db2pow(3);
 
-nReflectors = 5;
+nReflectors = 25;
 
 %% * Algorithm
 % output DC current constraint

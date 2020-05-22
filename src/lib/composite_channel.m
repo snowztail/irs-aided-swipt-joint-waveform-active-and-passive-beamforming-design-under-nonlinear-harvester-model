@@ -1,4 +1,4 @@
-function [compositeChannel, concatChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs)
+function [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs)
     % Function:
     %   - obtain the composition of direct channel and IRS-aided channel
     %
@@ -10,7 +10,8 @@ function [compositeChannel, concatChannel] = composite_channel(directChannel, in
     %
     % Output:
     %   - compositeChannel (h) [nSubbands * nTxs * nRxs]: the composite channel
-    %   - concatChannel (\Phi) []
+    %   - concatVector (R) [nSubbands * (nReflectors + 1)]: concatenated channel vector
+    %   - concatMatrix (R_n) [(nReflectors + 1) * (nReflectors + 1)]: rate SDR matrix
     %
     % Comment:
     %   - for frequency-flat IRS
@@ -19,13 +20,16 @@ function [compositeChannel, concatChannel] = composite_channel(directChannel, in
 
 
 
-    [nSubbands, ~, ~] = size(directChannel);
-
-    concatChannel = cell(nSubbands, 1);
-    compositeChannel = cell(nSubbands, 1);
+    [nSubbands, ~, nReflectors] = size(incidentChannel);
+    compositeChannel = zeros(size(directChannel));
+    concatMatrix = cell(nSubbands, 1);
+    concatVector = zeros(nSubbands, nReflectors);
     for iSubband = 1 : nSubbands
-        concatChannel{iSubband} = reflectiveChannel(iSubband, :, :) * diag(squeeze(incidentChannel(iSubband, :, :)));
-        compositeChannel{iSubband} = directChannel(iSubband, :, :) + concatChannel{iSubband} * irs;
+        concatChannel = ctranspose(reflectiveChannel(iSubband, :, :) * diag(squeeze(incidentChannel(iSubband, :, :))));
+        compositeChannel(iSubband, :, :) = directChannel(iSubband, :, :) + concatChannel' * irs;
+        concatMatrix{iSubband} = [concatChannel * concatChannel', concatChannel * directChannel(iSubband, :, :); directChannel(iSubband, :, :)' * concatChannel', directChannel(iSubband, :, :)' * directChannel(iSubband, :, :)];
+        concatVector(iSubband, :) = concatChannel';
     end
+    concatVector = [concatVector, directChannel];
 
 end
