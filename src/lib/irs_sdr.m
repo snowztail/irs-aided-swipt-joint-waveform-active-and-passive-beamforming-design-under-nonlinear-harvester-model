@@ -44,6 +44,7 @@ function [irsMatrix] = irs_sdr(k2, k4, resistance, noisePower, currentConstraint
 
     % * SCA
     rate_ = 0;
+    current_ = 0;
     isConverged = false;
     irsMatrix = eye(nReflectors + 1);
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
@@ -61,7 +62,7 @@ function [irsMatrix] = irs_sdr(k2, k4, resistance, noisePower, currentConstraint
                 * (2 * (conj(infoAuxiliary(iSubband + nSubbands)) * infoSubmatrix{iSubband + nSubbands} + infoAuxiliary(iSubband + nSubbands) * ctranspose(infoSubmatrix{iSubband + nSubbands})) ...
                 + (conj(powerAuxiliary(iSubband + nSubbands)) * powerSubmatrix{iSubband + nSubbands} + powerAuxiliary(iSubband + nSubbands) * ctranspose(powerSubmatrix{iSubband + nSubbands})));
         end
-        coefMatrix = (3 * k4 * powerRatio ^ 2 * resistance ^ 2 / 2) * (powerAuxiliary(nSubbands) * infoSubmatrix{nSubbands} + infoAuxiliary(nSubbands) * powerSubmatrix{nSubbands});
+        coefMatrix = coefMatrix + (3 * k4 * powerRatio ^ 2 * resistance ^ 2 / 2) * (powerAuxiliary(nSubbands) * infoSubmatrix{nSubbands} + infoAuxiliary(nSubbands) * powerSubmatrix{nSubbands});
         % ensure strictly hermitian
         coefMatrix = (coefMatrix + coefMatrix') / 2;
 
@@ -87,8 +88,9 @@ function [irsMatrix] = irs_sdr(k2, k4, resistance, noisePower, currentConstraint
         cvx_end
 
         % * Test convergence
-        isConverged = (rate - rate_) / rate <= tolerance;
-        rate_ = rate;
+        isConverged = (rate - rate_) / rate <= tolerance && ((current - current_) / current <= tolerance || current == 0);
+        rate_ = rate
+        current_ = current
     end
 
 end

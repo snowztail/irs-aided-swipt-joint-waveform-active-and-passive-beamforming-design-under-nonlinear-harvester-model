@@ -21,7 +21,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_wavef
 
     infoWaveform = sqrt(txPower) * conj(compositeChannel) / norm(compositeChannel);
     powerWaveform = sqrt(txPower) * conj(compositeChannel) / norm(compositeChannel);
-    powerRatio = 0.98;
+    powerRatio = 0;
     infoRatio = 1 - powerRatio;
 
 end

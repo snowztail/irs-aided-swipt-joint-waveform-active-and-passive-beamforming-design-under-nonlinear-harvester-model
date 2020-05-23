@@ -19,8 +19,11 @@ incidentChannel = incidentFading / sqrt(incidentPathloss);
 reflectiveChannel = reflectiveFading / sqrt(reflectivePathloss);
 
 % * Composite channel
-irs = irsGain * exp(1i * rand(nReflectors, 1));
+irs = irsGain * ones(nReflectors, 1);
 [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+
+% * Achievable rate with direct link only
+[directRate] = channel_capacity(directChannel, txPower, noisePower);
 
 % * Initialize algorithm
 [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(txPower, compositeChannel);

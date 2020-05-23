@@ -9,10 +9,10 @@ nTxs = 1;
 nRxs = 1;
 % number of users
 nUsers = 1;
-% average transmit and receive power
+% average transmit power
 txPower = 1;
 % average noise power
-noisePower = db2pow(- 40 - 30);
+noisePower = db2pow(- 30);
 
 %% * Channel
 % AP-user distance
@@ -31,8 +31,8 @@ fadingMode = "selective";
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % gain on each reflecting element
 irsGain = db2pow(3);
-
-nReflectors = 25;
+% number of reflecting elements in IRS
+nReflectors = 5;
 
 %% * Algorithm
 % output DC current constraint
