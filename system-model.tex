@@ -8,35 +8,29 @@
 \begin{section}{System Model}
 	Consider an IRS-aided multiuser SISO SWIPT system where the IRS not only assists the primal transmission but also retrieves Channel State Information (CSI) and harvests energy for its own operation. The single-antenna transmitter delivers information and power simultaneously, through the $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. It is assumed that the IRS performs channel estimation in the first subframe and supports information and power transfer in the second subframe \cite{Zheng2019}. Due to the passive characteristics of IRS, we consider a Time-Division Duplexing (TDD) protocol where the CSI can be obtained by exploiting channel reciprocity. Perfect CSI is assumed at the AP and IRS to investigate the analytical upper-bound of the proposed system. A quasi-static frequency-selective model is used for both the AP-user and AP-IRS-user links where the channels are assumed unchanged within each transmission frame. The signals reflected by IRS for two and more times are assumed negligible and thus not considered. Note that although Frequency Selective Surface (FSS) has received much attention for wideband communications, active FSS requires RF-chains thus becomes prohibitive in IRS \cite{Kim2006,Xu2014}. Since passive FSS is not reconfigurable with fixed physical characteristics \cite{Anwar2018}, we assume a frequency-flat IRS with the same reflection coefficients for all subbands. Since a deterministic multisine waveform can boost the energy transfer efficiency \cite{Clerckx2016a} and creates no interference to the information signal \cite{Clerckx2018b}, we use a superposition of multicarrier modulated and unmodulated waveforms, both transmitted on the same frequency bands, to maximize the rate-energy tradeoff. Two practical receiver architectures proposed in \cite{Zhang2013}, namely Time Switching (TS) and Power Splitting (PS), are investigated for the co-located information decoder and energy harvester. In the TS strategy, each transmission subframe is further divided into orthogonal data and energy slots, with duration ratio $(1-\alpha)$ and $\alpha$ respectively. Hence, the achievable rate-energy region can be obtained through a time sharing between wireless power transfer (WPT) with $\alpha=1$ and wireless information transfer (WIT) with $\alpha=0$. The adjustment of $\alpha$ has no impact on the transmit waveform and IRS elements design as they are optimized individually in data and energy slots. In comparison, the PS scheme splits the received signal into data and energy streams with power ratio $(1-\rho)$ and $\rho$ such that the PS ratio is coupled with waveform design. Perfect synchronization is assumed among the three parties in both scenarios.
 
-	\begin{subsection}{Transmitted Signal}
+	\begin{subsection}{Transmit Signal}
 		Assume a total bandwidth $B$ and evenly-spaced carriers around center frequency $f_0$. Denote the frequency of the $n$-th subband as $f_n$ ($n=1,\dots,N$).
 		\begin{subsubsection} {Modulated Information Waveform}
 			Let $\tilde{x}_{I,k,n}$ be the information symbol of user $k$ over subband $n$, which follows a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) distribution $\tilde{x}_{I,k,n}\sim\mathcal{CN}(0,1)$. The transmit information signal at time $t$ is
 			\begin{equation}\label{eq:x_I}
 				x_{I}(t)=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{w_{I,n}\tilde{x}_{I,k,n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}
 			\end{equation}
-			where $w_{I,n}=s_{I,n}e^{j\phi_{I,n}}$ collects the magnitude and phase of the information signal at frequency $n$. We further define the information waveform vector $\boldsymbol{w}_I=[w_{I,1},\dots,w_{I,N}]^T \in \mathbb{C}^{N{\times}1}$.
+			where $w_{I,k,n}=s_{I,k,n}e^{j\phi_{I,k,n}}$ collects the magnitude and phase of the information signal of user $k$ at frequency $n$. We further define the information waveform vector $\boldsymbol{w}_{I,k}=[w_{I,k,1},\dots,w_{I,k,N}]^T \in \mathbb{C}^{N{\times}1}$.
 		\end{subsubsection}
 
 		\begin{subsubsection}{Unmodulated Power Waveform}
 			With no randomness over time, the transmit power signal is
 			\begin{equation}\label{eq:x_P}
-				x_{P}=\Re\left\{\sum_{n=1}^N{w_{P,n}}{e^{j2{\pi}{f_n}{t}}}\right\}
+				x_{P}=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{w_{P,k,n}}{e^{j2{\pi}{f_n}{t}}}\right\}=\Re\left\{\sum_{n=1}^N{w_{P,n}}{e^{j2{\pi}{f_n}{t}}}\right\}
 			\end{equation}
-			where $w_{P,n}=s_{P,n}e^{j\phi_{P,n}}$ includes the magnitude and phase of the $n$-th tone. Also, define the power waveform vector $\boldsymbol{w}_P=[w_{P,1},\dots,w_{P,N}]^T \in \mathbb{C}^{N{\times}1}$.
+			where $w_{P,n}=s_{P,n}e^{j\phi_{P,n}}=\sum_{k=1}^K{w_{P,k,n}}$ combines the magnitude and phase on the $n$-th power tone over all users. Also, collect $w_{P,n}$ into power waveform vector $\boldsymbol{w}_P=[w_{P,1},\dots,w_{P,N}]^T \in \mathbb{C}^{N{\times}1}$.
 		\end{subsubsection}
 
-		\begin{subsubsection}{Superposed Waveform}
-			The transmit signal at time $t$ over subband $n$ is
-			\begin{equation}\label{eq:x_n(t)}
-				x_n(t)=\sum_{k=1}^K{(w_{I,k,n}\tilde{x}_{I,k,n}(t)+w_{P,k,n}){e^{j2{\pi}{f_n}{t}}}}
-			\end{equation}
-			Hence, the transmitted RF signal is
-			\begin{equation}\label{eq:x(t)}
-				x(t)=\sum_{k=1}^K\sum_{n=1}^N{(w_{I,k,n}\tilde{x}_{I,k,n}(t)+w_{P,k,n}){e^{j2{\pi}{f_n}{t}}}}
-				% x(t)=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{(w_{I,k,n}\tilde{x}_{I,k,n}(t)+w_{P,k,n}){e^{j2{\pi}{f_n}{t}}}}\right\}
-			\end{equation}
-		\end{subsubsection}
+		Therefore, the superposed transmit signal at time $t$ over subband $n$ is
+		\begin{equation}\label{eq:x}
+			x(t)=\Re\left\{\sum_{n=1}^N\left(\sum_{k=1}^K{w_{I,k,n}\tilde{x}_{I,k,n}(t)}+w_{P,n}\right){e^{j2{\pi}{f_n}{t}}}\right\}
+		\end{equation}
+
 	\end{subsection}
 
 	\begin{subsection}{Composite Channel Model}
@@ -59,19 +53,11 @@
 		\end{equation}
 	\end{subsection}
 
-	\begin{subsection}{Received Signal}
+	\begin{subsection}{Receive Signal}
 		The RF signal received by user $k$ captures the contribution of information and power waveforms through both direct and reflective links as
-		\begin{equation}\label{eq:y_k(t)}
-			y_k(t)=\sum_{j=1}^K\sum_{n=1}^N{h_{k,n}}(w_{I,j,n}\tilde{x}_{I,j,n}+w_{P,j,n}){e^{j2{\pi}{f_n}{t}}}
+		\begin{equation}\label{eq:y_k}
+			y_k(t)=\Re\left\{\sum_{n=1}^N{h_{{k,n}}}\left(\sum_{j=1}^K{w_{I,j,n}\tilde{x}_{I,j,n}(t)}+w_{P,n}\right){e^{j2{\pi}{f_n}{t}}}\right\}
 		\end{equation}
-		with the information and power components of
-		\begin{equation}\label{eq:y_{I,k}(t)}
-			y_{I,k}(t)=\sum_{j=1}^K\sum_{n=1}^N{h_{k,n}w_{I,j,n}\tilde{x}_{I,j,n}}{e^{j2{\pi}{f_n}{t}}}
-		\end{equation}
-		\begin{equation}\label{eq:y_{P,k}(t)}
-			y_{P,k}(t)=\sum_{j=1}^K\sum_{n=1}^N{h_{k,n}w_{P,j,n}}{e^{j2{\pi}{f_n}{t}}}
-		\end{equation}
-
 	\end{subsection}
 
 	\begin{subsection}{Information Decoder}
