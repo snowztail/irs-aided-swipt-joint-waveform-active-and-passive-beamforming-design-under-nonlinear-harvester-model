@@ -6,48 +6,28 @@
 \begin{document}
 
 \begin{section}{System Model}
-	Consider an IRS-aided multiuser SISO SWIPT system where the IRS not only assists the primal transmission but also retrieves Channel State Information (CSI) and harvests energy for its own operation. The single-antenna transmitter delivers information and power simultaneously, through the $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. It is assumed that the IRS performs channel estimation in the first subframe and supports information and power transfer in the second subframe \cite{Zheng2019}. Due to the passive characteristics of IRS, we consider a Time-Division Duplexing (TDD) protocol where the CSI can be obtained by exploiting channel reciprocity. Perfect CSI is assumed at the AP and IRS to investigate the analytical upper-bound of the proposed system. The signals reflected by IRS for two and more times are assumed negligible and thus not considered. A quasi-static frequency-selective model is used for both the AP-user and AP-IRS-user links where the channels are assumed unchanged within each transmission frame. A superposition of multicarrier modulated and unmodulated waveforms, both transmitted on the same frequency bands, are designed adaptively to maximize the rate-energy tradeoff \cite{Clerckx2018b}. Note that although Frequency Selective Surface (FSS) has received much attention for wideband communications, active FSS requires RF-chains thus becomes prohibitive in IRS \cite{Kim2006,Xu2014}. Since passive FSS is not reconfigurable with fixed physical characteristics \cite{Anwar2018}, we assume a frequency-flat IRS with same reflection coefficients for all subbands. Two practical receiver architectures proposed in \cite{Zhang2013}, namely Time Switching (TS) and Power Splitting (PS), are investigated for the co-located information decoder and energy harvester. In the TS strategy, each transmission subframe is further divided into orthogonal data and energy slots with duration ratio $(1-\alpha)$ and $\alpha$ respectively. Hence, the achievable rate-energy region can be obtained through a direct time sharing between wireless power transfer (WPT) with $\alpha=1$ and wireless information transfer (WIT) with $\alpha=0$. The adjustment of $\alpha$ has no impact on the transmit waveform and IRS elements design, since they are optimized individually in data and energy slots. In comparison, the PS scheme splits the received signal into data and energy streams with power ratio $(1-\rho)$ and $\rho$. As $\rho$ is coupled with waveform and IRS design, we investigate the rate-energy region by placing different rate constraints and optimizing waveform, PS ratio and reflectors accordingly. Perfect synchronization is assumed among the three parties in both scenario.
+	Consider an IRS-aided multiuser SISO SWIPT system where the IRS not only assists the primal transmission but also retrieves Channel State Information (CSI) and harvests energy for its own operation. The single-antenna transmitter delivers information and power simultaneously, through the $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. It is assumed that the IRS performs channel estimation in the first subframe and supports information and power transfer in the second subframe \cite{Zheng2019}. Due to the passive characteristics of IRS, we consider a Time-Division Duplexing (TDD) protocol where the CSI can be obtained by exploiting channel reciprocity. Perfect CSI is assumed at the AP and IRS to investigate the analytical upper-bound of the proposed system. A quasi-static frequency-selective model is used for both the AP-user and AP-IRS-user links where the channels are assumed unchanged within each transmission frame. The signals reflected by IRS for two and more times are assumed negligible and thus not considered. Note that although Frequency Selective Surface (FSS) has received much attention for wideband communications, active FSS requires RF-chains thus becomes prohibitive in IRS \cite{Kim2006,Xu2014}. Since passive FSS is not reconfigurable with fixed physical characteristics \cite{Anwar2018}, we assume a frequency-flat IRS with the same reflection coefficients for all subbands. Since a deterministic multisine waveform can boost the energy transfer efficiency \cite{Clerckx2016a} and creates no interference to the information signal \cite{Clerckx2018b}, we use a superposition of multicarrier modulated and unmodulated waveforms, both transmitted on the same frequency bands, to maximize the rate-energy tradeoff. Two practical receiver architectures proposed in \cite{Zhang2013}, namely Time Switching (TS) and Power Splitting (PS), are investigated for the co-located information decoder and energy harvester. In the TS strategy, each transmission subframe is further divided into orthogonal data and energy slots, with duration ratio $(1-\alpha)$ and $\alpha$ respectively. Hence, the achievable rate-energy region can be obtained through a time sharing between wireless power transfer (WPT) with $\alpha=1$ and wireless information transfer (WIT) with $\alpha=0$. The adjustment of $\alpha$ has no impact on the transmit waveform and IRS elements design as they are optimized individually in data and energy slots. In comparison, the PS scheme splits the received signal into data and energy streams with power ratio $(1-\rho)$ and $\rho$ such that the PS ratio is coupled with waveform design. Perfect synchronization is assumed among the three parties in both scenarios.
 
 	\begin{subsection}{Transmitted Signal}
+		Assume a total bandwidth $B$ and evenly-spaced carriers around center frequency $f_0$. Denote the frequency of the $n$-th subband as $f_n$ ($n=1,\dots,N$).
 		\begin{subsubsection} {Modulated Information Waveform}
-			Assume the carrier are evenly spaced with equal bandwidth $B_s$ such that the frequency of the $n$-th subband is $f_n=f_0+(n-1){\Delta}{f}$ ($n=1,\dots,N$). The information symbol $\tilde{x}_{I,k,n}\sim\mathcal{CN}(0,1)$ of user $k$ over subband $n$ is a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) variable with zero mean and unit variance. Therefore, the baseband (BB) transmit information signal at subband $n$ can be expressed as
-			\begin{equation}\label{eq:x_{I,n}(t)}
-				x_{I,n}(t)=\sum_{k=1}^K{w_{I,k,n}\tilde{x}_{I,k,n}(t)}
+			Let $\tilde{x}_{I,k,n}$ be the information symbol of user $k$ over subband $n$, which follows a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) distribution $\tilde{x}_{I,k,n}\sim\mathcal{CN}(0,1)$. The transmit information signal at time $t$ is
+			\begin{equation}\label{eq:x_I}
+				x_{I}(t)=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{w_{I,n}\tilde{x}_{I,k,n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}
 			\end{equation}
-			where $w_{I,k,n}$ is the corresponding information weight. Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}]^T \in \mathbb{C}^{N \times K}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$. On top of this, the overall frequency weight is denoted as $w_{I,n}=\sum_k{w_{I,k,n}}$ and collected into $\boldsymbol{w}_I=[w_{I,1},\dots,w_{I,N}]^T \in \mathbb{C}^{N \times 1}$. The RF transmit information waveform at time $t$ writes as
-			% Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}]=[\boldsymbol{w}_{I,1}^T,\dots,\boldsymbol{w}_{I,K}^T]^T \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{w}_{I,k}=[w_{I,k,1},\dots,w_{I,k,N}] \in \mathbb{C}^{1 \times N}$.
-			% Let $\boldsymbol{W}_I=[\boldsymbol{w}_{I,1},\dots,\boldsymbol{w}_{I,N}] \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{I,n}=[w_{I,1,n},\dots,w_{I,K,n}]^T \in \mathbb{C}^{K \times 1}$.
-			\begin{equation}\label{eq:x_I(t)}
-				\begin{split}
-					x_I(t)
-					&=\sum_{n=1}^N{x_{I,n}(t){e^{j2{\pi}{f_n}{t}}}}\\
-					&=\sum_{k=1}^K\sum_{n=1}^N{w_{I,k,n}\tilde{x}_{I,k,n}(t){e^{j2{\pi}{f_n}{t}}}}
-					% &=\Re\left\{\sum_{n=1}^N{x_{I,n}(t){e^{j2{\pi}{f_n}{t}}}}\right\}\\
-					% &=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{w_{I,k,n}\tilde{x}_{I,k,n}(t){e^{j2{\pi}{f_n}{t}}}}\right\}
-				\end{split}
-			\end{equation}
+			where $w_{I,n}=s_{I,n}e^{j\phi_{I,n}}$ collects the magnitude and phase of the information signal at frequency $n$. We further define the information waveform vector $\boldsymbol{w}_I=[w_{I,1},\dots,w_{I,N}]^T \in \mathbb{C}^{N{\times}1}$.
 		\end{subsubsection}
 
 		\begin{subsubsection}{Unmodulated Power Waveform}
-			As suggested in \cite{Clerckx2018b,Clerckx2016a}, we use deterministic multisine waveform to boost the harvested energy. It has no randomness over time such that the baseband transmit power signal at subband $n$ is
-			\begin{equation}\label{eq:x_{P,n}}
-				x_{P,n}=\sum_{k=1}^K{w_{P,k,n}}
+			With no randomness over time, the transmit power signal is
+			\begin{equation}\label{eq:x_P}
+				x_{P}=\Re\left\{\sum_{n=1}^N{w_{P,n}}{e^{j2{\pi}{f_n}{t}}}\right\}
 			\end{equation}
-			where $w_{P,k,n}$ is the corresponding power weight. Let $\boldsymbol{W}_P=[\boldsymbol{w}_{P,1},\dots,\boldsymbol{w}_{P,N}]^T \in \mathbb{C}^{N \times K}$ with $\boldsymbol{w}_{P,n}=[w_{P,1,n},\dots,w_{P,K,n}]^T \in \mathbb{C}^{K \times 1}$. Similarly, the overall frequency weight is denoted as $w_{P,n}=\sum_k{w_{P,k,n}}$ and collected into $\boldsymbol{w}_P=[w_{P,1},\dots,w_{P,N}]^T \in \mathbb{C}^{N \times 1}$. The transmit power signal at time $t$ is given by
-			% Let $\boldsymbol{W}_P=[\boldsymbol{w}_{P,1},\dots,\boldsymbol{w}_{P,N}]=[\boldsymbol{w}_{P,1}^T,\dots,\boldsymbol{w}_{P,K}^T]^T \in \mathbb{C}^{K \times N}$ with $\boldsymbol{w}_{P,n}=[w_{P,1,n},\dots,w_{P,K,n}]^T \in \mathbb{C}^{K \times 1}$ and $\boldsymbol{w}_{P,k}=[w_{P,k,1},\dots,w_{P,k,N}] \in \mathbb{C}^{1 \times N}$.
-			\begin{equation}\label{eq:x_P(t)}
-				\begin{split}
-					x_P(t)
-					&=\sum_{n=1}^N{x_{P,n}{e^{j2{\pi}{f_n}{t}}}}\\
-					&=\sum_{k=1}^K\sum_{n=1}^N{w_{P,k,n}{e^{j2{\pi}{f_n}{t}}}}
-					% &=\Re\left\{\sum_{n=1}^N{x_{P,n}{e^{j2{\pi}{f_n}{t}}}}\right\}\\
-					% &=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{w_{P,k,n}{e^{j2{\pi}{f_n}{t}}}}\right\}
-				\end{split}
-			\end{equation}
+			where $w_{P,n}=s_{P,n}e^{j\phi_{P,n}}$ includes the magnitude and phase of the $n$-th tone. Also, define the power waveform vector $\boldsymbol{w}_P=[w_{P,1},\dots,w_{P,N}]^T \in \mathbb{C}^{N{\times}1}$.
 		\end{subsubsection}
 
 		\begin{subsubsection}{Superposed Waveform}
-			At time $t$, a superposition of the information and power waveform at subband $n$ writes as
+			The transmit signal at time $t$ over subband $n$ is
 			\begin{equation}\label{eq:x_n(t)}
 				x_n(t)=\sum_{k=1}^K{(w_{I,k,n}\tilde{x}_{I,k,n}(t)+w_{P,k,n}){e^{j2{\pi}{f_n}{t}}}}
 			\end{equation}
@@ -103,7 +83,7 @@
 		\begin{equation}\label{eq:R_k}
 			R_k(\boldsymbol{W}_I,\boldsymbol{\Theta}_0,\rho)=\sum_{n=1}^N{\log_2(1+\gamma_{k,n})}
 		\end{equation}
-		A significant conclusion in \cite{Clerckx2018b} indicates that the rate \ref{eq:R_k} is always achievable with or without waveform cancellation, through either subtracting the determaxistic power component or constructing a translated codebook.
+		A significant conclusion in \cite{Clerckx2018b} indicates that the rate \ref{eq:R_k} is always achievable with or without waveform cancellation, through either subtracting the deterministic power component or constructing a translated codebook.
 	\end{subsection}
 
 	\begin{subsection}{Energy Harvester}
