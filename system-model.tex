@@ -6,30 +6,14 @@
 \begin{document}
 
 \begin{section}{System Model}
-	Consider an IRS-aided multiuser SISO SWIPT system where the IRS not only assists the primal transmission but also retrieves Channel State Information (CSI) and harvests energy for its own operation. The single-antenna transmitter delivers information and power simultaneously, through the $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. Assume a total bandwidth $B$ and evenly-spaced carriers around center frequency $f_0$. Denote the frequency of the $n$-th subband as $f_n$ ($n=1,\dots,N$). It is assumed that the IRS performs channel estimation in the first subframe and supports information and power transfer in the second subframe \cite{Zheng2019}. Due to the passive characteristics of IRS, we consider a Time-Division Duplexing (TDD) protocol where the CSI can be obtained by exploiting channel reciprocity. Perfect CSI is assumed at the AP and IRS to investigate the analytical upper-bound of the proposed system. A quasi-static frequency-selective model is used for both the AP-user and AP-IRS-user links where the channels are assumed unchanged within each transmission frame. The signals reflected by IRS for two and more times are assumed negligible and thus not considered. Note that although Frequency Selective Surface (FSS) has received much attention for wideband communications, active FSS requires RF-chains thus becomes prohibitive in IRS \cite{Kim2006,Xu2014}. Since passive FSS is not reconfigurable with fixed physical characteristics \cite{Anwar2018}, we assume a frequency-flat IRS with the same reflection coefficients for all subbands. Since a deterministic multisine waveform can boost the energy transfer efficiency \cite{Clerckx2016a} and creates no interference to the information signal \cite{Clerckx2018b}, we use a superposition of multicarrier modulated and unmodulated waveforms, both transmitted on the same frequency bands, to maximize the rate-energy tradeoff. Two practical receiver architectures proposed in \cite{Zhang2013}, namely Time Switching (TS) and Power Splitting (PS), are investigated for the co-located information decoder and energy harvester. In the TS strategy, each transmission subframe is further divided into orthogonal data and energy slots, with duration ratio $(1-\alpha)$ and $\alpha$ respectively. Hence, the achievable rate-energy region can be obtained through a time sharing between wireless power transfer (WPT) with $\alpha=1$ and wireless information transfer (WIT) with $\alpha=0$. The adjustment of $\alpha$ has no impact on the transmit waveform and IRS elements design as they are optimized individually in data and energy slots. In comparison, the PS scheme splits the received signal into data and energy streams with power ratio $(1-\rho)$ and $\rho$ such that the PS ratio is coupled with waveform design. Perfect synchronization is assumed among the three parties in both scenarios.
+	Consider an IRS-aided multiuser SISO SWIPT system where the IRS not only assists the primal transmission but also retrieves Channel State Information (CSI) and harvests energy for its own operation. The single-antenna transmitter delivers information and power simultaneously, through the $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. Assume a total bandwidth $B$ and evenly-spaced carriers around center frequency $f_0$. Denote the frequency of the $n$-th subband as $f_n$ ($n=1,\dots,N$). Suppose each subband is allocated to one user per time slot. It is assumed that the IRS performs channel estimation in the first subframe and supports information and power transfer in the second subframe \cite{Zheng2019}. Due to the passive characteristics of IRS, we consider a Time-Division Duplexing (TDD) protocol where the CSI can be obtained by exploiting channel reciprocity. Perfect CSI is assumed at the AP and IRS to investigate the analytical upper-bound of the proposed system. A quasi-static frequency-selective model is used for both the AP-user and AP-IRS-user links where the channels are assumed unchanged within each transmission frame. The signals reflected by IRS for two and more times are assumed negligible and thus not considered. Note that although Frequency Selective Surface (FSS) has received much attention for wideband communications, active FSS requires RF-chains thus becomes prohibitive in IRS \cite{Kim2006,Xu2014}. Since passive FSS is not reconfigurable with fixed physical characteristics \cite{Anwar2018}, we assume a frequency-flat IRS with the same reflection coefficients for all subbands. Since a deterministic multisine waveform can boost the energy transfer efficiency \cite{Clerckx2016a} and creates no interference to the information signal \cite{Clerckx2018b}, we use a superposition of multicarrier modulated and unmodulated waveforms, both transmitted on the same frequency bands, to maximize the rate-energy tradeoff. Two practical receiver architectures proposed in \cite{Zhang2013}, namely Time Switching (TS) and Power Splitting (PS), are investigated for the co-located information decoder and energy harvester. In the TS strategy, each transmission subframe is further divided into orthogonal data and energy slots, with duration ratio $(1-\lambda)$ and $\lambda$ respectively. Hence, the achievable rate-energy region can be obtained through a time sharing between wireless power transfer (WPT) with $\lambda=1$ and wireless information transfer (WIT) with $\lambda=0$. The adjustment of $\lambda$ has no impact on the transmit waveform and IRS elements design as they are optimized individually in data and energy slots. In comparison, the PS scheme splits the received signal into data and energy streams with power ratio $(1-\rho)$ and $\rho$ such that the PS ratio is coupled with waveform design. Perfect synchronization is assumed among the three parties in both scenarios.
 
 	\begin{subsection}{Transmit Signal}
-		\begin{subsubsection} {Modulated Information Waveform}
-			Let $\tilde{x}_{I,k,n}$ be the information symbol of user $k$ ($k=1,\dots,K$) over subband $n$, which follows a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) distribution $\tilde{x}_{I,k,n}\sim\mathcal{CN}(0,1)$. The transmit information signal at time $t$ is
-			\begin{equation}\label{eq:x_I}
-				x_{I}(t)=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{w_{I,n}\tilde{x}_{I,k,n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}
-			\end{equation}
-			where $w_{I,k,n}=s_{I,k,n}e^{j\phi_{I,k,n}}$ collects the magnitude and phase of the information signal of user $k$ at frequency $n$. We further define the information waveform vector $\boldsymbol{w}_{I,k}=[w_{I,k,1},\dots,w_{I,k,N}]^T \in \mathbb{C}^{N{\times}1}$.
-		\end{subsubsection}
-
-		\begin{subsubsection}{Unmodulated Power Waveform}
-			With no randomness over time, the transmit power signal is
-			\begin{equation}\label{eq:x_P}
-				x_{P}=\Re\left\{\sum_{k=1}^K\sum_{n=1}^N{w_{P,k,n}}{e^{j2{\pi}{f_n}{t}}}\right\}=\Re\left\{\sum_{n=1}^N{w_{P,n}}{e^{j2{\pi}{f_n}{t}}}\right\}
-			\end{equation}
-			where $w_{P,n}=s_{P,n}e^{j\phi_{P,n}}=\sum_{k=1}^K{w_{P,k,n}}$ combines the magnitude and phase on the $n$-th power tone over all users. Also, collect $w_{P,n}$ into power waveform vector $\boldsymbol{w}_P=[w_{P,1},\dots,w_{P,N}]^T \in \mathbb{C}^{N{\times}1}$.
-		\end{subsubsection}
-
-		Therefore, the superposed transmit signal at time $t$ over subband $n$ is
+		Denote $\tilde{x}_{I,n}(t)$ as the information symbol transmitted over subband $n$, which belongs to one user at time $t$ and follows a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) distribution $\tilde{x}_{I,n}\sim\mathcal{CN}(0,1)$. Let $\alpha_{k,n}$ be the allocation indicator, namely if subband $n$ is given to user $k$ ($k=1,\dots,K$), we have $\alpha_{k,n}=1$ and $\alpha_{k',n}=0 \ \forall k' \ne k$. Let $\boldsymbol{\alpha}_k=[\alpha_{k,1},\dots,\alpha_{k,N}]^T \in \mathbb{C}^{N \times 1}$. The superposed transmit signal at time $t$ is
 		\begin{equation}\label{eq:x}
-			x(t)=\Re\left\{\sum_{n=1}^N\left(\sum_{k=1}^K{w_{I,k,n}\tilde{x}_{I,k,n}(t)}+w_{P,n}\right){e^{j2{\pi}{f_n}{t}}}\right\}
+			x(t)=\Re\left\{\sum_{n=1}^N\left({w_{I,n}\tilde{x}_{I,n}(t)}+w_{P,n}\right){e^{j2{\pi}{f_n}{t}}}\right\}
 		\end{equation}
-
+		where $w_{I/P,n}=s_{I/P,n}e^{j\psi_{I/P,n}}$ collects the magnitude and phase of the information and power signal at frequency $n$. We further define the waveform vectors $\boldsymbol{w}_{I/P}=[w_{I/P,1},\dots,w_{I/P,N}]^T \in \mathbb{C}^{N{\times}1}$.
 	\end{subsection}
 
 	\begin{subsection}{Composite Channel Model}
@@ -39,31 +23,31 @@
 		\end{equation}
 		where $\boldsymbol{v}_{k,n}^H=\boldsymbol{h}_{R,k,n}^H \mathrm{diag}(\boldsymbol{h}_{I,n}) \in \mathbb{C}^{1 \times L}$ and $\boldsymbol{\phi}=[e^{j{\theta_1}},\dots,e^{j{\theta_L}}] \in \mathbb{C}^{L \times 1}$. Both direct and extra link contributes to the corresponding composite channel as
 		\begin{equation}
-			h_{k,n} = h_{D,k,n} + \boldsymbol{v}_{k,n}^H \boldsymbol{\phi}
+			h_{k,n} = A_{k,n} e^{j\bar{\psi}_{k,n}}= h_{D,k,n} + \boldsymbol{v}_{k,n}^H \boldsymbol{\phi}
 		\end{equation}
-		Let $\boldsymbol{V}_k^H=[\boldsymbol{v}_{k,1},\dots,\boldsymbol{v}_{k,N}]^H \in \mathbb{C}^{N \times L}$, the extra link for user $k$ is $\boldsymbol{h}_{E,k}=[h_{E,k,1},\dots,h_{E,k,N}]^T=\boldsymbol{V}_k^H \boldsymbol{\phi} \in \mathbb{C}^{N \times 1}$. Therefore, the composite channel of user $k$ is
+		where $A_{k,n}$ and $\bar{\psi}_{k,n}$ are the amplitude and phase of the composite channel of user $k$ at subband $n$. Let $\boldsymbol{V}_k^H=[\boldsymbol{v}_{k,1},\dots,\boldsymbol{v}_{k,N}]^H \in \mathbb{C}^{N \times L}$, the extra link for user $k$ is $\boldsymbol{h}_{E,k}=[h_{E,k,1},\dots,h_{E,k,N}]^T=\boldsymbol{V}_k^H \boldsymbol{\phi} \in \mathbb{C}^{N \times 1}$. Therefore, the composite channel of user $k$ is
 		\begin{equation}\label{eq:h_k}
 			\boldsymbol{h}_k = \boldsymbol{h}_{D,k} + \boldsymbol{V}_k^H \boldsymbol{\phi}
 		\end{equation}
 	\end{subsection}
 
 	\begin{subsection}{Receive Signal}
-		The RF signal received by user $k$ captures the contribution of information and power waveforms through both direct and reflective links as
+		The RF signal received by user $k$ captures the contribution of information and power waveforms through both direct and IRS-aided links as
 		\begin{equation}\label{eq:y_k}
-			y_k(t)=\Re\left\{\sum_{n=1}^N{h_{{k,n}}}\left(\sum_{j=1}^K{w_{I,j,n}\tilde{x}_{I,j,n}(t)}+w_{P,n}\right){e^{j2{\pi}{f_n}{t}}}\right\}
+			y_k(t)=\Re\left\{\sum_{n=1}^N{h_{{k,n}}}\left({w_{I,n}\tilde{x}_{I,n}(t)}+w_{P,n}\right){e^{j2{\pi}{f_n}{t}}}\right\}
 		\end{equation}
 		which can be divided into
 		\begin{align}\label{eq:y_{I/P,k}}
-			y_{I,k}(t) & = \Re\left\{\sum_{j=1}^K\sum_{n=1}^N{h_{{k,n}}}{w_{I,j,n}\tilde{x}_{I,j,n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}\\
+			y_{I,k}(t) & = \Re\left\{\sum_{n=1}^N{h_{{k,n}}}{w_{I,n}\tilde{x}_{I,n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}\\
 			y_{P,k}(t) & = \Re\left\{\sum_{n=1}^N{h_{{k,n}}}w_{P,n}{e^{j2{\pi}{f_n}{t}}}\right\}
 		\end{align}
 	\end{subsection}
 
 	\begin{subsection}{Information Decoder}
 		% ? OFDM interference
-		One major benefit of the superposed waveform is that the power component $y_{P,k}(t)$ creates no interference to the information component $y_{I,k}(t)$. Hence, the achievable rate of user $k$ is
+		A major benefit of the superposed waveform is that the power component $y_{P,k}(t)$ creates no interference to the information component $y_{I,k}(t)$. Hence, the achievable rate of user $k$ is
 		\begin{equation}\label{eq:R_k}
-			R_k(\{\boldsymbol{w}_{I,k}\},\boldsymbol{\phi},\rho)=\sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert h_{k,n}w_{I,k,n} \rvert^2}{\sigma_n^2}\right)}
+			R_k(\boldsymbol{w}_I,\boldsymbol{\phi},\rho,\boldsymbol{\alpha}_k)=\sum_{n=1}^N\alpha_{k,n}{\log_2\left(1+\frac{(1-\rho)\lvert h_{k,n}w_{I,n} \rvert^2}{\sigma_n^2}\right)}
 		\end{equation}
 		where $\sigma_n^2$ is the variance of the noise at RF band and during RF-to-BB conversion on tone $n$. Rate \ref{eq:R_k} is achievable with either waveform cancellation or translated demodulation \cite{Clerckx2018b}.
 	\end{subsection}
@@ -71,40 +55,44 @@
 	\begin{subsection}{Energy Harvester}
 		Consider a nonlinear diode model based on the Taylor expansion of a small signal model \cite{Clerckx2016a,Clerckx2018b}, which highlights the dependency of harvester output DC current on the received waveform of user $k$ as
 		\begin{equation}\label{eq:i_k}
-			i_k(\{\boldsymbol{w}_{I,k}\},\{\boldsymbol{w}_{P,k}\},\boldsymbol{\phi},\rho)\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y_k(t)^i\right\}}\right\}
+			i_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y_k(t)^i\right\}}\right\}
 		\end{equation}
 		where $R_{\text{ant}}$ is the impedance of the receive antenna, $k_0'=i_s(e^{-i_kR_{\text{ant}}/nv_t}-1)$, $k_i'=i_se^{-i_kR_{\text{ant}}/nv_t}/i!(nv_t)^i$ for $i=1,\dots,\infty$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. For a fixed channel and waveform, $\mathcal{A}\left\{.\right\}$ extracts the DC component of the received signal while $\mathcal{E}\left\{.\right\}$ covers the expectation over $\tilde{x}_{I,k,n}$.
 
 		With the assumption of evenly spaced frequencies, we have $\mathcal{E}\left\{y_k(t)^i\right\}=0 \ \forall i \ \mathrm{odd}$ such that the related terms has no contribution to DC components. For simplicity, we truncate the infinite series to the $n_0$-th order. Maximizing a truncated \ref{eq:i_k} is equivalent to maximizing a monotonic function \cite{Clerckx2016a}
 		\begin{equation}\label{eq:z_k}
-			z_k(\{\boldsymbol{w}_{I,k}\},\{\boldsymbol{w}_{P,k}\},\boldsymbol{\phi},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y_k(t)^i\right\}\right\}}
+			z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y_k(t)^i\right\}\right\}}
 		\end{equation}
-		where $k_i=i_s/i!(nv_t)^i$. We choose $n_0=4$ to investigate the fundamental impact of diode nonlinearity on energy harvest. Nonzero terms are given in \ref{eq:z_k_terms_begin} -- \ref{eq:z_k_terms_end}. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{k,n}\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_{k,n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain in the nonlinear terms of the output DC current. On top of this, the current expression \ref{eq:z_k} reduces to \ref{eq:z_k_truncated}.
+		where $k_i=i_s/i!(nv_t)^i$. We choose $n_0=4$ to investigate the fundamental impact of diode nonlinearity on waveform design. Nonzero terms in \ref{eq:z_k} are given in \ref{eq:z_k_terms_begin} -- \ref{eq:z_k_terms_end}. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current. On top of this, the current expression \ref{eq:z_k} reduces to \ref{eq:z_k_expand}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}
-				& = \frac{1}{2}\sum_{j_1,j_2}\sum_n{(h_{k,n}w_{I,j_1,n})(h_{k,n}w_{I,j_2,n})^*} = \frac{1}{2}\sum_n{h_{k,n}h_{k,n}^*{\boldsymbol{w}_{I,n}^H}{\boldsymbol{J}_{K}}{\boldsymbol{w}_{I,n}}}\label{eq:z_k_terms_begin}\\
+				& = \frac{1}{2}\sum_n{(h_{k,n}w_{I,n})(h_{k,n}w_{I,n})^*}\label{eq:z_k_terms_begin}\\
+				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I\\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}
-				& = \frac{3}{4}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{I,{j_1},{n_1}})(h_{k,{n_2}}w_{I,{j_2},{n_2}})(h_{k,{n_3}}w_{I,{j_3},{n_3}})^*(h_{k,{n_4}}w_{I,{j_4},{n_4}})^*}\\
-				& = \frac{3}{4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{h_{k,n_3}^*h_{k,n_1}h_{k,n_4}^*h_{k,n_2}(\boldsymbol{w}_{I,n_3}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_1})(\boldsymbol{w}_{I,n_4}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_2})}\\
+				& = \frac{3}{4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{I,{n_1}})(h_{k,{n_2}}w_{I,{n_2}})(h_{k,{n_3}}w_{I,{n_3}})^*(h_{k,{n_4}}w_{I,{n_4}})^*}\\
+				& = \frac{3}{4}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)^* = \frac{3}{4}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)^*\\
 				\mathcal{A}\left\{y_{P,k}^2(t)\right\}
 				& = \frac{1}{2}\sum_n{(h_{k,n}w_{P,n})(h_{k,n}w_{P,n})^*}\\
+				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P\\
 				\mathcal{A}\left\{y_{P,k}^4(t)\right\}
-				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{P,{n_1}})(h_{k,{n_2}}w_{P,{n_2}})(h_{k,{n_3}}w_{P,{n_3}})^*(h_{k,{n_4}}w_{P,{n_4}})^*}\label{eq:z_k_terms_end}
+				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{P,{n_1}})(h_{k,{n_2}}w_{P,{n_2}})(h_{k,{n_3}}w_{P,{n_3}})^*(h_{k,{n_4}}w_{P,{n_4}})^*}\\
+				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^* = \frac{3}{4}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^*\label{eq:z_k_terms_end}
 			\end{align}
 		\end{figure*}
 		\begin{figure*}[b]
 			\hrule
-			\begin{equation}\label{eq:z_k_truncated}
-				\begin{split}
-					z_k
-					& = {k_2}{\rho}{R_{\text{ant}}}\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+{k_4}{\rho^2}{R_{\text{ant}}^2}\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\\
-					& = \frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}\sum_n{h_{k,n}h_{k,n}^*(\boldsymbol{w}_{I,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{I,n}+\boldsymbol{w}_{P,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{P,n})}\\
-					& \quad+ \frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{h_{k,n_3}^*h_{k,n_1}h_{k,n_4}^*h_{k,n_2}\left(2(\boldsymbol{w}_{I,n_3}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_1})(\boldsymbol{w}_{I,n_4}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_2})+(\boldsymbol{w}_{P,n_3}^H\boldsymbol{J}_K\boldsymbol{w}_{P,n_1})(\boldsymbol{w}_{P,n_4}^H\boldsymbol{J}_K\boldsymbol{w}_{P,n_2})\right)}\\
-					& \quad+ \frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{h_{k,n}^2h_{k,n}^{*2}(\boldsymbol{w}_{I,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{I,n})(\boldsymbol{w}_{P,n}^H\boldsymbol{J}_{K}\boldsymbol{w}_{P,n})}
-				\end{split}
-			\end{equation}
+			\begin{align}
+				z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
+				& = \beta_2\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+\beta_4\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\label{eq:z_k_expand}\\
+				& = \frac{1}{2}\beta_2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k+\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\nonumber\\
+				& \quad+ \frac{3}{8}\beta_4\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)^* + (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^* \right)\nonumber\\
+				& \quad+ \frac{3}{2}\beta_4(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\\
+				& = \frac{1}{2}\beta_2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\nonumber\\
+				& \quad+ \frac{3}{8}\beta_4\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)^* + (\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^* \right)\nonumber\\
+				& \quad+ \frac{3}{2}\beta_4(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)
+			\end{align}
 		\end{figure*}
 	\end{subsection}
 \end{section}
