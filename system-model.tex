@@ -37,7 +37,7 @@
 		\begin{equation}\label{eq:h_{E,k,n}}
 			h_{E,k,n} = \boldsymbol{h}_{R,k,n}^H \boldsymbol{\Theta} \boldsymbol{h}_{I,n} = \boldsymbol{v}_{k,n}^H \boldsymbol{\phi}
 		\end{equation}
-		where $\boldsymbol{v}_{k,n}^H \triangleq \boldsymbol{h}_{R,k,n}^H \mathrm{diag}(\boldsymbol{h}_{I,n}) \in \mathbb{C}^{1 \times L}$ and $\boldsymbol{\phi}=[e^{j{\theta_1}},\dots,e^{j{\theta_L}}] \in \mathbb{C}^{L \times 1}$. Both direct and extra link contributes to the corresponding composite channel as
+		where $\boldsymbol{v}_{k,n}^H=\boldsymbol{h}_{R,k,n}^H \mathrm{diag}(\boldsymbol{h}_{I,n}) \in \mathbb{C}^{1 \times L}$ and $\boldsymbol{\phi}=[e^{j{\theta_1}},\dots,e^{j{\theta_L}}] \in \mathbb{C}^{L \times 1}$. Both direct and extra link contributes to the corresponding composite channel as
 		\begin{equation}
 			h_{k,n} = h_{D,k,n} + \boldsymbol{v}_{k,n}^H \boldsymbol{\phi}
 		\end{equation}
@@ -84,17 +84,14 @@
 			\hrule
 			\begin{align}
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}
-				& = \frac{1}{2}\sum_{j_1,j_2}\sum_n{(h_{k,n}w_{I,j_1,n})(h_{k,n}w_{I,j_2,n})^*}\label{eq:z_k_terms_begin}\\
-				& = \frac{1}{2}\sum_n{h_{k,n}h_{k,n}^*{\boldsymbol{w}_{I,n}^H}{\boldsymbol{J}_{K}}{\boldsymbol{w}_{I,n}}}\\
+				& = \frac{1}{2}\sum_{j_1,j_2}\sum_n{(h_{k,n}w_{I,j_1,n})(h_{k,n}w_{I,j_2,n})^*} = \frac{1}{2}\sum_n{h_{k,n}h_{k,n}^*{\boldsymbol{w}_{I,n}^H}{\boldsymbol{J}_{K}}{\boldsymbol{w}_{I,n}}}\label{eq:z_k_terms_begin}\\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}
 				& = \frac{3}{4}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{I,{j_1},{n_1}})(h_{k,{n_2}}w_{I,{j_2},{n_2}})(h_{k,{n_3}}w_{I,{j_3},{n_3}})^*(h_{k,{n_4}}w_{I,{j_4},{n_4}})^*}\\
 				& = \frac{3}{4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{h_{k,n_3}^*h_{k,n_1}h_{k,n_4}^*h_{k,n_2}(\boldsymbol{w}_{I,n_3}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_1})(\boldsymbol{w}_{I,n_4}^H\boldsymbol{J}_K\boldsymbol{w}_{I,n_2})}\\
 				\mathcal{A}\left\{y_{P,k}^2(t)\right\}
-				& = \frac{1}{2}\sum_{j_1,j_2}\sum_n{(h_{k,n}w_{P,j_1,n})(h_{k,n}w_{P,j_2,n})^*}\\
-				& = \frac{1}{2}\sum_n{h_{k,n}h_{k,n}^*{\boldsymbol{w}_{P,n}^H}{\boldsymbol{J}_{K}}{\boldsymbol{w}_{P,n}}}\\
+				& = \frac{1}{2}\sum_n{(h_{k,n}w_{P,n})(h_{k,n}w_{P,n})^*}\\
 				\mathcal{A}\left\{y_{P,k}^4(t)\right\}
-				& = \frac{3}{8}\sum_{j_1,j_2,j_3,j_4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{P,{j_1},{n_1}})(h_{k,{n_2}}w_{P,{j_2},{n_2}})(h_{k,{n_3}}w_{P,{j_3},{n_3}})^*(h_{k,{n_4}}w_{P,{j_4},{n_4}})^*}\\
-				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{h_{k,n_3}^*h_{k,n_1}h_{k,n_4}^*h_{k,n_2}(\boldsymbol{w}_{P,n_3}^H\boldsymbol{J}_K\boldsymbol{w}_{P,n_1})(\boldsymbol{w}_{P,n_4}^H\boldsymbol{J}_K\boldsymbol{w}_{P,n_2})}\label{eq:z_k_terms_end}
+				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{P,{n_1}})(h_{k,{n_2}}w_{P,{n_2}})(h_{k,{n_3}}w_{P,{n_3}})^*(h_{k,{n_4}}w_{P,{n_4}})^*}\label{eq:z_k_terms_end}
 			\end{align}
 		\end{figure*}
 		\begin{figure*}[b]
