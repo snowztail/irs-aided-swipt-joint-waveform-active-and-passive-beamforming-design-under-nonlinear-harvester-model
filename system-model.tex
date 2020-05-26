@@ -2,6 +2,7 @@
 
 \input{info.tex}
 \input{packages.tex}
+\input{commands.tex}
 
 \begin{document}
 
@@ -57,13 +58,15 @@
 		\begin{equation}\label{eq:i_k}
 			i_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y_k(t)^i\right\}}\right\}
 		\end{equation}
-		where $R_{\text{ant}}$ is the impedance of the receive antenna, $k_0'=i_s(e^{-i_kR_{\text{ant}}/nv_t}-1)$, $k_i'=i_se^{-i_kR_{\text{ant}}/nv_t}/i!(nv_t)^i$ for $i=1,\dots,\infty$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. For a fixed channel and waveform, $\mathcal{A}\left\{.\right\}$ extracts the DC component of the received signal while $\mathcal{E}\left\{.\right\}$ covers the expectation over $\tilde{x}_{I,k,n}$.
+		where $R_{\text{ant}}$ is the impedance of the receive antenna, $k_0'=i_s(e^{-i_kR_{\text{ant}}/nv_t}-1)$, $k_i'=i_se^{-i_kR_{\text{ant}}/nv_t}/i!(nv_t)^i$ for $i=1,\dots,\infty$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. For a fixed channel and waveform, $\mathcal{A}\left\{.\right\}$ extracts the DC component of the received signal while $\mathcal{E}\left\{.\right\}$ covers the expectation over $\tilde{x}_{I,n}$.
 
 		With the assumption of evenly spaced frequencies, we have $\mathcal{E}\left\{y_k(t)^i\right\}=0 \ \forall i \ \mathrm{odd}$ such that the related terms has no contribution to DC components. For simplicity, we truncate the infinite series to the $n_0$-th order. Maximizing a truncated \ref{eq:i_k} is equivalent to maximizing a monotonic function \cite{Clerckx2016a}
 		\begin{equation}\label{eq:z_k}
 			z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y_k(t)^i\right\}\right\}}
 		\end{equation}
-		where $k_i=i_s/i!(nv_t)^i$. We choose $n_0=4$ to investigate the fundamental impact of diode nonlinearity on waveform design. Nonzero terms in \ref{eq:z_k} are given in \ref{eq:z_k_terms_begin} -- \ref{eq:z_k_terms_end}. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current. On top of this, the current expression \ref{eq:z_k} reduces to \ref{eq:z_k_expand}.
+		where $k_i=i_s/i!(nv_t)^i$. We choose $n_0=4$ to investigate the fundamental impact of diode nonlinearity on waveform design. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
+
+		For simplicity, we define $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$ and $\boldsymbol{H}_k=\boldsymbol{h}_k\boldsymbol{h}_k^H$ as waveform matrices and channel matrix of user $k$. Let $\boldsymbol{W}_{I/P,n}$, $\boldsymbol{H}_{k,n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{W}_{I/P}$, $\boldsymbol{H}_k$ and null the remaining entries, respectively. Denote $\beta_2={k_2}{R_{\text{ant}}}$ and $\beta_4={k_4}{R_{\text{ant}}^2}$.	On top of this, nonzero terms in \ref{eq:z_k} are detailed in \ref{eq:z_k_terms_begin} -- \ref{eq:z_k_terms_end} such that the current expression reduces to \ref{eq:z_k_expand} -- \ref{eq:z_k_waveform}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
@@ -78,20 +81,20 @@
 				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P\\
 				\mathcal{A}\left\{y_{P,k}^4(t)\right\}
 				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{P,{n_1}})(h_{k,{n_2}}w_{P,{n_2}})(h_{k,{n_3}}w_{P,{n_3}})^*(h_{k,{n_4}}w_{P,{n_4}})^*}\\
-				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^* = \frac{3}{4}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^*\label{eq:z_k_terms_end}
+				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^* = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^*\label{eq:z_k_terms_end}
 			\end{align}
 		\end{figure*}
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
 				z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
-				& = \beta_2\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+\beta_4\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\label{eq:z_k_expand}\\
-				& = \frac{1}{2}\beta_2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k+\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)^* + (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^* \right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\\
-				& = \frac{1}{2}\beta_2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)^* + (\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^* \right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)
+				& = \beta_2\rho\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+\beta_4\rho^2\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\label{eq:z_k_expand}\\
+				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k+\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\nonumber\\
+				& \quad+ \frac{3}{8}\beta_4\rho^2\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)^* + (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^* \right)\nonumber\\
+				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\label{eq:z_k_channel}\\
+				& = \frac{1}{2}\beta_2\rho(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\nonumber\\
+				& \quad+ \frac{3}{8}\beta_4\rho^2\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)^* + (\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^* \right)\nonumber\\
+				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\label{eq:z_k_waveform}
 			\end{align}
 		\end{figure*}
 	\end{subsection}
@@ -100,79 +103,94 @@
 \begin{section}{Problem Formulation}
 	In this section, we first define the weighted sum rate-energy (WSR-E) region then formulate waveform and IRS optimization problems.
 	\begin{subsection}{Weighted Sum Rate-Energy Region}
-		We define the achievable WSR-E region as
+		Define the achievable WSR-E region as
 		\begin{equation}
 			\begin{split}
 				C_{R-I}(P)
 				&\triangleq \biggl\{(R,I):R\le\sum_{k=1}^K{u_{I,k}R_k},I\le\sum_{k=1}^K u_{P,k}z_k,\\
-				&\quad \frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P}){\le}P\biggr\}
-				% &\quad \frac{1}{2}\left(\Vert{\boldsymbol{W}_I}\Vert_F^2+\Vert{\boldsymbol{W}_P}\Vert_F^2\right){\le}P\biggr\}
+				&\quad \frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P}) \le P\biggr\}
 			\end{split}
 		\end{equation}
-		where $u_{I,k},u_{P,k}$ denote the information and power weight of user $k$.
+		where $P$ is the transmit power budget and $u_{I,k},u_{P,k}$ are the information and power weight of user $k$.
 	\end{subsection}
 
 	\begin{subsection}{Single-User Optimization}
-		In this section, we first characterize the rate-energy region in the single-user setup. Let $h_n={A_n}{e^{j{\bar{\psi}_n}}}$, $w_{I,n}=s_{I,n}e^{j{\phi}_n}$, $w_{P,n}=s_{P,n}e^{j{\phi}_n}$. The WSR-E region can be obtained through a rate maximization problem subject to transmit power and output DC current constraints
-		\begin{maxi}
-			% {\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\Theta}_0,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert{(h_{D,n}+\boldsymbol{h}_{R,n}\boldsymbol{\Theta}_0\boldsymbol{h}_{I,n})w_{I,n}}\rvert^2}{\sigma_n^2}\right)}}{\label{op:1}}{}
-			{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v})w_{I,n}\rvert^2}{\sigma_n^2}\right)}}{\label{op:1}}{}
+		Consider a single-user waveform and IRS optimization problem where $\boldsymbol{\alpha}=\boldsymbol{1}^{N \times 1}$. We characterize the rate-energy region through a current maximization problem subject to transmit power, rate, and IRS constraints
+		\begin{maxi!}
+			{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho}{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)}{\label{op:su}}{}
 			\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
-			\addConstraint{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{v},\rho)\ge{\bar{z}}}
-			\addConstraint{\lvert{v_l}\rvert=1,\quad l=1,\dots,L}
-			% \addConstraint{0\le{\theta_l}\le{2{\pi}},\quad l=1,\dots,L}
-		\end{maxi}
-		Problem \ref{op:1} is intricate due to the non-convex rate function, unit-modulus constraint, and non-convex DC current requirement with coupled variables.
+			\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi})w_{I,n}\rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}
+			\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}
+		\end{maxi!}
+		Problem \ref{op:su} is intricate due to the non-convex objective function with coupled variables. In the next section, we propose two waveform and phase shift design algorithms for frequency-flat and frequency-selective IRS respectively.
 
 		\begin{subsubsection}{Frequency-Selective IRS}
-			In frequency-selective IRS, each element is expected to provide adjustable subband-dependent reflection coefficients such that the total degree of freedom (DoF) of IRS is $NL$. Therefore, $\boldsymbol{v}_n$ replaces $\boldsymbol{v}$ in \ref{op:1}. Note that $\lvert{(h_{D,n}+\boldsymbol{\Phi}_n^H\boldsymbol{v}_n)w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{\Phi}_n^H\boldsymbol{v}_nw_{I,n}}\rvert$ where the equality holds if and only if the direct and IRS-aided links are aligned by
-			\begin{equation}
+			Each element in frequency-selective IRS is expected to provide subband-dependent reflection coefficients. Hence, $\boldsymbol{\phi}_n$ replaces $\boldsymbol{\phi}$ in \ref{op:su} and the IRS has a total degree of freedom (DoF) of $NL$. Note that $\lvert{(h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi}_n)w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{v}_n^H\boldsymbol{\phi}_n w_{I,n}}\rvert$ where the equality holds when the direct and IRS-aided links are aligned. Therefore, we choose the phase shift of element $l$ at subband $n$ as
+			\begin{equation}\label{eq:theta}
 				\theta_{n,l}^\star = \angle{h}_{D,n} - \angle{h_{R,n,l}}-\angle{h_{I,n,l}}
 			\end{equation}
-			That is to say, the optimal phase shift is obtained in closed form in the single-user scenario. On top of this, it can be observed from \ref{eq:gamma_{k,n}}, \ref{eq:R_k} and \ref{eq:z_k_truncated} that the optimal phase of information and power waveforms are matched to composite frequency response as
-			\begin{equation}\label{eq:phi_n}
-				\phi_{I,n}^\star=\phi_{P,n}^\star=-\bar{\psi}_n
+			That is to say, the optimal phase shift is obtained in closed form in the single-user scenario, and the phase of the composite channel equals that of the direct channel. Moreover, it can be observed from \ref{eq:R_k} and \ref{eq:z_k_expand} that the optimal phases of information and power waveform are both match to the composite channel as
+			\begin{equation}\label{eq:psi}
+				\psi_{I,n}^{\star}=\psi_{P,n}^{\star}=\bar{\psi}_{n}
 			\end{equation}
-			With all the phases determined, the original problem \ref{op:1} is reduced to
-			\begin{maxi}
-				% {\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)(A_{D,n}+\boldsymbol{A}_{R,n}\boldsymbol{A}_{I,n})^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
-				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\sum_{n}{\log_2\left(1+\frac{(1-\rho)A_n^2{s_{I,n}^2}}{\sigma_n^2}\right)}}{\label{op:2}}{}
+			By such a phase selection, we have
+			\begin{equation}
+				\lvert{(h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi}_n)w_{I,n}}\rvert = \lvert h_{D,n} \rvert \lvert w_{I,n} \rvert + \vert \boldsymbol{v}_n^H\boldsymbol{\phi}_n \rvert \lvert w_{I,n} \rvert
+			\end{equation}
+			Therefore, the original problem \ref{op:su} is reduced to an waveform magnitude optimization problem
+			\begin{maxi!}
+				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\label{op:su_gp}}{}
 				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
-				\addConstraint{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)\ge{\bar{z}}}
-			\end{maxi}
+				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho){A_n^2}{s_{I,n}^2}}{\sigma_n^2}\right)} \ge \bar{R}}
+			\end{maxi!}
 			\begin{figure*}[b]
 				\hrule
 				\begin{equation}\label{eq:z_gp}
 					\begin{split}
-						z
-						&=\frac{1}{2}{k_2}{\rho}{R_{\text{ant}}}\sum_n{A_n^2(s_{I,n}^2+s_{P,n}^2)}+\frac{3}{8}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{A_{n_1}A_{n_2}A_{n_3}A_{n_4}(2s_{I,n_1}s_{I,n_2}s_{I,n_3}s_{I,n_4}+s_{P,n_1}s_{P,n_2}s_{P,n_3}s_{P,n_4})}\\
-						&\quad+\frac{3}{2}{k_4}{\rho^2}{R_{\text{ant}}^2}\sum_n{{A_n^4}{s_{I,n}^2}{s_{P,n}^2}}
+						z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)
+						&=\frac{1}{2}{\beta_2}{\rho}\sum_n{A_n^2(s_{I,n}^2+s_{P,n}^2)}\\
+						&\quad+\frac{3}{8}{\beta_4}{\rho^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{A_{n_1}A_{n_2}A_{n_3}A_{n_4}(2s_{I,n_1}s_{I,n_2}s_{I,n_3}s_{I,n_4}+s_{P,n_1}s_{P,n_2}s_{P,n_3}s_{P,n_4})}\\
+						&\quad+\frac{3}{2}{\beta_4}{\rho^2}\sum_n{{A_n^4}{s_{I,n}^2}{s_{P,n}^2}}
 					\end{split}
 				\end{equation}
 			\end{figure*}
-			with $z$ given by \ref{eq:z_gp}. It can be transformed to an equivalent problem by introducing an auxiliary variable $t_0$
+			with $z$ given by \ref{eq:z_gp}. We introduce an auxiliary variable $t'$ and transform problem \ref{op:su_gp} into
+			\begin{mini!}
+				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,t'}{\frac{1}{t'}}{\label{op:su_gp_1}}{}
+				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P}) \le P}
+				\addConstraint{\frac{t'}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)} \le 1}
+				\addConstraint{\frac{2^{\bar{R}}}{\prod_n \left(1+\frac{(1-\rho){A_n^2}{s_{I,n}^2}}{\sigma_n^2}\right)} \le 1}
+			\end{mini!}
+			Problem \ref{op:su_gp_1} is a Reversed Geometric Program which can be transformed to standard Geometric Program (GP). The idea is to decompose the information and power posynomials as sum of monomials, then derive their upper bounds using Arithmetic Mean-Geometric Mean (AM-GM) inequality \cite{Clerckx2018b,Chiang2005}. Let $z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)=\sum_{m=1}^{M}{g_{P,m}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}$, problem \ref{op:su_gp_1} is equivalent to
 			\begin{mini}
-				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\frac{1}{t_0}}{\label{op:3}}{}
+				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,\bar{\rho},t'}{\frac{1}{t'}}{\label{op:su_gp_2}}{}
 				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
-				\addConstraint{\frac{t_0}{\prod_{n}{\left(1+\frac{(1-\rho){A_n^2}{s_{I,n}^2}}{\sigma_n^2}\right)}}\le{1}}
-				\addConstraint{\frac{\bar{z}}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}\le{1}}
+				\addConstraint{{t'}\prod_m{\left(\frac{g_{P,m}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\gamma_{P,m}}\right)^{-\gamma_{P,m}}}\le{1}}
+				\addConstraint{2^{\bar{R}}\prod_{n}{\left(\frac{1}{\gamma_{I,n,1}}\right)^{-\gamma_{I,n,1}} \left(\frac{\bar{\rho}{A_n^2}{s_{I,n}^2}}{{\sigma_n^2}{\gamma_{I,n,2}}}\right)^{-\gamma_{I,n,2}}}\le{1}}
+				\addConstraint{\rho + \bar{\rho} \le 1}
 			\end{mini}
-			\ref{op:3} is a Reversed Geometric Program which can be transformed to standard Geometric Program (GP). The basic idea is to decompose the information and power posynomials as sum of monomials, then derive their upper bounds using Arithmetic Mean-Geometric Mean (AM-GM) inequality \cite{Clerckx2018b,Chiang2005}. Let $z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)=\sum_{{m_P}=1}^{M_P}{g_{P,m_P}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}$, problem \ref{op:3} is equivalent to
-			% $1+\bar{\rho}{A_n^2}{s_{I,n}^2}/\sigma_n^2=\sum_{{m_{I,n}}=1}^{M_{I,n}}{g_{I,m_{I,n}}(\boldsymbol{s}_I,\bar{\rho})}$
-			\begin{mini}
-				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{\frac{1}{t_0}}{\label{op:4}}{}
-				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
-				\addConstraint{{t_0}\prod_{n}{\left(\frac{1}{\gamma_{I,n,1}}\right)^{-\gamma_{I,n,1}} \left(\frac{\bar{\rho}{A_n^2}{s_{I,n}^2}}{{\sigma_n^2}{\gamma_{I,n,2}}}\right)^{-\gamma_{I,n,2}}}\le{1}}
-				\addConstraint{\bar{z}\prod_{m_P}{\left(\frac{g_{P,m_P}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\gamma_{P,m_P}}\right)^{-\gamma_{P,m_P}}}\le{1}}
-				\addConstraint{\rho+\bar{\rho}\le{1}}
-			\end{mini}
-			where $\gamma_{I,n,1},\gamma_{I,n,2} \ge 0$, $\gamma_{I,n,1}+\gamma_{I,n,2}=1$, $\gamma_{P,m_P} \ge 0,\forall m_P=1,\dots,M_P$ and $\sum_{{m_P}=1}^{M_P}{\gamma_{m_P}}=1$. As suggested in \cite{Clerckx2018b}, the tightness of the AM-GM inequality depends on $\{\gamma_{I,n},\gamma_P\}$ that require iterative update. At iteration $i$, we choose
+			where $\gamma_{I,n,1},\gamma_{I,n,2} \ge 0$, $\gamma_{I,n,1}+\gamma_{I,n,2}=1$, $\gamma_{P,m} \ge 0 \ \forall m$, and $\sum_{m=1}^{M}{\gamma_m}=1$. The tightness of the AM-GM inequality depends on $\{\gamma_{I,n},\gamma_P\}$ that require successive update. At iteration $i$, we choose \cite{Clerckx2018b}
 			\begin{align}
-				\gamma_{I,n,1}^{(i)} & =\frac{1}{1+\frac{\bar{\rho}^{(i-1)}{A_n^2}{s_{I,n}^{(i-1)}}^2}{\sigma_n^2}},                                                                         &  & n=1,\dots,N,    \\
-				\gamma_{I,n,2}^{(i)} & =\frac{\frac{\bar{\rho}^{(i-1)}{A_n^2}{s_{I,n}^{(i-1)}}^2}{\sigma_n^2}}{1+\frac{\bar{\rho}^{(i-1)}{A_n^2}{s_{I,n}^{(i-1)}}^2}{\sigma_n^2}},           &  & n=1,\dots,N,    \\
-				\gamma_{P,m_P}^{(i)} & =\frac{g_{P,m_P}(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}, &  & m_P=1,\dots,M_P
+				\gamma_{I,n,1}^{(i)} & = \left. 1 \middle/ \left(1+\frac{\bar{\rho}^{(i-1)}{A_n^2}(s_{I,n}^{(i-1)})^2}{\sigma_n^2}\right) \right.\label{eq:gamma_I_1}\\
+				\gamma_{I,n,2}^{(i)} & = 1 - \gamma_{I,n,1}^{(i)}\label{eq:gamma_I_2}\\
+				\gamma_{P,m}^{(i)} & =\frac{g_{P,m}(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}
 			\end{align}
-			and then solve problem \ref{op:4}.
+			and then solve problem \ref{op:su_gp_2}. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
+			\begin{algorithm}
+				\caption{FS-IRS: Waveform Amplitude Optimization}
+				\label{al:fs_waveform}
+				\begin{algorithmic}[1]
+					\State \textbf{Input} $P, \bar{R}, \boldsymbol{h}$ by \ref{eq:h_k}, \ref{eq:theta}
+					\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{s}_{I/P}^{(0)}$, $\rho^{(0)}$
+					\Repeat
+					\State $i \leftarrow i + 1$
+					\State Update GM exponents $\{\gamma_{I,n}^{(i)},\gamma_{P}^{(i)}\}$ by \ref{eq:gamma_I_1} -- \ref{eq:gamma_P}
+					\State Obtain waveform amplitude $\boldsymbol{s}_{I/P}^{(i)}$ and splitting ratio $\rho^{(i)}, \bar{\rho}^{(i)}$ by solving problem \ref{op:su_gp_2}
+					\State Compute output DC current $z^{(i)}$ by \ref{eq:z_gp}
+					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
+					\State \textbf{Output} $\boldsymbol{s}_{I/P}^{\star}, \rho^{\star}, z^{\star}$
+				\end{algorithmic}
+			\end{algorithm}
 		\end{subsubsection}
 
 		\begin{subsubsection}{Frequency-Flat IRS}
