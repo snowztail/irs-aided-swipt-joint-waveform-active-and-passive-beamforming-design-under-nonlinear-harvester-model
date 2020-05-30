@@ -89,12 +89,12 @@
 			\begin{align}
 				z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
 				& = \beta_2\rho\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+\beta_4\rho^2\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\label{eq:z_k_expand}\\
-				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k+\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\nonumber\\
+				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}^*\boldsymbol{h}_k+\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}^*\boldsymbol{h}_k)\nonumber\\
 				& \quad+ \frac{3}{8}\beta_4\rho^2\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)^* + (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^* \right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\label{eq:z_k_channel}\\
-				& = \frac{1}{2}\beta_2\rho(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\nonumber\\
+				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}^*\boldsymbol{h}_k)\label{eq:z_k_channel}\\
+				& = \frac{1}{2}\beta_2\rho(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_P)\nonumber\\
 				& \quad+ \frac{3}{8}\beta_4\rho^2\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)^* + (\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^* \right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\label{eq:z_k_waveform}
+				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_P)\label{eq:z_k_waveform}
 			\end{align}
 		\end{figure*}
 	\end{subsection}
@@ -289,7 +289,7 @@
 				\addConstraint{\boldsymbol{\Phi}\succeq{0}}
 				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
 			\end{maxi!}
-			We then relax the rank constraint \ref{co:irs_rank} and solve the optimal IRS matrix $\boldsymbol{\Phi}^{\star}$ iteratively by interior-point method. If $\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ is attained by eigenvalue decomposition (EVD). Otherwise, a best feasible candidate $\bar{\boldsymbol{\phi}}^\star$ can be extracted through Gaussian randomization method \cite{Huang2010}. First, perform EVD on $\boldsymbol{\Phi}^{\star}$ as $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}^H$. Then, we generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$ and construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q$. Next, the optimal solution $\bar{\boldsymbol{\phi}}^\star$ is approximated by the one achieving maximum objective value \ref{eq:su_irs_target}. Finally, we can retrieve the phase shift by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for the phase optimization subproblem is summarized in Algorithm \ref{al:ff_irs}.
+			We then relax the rank constraint \ref{co:irs_rank} and solve the optimal IRS matrix $\boldsymbol{\Phi}^{\star}$ iteratively by interior-point method. If $\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ is attained by eigenvalue decomposition (EVD). Otherwise, a best feasible candidate $\bar{\boldsymbol{\phi}}^\star$ can be extracted through Gaussian randomization method \cite{Huang2010}. First, perform EVD on $\boldsymbol{\Phi}^{\star}$ as $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}^H$. Then, we generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$ and construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$. Next, the optimal solution $\bar{\boldsymbol{\phi}}^\star$ is approximated by the one achieving maximum objective value \ref{eq:su_irs_target}. Finally, we can retrieve the phase shift by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for the phase optimization subproblem is summarized in Algorithm \ref{al:ff_irs}.
 			\begin{algorithm}
 				\caption{FF-IRS: Phase Shift Optimization}
 				\label{al:ff_irs}
@@ -304,7 +304,7 @@
 					\Until $\lvert \tilde{z}^{(i)}-\tilde{z}^{(i-1)} \rvert \le \epsilon$
 					\State Perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}^H$
 					\State Generate random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}) \ \forall q$
-					\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q$ and corresponding matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
+					\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$ and corresponding matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
 					\State Select the best solution $\boldsymbol{\Phi}^\star$ for problem \ref{op:su_irs} and corresponding $\boldsymbol{\phi}^\star$
 					\State Compute IRS phase shift by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
 					\State \textbf{Output} $\theta_l, \ l=1,\dots,L$
@@ -374,7 +374,7 @@
 				\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
 				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1\label{co:waveform_rank}}
 			\end{maxi!}
-			We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can be approximated via randomization method as in section \ref{se:fs_irs}. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
+			We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can also be extracted using randomized vectors $\boldsymbol{r}_q \in \mathbb{C}^{(L+1) \times 1}, \ q=1,\dots,Q$, whose entries are uniformly distributed on the unit circle $r_{q,n}=e^{j\omega}, \omega \in [0,2\pi]$. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
 
 			\begin{algorithm}
 				\caption{Waveform Optimization}
@@ -389,7 +389,7 @@
 					\State Update auxiliary $t_{I/P,n}^{\prime (k)} \forall n$ by \ref{eq:t'} for SCA
 					\Until $\lvert \tilde{z}^{(i)}-\tilde{z}^{(i-1)} \rvert \le \epsilon$
 					\State Perform EVD $\boldsymbol{W}_{I/P}^{\star}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}^H$
-					\State Generate random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{N}) \ \forall q$
+					\State Generate random vectors $\boldsymbol{r}_q \ \forall q$ with entries uniformly distributed on the unit circle
 					\State Construct candidate waveform vectors $\boldsymbol{w}_{I/P,r}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q$ and corresponding matrices $\boldsymbol{W}_{I/P,q}=\boldsymbol{w}_{I/P,q}\boldsymbol{w}_{I/P,q}^H  \ \forall q$
 					\State Select the best solution $\boldsymbol{W}_{I}^\star,\boldsymbol{W}_{P}^\star$ for problem \ref{op:su_waveform} and corresponding $\boldsymbol{w}_{I}^\star, \boldsymbol{w}_{P}^\star$
 					\State \textbf{Output} $\boldsymbol{w}_I^\star, \boldsymbol{w}_P^\star, \rho^\star$
