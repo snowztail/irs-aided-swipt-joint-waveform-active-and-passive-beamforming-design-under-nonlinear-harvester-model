@@ -41,8 +41,8 @@ nReflectors = 5;
 
 %% * Algorithm
 % user rate constraint
-rateConstraint = 0;
+rateConstraint = 10;
 % minimum gain ratio per iteration
 tolerance = 1e-3;
 %  number of CSCG random vectors to generate
-nCandidates = 1e3;
+nCandidates = 1e4;

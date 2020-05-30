@@ -58,7 +58,7 @@ function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, toleran
             powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
         end
         % \boldsymbol{A}^{(i)}
-        coefMatrix = (beta2 / 2) * powerRatio * (infoCoefMatrix{nSubbands} + powerCoefMatrix{nSubbands});
+        coefMatrix = (1 / 2 * beta2) * powerRatio * (infoCoefMatrix{nSubbands} + powerCoefMatrix{nSubbands});
         for iSubband = - nSubbands + 1 : nSubbands - 1
             coefMatrix = coefMatrix + (3 / 8 * beta4) * powerRatio ^ 2 ...
                 * (2 * (conj(infoAuxiliary(iSubband + nSubbands)) * infoCoefMatrix{iSubband + nSubbands} + infoAuxiliary(iSubband + nSubbands) * ctranspose(infoCoefMatrix{iSubband + nSubbands})) ...
@@ -71,72 +71,31 @@ function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, toleran
             cvx_solver mosek
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression current;
-            expression rate;
+            expression snr(nSubbands, 1);
             % \tilde(z)
             current = real(trace(coefMatrix * irsMatrix)) ...
                 - (3 / 8 * beta4) * powerRatio ^ 2 * real(2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
                 - (3 / 2 * beta4) * powerRatio ^ 2 * real(infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
             % R
             for iSubband = 1 : nSubbands
-                rate = rate + real(log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix) / noisePower)) / log(2);
+                snr(iSubband) = infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
             end
             maximize current;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
-                rate >= rateConstraint;
+                geo_mean(1 + snr) >= exp(rateConstraint) ^ (1 / nSubbands);
         cvx_end
 
         % * Test convergence
-        isConverged = ((current - current_) / current <= tolerance || current == 0) && ((rate - rate_) / rate <= tolerance || rate == 0);
-        rate_ = rate;
+        isConverged = (current - current_) / current <= tolerance || current == 0 || isnan(current);
         current_ = current;
     end
     clearvars current_ rate_;
 
-    % t_{I/P,n}
-    for iSubband = - nSubbands + 1 : nSubbands - 1
-        infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
-        powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
-    end
-    % z
-    current1 = real(1 / 2 * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
-        + 3 / 8 * beta4 * powerRatio ^ 2 * (2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
-        * 3 / 2 * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
     rate1 = 0;
     for iSubband = 1 : nSubbands
-        rate1 = rate1 + real(log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix) / noisePower) / log(2));
+        rate1 = rate1 + real(log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix) / noisePower)) / log(2);
     end
-
-
-    % t_{I/P,n}^{(i-1)}
-    for iSubband = - nSubbands + 1 : nSubbands - 1
-        infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
-        powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
-    end
-    % \boldsymbol{A}^{(i)}
-    coefMatrix = (beta2 / 2) * powerRatio * (infoCoefMatrix{nSubbands} + powerCoefMatrix{nSubbands});
-    for iSubband = - nSubbands + 1 : nSubbands - 1
-        coefMatrix = coefMatrix + (3 / 8 * beta4) * powerRatio ^ 2 ...
-            * (2 * (conj(infoAuxiliary(iSubband + nSubbands)) * infoCoefMatrix{iSubband + nSubbands} + infoAuxiliary(iSubband + nSubbands) * ctranspose(infoCoefMatrix{iSubband + nSubbands})) ...
-            + (conj(powerAuxiliary(iSubband + nSubbands)) * powerCoefMatrix{iSubband + nSubbands} + powerAuxiliary(iSubband + nSubbands) * ctranspose(powerCoefMatrix{iSubband + nSubbands})));
-    end
-    coefMatrix = coefMatrix + (3 / 2 * beta4) * powerRatio ^ 2 * (powerAuxiliary(nSubbands) * infoCoefMatrix{nSubbands} + infoAuxiliary(nSubbands) * powerCoefMatrix{nSubbands});
-
-    current2 = real(trace(coefMatrix * irsMatrix)) ...
-                - (3 / 8 * beta4) * powerRatio ^ 2 * real(2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
-                - (3 / 2 * beta4) * powerRatio ^ 2 * real(infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
-
-
-
-
-
-
-
-
-
-
-
-
 
     % * Recover rank-1 solution by randomization method
     [u, sigma] = eig(irsMatrix);
@@ -149,16 +108,17 @@ function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, toleran
             infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix_);
             powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix_);
         end
-        % z
+
+        % current_ = real(trace(coefMatrix * irsMatrix_));
         current_ = real(1 / 2 * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
             + 3 / 8 * beta4 * powerRatio ^ 2 * (2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
             * 3 / 2 * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
         % R
         rate_ = 0;
         for iSubband = 1 : nSubbands
-            rate_ = rate_ + real(log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix_) / noisePower) / log(2));
+            rate_ = rate_ + real(log2(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix_) / noisePower));
         end
-        if current_ > maxCurrent
+        if current_ > maxCurrent && rate_ > rateConstraint
             maxCurrent = current_;
             maxRate = rate_;
             irs = irs_;
