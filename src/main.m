@@ -1,4 +1,4 @@
-clear; clc; setup; config_reflectors;
+clear; clc; setup; config;
 
 % * Direct link
 [directTapGain, directTapDelay] = taps_tgn(nTxs, nRxs);
@@ -27,4 +27,10 @@ irs = irsGain * ones(nReflectors, 1);
 
 % * Initialize algorithm
 [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(txPower, compositeChannel);
-[irsMatrix] = irs_sdr(k2, k4, resistance, noisePower, currentConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio);
+
+% * Achievable rate by FF-IRS
+[irsMatrix, flatRate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates);
+
+% * Achievable rate by FS-IRS
+[irs_, compositeChannel_] = irs_selective(directChannel, incidentChannel, reflectiveChannel);
+[selectiveRate] = channel_capacity(compositeChannel_, txPower, noisePower);

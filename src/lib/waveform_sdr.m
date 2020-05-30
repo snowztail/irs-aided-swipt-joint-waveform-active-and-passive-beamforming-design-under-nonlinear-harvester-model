@@ -1,4 +1,4 @@
-function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_sdr(k2, k4, resistance, txPower, noisePower, currentConstraint, tolerance, compositeChannel, infoWaveform, powerWaveform, infoRatio, powerRatio)
+function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_sdr(k2, k4, resistance, txPower, noisePower, rateConstraint, tolerance, compositeChannel, infoWaveform, powerWaveform, infoRatio, powerRatio)
     % Function:
     %   - optimize the information and power waveform to maximize the R-E region
     %   - compute the output DC current and user rate
@@ -9,7 +9,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
     %   - resistance (R_ant): antenna resistance
     %   - txPower (P): average transmit power
     %   - noisePower (\sigma_n^2): average noise power
-    %   - currentConstraint (z_0): average output DC current constraint
+    %   - rateConstraint (\bar{R}): average output DC current constraint
     %   - tolerance (\epsilon): minimum rate gain ratio per iteration
     %   - compositeChannel (h) [nSubbands * nTxs * nRxs]: total composite channel
     %   - infoWaveform (w_I) [nSubbands]: weight on information carriers (previous solution)

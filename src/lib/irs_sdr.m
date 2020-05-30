@@ -1,26 +1,28 @@
-function [irsMatrix] = irs_sdr(k2, k4, resistance, noisePower, currentConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio)
+function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates)
     % Function:
     %   - optimize the information and power waveform to maximize the R-E region
     %   - compute the output DC current and user rate
     %
     % Input:
-    %   - k2: diode k-parameters
-    %   - k4: diode k-parameters
-    %   - resistance (R_ant): antenna resistance
+    %   - beta2: coefficients on second-order current terms
+    %   - beta4: coefficients on fourth-order current terms
     %   - noisePower (\sigma_n^2): average noise power
-    %   - currentConstraint (z_0): average output DC current constraint
-    %   - tolerance (\epsilon): minimum rate gain ratio per iteration
+    %   - rateConstraint (\bar{R}): user rate constraint
+    %   - tolerance (\epsilon): minimum gain ratio per iteration
+    %   - concatVector (M) [(nReflectors + 1) * nSubbands]: concatenated channel vector
     %   - concatMatrix (R_n) [(nReflectors + 1) * (nReflectors + 1)]: rate SDR matrix
     %   - infoWaveform (w_I) [nSubbands]: weight on information carriers (previous solution)
     %   - powerWaveform (w_P) [nSubbands]: weight on power carriers (previous solution)
     %   - infoRatio (\bar{\rho}): information splitting ratio (previous solution)
     %   - powerRatio (\rho): power splitting ratio (previous solution)
+    %   - nCandidates (Q): number of CSCG random vectors to generate
     %
     % Output:
-    %   - irsMatrix: high-rank IRS outer product matrix
+    %   - irs: IRS reflection coefficients
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank IRS outer product matrix
+    %   - use Gaussian randomization method to extract IRS vector
     %
     % Author & Date: Yang (i@snowztail.com) - 21 May 20
 
@@ -29,68 +31,138 @@ function [irsMatrix] = irs_sdr(k2, k4, resistance, noisePower, currentConstraint
     % * Construct current SDR matrices
     nSubbands = size(infoWaveform, 1);
     nReflectors = size(concatMatrix{1}, 1) - 1;
-    % \boldsymbol{M}_{I/P}
+    % \boldsymbol{W}_{I/P}
     for iSubband = 1 : nSubbands
-        infoMatrix = conj(infoWaveform) * transpose(infoWaveform);
-        powerMatrix = conj(powerWaveform) * transpose(powerWaveform);
+        infoMatrix = infoWaveform * infoWaveform';
+        powerMatrix = powerWaveform * powerWaveform';
     end
     % \boldsymbol{C}_{I/P,n}
-    infoSubmatrix = cell(2 * nSubbands - 1, 1);
-    powerSubmatrix = cell(2 * nSubbands - 1, 1);
+    infoCoefMatrix = cell(2 * nSubbands - 1, 1);
+    powerCoefMatrix = cell(2 * nSubbands - 1, 1);
     for iSubband = - nSubbands + 1 : nSubbands - 1
-        infoSubmatrix{iSubband + nSubbands} = concatVector' * diag(diag(infoMatrix, iSubband), iSubband) * concatVector;
-        powerSubmatrix{iSubband + nSubbands} = concatVector' * diag(diag(powerMatrix, iSubband), iSubband) * concatVector;
+        infoCoefMatrix{iSubband + nSubbands} = concatVector * diag(diag(conj(infoMatrix), iSubband), iSubband) * concatVector';
+        powerCoefMatrix{iSubband + nSubbands} = concatVector * diag(diag(conj(powerMatrix), iSubband), iSubband) * concatVector';
     end
 
     % * SCA
     rate_ = 0;
     current_ = 0;
     isConverged = false;
-    irsMatrix = eye(nReflectors + 1);
+    irsMatrix = ones(nReflectors + 1);
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
     powerAuxiliary = zeros(2 * nSubbands - 1, 1);
     while ~isConverged
-        % t_{I/P,n}^{(k-1)}
+        % t_{I/P,n}^{(i-1)}
         for iSubband = - nSubbands + 1 : nSubbands - 1
-            infoAuxiliary(iSubband + nSubbands) = trace(infoSubmatrix{iSubband + nSubbands} * irsMatrix);
-            powerAuxiliary(iSubband + nSubbands) = trace(powerSubmatrix{iSubband + nSubbands} * irsMatrix);
+            infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
+            powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
         end
-        % \boldsymbol{A}^{(k)}
-        coefMatrix = (k2 * powerRatio * resistance / 2) * (infoSubmatrix{nSubbands} + powerSubmatrix{nSubbands});
+        % \boldsymbol{A}^{(i)}
+        coefMatrix = (beta2 / 2) * powerRatio * (infoCoefMatrix{nSubbands} + powerCoefMatrix{nSubbands});
         for iSubband = - nSubbands + 1 : nSubbands - 1
-            coefMatrix = coefMatrix + (3 * k4 * powerRatio ^ 2 * resistance ^ 2 / 8) ...
-                * (2 * (conj(infoAuxiliary(iSubband + nSubbands)) * infoSubmatrix{iSubband + nSubbands} + infoAuxiliary(iSubband + nSubbands) * ctranspose(infoSubmatrix{iSubband + nSubbands})) ...
-                + (conj(powerAuxiliary(iSubband + nSubbands)) * powerSubmatrix{iSubband + nSubbands} + powerAuxiliary(iSubband + nSubbands) * ctranspose(powerSubmatrix{iSubband + nSubbands})));
+            coefMatrix = coefMatrix + (3 / 8 * beta4) * powerRatio ^ 2 ...
+                * (2 * (conj(infoAuxiliary(iSubband + nSubbands)) * infoCoefMatrix{iSubband + nSubbands} + infoAuxiliary(iSubband + nSubbands) * ctranspose(infoCoefMatrix{iSubband + nSubbands})) ...
+                + (conj(powerAuxiliary(iSubband + nSubbands)) * powerCoefMatrix{iSubband + nSubbands} + powerAuxiliary(iSubband + nSubbands) * ctranspose(powerCoefMatrix{iSubband + nSubbands})));
         end
-        coefMatrix = coefMatrix + (3 * k4 * powerRatio ^ 2 * resistance ^ 2 / 2) * (powerAuxiliary(nSubbands) * infoSubmatrix{nSubbands} + infoAuxiliary(nSubbands) * powerSubmatrix{nSubbands});
-        % ensure strictly hermitian
-        coefMatrix = (coefMatrix + coefMatrix') / 2;
+        coefMatrix = coefMatrix + (3 / 2 * beta4) * powerRatio ^ 2 * (powerAuxiliary(nSubbands) * infoCoefMatrix{nSubbands} + infoAuxiliary(nSubbands) * powerCoefMatrix{nSubbands});
 
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
+            cvx_solver mosek
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
-            expression rate;
             expression current;
+            expression rate;
+            % \tilde(z)
+            current = real(trace(coefMatrix * irsMatrix)) ...
+                - (3 / 8 * beta4) * powerRatio ^ 2 * real(2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
+                - (3 / 2 * beta4) * powerRatio ^ 2 * real(infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
             % R
             for iSubband = 1 : nSubbands
-                rate = rate + log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix) / noisePower) / log(2);
+                rate = rate + real(log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix) / noisePower)) / log(2);
             end
-            % \tilde(z)
-            current = trace(coefMatrix * irsMatrix);
-            for iSubband = - nSubbands + 1 : nSubbands - 1
-                current = current - (3 * k4 * powerRatio ^ 2 * resistance ^ 2 / 8) * (2 * infoAuxiliary(iSubband + nSubbands) * conj(infoAuxiliary(iSubband + nSubbands)) + powerAuxiliary(iSubband + nSubbands) * conj(powerAuxiliary(iSubband + nSubbands)));
-            end
-            current = current - (3 * k4 * powerRatio ^ 2 * resistance ^ 2 / 2) * real(infoAuxiliary(iSubband + nSubbands) * powerAuxiliary(iSubband + nSubbands));
-            maximize rate;
+            maximize current;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
-                current >= currentConstraint;
+                rate >= rateConstraint;
         cvx_end
 
         % * Test convergence
-        isConverged = (rate - rate_) / rate <= tolerance && ((current - current_) / current <= tolerance || current == 0);
-        rate_ = rate
-        current_ = current
+        isConverged = ((current - current_) / current <= tolerance || current == 0) && ((rate - rate_) / rate <= tolerance || rate == 0);
+        rate_ = rate;
+        current_ = current;
+    end
+    clearvars current_ rate_;
+
+    % t_{I/P,n}
+    for iSubband = - nSubbands + 1 : nSubbands - 1
+        infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
+        powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
+    end
+    % z
+    current1 = real(1 / 2 * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+        + 3 / 8 * beta4 * powerRatio ^ 2 * (2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
+        * 3 / 2 * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
+    rate1 = 0;
+    for iSubband = 1 : nSubbands
+        rate1 = rate1 + real(log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix) / noisePower) / log(2));
+    end
+
+
+    % t_{I/P,n}^{(i-1)}
+    for iSubband = - nSubbands + 1 : nSubbands - 1
+        infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
+        powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
+    end
+    % \boldsymbol{A}^{(i)}
+    coefMatrix = (beta2 / 2) * powerRatio * (infoCoefMatrix{nSubbands} + powerCoefMatrix{nSubbands});
+    for iSubband = - nSubbands + 1 : nSubbands - 1
+        coefMatrix = coefMatrix + (3 / 8 * beta4) * powerRatio ^ 2 ...
+            * (2 * (conj(infoAuxiliary(iSubband + nSubbands)) * infoCoefMatrix{iSubband + nSubbands} + infoAuxiliary(iSubband + nSubbands) * ctranspose(infoCoefMatrix{iSubband + nSubbands})) ...
+            + (conj(powerAuxiliary(iSubband + nSubbands)) * powerCoefMatrix{iSubband + nSubbands} + powerAuxiliary(iSubband + nSubbands) * ctranspose(powerCoefMatrix{iSubband + nSubbands})));
+    end
+    coefMatrix = coefMatrix + (3 / 2 * beta4) * powerRatio ^ 2 * (powerAuxiliary(nSubbands) * infoCoefMatrix{nSubbands} + infoAuxiliary(nSubbands) * powerCoefMatrix{nSubbands});
+
+    current2 = real(trace(coefMatrix * irsMatrix)) ...
+                - (3 / 8 * beta4) * powerRatio ^ 2 * real(2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
+                - (3 / 2 * beta4) * powerRatio ^ 2 * real(infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
+
+
+
+
+
+
+
+
+
+
+
+
+
+    % * Recover rank-1 solution by randomization method
+    [u, sigma] = eig(irsMatrix);
+    maxCurrent = 0;
+    for iCandidate = 1 : nCandidates
+        irs_ = exp(1i * angle(u * sigma ^ (1 / 2) * (randn(nReflectors + 1, 1) + 1i * randn(nReflectors + 1, 1))));
+        irsMatrix_ = irs_ * irs_';
+        % t_{I/P,n}
+        for iSubband = - nSubbands + 1 : nSubbands - 1
+            infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix_);
+            powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix_);
+        end
+        % z
+        current_ = real(1 / 2 * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+            + 3 / 8 * beta4 * powerRatio ^ 2 * (2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
+            * 3 / 2 * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
+        % R
+        rate_ = 0;
+        for iSubband = 1 : nSubbands
+            rate_ = rate_ + real(log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix_) / noisePower) / log(2));
+        end
+        if current_ > maxCurrent
+            maxCurrent = current_;
+            maxRate = rate_;
+            irs = irs_;
+        end
     end
 
 end

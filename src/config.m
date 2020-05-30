@@ -4,6 +4,9 @@ k2 = 0.0034;
 k4 = 0.3829;
 % antenna resistance
 resistance = 50;
+% coefficients on current terms
+beta2 = k2 * resistance;
+beta4 = k4 * resistance ^ 2;
 % number of transmit and receive antennas
 nTxs = 1;
 nRxs = 1;
@@ -12,7 +15,7 @@ nUsers = 1;
 % average transmit power
 txPower = 1;
 % average noise power
-noisePower = db2pow(- 30);
+noisePower = db2pow(- 30 - 40);
 
 %% * Channel
 % AP-user distance
@@ -30,16 +33,16 @@ fadingMode = "selective";
 % carrier frequency
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % gain on each reflecting element
-irsGain = db2pow(3);
-% number of reflecting elements in IRS
+irsGain = 1;
+% number of channel realizations
+nRealizations = 1e2;
+% % number of reflecting elements in IRS
 nReflectors = 5;
 
 %% * Algorithm
-% output DC current constraint
-currentConstraint = 0;
-% minimum rate increase per iteration
-tolerance = 1e-8;
-
-%% * Variables
-% number of reflecting elements in IRS
-Variable.nReflectors = 5 : 5 : 25;
+% user rate constraint
+rateConstraint = 0;
+% minimum gain ratio per iteration
+tolerance = 1e-3;
+%  number of CSCG random vectors to generate
+nCandidates = 1e3;
