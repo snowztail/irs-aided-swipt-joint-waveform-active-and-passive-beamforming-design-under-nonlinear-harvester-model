@@ -1,4 +1,4 @@
-function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates)
+function [irs, current, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates)
     % Function:
     %   - optimize the information and power waveform to maximize the R-E region
     %   - compute the output DC current and user rate
@@ -19,6 +19,8 @@ function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, toleran
     %
     % Output:
     %   - irs: IRS reflection coefficients
+    %   - current: maximum achievable output DC current
+    %   - rate: maximum achievable user rate
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank IRS outer product matrix
@@ -45,7 +47,6 @@ function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, toleran
     end
 
     % * SCA
-    rate_ = 0;
     current_ = 0;
     isConverged = false;
     irsMatrix = ones(nReflectors + 1);
@@ -83,7 +84,7 @@ function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, toleran
             maximize current;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
-                geo_mean(1 + snr) >= exp(rateConstraint) ^ (1 / nSubbands);
+                geo_mean(1 + snr) >= 2 ^ (rateConstraint / nSubbands);
         cvx_end
 
         % * Test convergence
@@ -92,14 +93,9 @@ function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, toleran
     end
     clearvars current_ rate_;
 
-    rate1 = 0;
-    for iSubband = 1 : nSubbands
-        rate1 = rate1 + real(log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix) / noisePower)) / log(2);
-    end
-
     % * Recover rank-1 solution by randomization method
     [u, sigma] = eig(irsMatrix);
-    maxCurrent = 0;
+    current = 0;
     for iCandidate = 1 : nCandidates
         irs_ = exp(1i * angle(u * sigma ^ (1 / 2) * (randn(nReflectors + 1, 1) + 1i * randn(nReflectors + 1, 1))));
         irsMatrix_ = irs_ * irs_';
@@ -108,19 +104,18 @@ function [irs, rate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, toleran
             infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix_);
             powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix_);
         end
-
-        % current_ = real(trace(coefMatrix * irsMatrix_));
+        % z
         current_ = real(1 / 2 * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
             + 3 / 8 * beta4 * powerRatio ^ 2 * (2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
             * 3 / 2 * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
         % R
         rate_ = 0;
         for iSubband = 1 : nSubbands
-            rate_ = rate_ + real(log2(1 + infoRatio * square_abs(infoWaveform(iSubband)) * trace(concatMatrix{iSubband} * irsMatrix_) / noisePower));
+            rate_ = rate_ + log2(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix_)) / noisePower);
         end
-        if current_ > maxCurrent && rate_ > rateConstraint
-            maxCurrent = current_;
-            maxRate = rate_;
+        if current_ > current && rate_ > rateConstraint
+            current = current_;
+            rate = rate_;
             irs = irs_;
         end
     end
