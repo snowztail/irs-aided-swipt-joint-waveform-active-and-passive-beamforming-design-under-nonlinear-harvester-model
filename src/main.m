@@ -29,8 +29,6 @@ irs = irsGain * ones(nReflectors, 1);
 [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(txPower, compositeChannel);
 
 % * Achievable rate by FF-IRS
-[irsMatrix, flatRate] = irs_sdr(beta2, beta4, noisePower, rateConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates);
-
-% * Achievable rate by FS-IRS
-[irs_, compositeChannel_] = irs_selective(directChannel, incidentChannel, reflectiveChannel);
-[selectiveRate] = channel_capacity(compositeChannel_, txPower, noisePower);
+[irs, ~, ~] = irs_flat(irs, beta2, beta4, noisePower, rateConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates);
+[compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+[infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint, tolerance, compositeChannel, nCandidates);
