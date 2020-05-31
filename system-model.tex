@@ -73,8 +73,8 @@
 				& = \frac{1}{2}\sum_n{(h_{k,n}w_{I,n})(h_{k,n}w_{I,n})^*}\label{eq:z_k_terms_begin}\\
 				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}^*\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_I\\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}
-				& = \frac{3}{4}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{I,{n_1}})(h_{k,{n_2}}w_{I,{n_2}})(h_{k,{n_3}}w_{I,{n_3}})^*(h_{k,{n_4}}w_{I,{n_4}})^*}\\
-				& = \frac{3}{4}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)^* = \frac{3}{4}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)^*\\
+				& = \frac{3}{4}\left(\sum_n{(h_{k,n}w_{I,n})(h_{k,n}w_{I,n})^*}\right)^2\\
+				& = \frac{3}{4}(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}^*\boldsymbol{h}_k)^2 = \frac{3}{4}(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_I)^2\\
 				\mathcal{A}\left\{y_{P,k}^2(t)\right\}
 				& = \frac{1}{2}\sum_n{(h_{k,n}w_{P,n})(h_{k,n}w_{P,n})^*}\\
 				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}^*\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_P\\
@@ -89,10 +89,10 @@
 				z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
 				& = \beta_2\rho\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+\beta_4\rho^2\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\label{eq:z_k_expand}\\
 				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}^*\boldsymbol{h}_k+\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}^*\boldsymbol{h}_k)\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\rho^2\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{I,n}^*\boldsymbol{h}_k)^* + (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^* \right)\nonumber\\
+				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}^*\boldsymbol{h}_k)^2 + \sum_{n=-N+1}^{N-1} (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^*\right)\nonumber\\
 				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}^*\boldsymbol{h}_k)\label{eq:z_k_channel}\\
 				& = \frac{1}{2}\beta_2\rho(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_P)\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\rho^2\sum_{n=-N+1}^{N-1}\left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)(\boldsymbol{w}_I^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_I)^* + (\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^* \right)\nonumber\\
+				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_I)^2 + \sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^* \right)\nonumber\\
 				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}^*\boldsymbol{w}_P)\label{eq:z_k_waveform}
 			\end{align}
 		\end{figure*}
@@ -236,37 +236,33 @@
 				\begin{split}
 					z(\boldsymbol{\Phi})
 					&=\frac{1}{2}{\beta_2}{\rho}(t_{I,0}+t_{P,0})\\
-					&\quad+\frac{3}{8}{\beta_4}{\rho^2}\sum_{n=-N+1}^{N-1}{2t_{I,n}t_{I,n}^*+t_{P,n}t_{P,n}^*}\\
+					&\quad+\frac{3}{8}{\beta_4}{\rho^2} \left(2t_{I,0}^2 + \sum_{n=-N+1}^{N-1}{t_{P,n}t_{P,n}^*}\right)\\
 					&\quad+\frac{3}{2}{\beta_4}{\rho^2}t_{I,0}t_{P,0}
 				\end{split}
 			\end{equation}
 			We use first-order Taylor expansion to approximate the second-order terms in \ref{eq:z_irs}. Based on the variables optimized at iteration $i - 1$, the local approximation at iteration $i$ suggests \cite{Adali2010}
-			\begin{equation}
-				\begin{split}
-					t_{I/P,n}^{(i)} (t_{I/P,n}^{(i)})^*
-					& \approx 2 \Re\left\{t_{I/P,n}^{(i)} (t_{I/P,n}^{(i-1)})^*\right\} - t_{I/P,n}^{(i-1)} (t_{I/P,n}^{(i-1)})^* \\
-					& = 2 \Re \left\{\mathrm{Tr}\left((t_{I/P,n}^{(i-1)})^*\boldsymbol{C}_{I/P,n}\boldsymbol{\Phi}^{(i)}\right)\right\}\\
-					& \quad - t_{I/P,n}^{(i-1)} (t_{I/P,n}^{(i-1)})^*\\
-					& = \mathrm{Tr}\left((t_{I/P,n}^{(i-1)})^*\boldsymbol{C}_{I/P,n}\boldsymbol{\Phi}^{(i)}\right)\\
-					& \quad + \mathrm{Tr}\left(t_{I/P,n}^{(i-1)}\boldsymbol{C}_{I/P,n}^H\boldsymbol{\Phi}^{(i)}\right)\\
-					& \quad- t_{I/P,n}^{(i-1)} (t_{I/P,n}^{(i-1)})^*
-				\end{split}
-			\end{equation}
-			and
-			\begin{equation}
-				\begin{split}
-					t_{I,0}^{(i)} t_{P,0}^{(i)}
-					& \approx t_{I,0}^{(i)} t_{P,0}^{(i-1)} + t_{I,0}^{(i-1)} t_{P,0}^{(i)} - t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}\\
-					& = \mathrm{Tr}(t_{P,0}^{(i-1)}\boldsymbol{C}_{I,0}\boldsymbol{\Phi}^{(i)}) + \mathrm{Tr}(t_{I,0}^{(i-1)}\boldsymbol{C}_{P,0}\boldsymbol{\Phi}^{(i)})\\
-					& \quad - t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}
-				\end{split}
-			\end{equation}
-			Therefore, the approximated current function at iteration $i$ is
+			\begin{align}
+				(t_{I,0}^{(i)})^2
+				& \ge 2 (t_{I,0}^{(i)})(t_{I,0}^{(i-1)}) - (t_{I,0}^{(i-1)})^2\nonumber\\
+				& = 2 \mathrm{Tr}(t_{I,0}^{(i-1)}\boldsymbol{C}_{I,0}\boldsymbol{\Phi}^{(i)}) - (t_{I,0}^{(i-1)})^2\label{eq:t_approx_1}\\
+				t_{P,n}^{(i)} (t_{P,n}^{(i)})^*
+				& \ge 2 \Re\left\{t_{P,n}^{(i)} (t_{P,n}^{(i-1)})^*\right\} - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\nonumber\\
+				& = 2 \Re \left\{\mathrm{Tr}\left((t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n}\boldsymbol{\Phi}^{(i)}\right)\right\}\nonumber\\
+				& \quad - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\nonumber\\
+				& = \mathrm{Tr}\left((t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n}\boldsymbol{\Phi}^{(i)}\right)\nonumber\\
+				& \quad + \mathrm{Tr}\left(t_{P,n}^{(i-1)}\boldsymbol{C}_{P,n}^H\boldsymbol{\Phi}^{(i)}\right)\nonumber\\
+				& \quad- t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\label{eq:t_approx_2}\\
+				t_{I,0}^{(i)} t_{P,0}^{(i)}
+				& \approx t_{I,0}^{(i)} t_{P,0}^{(i-1)} + t_{I,0}^{(i-1)} t_{P,0}^{(i)} - t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}\nonumber\\
+				& = \mathrm{Tr}(t_{P,0}^{(i-1)}\boldsymbol{C}_{I,0}\boldsymbol{\Phi}^{(i)}) + \mathrm{Tr}(t_{I,0}^{(i-1)}\boldsymbol{C}_{P,0}\boldsymbol{\Phi}^{(i)})\nonumber\\
+				& \quad - t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}\label{eq:t_approx_3}
+			\end{align}
+			Note that \ref{eq:t_approx_1} and \ref{eq:t_approx_2} provide lower bounds to convex terms $t_{I,0}^2$ and $t_{P,n} t_{P,n}^*$, but \ref{eq:t_approx_3} is only an approximation to $t_{I,0} t_{P,0}$ which is non-convex. Therefore, the approximated current function at iteration $i$ is
 			\begin{equation}\label{eq:z_irs_approx}
 				\begin{split}
 					\tilde{z}(\boldsymbol{\Phi}^{(i)})
-					& = \mathrm{Tr}(\boldsymbol{A}^{(i)}\boldsymbol{\Phi}^{(i)}) \\
-					& \quad - \frac{3}{8} \beta_4 \rho^2 \sum_{n=-N+1}^{N-1} 2t_{I,n}^{(i-1)} (t_{I,n}^{(i-1)})^* + t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^* \\
+					& = \mathrm{Tr}(\boldsymbol{A}^{(i)}\boldsymbol{\Phi}^{(i)})\\
+					& \quad - \frac{3}{8} \beta_4 \rho^2 \left(2 (t_{I,0}^{(i-1)})^2 + \sum_{n=-N+1}^{N-1} t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^* \right)\\
 					& \quad - \frac{3}{2} \beta_4 \rho^2 t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}
 				\end{split}
 			\end{equation}
@@ -275,8 +271,8 @@
 				\begin{split}
 					\boldsymbol{A}^{(i)}
 					& = \frac{1}{2} \beta_2 \rho (\boldsymbol{C}_{I,0}+\boldsymbol{C}_{P,0})\\
-					& \quad+ \frac{3}{8} \beta_4 \rho^2 \sum_{n=-N+1}^{N-1} 2\left((t_{I,n}^{(i-1)})^*\boldsymbol{C}_{I,n} + t_{I,n}^{(i-1)}\boldsymbol{C}_{I,n}^H\right)\\
-					& \quad \quad + \left((t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n} + t_{P,n}^{(i-1)}\boldsymbol{C}_{P,n}^H\right)\\
+					& \quad+ \frac{3}{8} \beta_4 \rho^2 \Biggl(4 t_{I,n}^{(i-1)} \boldsymbol{C}_0\\
+					& \quad \quad + \sum_{n=-N+1}^{N-1} (t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n} + t_{P,n}^{(i-1)}\boldsymbol{C}_{P,n}^H \Biggl)\\
 					& \quad+ \frac{3}{2} \beta_4 \rho^2 (t_{P,0}^{(i-1)}\boldsymbol{C}_{I,0} + t_{I,0}^{(i-1)}\boldsymbol{C}_{P,0})
 				\end{split}
 			\end{equation}
@@ -321,47 +317,37 @@
 				\begin{split}
 					z(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)
 					&=\frac{1}{2} \beta_2 (t'_{I,0}+t'_{P,0})\\
-					&\quad+\frac{3}{8} \beta_4 \sum_{n=-N+1}^{N-1}{2t'_{I,n}t_{I,n}^{\prime \ *}+t'_{P,n}t_{P,n}^{\prime \ *}}\\
+					&\quad+\frac{3}{8}{\beta_4}{\rho^2} \left(2(t'_{I,0})^2 + \sum_{n=-N+1}^{N-1}{t'_{P,n}(t'_{P,n})^*}\right)\\
 					&\quad+\frac{3}{2} \beta_4 t'_{I,0}t'_{P,0}
 				\end{split}
 			\end{equation}
 			At iteration $i$, the second-order terms are approximated by first-order Taylor series as
-			\begin{equation}
-				\begin{split}
-					t_{I/P,n}^{\prime (i)} (t_{I/P,n}^{\prime (i)})^*
-					& \approx 2 \Re\left\{t_{I/P,n}^{\prime (i)} (t_{I/P,n}^{\prime (i-1)})^*\right\} - t_{I/P,n}^{\prime (i-1)} (t_{I/P,n}^{\prime (i-1)})^* \\
-					& = 2 \Re \left\{\mathrm{Tr}\left((t_{I/P,n}^{\prime (i-1)})^*\rho^{(i)}\boldsymbol{H}_{n}^*\boldsymbol{W}_{I/P}^{(i)}\right)\right\}\\
-					& \quad - t_{I/P,n}^{\prime (i-1)} (t_{I/P,n}^{\prime (i-1)})^*\\
-					& = \mathrm{Tr}\left((t_{I/P,n}^{\prime (i-1)})^*\rho^{(i)}\boldsymbol{H}_{n}^*\boldsymbol{W}_{I/P}^{(i)}\right)\\
-					& \quad + \mathrm{Tr}\left(t_{I/P,n}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{n}^T\boldsymbol{W}_{I/P}^{(i)}\right)\\
-					& \quad - t_{I/P,n}^{\prime (i-1)} (t_{I/P,n}^{\prime (i-1)})^*
-				\end{split}
-			\end{equation}
-			and
-			\begin{equation}
-				\begin{split}
-					t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)}
-					& \approx t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i-1)} + t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i)} - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}\\
-					& = \mathrm{Tr}(t_{P,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I,0}^{(i)}) + \mathrm{Tr}(t_{I,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{P,0}^{(i)})\\
-					& \quad - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
-				\end{split}
-			\end{equation}
+			\begin{align}
+				(t_{I,0}^{\prime (i)})^2
+				& \ge 2 \mathrm{Tr}\left(t_{I,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}\right) - (t_{I,0}^{\prime (i-1)})^2\\
+				t_{P,n}^{\prime (i)} (t_{P,n}^{\prime (i)})^*
+				& \ge \mathrm{Tr}\left((t_{P,n}^{\prime (i-1)})^*\rho^{(i)}\boldsymbol{H}_{n}^*\boldsymbol{W}_{P}^{(i)}\right)\nonumber\\
+				& \quad + \mathrm{Tr}\left(t_{P,n}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{n}^T\boldsymbol{W}_{P}^{(i)}\right)\nonumber\\
+				& \quad - t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\\
+				t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)}
+				& \approx t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i-1)} + t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i)} - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}\nonumber\\
+				& = \mathrm{Tr}(t_{P,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}) + \mathrm{Tr}(t_{I,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{P}^{(i)})\nonumber\\
+				& \quad - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
+			\end{align}
 			Therefore, the approximated current function at iteration $i$ is
 			\begin{equation}\label{eq:z_waveform_approx}
 				\begin{split}
 					\tilde{z}(\boldsymbol{W}_I^{(i)},\boldsymbol{W}_P^{(i)},\rho^{(i)})
 					& = \rho^{(i)}\left(\mathrm{Tr}(\boldsymbol{A}_I^{(i)}\boldsymbol{W}_I^{(i)}) + \mathrm{Tr}(\boldsymbol{A}_P^{(i)}\boldsymbol{W}_P^{(i)})\right)\\
-					& \quad - \frac{3}{8} \beta_4 \sum_{n=-N+1}^{N-1} 2t_{I,n}^{\prime (i-1)} (t_{I,n}^{\prime (i-1)})^*\\
-					& \quad \quad + t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\\
+					& \quad - \frac{3}{8} \beta_4 \Biggl(2 (t_{I,0}^{\prime (i-1)})^2\\
+					& \quad \quad + \sum_{n=-N+1}^{N-1} t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\Biggl)\\
 					& \quad - \frac{3}{2} \beta_4 t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
 				\end{split}
 			\end{equation}
 			where the Hermitian matrices $\boldsymbol{A}_I^{(i)}$ and $\boldsymbol{A}_P^{(i)}$ are
 			\begin{align}
 				\boldsymbol{A}_I^{(i)}
-				& = \frac{1}{2} \beta_2 \boldsymbol{H}_0^*\nonumber\\
-				& \quad + \frac{3}{4} \beta_4 \sum_{n=-N+1}^{N-1} (t_{I,n}^{\prime (i-1)})^*\boldsymbol{H}_{n}^* + t_{I,n}^{\prime (i-1)}\boldsymbol{H}_{n}^T\nonumber\\
-				& \quad + \frac{3}{2} \beta_4 t_{P,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\label{eq:A_I}\\
+				& = \frac{1}{2} \beta_2 \boldsymbol{H}_0^* + \frac{3}{2} \beta_4 (t_{I,0}^{\prime (i-1)} + t_{P,0}^{\prime (i-1)})\boldsymbol{H}_{0}^*\label{eq:A_I}\\
 				\boldsymbol{A}_P^{(i)}
 				& = \frac{1}{2} \beta_2 \boldsymbol{H}_0^*\nonumber\\
 				& \quad + \frac{3}{8} \beta_4 \sum_{n=-N+1}^{N-1} (t_{P,n}^{\prime (i-1)})^*\boldsymbol{H}_{n}^* + t_{P,n}^{\prime (i-1)}\boldsymbol{H}_{n}^T\nonumber\\
