@@ -2,7 +2,6 @@
 
 \input{info.tex}
 \input{packages.tex}
-\input{commands.tex}
 
 \begin{document}
 
@@ -329,8 +328,8 @@
 			At iteration $i$, the second-order terms are approximated by first-order Taylor series as
 			\begin{equation}
 				\begin{split}
-					t_{I/P,n}^{\prime \ (i)} (t_{I/P,n}^{\prime \ (i)})^*
-					& \approx 2 \Re\left\{t_{I/P,n}^{\prime \ (i)} (t_{I/P,n}^{\prime (i-1)})^*\right\} - t_{I/P,n}^{\prime (i-1)} (t_{I/P,n}^{\prime (i-1)})^* \\
+					t_{I/P,n}^{\prime (i)} (t_{I/P,n}^{\prime (i)})^*
+					& \approx 2 \Re\left\{t_{I/P,n}^{\prime (i)} (t_{I/P,n}^{\prime (i-1)})^*\right\} - t_{I/P,n}^{\prime (i-1)} (t_{I/P,n}^{\prime (i-1)})^* \\
 					& = 2 \Re \left\{\mathrm{Tr}\left((t_{I/P,n}^{\prime (i-1)})^*\rho^{(i)}\boldsymbol{H}_{n}^*\boldsymbol{W}_{I/P}^{(i)}\right)\right\}\\
 					& \quad - t_{I/P,n}^{\prime (i-1)} (t_{I/P,n}^{\prime (i-1)})^*\\
 					& = \mathrm{Tr}\left((t_{I/P,n}^{\prime (i-1)})^*\rho^{(i)}\boldsymbol{H}_{n}^*\boldsymbol{W}_{I/P}^{(i)}\right)\\
@@ -341,8 +340,8 @@
 			and
 			\begin{equation}
 				\begin{split}
-					t_{I,0}^{\prime \ (i)} t_{P,0}^{\prime \ (i)}
-					& \approx t_{I,0}^{\prime \ (i)} t_{P,0}^{\prime (i-1)} + t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime \ (i)} - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}\\
+					t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)}
+					& \approx t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i-1)} + t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i)} - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}\\
 					& = \mathrm{Tr}(t_{P,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I,0}^{(i)}) + \mathrm{Tr}(t_{I,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{P,0}^{(i)})\\
 					& \quad - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
 				\end{split}
@@ -352,7 +351,8 @@
 				\begin{split}
 					\tilde{z}(\boldsymbol{W}_I^{(i)},\boldsymbol{W}_P^{(i)},\rho^{(i)})
 					& = \rho^{(i)}\left(\mathrm{Tr}(\boldsymbol{A}_I^{(i)}\boldsymbol{W}_I^{(i)}) + \mathrm{Tr}(\boldsymbol{A}_P^{(i)}\boldsymbol{W}_P^{(i)})\right)\\
-					& \quad - \frac{3}{8} \beta_4 \sum_{n=-N+1}^{N-1} 2t_{I,n}^{\prime (i-1)} (t_{I,n}^{\prime (i-1)})^* + t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\\
+					& \quad - \frac{3}{8} \beta_4 \sum_{n=-N+1}^{N-1} 2t_{I,n}^{\prime (i-1)} (t_{I,n}^{\prime (i-1)})^*\\
+					& \quad \quad + t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\\
 					& \quad - \frac{3}{2} \beta_4 t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
 				\end{split}
 			\end{equation}
@@ -372,6 +372,7 @@
 				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho}{\tilde{z}(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform}}{\label{eq:su_waveform_target}}
 				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)W_{I,n,n}\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)} \ge \bar{R}}
 				\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
+				\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
 				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1\label{co:waveform_rank}}
 			\end{maxi!}
 			We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can also be extracted using randomized vectors $\boldsymbol{r}_q \in \mathbb{C}^{(L+1) \times 1}, \ q=1,\dots,Q$, whose entries are uniformly distributed on the unit circle $r_{q,n}=e^{j\omega}, \omega \in [0,2\pi]$. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
@@ -386,7 +387,7 @@
 					\State $i \leftarrow i + 1$
 					\State Update SDR matrices $\boldsymbol{A}_{I/P}^{(i)}$ by \ref{eq:A_I} and \ref{eq:A_P}
 					\State Obtain waveform matrices $\boldsymbol{W}_{I/P}^{(i)}$ and $\rho^{(i)}$ by solving problem \ref{op:su_waveform}
-					\State Update auxiliary $t_{I/P,n}^{\prime (k)} \forall n$ by \ref{eq:t'} for SCA
+					\State Update auxiliary $t_{I/P,n}^{\prime (i)} \forall n$ by \ref{eq:t'} for SCA
 					\Until $\lvert \tilde{z}^{(i)}-\tilde{z}^{(i-1)} \rvert \le \epsilon$
 					\State Perform EVD $\boldsymbol{W}_{I/P}^{\star}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}^H$
 					\State Generate random vectors $\boldsymbol{r}_q \ \forall q$ with entries uniformly distributed on the unit circle
