@@ -60,10 +60,9 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
         end
         % \boldsymbol{A}^{(i)}
         coefMatrix = (1 / 2 * beta2) * powerRatio * (infoCoefMatrix{nSubbands} + powerCoefMatrix{nSubbands});
+        coefMatrix = coefMatrix + (3 / 2 * beta4) * powerRatio ^ 2 * infoAuxiliary(nSubbands) * infoCoefMatrix{nSubbands};
         for iSubband = - nSubbands + 1 : nSubbands - 1
-            coefMatrix = coefMatrix + (3 / 8 * beta4) * powerRatio ^ 2 ...
-                * (2 * (conj(infoAuxiliary(iSubband + nSubbands)) * infoCoefMatrix{iSubband + nSubbands} + infoAuxiliary(iSubband + nSubbands) * ctranspose(infoCoefMatrix{iSubband + nSubbands})) ...
-                + (conj(powerAuxiliary(iSubband + nSubbands)) * powerCoefMatrix{iSubband + nSubbands} + powerAuxiliary(iSubband + nSubbands) * ctranspose(powerCoefMatrix{iSubband + nSubbands})));
+            coefMatrix = coefMatrix + (3 / 8 * beta4) * powerRatio ^ 2 * (conj(powerAuxiliary(iSubband + nSubbands)) * powerCoefMatrix{iSubband + nSubbands} + powerAuxiliary(iSubband + nSubbands) * ctranspose(powerCoefMatrix{iSubband + nSubbands}));
         end
         coefMatrix = coefMatrix + (3 / 2 * beta4) * powerRatio ^ 2 * (powerAuxiliary(nSubbands) * infoCoefMatrix{nSubbands} + infoAuxiliary(nSubbands) * powerCoefMatrix{nSubbands});
 
@@ -72,19 +71,19 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
             cvx_solver mosek
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression current;
-            expression snr(nSubbands, 1);
+            expression rate;
             % \tilde(z)
             current = real(trace(coefMatrix * irsMatrix)) ...
-                - (3 / 8 * beta4) * powerRatio ^ 2 * real(2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
+                - (3 / 8 * beta4) * powerRatio ^ 2 * real(2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
                 - (3 / 2 * beta4) * powerRatio ^ 2 * real(infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
             % R
             for iSubband = 1 : nSubbands
-                snr(iSubband) = infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
+                rate = rate + log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower) / log(2);
             end
             maximize current;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
-                geo_mean(1 + snr) >= 2 ^ (rateConstraint / nSubbands);
+                rate >= rateConstraint;
         cvx_end
 
         % * Test convergence
@@ -105,14 +104,14 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
         end
         % z
         current_ = real(1 / 2 * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
-            + 3 / 8 * beta4 * powerRatio ^ 2 * (2 * (infoAuxiliary' * infoAuxiliary) + (powerAuxiliary' * powerAuxiliary)) ...
+            + 3 / 8 * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
             * 3 / 2 * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
         % R
         rate_ = 0;
         for iSubband = 1 : nSubbands
             rate_ = rate_ + log2(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower);
         end
-        if current_ > current && rate_ > rateConstraint
+        if current_ > current && rate_ >= rateConstraint
             current = current_;
             rate = rate_;
             irs = irs_;
