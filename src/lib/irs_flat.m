@@ -52,12 +52,14 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
     irsMatrix = irs * irs';
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
     powerAuxiliary = zeros(2 * nSubbands - 1, 1);
+    % t_{I/P,n}
+    for iSubband = - nSubbands + 1 : nSubbands - 1
+        infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
+        powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
+    end
+
     while ~isConverged
-        % t_{I/P,n}^{(i-1)}
-        for iSubband = - nSubbands + 1 : nSubbands - 1
-            infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
-            powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
-        end
+        % * Update SDR matrices
         % \boldsymbol{A}^{(i)}
         coefMatrix = (1 / 2 * beta2) * powerRatio * (infoCoefMatrix{nSubbands} + powerCoefMatrix{nSubbands});
         coefMatrix = coefMatrix + (3 / 2 * beta4) * powerRatio ^ 2 * infoAuxiliary(nSubbands) * infoCoefMatrix{nSubbands};
@@ -85,6 +87,17 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
                 rate >= rateConstraint;
         cvx_end
+
+        % * Update auxiliary variables and output current
+        % t_{I/P,n}
+        for iSubband = - nSubbands + 1 : nSubbands - 1
+            infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
+            powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
+        end
+        % z
+        current = real(1 / 2 * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+            + 3 / 8 * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
+            * 3 / 2 * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
 
         % * Test convergence
         isConverged = (current - current_) / current <= tolerance || current == 0 || isnan(current);

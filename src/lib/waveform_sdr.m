@@ -50,12 +50,13 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
     powerMatrix = powerWaveform * powerWaveform';
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
     powerAuxiliary = zeros(2 * nSubbands - 1, 1);
+    % t'_{I/P,n}
+    for iSubband = - nSubbands + 1 : nSubbands - 1
+        infoAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
+        powerAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
+    end
+
     while ~isConverged
-        % t_{I/P,n}^{\prime (i-1)}
-        for iSubband = - nSubbands + 1 : nSubbands - 1
-            infoAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
-            powerAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
-        end
         % \boldsymbol{A}^{(i)}
         infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) * conj(channelCoefMatrix{nSubbands});
         % infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * (infoAuxiliary(nSubbands));
@@ -89,6 +90,17 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
                 rate >= rateConstraint;
         cvx_end
         (1 / 2) * (trace(infoMatrix) + trace(powerMatrix))
+
+        % * Update auxiliary variables and output current
+        % t'_{I/P,n}
+        for iSubband = - nSubbands + 1 : nSubbands - 1
+            infoAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
+            powerAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
+        end
+        % z
+        current = (1 / 2 * beta2 * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+            + 3 / 8 * beta4 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
+            * 3 / 2 * beta4 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
 
         % * Test convergence
         isConverged = (current - current_) / current <= tolerance || current == 0 || isnan(current);
