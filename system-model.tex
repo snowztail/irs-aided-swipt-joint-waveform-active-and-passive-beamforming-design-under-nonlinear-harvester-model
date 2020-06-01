@@ -271,7 +271,7 @@
 				\begin{split}
 					\boldsymbol{A}^{(i)}
 					& = \frac{1}{2} \beta_2 \rho (\boldsymbol{C}_{I,0}+\boldsymbol{C}_{P,0})\\
-					& \quad+ \frac{3}{8} \beta_4 \rho^2 \Biggl(4 t_{I,n}^{(i-1)} \boldsymbol{C}_0\\
+					& \quad+ \frac{3}{8} \beta_4 \rho^2 \Biggl(4 t_{I,0}^{(i-1)} \boldsymbol{C}_{I,0}\\
 					& \quad \quad + \sum_{n=-N+1}^{N-1} (t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n} + t_{P,n}^{(i-1)}\boldsymbol{C}_{P,n}^H \Biggl)\\
 					& \quad+ \frac{3}{2} \beta_4 \rho^2 (t_{P,0}^{(i-1)}\boldsymbol{C}_{I,0} + t_{I,0}^{(i-1)}\boldsymbol{C}_{P,0})
 				\end{split}
@@ -317,7 +317,7 @@
 				\begin{split}
 					z(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)
 					&=\frac{1}{2} \beta_2 (t'_{I,0}+t'_{P,0})\\
-					&\quad+\frac{3}{8}{\beta_4}{\rho^2} \left(2(t'_{I,0})^2 + \sum_{n=-N+1}^{N-1}{t'_{P,n}(t'_{P,n})^*}\right)\\
+					&\quad+\frac{3}{8} \beta_4 \left(2(t'_{I,0})^2 + \sum_{n=-N+1}^{N-1}{t'_{P,n}(t'_{P,n})^*}\right)\\
 					&\quad+\frac{3}{2} \beta_4 t'_{I,0}t'_{P,0}
 				\end{split}
 			\end{equation}
@@ -356,7 +356,7 @@
 			Hence, problem \ref{op:su} is transformed to
 			\begin{maxi!}
 				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho}{\tilde{z}(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform}}{\label{eq:su_waveform_target}}
-				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)W_{I,n,n}\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)} \ge \bar{R}}
+				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)W_{I,n,n}\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}
 				\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
 				\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
 				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1\label{co:waveform_rank}}
