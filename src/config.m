@@ -13,14 +13,15 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit power
+% txPower = db2pow(- 20 - 30);
 txPower = 1;
 % average noise power
 noisePower = db2pow(- 30 - 40);
 
 %% * Channel
 % AP-user distance
-directDistance = 10;
-incidentDistance = 1;
+directDistance = 1;
+incidentDistance = 0.1;
 reflectiveDistance = directDistance - incidentDistance;
 % center frequency
 centerFrequency = 5.18e9;

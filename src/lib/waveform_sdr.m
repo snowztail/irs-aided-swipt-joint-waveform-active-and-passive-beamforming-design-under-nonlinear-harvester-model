@@ -59,7 +59,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
     while ~isConverged
         % \boldsymbol{A}^{(i)}
         infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) * conj(channelCoefMatrix{nSubbands});
-        % infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * (infoAuxiliary(nSubbands));
+        % infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * (infoAuxiliary(nSubbands)) * conj(channelCoefMatrix{nSubbands});
         powerCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands});
         for iSubband = - nSubbands + 1 : nSubbands - 1
             powerCoefMatrix = powerCoefMatrix + (3 / 8 * beta4) ...
@@ -76,7 +76,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             expression current;
             expression rate;
             % \tilde(z)
-            % current = powerRatio * trace(infoCoefMatrix * infoMatrix) + trace(powerCoefMatrix * powerMatrix);
+            % current = powerRatio * (trace(infoCoefMatrix * infoMatrix) + trace(powerCoefMatrix * powerMatrix));
             current = powerRatio * (trace(infoCoefMatrix * infoMatrix) + trace(powerCoefMatrix * powerMatrix)) ...
                 - (3 / 8 * beta4) * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
                 - (3 / 2 * beta4) * (infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
