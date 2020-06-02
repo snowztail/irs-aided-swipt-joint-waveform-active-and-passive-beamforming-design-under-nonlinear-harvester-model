@@ -66,7 +66,7 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
         for iSubband = - nSubbands + 1 : nSubbands - 1
             coefMatrix = coefMatrix + (3 / 8 * beta4) * powerRatio ^ 2 * (conj(powerAuxiliary(iSubband + nSubbands)) * powerCoefMatrix{iSubband + nSubbands} + powerAuxiliary(iSubband + nSubbands) * ctranspose(powerCoefMatrix{iSubband + nSubbands}));
         end
-        coefMatrix = coefMatrix + (3 / 2 * beta4) * powerRatio ^ 2 * (powerAuxiliary(nSubbands) * infoCoefMatrix{nSubbands} + infoAuxiliary(nSubbands) * powerCoefMatrix{nSubbands});
+        % coefMatrix = coefMatrix + (3 / 2 * beta4) * powerRatio ^ 2 * (powerAuxiliary(nSubbands) * infoCoefMatrix{nSubbands} + infoAuxiliary(nSubbands) * powerCoefMatrix{nSubbands});
 
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
@@ -75,9 +75,10 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
             expression current;
             expression rate;
             % \tilde(z)
-            current = real(trace(coefMatrix * irsMatrix)) ...
-                - (3 / 8 * beta4) * powerRatio ^ 2 * real(2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
-                - (3 / 2 * beta4) * powerRatio ^ 2 * real(infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
+            current = real(trace(coefMatrix * irsMatrix));
+            % current = real(trace(coefMatrix * irsMatrix)) ...
+            %     - (3 / 8 * beta4) * powerRatio ^ 2 * real(2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
+            %     - (3 / 2 * beta4) * powerRatio ^ 2 * real(infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
             % R
             for iSubband = 1 : nSubbands
                 rate = rate + log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower) / log(2);
@@ -100,7 +101,7 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
             * 3 / 2 * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
 
         % * Test convergence
-        isConverged = (current - current_) / current <= tolerance || current == 0 || isnan(current);
+        isConverged = abs(current - current_) / current <= tolerance || current == 0 || isnan(current);
         current_ = current;
     end
 
