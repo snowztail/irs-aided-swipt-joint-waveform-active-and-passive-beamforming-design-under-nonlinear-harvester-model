@@ -356,12 +356,41 @@
 			Hence, problem \ref{op:su} is transformed to
 			\begin{maxi!}
 				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho}{\tilde{z}(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform}}{\label{eq:su_waveform_target}}
-				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)W_{I,n,n}\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}
+				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)W_{I,n,n}\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_waveform_constraint_1}}
 				\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
 				\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
 				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1\label{co:waveform_rank}}
 			\end{maxi!}
-			We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can also be extracted using randomized vectors $\boldsymbol{r}_q \in \mathbb{C}^{(L+1) \times 1}, \ q=1,\dots,Q$, whose entries are uniformly distributed on the unit circle $r_{q,n}=e^{j\omega}, \omega \in [0,2\pi]$. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
+			Note that objective function \ref{eq:su_waveform_target} and constraint \ref{eq:su_waveform_constraint_1} involve bilinear terms $\rho^{(i)}\mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})$ and $(1-\rho)W_{I,n,n}$, which can be lower bounded by partial Taylor expansion as in \ref{eq:bilinear_begin} -- \ref{eq:bilinear_end}.
+			\begin{figure*}[b]
+				\hrule
+				\begin{align}
+					\rho^{(i)}\mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})
+					& = \frac{1}{4}\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})\right)^2 - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})\right)^2\label{eq:bilinear_begin}\\
+					& \ge \frac{1}{2}\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})\right)\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i-1)}\boldsymbol{W}_{I/P}^{(i-1)})\right)\nonumber\\
+					& \quad \quad - \frac{1}{4}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i-1)}\boldsymbol{W}_{I/P}^{(i-1)})\right)^2 - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})\right)^2\\
+					\bar{\rho}^{(i)}W_{I,n,n}^{(i)}
+					& = \frac{1}{4}\left(\bar{\rho}^{(i)} + W_{I,n,n}^{(i)}\right)^2 - \frac{1}{4}\left(\bar{\rho}^{(i)} - W_{I,n,n}^{(i)}\right)^2\\
+					& \ge \frac{1}{2}\left(\bar{\rho}^{(i)} + W_{I,n,n}^{(i)}\right)\left(\bar{\rho}^{(i-1)} + W_{I,n,n}^{(i-1)}\right) - \frac{1}{4}\left(\bar{\rho}^{(i-1)} + W_{I,n,n}^{(i-1)}\right)^2 - \frac{1}{4}\left(\bar{\rho}^{(i)} - W_{I,n,n}^{(i)}\right)^2\label{eq:bilinear_end}
+				\end{align}
+				\begin{align}
+					z'(\boldsymbol{W}_I^{(i)},\boldsymbol{W}_P^{(i)},\rho^{(i)})
+					& = \frac{1}{2}\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i)}\boldsymbol{W}_{I}^{(i)})\right)\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i-1)}\boldsymbol{W}_{I}^{(i-1)})\right) - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{I}^{(i)}\boldsymbol{W}_{I}^{(i)})\right)^2\nonumber\\
+					& \quad + \frac{1}{2}\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i)}\boldsymbol{W}_{P}^{(i)})\right)\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i-1)}\boldsymbol{W}_{P}^{(i-1)})\right) - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{P}^{(i)}\boldsymbol{W}_{P}^{(i)})\right)^2\label{eq:z'}\\
+					g(\bar{\rho}^{(i)},W_{I,n,n}^{(i)})
+					& = \frac{1}{2}\left(\bar{\rho}^{(i)} + W_{I,n,n}^{(i)}\right)\left(\bar{\rho}^{(i-1)} + W_{I,n,n}^{(i-1)}\right) - \frac{1}{4}\left(\bar{\rho}^{(i)} - W_{I,n,n}^{(i)}\right)^2\label{eq:g}
+				\end{align}
+			\end{figure*}
+			Therefore, problem \ref{op:su_waveform} is transformed to
+			\begin{maxi!}
+				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho}{\tilde{z}'(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform_final}}{}
+				\addConstraint{\sum_{n}{\log_2\left(1+\frac{g(\bar{\rho},W_{I,n,n})\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}
+				\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
+				\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
+				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1}
+				\addConstraint{\rho + \bar{\rho} \le 1}
+			\end{maxi!}
+			where $\tilde{z}'(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)$ and $g(\bar{\rho},W_{I,n,n})$ are given in \ref{eq:z'} and \ref{eq:g}, respectively. We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can also be extracted using randomized vectors $\boldsymbol{r}_q \in \mathbb{C}^{(L+1) \times 1}, \ q=1,\dots,Q$, whose entries are uniformly distributed on the unit circle $r_{q,n}=e^{j\omega}, \omega \in [0,2\pi]$. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
 
 			\begin{algorithm}
 				\caption{Waveform Optimization}
