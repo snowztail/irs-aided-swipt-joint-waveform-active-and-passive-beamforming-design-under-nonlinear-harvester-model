@@ -104,6 +104,7 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
         isConverged = abs(current - current_) / current <= tolerance || current == 0 || isnan(current);
         current_ = current;
     end
+    irsMatrix = full(irsMatrix);
 
     % * Recover rank-1 solution by randomization method
     [u, sigma] = eig(irsMatrix);

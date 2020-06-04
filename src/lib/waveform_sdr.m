@@ -50,13 +50,17 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
     powerMatrix = powerWaveform * powerWaveform';
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
     powerAuxiliary = zeros(2 * nSubbands - 1, 1);
-    % t'_{I/P,n}
+    % t'_{I/P,n}^{(0)}
     for iSubband = - nSubbands + 1 : nSubbands - 1
         infoAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
         powerAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
     end
 
     while ~isConverged
+        powerRatio_ = powerRatio;
+        infoRatio_ = infoRatio;
+        infoMatrix_ = infoMatrix;
+        powerMatrix_ = powerMatrix;
         % \boldsymbol{A}^{(i)}
         % infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) * conj(channelCoefMatrix{nSubbands});
         infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * (infoAuxiliary(nSubbands)) * conj(channelCoefMatrix{nSubbands});
@@ -72,22 +76,27 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             cvx_solver mosek
             variable infoMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable powerMatrix(nSubbands, nSubbands) hermitian semidefinite;
-            % variable powerRatio;
+            variable powerRatio nonnegative;
+            variable infoRatio nonnegative;
             expression current;
             expression rate;
             % \tilde(z)
-            current = powerRatio * (trace(infoCoefMatrix * infoMatrix) + trace(powerCoefMatrix * powerMatrix));
+            current = (1 / 2) * (powerRatio_ + trace(infoCoefMatrix * infoMatrix_)) * (powerRatio + trace(infoCoefMatrix * infoMatrix)) - (1 / 4) * (powerRatio - trace(infoCoefMatrix * infoMatrix)) ^ 2 ...
+                + (1 / 2) * real(powerRatio_ + trace(powerCoefMatrix * powerMatrix_)) * (powerRatio + trace(powerCoefMatrix * powerMatrix)) - (1 / 4) * (powerRatio - trace(powerCoefMatrix * powerMatrix)) ^ 2;
+            % current = powerRatio * (trace(infoCoefMatrix * infoMatrix) + trace(powerCoefMatrix * powerMatrix));
             % current = powerRatio * (trace(infoCoefMatrix * infoMatrix) + trace(powerCoefMatrix * powerMatrix)) ...
             %     - (3 / 8 * beta4) * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
             %     - (3 / 2 * beta4) * (infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
             % R
             for iSubband = 1 : nSubbands
-                rate = rate + log(1 + (1 - powerRatio) * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
+                % rate = rate + log(1 + infoRatio * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
+                rate = rate + log(1 + ((1 / 2) * (infoRatio_ + infoMatrix_(iSubband, iSubband)) * (infoRatio + infoMatrix(iSubband, iSubband)) - (1 / 4) * (infoRatio - infoMatrix(iSubband, iSubband)) ^ 2) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
             end
             maximize current;
             subject to
-                (1 / 2) * (trace(infoMatrix) + trace(powerMatrix)) <= txPower;
+                (1 / 2) * (trace(infoMatrix) + trace(powerMatrix)) == txPower;
                 rate >= rateConstraint;
+                powerRatio + infoRatio == 1;
         cvx_end
         (1 / 2) * (trace(infoMatrix) + trace(powerMatrix))
 

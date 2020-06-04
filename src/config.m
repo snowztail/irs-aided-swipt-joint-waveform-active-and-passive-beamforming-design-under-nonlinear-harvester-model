@@ -16,7 +16,7 @@ nUsers = 1;
 % txPower = db2pow(- 20 - 30);
 txPower = 1;
 % average noise power
-noisePower = db2pow(- 30 - 40);
+noisePower = db2pow(- 40 - 30);
 
 %% * Channel
 % AP-user distance
