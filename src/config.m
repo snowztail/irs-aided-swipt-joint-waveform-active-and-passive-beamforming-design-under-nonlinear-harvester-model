@@ -20,8 +20,8 @@ noisePower = db2pow(- 40 - 30);
 
 %% * Channel
 % AP-user distance
-directDistance = 1;
-incidentDistance = 0.1;
+directDistance = 10;
+incidentDistance = 1;
 reflectiveDistance = directDistance - incidentDistance;
 % center frequency
 centerFrequency = 5.18e9;
@@ -42,7 +42,7 @@ nReflectors = 5;
 
 %% * Algorithm
 % user rate constraint
-rateConstraint = 0;
+rateConstraint = 1;
 % minimum gain ratio per iteration
 tolerance = 1e-3;
 %  number of CSCG random vectors to generate

@@ -27,6 +27,7 @@ irs = irsGain * ones(nReflectors, 1);
 
 % * Initialize algorithm
 [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(txPower, compositeChannel);
+[infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint, tolerance, compositeChannel, nCandidates);
 
 % * Achievable rate by FF-IRS
 isConverged = false;
