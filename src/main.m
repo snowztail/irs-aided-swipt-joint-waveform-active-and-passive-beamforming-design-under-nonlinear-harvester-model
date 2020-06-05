@@ -18,25 +18,22 @@ incidentChannel = incidentFading / sqrt(incidentPathloss);
 [reflectivePathloss] = path_loss(reflectiveDistance, "reflective");
 reflectiveChannel = reflectiveFading / sqrt(reflectivePathloss);
 
-% * Composite channel
+% * Initialize algorithms
 irs = irsGain * ones(nReflectors, 1);
 [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-
-% * Achievable rate with direct link only
-[directRate] = channel_capacity(directChannel, txPower, noisePower);
-
-% * Initialize algorithm
 [compositeRate, subbandPower] = channel_capacity(compositeChannel, txPower, noisePower);
-[infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(txPower, compositeChannel, subbandPower);
-[infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, compositeRate, tolerance, compositeChannel, nCandidates);
+[infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(compositeChannel, subbandPower);
+% [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, compositeRate, tolerance, compositeChannel, nCandidates);
 
 % * Achievable rate by FF-IRS
 isConverged = false;
 current_ = 0;
 while ~isConverged
-    [irs] = irs_flat(irs, beta2, beta4, noisePower, rateConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates);
+    [irs] = irs_flat(irs, beta2, beta4, noisePower, compositeRate, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates);
     [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-    [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint, tolerance, compositeChannel, nCandidates);
+    [compositeRate, subbandPower] = channel_capacity(compositeChannel, txPower, noisePower);
+    compositeRate = 0.99 * compositeRate;
+    [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, compositeRate, tolerance, compositeChannel, nCandidates);
     isConverged = (current - current_) / current <= tolerance;
     current_ = current;
 end
