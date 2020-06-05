@@ -1,4 +1,4 @@
-function [capacity] = channel_capacity(channel, txPower, noisePower)
+function [capacity, subbandPower] = channel_capacity(channel, txPower, noisePower)
     % Function:
     %   - calculate the maximum achievable rate based on water-filling power allocation
     %
@@ -9,6 +9,7 @@ function [capacity] = channel_capacity(channel, txPower, noisePower)
     %
     % Output:
     %   - capacity: the maximum achievable rate
+    %   - subbandPower: optimal power allocation
     %
     % Comment:
     %   - for SISO OFDM channels

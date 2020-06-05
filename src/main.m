@@ -26,8 +26,9 @@ irs = irsGain * ones(nReflectors, 1);
 [directRate] = channel_capacity(directChannel, txPower, noisePower);
 
 % * Initialize algorithm
-[infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(txPower, compositeChannel);
-[infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint, tolerance, compositeChannel, nCandidates);
+[compositeRate, subbandPower] = channel_capacity(compositeChannel, txPower, noisePower);
+[infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(txPower, compositeChannel, subbandPower);
+[infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, compositeRate, tolerance, compositeChannel, nCandidates);
 
 % * Achievable rate by FF-IRS
 isConverged = false;
