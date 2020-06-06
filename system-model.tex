@@ -146,7 +146,7 @@
 				\begin{split}
 					z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)
 					&=\frac{1}{2}{\beta_2}{\rho}\sum_n{A_n^2(s_{I,n}^2+s_{P,n}^2)}\\
-					&\quad+\frac{3}{8}{\beta_4}{\rho^2}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{A_{n_1}A_{n_2}A_{n_3}A_{n_4}(2s_{I,n_1}s_{I,n_2}s_{I,n_3}s_{I,n_4}+s_{P,n_1}s_{P,n_2}s_{P,n_3}s_{P,n_4})}\\
+					&\quad+\frac{3}{8}{\beta_4}{\rho^2} \left(\left(\sum_{n}(A_n s_{I,n})(A_n s_{I,n})^*\right)^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{A_{n_1}A_{n_2}A_{n_3}A_{n_4}(s_{P,n_1}s_{P,n_2}s_{P,n_3}s_{P,n_4})}\right)\\
 					&\quad+\frac{3}{2}{\beta_4}{\rho^2}\sum_n{{A_n^4}{s_{I,n}^2}{s_{P,n}^2}}
 				\end{split}
 			\end{equation}
@@ -302,8 +302,8 @@
 					\State Perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}^H$
 					\State Generate random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}) \ \forall q$
 					\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$ and corresponding matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
-					\State Select the best solution $\boldsymbol{\Phi}^\star$ for problem \ref{op:su_irs} and corresponding $\boldsymbol{\phi}^\star$
-					\State Compute IRS phase shift by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
+					\State Select best solution $\boldsymbol{\Phi}^\star$ and $\boldsymbol{\phi}^\star$ for problem \ref{op:su_irs}
+					\State Compute phase shift by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
 					\State \textbf{Output} $\theta_l, \ l=1,\dots,L$
 				\end{algorithmic}
 			\end{algorithm}
@@ -323,80 +323,73 @@
 					&\quad+\frac{3}{2} \beta_4 \rho^2 t'_{I,0}t'_{P,0}
 				\end{split}
 			\end{equation}
-			Similar to \ref{eq:t_approx_begin} -- \ref{eq:t_approx_end}, the second-order terms at iteration $i$ are approximated as
+			Similar to \ref{eq:t_approx_begin} -- \ref{eq:t_approx_end}, the coupled terms at iteration $i$ are approximated as
 			\begin{align}
+				(\rho^{(i)} t_{I,0}^{\prime (i)})^2
+				& \ge 2 \mathrm{Tr}\left(\rho^{(i-1)}t_{I,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}\right)\nonumber\\
+				& \quad - (\rho^{(i-1)}t_{I,0}^{\prime (i-1)})^2\\
+				(\rho^{(i)})^2 t_{P,n}^{\prime (i)} (t_{P,n}^{\prime (i)})^*
+				& \ge \mathrm{Tr}\left(\rho^{(i-1)}(t_{P,n}^{\prime (i-1)})^*\rho^{(i)}\boldsymbol{H}_{n}^*\boldsymbol{W}_{P}^{(i)}\right)\nonumber\\
+				& \quad + \mathrm{Tr}\left(\rho^{(i-1)}t_{P,n}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{n}^T\boldsymbol{W}_{P}^{(i)}\right)\nonumber\\
+				& \quad - (\rho^{(i-1)})^2 t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\\
 				(\rho^{(i)})^2
-				& \ge 2\rho^{(i-1)}\rho^{(i)} - (\rho^{(i-1)})^2 \triangleq A\\
-				(t_{I,0}^{\prime (i)})^2
-				& \ge 2 \mathrm{Tr}\left(t_{I,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}\right) - (t_{I,0}^{\prime (i-1)})^2\\
-				t_{P,n}^{\prime (i)} (t_{P,n}^{\prime (i)})^*
-				& \ge \mathrm{Tr}\left((t_{P,n}^{\prime (i-1)})^*\boldsymbol{H}_{n}^*\boldsymbol{W}_{P}^{(i)}\right) + \mathrm{Tr}\left(t_{P,n}^{\prime (i-1)}\boldsymbol{H}_{n}^T\boldsymbol{W}_{P}^{(i)}\right)\nonumber\\
-				& \quad - t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*
-				% t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)}
-				% & \ge \frac{1}{2} (t_{I,0}^{\prime (i-1)} + t_{P,0}^{\prime (i-1)})(t_{I,0}^{\prime (i)} + t_{P,0}^{\prime (i)})\nonumber\\
-				% & \quad - \frac{1}{4}(t_{I,0}^{\prime (i-1)}+t_{P,0}^{\prime (i-1)})^2 - \frac{1}{4}(t_{I,0}^{\prime (i)} - t_{P,0}^{\prime (i)})^2
+				& \ge 2\rho^{(i-1)}\rho^{(i)} - (\rho^{(i-1)})^2\nonumber\\
+				& \triangleq a^{(i)}\\
+				t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)}
+				& \ge \frac{1}{2} (t_{I,0}^{\prime (i-1)} + t_{P,0}^{\prime (i-1)})(t_{I,0}^{\prime (i)} + t_{P,0}^{\prime (i)})\nonumber\\
+				& \quad - \frac{1}{4}(t_{I,0}^{\prime (i-1)}+t_{P,0}^{\prime (i-1)})^2 - \frac{1}{4}(t_{I,0}^{\prime (i)} - t_{P,0}^{\prime (i)})^2\nonumber\\
+				& \triangleq b^{(i)}
 				% & \approx t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i-1)} + t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i)} - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}\nonumber\\
 				% & = \mathrm{Tr}(t_{P,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}) + \mathrm{Tr}(t_{I,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{P}^{(i)})\nonumber\\
 				% & \quad - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
 			\end{align}
-			Also, define $t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)} \ge B$.
 			Therefore, the approximated current function at iteration $i$ is
 			\begin{equation}\label{eq:z_waveform_approx}
 				\begin{split}
-					\tilde{z}(\boldsymbol{W}_I^{(i)},\boldsymbol{W}_P^{(i)},\rho^{(i)})
-					& = \rho^{(i)}\left(\mathrm{Tr}(\boldsymbol{A}_I^{(i)}\boldsymbol{W}_I^{(i)}) + \mathrm{Tr}(\boldsymbol{A}_P^{(i)}\boldsymbol{W}_P^{(i)})\right)\\
-					& \quad - \frac{3}{8} \beta_4 \Biggl(2 (t_{I,0}^{\prime (i-1)})^2\\
-					& \quad \quad + \sum_{n=-N+1}^{N-1} t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\Biggl)\\
-					& \quad - \frac{3}{2} \beta_4 t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
+					% \tilde{z}(\boldsymbol{W}_I^{(i)},\boldsymbol{W}_P^{(i)},\rho^{(i)})
+					\tilde{z}^{(i)}
+					& = \rho^{(i)}\left(\mathrm{Tr}(\boldsymbol{A}_I^{(i)}\boldsymbol{W}_I^{(i)}) + \mathrm{Tr}(\boldsymbol{A}_P^{(i)}\boldsymbol{W}_P^{(i)})\right) + a^{(i)} b^{(i)}\\
+					& \quad - \frac{3}{8} \beta_4 (\rho^{(i-1')})^2 \left(2 (t_{I,0}^{\prime (i-1)})^2 + \sum_{n=-N+1}^{N-1} t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\right)
+					% & \quad - \frac{3}{2} \beta_4 t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
 				\end{split}
 			\end{equation}
 			where the Hermitian matrices $\boldsymbol{A}_I^{(i)}$ and $\boldsymbol{A}_P^{(i)}$ are
 			\begin{align}
 				\boldsymbol{A}_I^{(i)}
-				& = \frac{1}{2} \beta_2 \boldsymbol{H}_0^* + \frac{3}{2} \beta_4 (t_{I,0}^{\prime (i-1)} + t_{P,0}^{\prime (i-1)})\boldsymbol{H}_{0}^*\label{eq:A_I}\\
+				& = \frac{1}{2} \beta_2 \boldsymbol{H}_0^* + \frac{3}{2} \beta_4 \rho^{(i-1)} t_{I,0}^{\prime (i-1)} \boldsymbol{H}_{0}^*\label{eq:A_I}\\
 				\boldsymbol{A}_P^{(i)}
-				& = \frac{1}{2} \beta_2 \boldsymbol{H}_0^*\nonumber\\
-				& \quad + \frac{3}{8} \beta_4 \sum_{n=-N+1}^{N-1} (t_{P,n}^{\prime (i-1)})^*\boldsymbol{H}_{n}^* + t_{P,n}^{\prime (i-1)}\boldsymbol{H}_{n}^T\nonumber\\
-				& \quad + \frac{3}{2} \beta_4 t_{I,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\label{eq:A_P}
+				& = \frac{1}{2} \beta_2 \boldsymbol{H}_0^* + \frac{3}{8} \beta_4 \rho^{(i-1)} \sum_{n=-N+1}^{N-1} (t_{P,n}^{\prime (i-1)})^*\boldsymbol{H}_{n}^* + t_{P,n}^{\prime (i-1)}\boldsymbol{H}_{n}^T\label{eq:A_P}
+				% & \quad + \frac{3}{2} \beta_4 t_{I,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\label{eq:A_P}
 			\end{align}
+			\begin{figure*}[b]
+				\hrule
+				\begin{align}
+					\tilde{z}'^{(i)}
+					& = \frac{1}{2}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i-1)}\boldsymbol{W}_{I}^{(i-1)})\right)\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i)}\boldsymbol{W}_{I}^{(i)})\right) - \frac{1}{4}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i-1)}\boldsymbol{W}_{I}^{(i-1)})\right)^2 - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{I}^{(i)}\boldsymbol{W}_{I}^{(i)})\right)^2\nonumber\\
+					& \quad + \frac{1}{2}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i-1)}\boldsymbol{W}_{P}^{(i-1)})\right)\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i)}\boldsymbol{W}_{P}^{(i)})\right) - \frac{1}{4}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i-1)}\boldsymbol{W}_{P}^{(i-1)})\right)^2 - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{P}^{(i)}\boldsymbol{W}_{P}^{(i)})\right)^2\nonumber\\
+					& \quad + \frac{1}{2}(a^{(i-1)} + b^{(i-1)})(a^{(i)} + b^{(i)}) - \frac{1}{4}(a^{(i-1)} + b^{(i-1)})^2 - \frac{1}{4}(a^{(i)} - b^{(i)})^2\label{eq:z_waveform_lb}\\
+					g^{(i)}
+					& = \frac{1}{2}\left((1-\rho^{(i-1)}) + W_{I,n,n}^{(i-1)}\right)\left((1-\rho^{(i)}) + W_{I,n,n}^{(i)}\right) - \frac{1}{4}\left((1-\rho^{(i-1)}) + W_{I,n,n}^{(i-1)}\right)^2 - \frac{1}{4}\left((1-\rho^{(i)}) - W_{I,n,n}^{(i)}\right)^2\label{eq:r_power_lb}
+				\end{align}
+			\end{figure*}
+			% A lower bound of \label{eq:z_waveform_approx} is further provided in \ref{eq:z_waveform_lb}. Hence, problem \ref{op:su} is transformed to
 			Hence, problem \ref{op:su} is transformed to
 			\begin{maxi!}
-				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho}{\tilde{z}(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform}}{\label{eq:su_waveform_target}}
+				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho}{\tilde{z}(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform_1}}{\label{eq:su_waveform_target}}
 				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)W_{I,n,n}\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_waveform_constraint_1}}
 				\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
 				\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
 				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1\label{co:waveform_rank}}
 			\end{maxi!}
-			Note that objective function \ref{eq:su_waveform_target} and constraint \ref{eq:su_waveform_constraint_1} involve bilinear terms $\rho^{(i)}\mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})$ and $(1-\rho)W_{I,n,n}$, which can be lower bounded by partial Taylor expansion as in \ref{eq:bilinear_begin} -- \ref{eq:bilinear_end}.
-			\begin{figure*}[b]
-				\hrule
-				\begin{align}
-					\rho^{(i)}\mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})
-					& = \frac{1}{4}\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})\right)^2 - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})\right)^2\label{eq:bilinear_begin}\\
-					& \ge \frac{1}{2}\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})\right)\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i-1)}\boldsymbol{W}_{I/P}^{(i-1)})\right)\nonumber\\
-					& \quad \quad - \frac{1}{4}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i-1)}\boldsymbol{W}_{I/P}^{(i-1)})\right)^2 - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{I/P}^{(i)}\boldsymbol{W}_{I/P}^{(i)})\right)^2\\
-					\bar{\rho}^{(i)}W_{I,n,n}^{(i)}
-					& = \frac{1}{4}\left(\bar{\rho}^{(i)} + W_{I,n,n}^{(i)}\right)^2 - \frac{1}{4}\left(\bar{\rho}^{(i)} - W_{I,n,n}^{(i)}\right)^2\\
-					& \ge \frac{1}{2}\left(\bar{\rho}^{(i)} + W_{I,n,n}^{(i)}\right)\left(\bar{\rho}^{(i-1)} + W_{I,n,n}^{(i-1)}\right) - \frac{1}{4}\left(\bar{\rho}^{(i-1)} + W_{I,n,n}^{(i-1)}\right)^2 - \frac{1}{4}\left(\bar{\rho}^{(i)} - W_{I,n,n}^{(i)}\right)^2\label{eq:bilinear_end}
-				\end{align}
-				\begin{align}
-					z'(\boldsymbol{W}_I^{(i)},\boldsymbol{W}_P^{(i)},\rho^{(i)})
-					& = \frac{1}{2}\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i)}\boldsymbol{W}_{I}^{(i)})\right)\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i-1)}\boldsymbol{W}_{I}^{(i-1)})\right) - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{I}^{(i)}\boldsymbol{W}_{I}^{(i)})\right)^2\nonumber\\
-					& \quad + \frac{1}{2}\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i)}\boldsymbol{W}_{P}^{(i)})\right)\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i-1)}\boldsymbol{W}_{P}^{(i-1)})\right) - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{P}^{(i)}\boldsymbol{W}_{P}^{(i)})\right)^2\label{eq:z'}\\
-					g(\bar{\rho}^{(i)},W_{I,n,n}^{(i)})
-					& = \frac{1}{2}\left(\bar{\rho}^{(i)} + W_{I,n,n}^{(i)}\right)\left(\bar{\rho}^{(i-1)} + W_{I,n,n}^{(i-1)}\right) - \frac{1}{4}\left(\bar{\rho}^{(i)} - W_{I,n,n}^{(i)}\right)^2\label{eq:g}
-				\end{align}
-			\end{figure*}
-			Therefore, problem \ref{op:su_waveform} is transformed to
+			Note that \ref{op:su_waveform_1} involves bilinear terms $\rho\mathrm{Tr}(\boldsymbol{A}_{I/P}\boldsymbol{W}_{I/P})$ and $(1-\rho)W_{I,n,n}$. We lower bound the objective function \ref{eq:su_waveform_target} and constraint \ref{eq:su_waveform_constraint_1} in \ref{eq:z_waveform_lb} and \ref{eq:r_power_lb} such that $\tilde{z}' \le \tilde{z}$ and $g(\rho,W_{I,n,n}) \le (1-\rho)W_{I,n,n}$. Therefore, problem \ref{op:su_waveform_1} is equivalent to
 			\begin{maxi!}
-				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho}{\tilde{z}'(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform_final}}{}
-				\addConstraint{\sum_{n}{\log_2\left(1+\frac{g(\bar{\rho},W_{I,n,n})\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}
+				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho}{\tilde{z}'(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform}}{}
+				\addConstraint{\sum_{n}{\log_2\left(1+\frac{g(\rho,W_{I,n,n})\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}
 				\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
 				\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
 				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1}
-				\addConstraint{\rho + \bar{\rho} \le 1}
 			\end{maxi!}
-			where $\tilde{z}'(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)$ and $g(\bar{\rho},W_{I,n,n})$ are given in \ref{eq:z'} and \ref{eq:g}, respectively. We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can also be extracted using randomized vectors $\boldsymbol{r}_q \in \mathbb{C}^{(L+1) \times 1}, \ q=1,\dots,Q$, whose entries are uniformly distributed on the unit circle $r_{q,n}=e^{j\omega}, \omega \in [0,2\pi]$. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
+			We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can also be extracted using randomized vectors $\boldsymbol{r}_q \in \mathbb{C}^{(L+1) \times 1}, \ q=1,\dots,Q$, whose entries are uniformly distributed on the unit circle $r_{q,n}=e^{j\omega}, \omega \in [0,2\pi]$. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
 
 			\begin{algorithm}
 				\caption{Waveform Optimization}
@@ -413,7 +406,7 @@
 					\State Perform EVD $\boldsymbol{W}_{I/P}^{\star}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}^H$
 					\State Generate random vectors $\boldsymbol{r}_q \ \forall q$ with entries uniformly distributed on the unit circle
 					\State Construct candidate waveform vectors $\boldsymbol{w}_{I/P,r}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q$ and corresponding matrices $\boldsymbol{W}_{I/P,q}=\boldsymbol{w}_{I/P,q}\boldsymbol{w}_{I/P,q}^H  \ \forall q$
-					\State Select the best solution $\boldsymbol{W}_{I}^\star,\boldsymbol{W}_{P}^\star$ for problem \ref{op:su_waveform} and corresponding $\boldsymbol{w}_{I}^\star, \boldsymbol{w}_{P}^\star$
+					\State Select the best solution $\boldsymbol{W}_{I}^\star,\boldsymbol{W}_{P}^\star$ and $\boldsymbol{w}_{I}^\star, \boldsymbol{w}_{P}^\star$ for problem \ref{op:su_waveform}
 					\State \textbf{Output} $\boldsymbol{w}_I^\star, \boldsymbol{w}_P^\star, \rho^\star$
 				\end{algorithmic}
 			\end{algorithm}
