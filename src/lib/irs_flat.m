@@ -73,20 +73,19 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
         cvx_begin quiet
             cvx_solver mosek
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
-            expression current;
             expression rate;
             % \tilde(z)
-            current = real(trace(coefMatrix * irsMatrix)) ...
+            currentLowerBound = real(trace(coefMatrix * irsMatrix)) ...
                 + (1 / 2) * real((infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) * (trace(infoCoefMatrix{nSubbands} * irsMatrix) + trace(powerCoefMatrix{nSubbands} * irsMatrix))) ...
                 - (1 / 4) * real(trace(infoCoefMatrix{nSubbands} * irsMatrix) - trace(powerCoefMatrix{nSubbands} * irsMatrix)) ^ 2;
-            % current = real(trace(coefMatrix * irsMatrix)) ...
+            % currentLowerBound = real(trace(coefMatrix * irsMatrix)) ...
             %     - (3 / 8 * beta4) * powerRatio ^ 2 * real(2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
             %     - (3 / 2 * beta4) * powerRatio ^ 2 * real(infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
             % R
             for iSubband = 1 : nSubbands
                 rate = rate + log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower) / log(2);
             end
-            maximize current;
+            maximize currentLowerBound;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
                 rate >= rateConstraint;
@@ -107,7 +106,7 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
 
         % * Test convergence
         % isConverged = abs(current - current_) / current <= tolerance || current == 0 || isnan(current);
-        isConverged = abs(current - current_) / current <= tolerance || current == 0 || isnan(current) && abs(rate - rate_) / rate <= tolerance || rate == 0 || isnan(rate);
+        isConverged = abs(current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
         current_ = current;
         rate_ = rate;
     end

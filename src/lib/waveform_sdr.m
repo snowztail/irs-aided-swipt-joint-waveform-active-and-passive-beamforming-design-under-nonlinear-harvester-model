@@ -104,7 +104,6 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
                 rateLowerBound >= rateConstraint;
                 powerRatio + infoRatio <= 1;
         cvx_end
-        (1 / 2) * (trace(infoMatrix) + trace(powerMatrix))
 
         % * Update auxiliary variables and output current
         % t'_{I/P,n}
@@ -120,12 +119,12 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             + (3 / 8) * beta4 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary));
         rate = 0;
         for iSubband = 1 : nSubbands
-            rate = rate + log(1 + infoRatio * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2)
+            rate = rate + log(1 + infoRatio * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
         end
 
         % * Test convergence
         % isConverged = abs(current - current_) / current <= tolerance || current == 0 || isnan(current);
-        isConverged = abs(current - current_) / current <= tolerance || current == 0 || isnan(current) && abs(rate - rate_) / rate <= tolerance || rate <= 0 || isnan(rate);
+        isConverged = abs(current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
         current_ = current;
         rate_ = rate;
     end
