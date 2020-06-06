@@ -244,26 +244,28 @@
 			\begin{align}
 				(t_{I,0}^{(i)})^2
 				& \ge 2 (t_{I,0}^{(i)})(t_{I,0}^{(i-1)}) - (t_{I,0}^{(i-1)})^2\nonumber\\
-				& = 2 \mathrm{Tr}(t_{I,0}^{(i-1)}\boldsymbol{C}_{I,0}\boldsymbol{\Phi}^{(i)}) - (t_{I,0}^{(i-1)})^2\label{eq:t_approx_1}\\
+				& = 2 \mathrm{Tr}(t_{I,0}^{(i-1)}\boldsymbol{C}_{I,0}\boldsymbol{\Phi}^{(i)}) - (t_{I,0}^{(i-1)})^2\label{eq:t_approx_begin}\\
 				t_{P,n}^{(i)} (t_{P,n}^{(i)})^*
 				& \ge 2 \Re\left\{t_{P,n}^{(i)} (t_{P,n}^{(i-1)})^*\right\} - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\nonumber\\
-				& = 2 \Re \left\{\mathrm{Tr}\left((t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n}\boldsymbol{\Phi}^{(i)}\right)\right\}\nonumber\\
-				& \quad - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\nonumber\\
-				& = \mathrm{Tr}\left((t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n}\boldsymbol{\Phi}^{(i)}\right)\nonumber\\
-				& \quad + \mathrm{Tr}\left(t_{P,n}^{(i-1)}\boldsymbol{C}_{P,n}^H\boldsymbol{\Phi}^{(i)}\right)\nonumber\\
-				& \quad- t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\label{eq:t_approx_2}\\
+				& = 2 \Re \left\{\mathrm{Tr}\left((t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n}\boldsymbol{\Phi}^{(i)}\right)\right\} - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\nonumber\\
+				& = \mathrm{Tr}\left((t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n}\boldsymbol{\Phi}^{(i)}\right) + \mathrm{Tr}\left(t_{P,n}^{(i-1)}\boldsymbol{C}_{P,n}^H\boldsymbol{\Phi}^{(i)}\right)\nonumber\\
+				& \quad- t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\\
 				t_{I,0}^{(i)} t_{P,0}^{(i)}
-				& \approx t_{I,0}^{(i)} t_{P,0}^{(i-1)} + t_{I,0}^{(i-1)} t_{P,0}^{(i)} - t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}\nonumber\\
-				& = \mathrm{Tr}(t_{P,0}^{(i-1)}\boldsymbol{C}_{I,0}\boldsymbol{\Phi}^{(i)}) + \mathrm{Tr}(t_{I,0}^{(i-1)}\boldsymbol{C}_{P,0}\boldsymbol{\Phi}^{(i)})\nonumber\\
-				& \quad - t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}\label{eq:t_approx_3}
+				& = \frac{1}{4}(t_{I,0}^{(i)} + t_{P,0}^{(i)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\nonumber\\
+				& \ge \frac{1}{2}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})(t_{I,0}^{(i)} + t_{P,0}^{(i)})\nonumber\\
+				& \quad - \frac{1}{4}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\label{eq:t_approx_end}
+				% & \approx t_{I,0}^{(i)} t_{P,0}^{(i-1)} + t_{I,0}^{(i-1)} t_{P,0}^{(i)} - t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}\nonumber\\
+				% & = \mathrm{Tr}(t_{P,0}^{(i-1)}\boldsymbol{C}_{I,0}\boldsymbol{\Phi}^{(i)}) + \mathrm{Tr}(t_{I,0}^{(i-1)}\boldsymbol{C}_{P,0}\boldsymbol{\Phi}^{(i)})\nonumber\\
+				% & \quad - t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}\label{eq:t_approx_3}
 			\end{align}
-			Note that \ref{eq:t_approx_1} and \ref{eq:t_approx_2} provide lower bounds to convex terms $t_{I,0}^2$ and $t_{P,n} t_{P,n}^*$, but \ref{eq:t_approx_3} is only an approximation to $t_{I,0} t_{P,0}$ which is non-convex. Therefore, the approximated current function at iteration $i$ is
+			\ref{eq:t_approx_begin} -- \ref{eq:t_approx_end} provide lower bounds to corresponding terms such that the approximated current function at iteration $i$ is
 			\begin{equation}\label{eq:z_irs_approx}
 				\begin{split}
 					\tilde{z}(\boldsymbol{\Phi}^{(i)})
 					& = \mathrm{Tr}(\boldsymbol{A}^{(i)}\boldsymbol{\Phi}^{(i)})\\
+					& \quad + \frac{1}{2}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})(t_{I,0}^{(i)} + t_{P,0}^{(i)}) - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\\
 					& \quad - \frac{3}{8} \beta_4 \rho^2 \left(2 (t_{I,0}^{(i-1)})^2 + \sum_{n=-N+1}^{N-1} t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^* \right)\\
-					& \quad - \frac{3}{2} \beta_4 \rho^2 t_{I,0}^{(i-1)} t_{P,0}^{(i-1)}
+					& \quad - \frac{1}{4}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})^2
 				\end{split}
 			\end{equation}
 			where the corresponding Hermitian matrix $\boldsymbol{A}^{(i)}$ is
@@ -272,8 +274,8 @@
 					\boldsymbol{A}^{(i)}
 					& = \frac{1}{2} \beta_2 \rho (\boldsymbol{C}_{I,0}+\boldsymbol{C}_{P,0})\\
 					& \quad+ \frac{3}{8} \beta_4 \rho^2 \Biggl(4 t_{I,0}^{(i-1)} \boldsymbol{C}_{I,0}\\
-					& \quad \quad + \sum_{n=-N+1}^{N-1} (t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n} + t_{P,n}^{(i-1)}\boldsymbol{C}_{P,n}^H \Biggl)\\
-					& \quad+ \frac{3}{2} \beta_4 \rho^2 (t_{P,0}^{(i-1)}\boldsymbol{C}_{I,0} + t_{I,0}^{(i-1)}\boldsymbol{C}_{P,0})
+					& \quad \quad + \sum_{n=-N+1}^{N-1} (t_{P,n}^{(i-1)})^*\boldsymbol{C}_{P,n} + t_{P,n}^{(i-1)}\boldsymbol{C}_{P,n}^H \Biggl)
+					% & \quad+ \frac{3}{2} \beta_4 \rho^2 (t_{P,0}^{(i-1)}\boldsymbol{C}_{I,0} + t_{I,0}^{(i-1)}\boldsymbol{C}_{P,0})
 				\end{split}
 			\end{equation}
 			Hence, problem \ref{op:su} is transformed to
@@ -310,30 +312,34 @@
 		\begin{subsubsection}{Waveform optimization}
 			Consider the waveform optimization subproblem. Once $\boldsymbol{\Phi}$ is obtained, introduce auxiliary variables
 			\begin{equation}\label{eq:t'}
-				t_{I/P,n}' = \rho \boldsymbol{w}_{I/P}^H \boldsymbol{H}_n^* \boldsymbol{w}_{I/P} = \mathrm{Tr}(\rho \boldsymbol{H}_n^*\boldsymbol{W}_{I/P})
+				t_{I/P,n}' = \boldsymbol{w}_{I/P}^H \boldsymbol{H}_n^* \boldsymbol{w}_{I/P} = \mathrm{Tr}(\boldsymbol{H}_n^*\boldsymbol{W}_{I/P})
 			\end{equation}
 			Therefore, \ref{eq:z_k_waveform} rewrites as
 			\begin{equation}\label{eq:z_waveform}
 				\begin{split}
 					z(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)
-					&=\frac{1}{2} \beta_2 (t'_{I,0}+t'_{P,0})\\
-					&\quad+\frac{3}{8} \beta_4 \left(2(t'_{I,0})^2 + \sum_{n=-N+1}^{N-1}{t'_{P,n}(t'_{P,n})^*}\right)\\
-					&\quad+\frac{3}{2} \beta_4 t'_{I,0}t'_{P,0}
+					&=\frac{1}{2} \beta_2 \rho (t'_{I,0}+t'_{P,0})\\
+					&\quad+\frac{3}{8} \beta_4 \rho^2 \left(2(t'_{I,0})^2 + \sum_{n=-N+1}^{N-1}{t'_{P,n}(t'_{P,n})^*}\right)\\
+					&\quad+\frac{3}{2} \beta_4 \rho^2 t'_{I,0}t'_{P,0}
 				\end{split}
 			\end{equation}
-			At iteration $i$, the second-order terms are approximated by first-order Taylor series as
+			Similar to \ref{eq:t_approx_begin} -- \ref{eq:t_approx_end}, the second-order terms at iteration $i$ are approximated as
 			\begin{align}
+				(\rho^{(i)})^2
+				& \ge 2\rho^{(i-1)}\rho^{(i)} - (\rho^{(i-1)})^2 \triangleq A\\
 				(t_{I,0}^{\prime (i)})^2
-				& \ge 2 \mathrm{Tr}\left(t_{I,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}\right) - (t_{I,0}^{\prime (i-1)})^2\\
+				& \ge 2 \mathrm{Tr}\left(t_{I,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}\right) - (t_{I,0}^{\prime (i-1)})^2\\
 				t_{P,n}^{\prime (i)} (t_{P,n}^{\prime (i)})^*
-				& \ge \mathrm{Tr}\left((t_{P,n}^{\prime (i-1)})^*\rho^{(i)}\boldsymbol{H}_{n}^*\boldsymbol{W}_{P}^{(i)}\right)\nonumber\\
-				& \quad + \mathrm{Tr}\left(t_{P,n}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{n}^T\boldsymbol{W}_{P}^{(i)}\right)\nonumber\\
-				& \quad - t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\\
-				t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)}
-				& \approx t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i-1)} + t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i)} - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}\nonumber\\
-				& = \mathrm{Tr}(t_{P,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}) + \mathrm{Tr}(t_{I,0}^{\prime (i-1)}\rho^{(i)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{P}^{(i)})\nonumber\\
-				& \quad - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
+				& \ge \mathrm{Tr}\left((t_{P,n}^{\prime (i-1)})^*\boldsymbol{H}_{n}^*\boldsymbol{W}_{P}^{(i)}\right) + \mathrm{Tr}\left(t_{P,n}^{\prime (i-1)}\boldsymbol{H}_{n}^T\boldsymbol{W}_{P}^{(i)}\right)\nonumber\\
+				& \quad - t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*
+				% t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)}
+				% & \ge \frac{1}{2} (t_{I,0}^{\prime (i-1)} + t_{P,0}^{\prime (i-1)})(t_{I,0}^{\prime (i)} + t_{P,0}^{\prime (i)})\nonumber\\
+				% & \quad - \frac{1}{4}(t_{I,0}^{\prime (i-1)}+t_{P,0}^{\prime (i-1)})^2 - \frac{1}{4}(t_{I,0}^{\prime (i)} - t_{P,0}^{\prime (i)})^2
+				% & \approx t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i-1)} + t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i)} - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}\nonumber\\
+				% & = \mathrm{Tr}(t_{P,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}) + \mathrm{Tr}(t_{I,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{P}^{(i)})\nonumber\\
+				% & \quad - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
 			\end{align}
+			Also, define $t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)} \ge B$.
 			Therefore, the approximated current function at iteration $i$ is
 			\begin{equation}\label{eq:z_waveform_approx}
 				\begin{split}
