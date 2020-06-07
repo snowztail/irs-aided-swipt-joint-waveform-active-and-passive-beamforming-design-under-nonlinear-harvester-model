@@ -33,7 +33,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
 
 
 
-    % * Construct current SDR matrices
+    % * Initialize algorithm
     nSubbands = size(infoWaveform, 1);
     % \boldsymbol{H}_{I/P}
     channelMatrix = compositeChannel * compositeChannel';
@@ -42,39 +42,45 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
     for iSubband = - nSubbands + 1 : nSubbands - 1
         channelCoefMatrix{iSubband + nSubbands} = diag(diag(channelMatrix, iSubband), iSubband);
     end
-
-    % * SCA
-    current_ = 0;
-    rate_ = 0;
-    isConverged = false;
+    % \boldsymbol{W}_{I/P}^{(0)}
     infoMatrix = infoWaveform * infoWaveform';
     powerMatrix = powerWaveform * powerWaveform';
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
     powerAuxiliary = zeros(2 * nSubbands - 1, 1);
     % t'_{I/P,n}^{(0)}
     for iSubband = - nSubbands + 1 : nSubbands - 1
-        infoAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
-        powerAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
+        infoAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
+        powerAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
     end
+    % \boldsymbol{A}^{(0)}
     infoCoefMatrix = zeros(nSubbands);
     powerCoefMatrix = zeros(nSubbands);
+    % a^{(0)}, b^{(0)}
+    a = powerRatio ^ 2;
+    b = infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands);
 
+    % * SCA
+    current_ = 0;
+    rate_ = 0;
+    isConverged = false;
     while ~isConverged
-        infoRatio_ = infoRatio;
+        % * Update solution, auxiliary, and SDR matrices
         powerRatio_ = powerRatio;
         infoMatrix_ = infoMatrix;
         powerMatrix_ = powerMatrix;
+        infoAuxiliary_ = infoAuxiliary;
+        powerAuxiliary_ = powerAuxiliary;
         infoCoefMatrix_ = infoCoefMatrix;
         powerCoefMatrix_ = powerCoefMatrix;
-        % \boldsymbol{A}^{(i)}
-        % infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) * conj(channelCoefMatrix{nSubbands});
-        infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * (infoAuxiliary(nSubbands)) * conj(channelCoefMatrix{nSubbands});
+        a_ = a;
+        b_ = b;
+        % \boldsymbol{A}_{I/P}^{(i)}
+        infoCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands}) + (3 / 2 * beta4) * powerRatio_ * infoAuxiliary_(nSubbands) * conj(channelCoefMatrix{nSubbands});
         powerCoefMatrix = (1 / 2 * beta2) * conj(channelCoefMatrix{nSubbands});
         for iSubband = - nSubbands + 1 : nSubbands - 1
-            powerCoefMatrix = powerCoefMatrix + (3 / 8 * beta4) ...
-                * (conj(powerAuxiliary(iSubband + nSubbands)) * conj(channelCoefMatrix{iSubband + nSubbands}) + powerAuxiliary(iSubband + nSubbands) * transpose(channelCoefMatrix{iSubband + nSubbands}));
+            powerCoefMatrix = powerCoefMatrix + (3 / 8 * beta4) * powerRatio_ * (conj(powerAuxiliary_(iSubband + nSubbands)) * conj(channelCoefMatrix{iSubband + nSubbands}) ...
+                + powerAuxiliary_(iSubband + nSubbands) * transpose(channelCoefMatrix{iSubband + nSubbands}));
         end
-        % powerCoefMatrix = powerCoefMatrix + (3 / 2 * beta4) * infoAuxiliary(nSubbands) * conj(channelCoefMatrix{nSubbands});
 
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
@@ -82,52 +88,56 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             variable infoMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable powerMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable powerRatio nonnegative;
-            variable infoRatio nonnegative;
+            variable a nonnegative;
+            variable b nonnegative;
             expression rateLowerBound;
-            % \tilde(z)
+            expression infoAuxiliary(2 * nSubbands - 1, 1);
+            expression powerAuxiliary(2 * nSubbands - 1, 1);
+            expression signalPower(nSubbands, 1)
+            % t'_{I/P,n}
+            for iSubband = - nSubbands + 1 : nSubbands - 1
+                infoAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
+                powerAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
+            end
+            % \tilde{z}'
             currentLowerBound = (1 / 2) * (powerRatio_ + trace(infoCoefMatrix_ * infoMatrix_)) * (powerRatio + trace(infoCoefMatrix * infoMatrix)) - (1 / 4) * (powerRatio - trace(infoCoefMatrix * infoMatrix)) ^ 2 ...
-                + (1 / 2) * real(powerRatio_ + trace(powerCoefMatrix_ * powerMatrix_)) * (powerRatio + trace(powerCoefMatrix * powerMatrix)) - (1 / 4) * (powerRatio - trace(powerCoefMatrix * powerMatrix)) ^ 2;
-            % current = powerRatio * (trace(infoCoefMatrix * infoMatrix) + trace(powerCoefMatrix * powerMatrix));
-            % current = powerRatio * (trace(infoCoefMatrix * infoMatrix) + trace(powerCoefMatrix * powerMatrix)) ...
-            %     - (3 / 8 * beta4) * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
-            %     - (3 / 2 * beta4) * (infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
-            % R
+                + (1 / 2) * real(powerRatio_ + trace(powerCoefMatrix_ * powerMatrix_)) * (powerRatio + trace(powerCoefMatrix * powerMatrix)) - (1 / 4) * (powerRatio - trace(powerCoefMatrix * powerMatrix)) ^ 2 ...
+                + (1 / 2) * (a_ + b_) * (a + b) - (1 / 4) * (a - b) ^ 2;
+            % g
             for iSubband = 1 : nSubbands
-                % rate = rate + log(1 + infoRatio * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
-                rateLowerBound = rateLowerBound + log(1 + ((1 / 2) * (infoRatio_ + infoMatrix_(iSubband, iSubband)) * (infoRatio + infoMatrix(iSubband, iSubband)) ...
-                    - (1 / 4) * (infoRatio_ + infoMatrix_(iSubband, iSubband)) ^ 2 ...
-                    - (1 / 4) * (infoRatio - infoMatrix(iSubband, iSubband)) ^ 2) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
+                signalPower(iSubband) = (1 / 2) * ((1 - powerRatio_) + infoMatrix_(iSubband, iSubband)) * ((1 - powerRatio) + infoMatrix(iSubband, iSubband)) ...
+                    - (1 / 4) * ((1 - powerRatio_) + infoMatrix_(iSubband, iSubband)) ^ 2 - (1 / 4) * ((1 - powerRatio) - infoMatrix(iSubband, iSubband)) ^ 2;
+            end
+            % \tilde{R}
+            for iSubband = 1 : nSubbands
+                rateLowerBound = rateLowerBound + log(1 + signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
             end
             maximize currentLowerBound;
             subject to
                 (1 / 2) * (trace(infoMatrix) + trace(powerMatrix)) <= txPower;
                 rateLowerBound >= rateConstraint;
-                powerRatio + infoRatio <= 1;
+                2 * powerRatio_ * powerRatio - powerRatio_ ^ 2 >= a;
+                (1 / 2) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+                    - (1 / 4) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) ^ 2 - (infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2 >= b;
         cvx_end
 
-        % * Update auxiliary variables and output current
-        % t'_{I/P,n}
-        for iSubband = - nSubbands + 1 : nSubbands - 1
-            infoAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
-            powerAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
-        end
+        % * Update output current
         % z
-        % current = (1 / 2) * beta2 * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
-        %     + (3 / 8) * beta4 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
-        %     + (3 / 2) * beta4 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands);
-        current = (1 / 2) * beta2 * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
-            + (3 / 8) * beta4 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary));
+        current = real((1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+            + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
+            + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
+        % R
         rate = 0;
         for iSubband = 1 : nSubbands
-            rate = rate + log(1 + infoRatio * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
+            rate = rate + log2(1 + (1 - powerRatio) * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower);
         end
 
         % * Test convergence
-        % isConverged = abs(current - current_) / current <= tolerance || current == 0 || isnan(current);
         isConverged = abs(current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
         current_ = current;
         rate_ = rate;
     end
+    infoRatio = 1 - powerRatio;
     infoMatrix = full(infoMatrix);
     powerMatrix = full(powerMatrix);
 
@@ -135,26 +145,29 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
     [u1, sigma1] = eig(infoMatrix);
     [u2, sigma2] = eig(powerMatrix);
     current = 0;
+    rate = 0;
     for iCandidate = 1 : nCandidates
+        % \boldsymbol{w}_{I/P,q}
         infoWaveform_ = u1 * sigma1 ^ (1 / 2) * exp(1i * 2 * pi * rand(nSubbands, 1));
         powerWaveform_ = u2 * sigma2 ^ (1 / 2) * exp(1i * 2 * pi * rand(nSubbands, 1));
+        % \boldsymbol{W}_{I/P,q}
         infoMatrix = infoWaveform_ * infoWaveform_';
         powerMatrix = powerWaveform_ * powerWaveform_';
         % t'_{I/P,n}
         for iSubband = - nSubbands + 1 : nSubbands - 1
-            infoAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
-            powerAuxiliary(iSubband + nSubbands) = trace(powerRatio * conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
+            infoAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
+            powerAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
         end
         % z
-        current = (1 / 2) * beta2 * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
-            + (3 / 8) * beta4 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
-            + (3 / 2) * beta4 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands);
+        current_ = real((1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+            + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
+            + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
         % R
         rate_ = 0;
         for iSubband = 1 : nSubbands
-            rate_ = rate_ + log2(1 + infoRatio * square_abs(infoWaveform_(iSubband)) * square_abs(compositeChannel(iSubband)) / noisePower);
+            rate_ = rate_ + log2(1 + infoRatio * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower);
         end
-        if current_ > current && rate_ >= rateConstraint
+        if current_ >= current && rate_ >= rateConstraint
             current = current_;
             rate = rate_;
             infoWaveform = infoWaveform_;

@@ -30,7 +30,7 @@ while ~isConverged
     isConverged = abs(maxRate - maxRate_) / maxRate <= tolerance;
     maxRate_ = maxRate;
 end
-nSamples = floor(rate);
+nSamples = floor(maxRate);
 rateConstraint = nSamples : -1 : 1;
 
 % * Achievable R-E region by FF-IRS
