@@ -128,7 +128,7 @@
 		\end{equation}
 		That is to say, the optimal phase shift is obtained in closed form in the single-user scenario, and the phase of the composite channel equals that of the direct channel. Moreover, it can be observed from \ref{eq:R_k} and \ref{eq:z_k_expand} that the optimal phases of information and power waveform are both match to the composite channel as
 		\begin{equation}\label{eq:psi}
-			\psi_{I,n}^{\star}=\psi_{P,n}^{\star}=\bar{\psi}_{n}
+			\psi_{I,n}^{\star}=\psi_{P,n}^{\star}=-\bar{\psi}_{n}
 		\end{equation}
 		By such a phase selection, we have
 		\begin{equation}
@@ -291,17 +291,17 @@
 				\caption{FF-IRS: Phase Shift Optimization}
 				\label{al:ff_irs}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\bar{R},\boldsymbol{w}_I,\boldsymbol{w}_P,\rho$
-					\State \textbf{Initialize} $i \leftarrow 0,\boldsymbol{\Phi}^{(0)},\boldsymbol{R}_n,\boldsymbol{C}_{I/P,n},t_{I/P,n}^{(0)}\ \forall n$ by \ref{eq:t}
+					\State \textbf{Input} $\bar{R},Q,\boldsymbol{w}_I,\boldsymbol{w}_P,\rho,\boldsymbol{R}_n,\boldsymbol{C}_{I/P,n},\sigma_n \ \forall n$
+					\State \textbf{Initialize} $i \leftarrow 0,\boldsymbol{\Phi}^{(0)},t_{I/P,n}^{(0)}\ \forall n$ by \ref{eq:t}
 					\Repeat
 					\State $i \leftarrow i + 1$
 					\State Update SDR matrix $\boldsymbol{A}^{(i)}$ by \ref{eq:A}
 					\State Obtain IRS matrix $\boldsymbol{\Phi}^{(i)}$ by solving problem \ref{op:su_irs}
 					\State Update auxiliary $t_{I/P,n}^{(i)} \forall n$ by \ref{eq:t} for SCA
-					\Until $\lvert \tilde{z}^{(i)}-\tilde{z}^{(i-1)} \rvert \le \epsilon$
+					\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
 					\State Perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}^H$
 					\State Generate random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}) \ \forall q$
-					\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$ and corresponding matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
+					\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$ and matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
 					\State Select best solution $\boldsymbol{\Phi}^\star$ and $\boldsymbol{\phi}^\star$ for problem \ref{op:su_irs}
 					\State Compute phase shift by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
 					\State \textbf{Output} $\theta_l, \ l=1,\dots,L$
@@ -334,11 +334,11 @@
 				& \quad - (\rho^{(i-1)})^2 t_{P,n}^{\prime (i-1)} (t_{P,n}^{\prime (i-1)})^*\\
 				(\rho^{(i)})^2
 				& \ge 2\rho^{(i-1)}\rho^{(i)} - (\rho^{(i-1)})^2\nonumber\\
-				& \triangleq a^{(i)}\\
+				& \triangleq a^{(i)}\label{eq:a}\\
 				t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i)}
 				& \ge \frac{1}{2} (t_{I,0}^{\prime (i-1)} + t_{P,0}^{\prime (i-1)})(t_{I,0}^{\prime (i)} + t_{P,0}^{\prime (i)})\nonumber\\
 				& \quad - \frac{1}{4}(t_{I,0}^{\prime (i-1)}+t_{P,0}^{\prime (i-1)})^2 - \frac{1}{4}(t_{I,0}^{\prime (i)} - t_{P,0}^{\prime (i)})^2\nonumber\\
-				& \triangleq b^{(i)}
+				& \triangleq b^{(i)}\label{eq:b}
 				% & \approx t_{I,0}^{\prime (i)} t_{P,0}^{\prime (i-1)} + t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i)} - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}\nonumber\\
 				% & = \mathrm{Tr}(t_{P,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{I}^{(i)}) + \mathrm{Tr}(t_{I,0}^{\prime (i-1)}\boldsymbol{H}_{0}^*\boldsymbol{W}_{P}^{(i)})\nonumber\\
 				% & \quad - t_{I,0}^{\prime (i-1)} t_{P,0}^{\prime (i-1)}
@@ -367,8 +367,8 @@
 					\tilde{z}'^{(i)}
 					& = \frac{1}{2}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i-1)}\boldsymbol{W}_{I}^{(i-1)})\right)\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i)}\boldsymbol{W}_{I}^{(i)})\right) - \frac{1}{4}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{I}^{(i-1)}\boldsymbol{W}_{I}^{(i-1)})\right)^2 - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{I}^{(i)}\boldsymbol{W}_{I}^{(i)})\right)^2\nonumber\\
 					& \quad + \frac{1}{2}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i-1)}\boldsymbol{W}_{P}^{(i-1)})\right)\left(\rho^{(i)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i)}\boldsymbol{W}_{P}^{(i)})\right) - \frac{1}{4}\left(\rho^{(i-1)} + \mathrm{Tr}(\boldsymbol{A}_{P}^{(i-1)}\boldsymbol{W}_{P}^{(i-1)})\right)^2 - \frac{1}{4}\left(\rho^{(i)} - \mathrm{Tr}(\boldsymbol{A}_{P}^{(i)}\boldsymbol{W}_{P}^{(i)})\right)^2\nonumber\\
-					& \quad + \frac{1}{2}(a^{(i-1)} + b^{(i-1)})(a^{(i)} + b^{(i)}) - \frac{1}{4}(a^{(i-1)} + b^{(i-1)})^2 - \frac{1}{4}(a^{(i)} - b^{(i)})^2\label{eq:z_waveform_lb}\\
-					g^{(i)}
+					& \quad + \frac{1}{2}(\bar{a}^{(i-1)} + \bar{b}^{(i-1)})(\bar{a}^{(i)} + \bar{b}^{(i)}) - \frac{1}{4}(\bar{a}^{(i-1)} + \bar{b}^{(i-1)})^2 - \frac{1}{4}(\bar{a}^{(i)} - \bar{b}^{(i)})^2\label{eq:z_waveform_lb}\\
+					g_n^{(i)}
 					& = \frac{1}{2}\left((1-\rho^{(i-1)}) + W_{I,n,n}^{(i-1)}\right)\left((1-\rho^{(i)}) + W_{I,n,n}^{(i)}\right) - \frac{1}{4}\left((1-\rho^{(i-1)}) + W_{I,n,n}^{(i-1)}\right)^2 - \frac{1}{4}\left((1-\rho^{(i)}) - W_{I,n,n}^{(i)}\right)^2\label{eq:r_power_lb}
 				\end{align}
 			\end{figure*}
@@ -381,13 +381,15 @@
 				\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
 				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1\label{co:waveform_rank}}
 			\end{maxi!}
-			Note that \ref{op:su_waveform_1} involves bilinear terms $\rho\mathrm{Tr}(\boldsymbol{A}_{I/P}\boldsymbol{W}_{I/P})$ and $(1-\rho)W_{I,n,n}$. We lower bound the objective function \ref{eq:su_waveform_target} and constraint \ref{eq:su_waveform_constraint_1} in \ref{eq:z_waveform_lb} and \ref{eq:r_power_lb} such that $\tilde{z}' \le \tilde{z}$ and $g(\rho,W_{I,n,n}) \le (1-\rho)W_{I,n,n}$. Therefore, problem \ref{op:su_waveform_1} is equivalent to
+			Note that \ref{op:su_waveform_1} involves bilinear terms $\rho\mathrm{Tr}(\boldsymbol{A}_{I/P}\boldsymbol{W}_{I/P})$ and $(1-\rho)W_{I,n,n}$. We lower bound the objective function \ref{eq:su_waveform_target} and constraint \ref{eq:su_waveform_constraint_1} in \ref{eq:z_waveform_lb} and \ref{eq:r_power_lb} such that $\tilde{z}' \le \tilde{z}$ and $g_n(\rho,W_{I,n,n}) \le (1-\rho)W_{I,n,n}$. Therefore, problem \ref{op:su_waveform_1} is equivalent to
 			\begin{maxi!}
-				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho}{\tilde{z}'(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform}}{}
-				\addConstraint{\sum_{n}{\log_2\left(1+\frac{g(\rho,W_{I,n,n})\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}
+				{\boldsymbol{W}_I,\boldsymbol{W}_P,\rho,\bar{a},\bar{b}}{\tilde{z}'(\boldsymbol{W}_I,\boldsymbol{W}_P,\rho)}{\label{op:su_waveform}}{}
+				\addConstraint{\sum_{n}{\log_2\left(1+\frac{g_n(\rho,W_{I,n,n})\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}
 				\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
 				\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
 				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1}
+				\addConstraint{a \ge \bar{a}}
+				\addConstraint{b \ge \bar{b}}
 			\end{maxi!}
 			We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can also be extracted using randomized vectors $\boldsymbol{r}_q \in \mathbb{C}^{(L+1) \times 1}, \ q=1,\dots,Q$, whose entries are uniformly distributed on the unit circle $r_{q,n}=e^{j\omega}, \omega \in [0,2\pi]$. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
 
@@ -395,22 +397,59 @@
 				\caption{Waveform Optimization}
 				\label{alg:waveform}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\bar{R},P,\theta_l \ \forall l$
-					\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{W}_{I/P}^{(0)}$, $\rho^{(0)}$, $t_{I/P,n}^{\prime (0)} \ \forall n$
+					\State \textbf{Input} $\bar{R},P,Q,\boldsymbol{R}_n,\sigma_n \ \forall n$
+					\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{W}_{I/P}^{(0)}$, $\rho^{(0)}$, $a^{(0)}$, $b^{(0)}$, $t_{I/P,n}^{\prime (0)} \ \forall n$
 					\Repeat
 					\State $i \leftarrow i + 1$
 					\State Update SDR matrices $\boldsymbol{A}_{I/P}^{(i)}$ by \ref{eq:A_I} and \ref{eq:A_P}
-					\State Obtain waveform matrices $\boldsymbol{W}_{I/P}^{(i)}$ and $\rho^{(i)}$ by solving problem \ref{op:su_waveform}
+					\State Obtain waveform matrices $\boldsymbol{W}_{I/P}^{(i)}$ and power splitting ratio $\rho^{(i)}$ by solving problem \ref{op:su_waveform}
 					\State Update auxiliary $t_{I/P,n}^{\prime (i)} \forall n$ by \ref{eq:t'} for SCA
-					\Until $\lvert \tilde{z}^{(i)}-\tilde{z}^{(i-1)} \rvert \le \epsilon$
+					\State Update auxiliary $a^{(i)},b^{(i)}$ by \ref{eq:a} and \ref{eq:b}
+					\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
 					\State Perform EVD $\boldsymbol{W}_{I/P}^{\star}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}^H$
 					\State Generate random vectors $\boldsymbol{r}_q \ \forall q$ with entries uniformly distributed on the unit circle
-					\State Construct candidate waveform vectors $\boldsymbol{w}_{I/P,r}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q$ and corresponding matrices $\boldsymbol{W}_{I/P,q}=\boldsymbol{w}_{I/P,q}\boldsymbol{w}_{I/P,q}^H  \ \forall q$
+					\State Construct candidate waveform vectors $\boldsymbol{w}_{I/P,r}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q$ and matrices $\boldsymbol{W}_{I/P,q}=\boldsymbol{w}_{I/P,q}\boldsymbol{w}_{I/P,q}^H  \ \forall q$
 					\State Select the best solution $\boldsymbol{W}_{I}^\star,\boldsymbol{W}_{P}^\star$ and $\boldsymbol{w}_{I}^\star, \boldsymbol{w}_{P}^\star$ for problem \ref{op:su_waveform}
 					\State \textbf{Output} $\boldsymbol{w}_I^\star, \boldsymbol{w}_P^\star, \rho^\star$
 				\end{algorithmic}
 			\end{algorithm}
 		\end{subsubsection}
+
+		\begin{subsection}{WIT initialization}
+			To characterize the R-E region, we initialize the algorithm to WIT mode and reduce the rate constraint gradually to obtain the boundary points. Consider a rate maximization problem with given information waveform $\boldsymbol{w}_I$ as
+			\begin{maxi!}
+				{\boldsymbol{\Phi}}{\sum_{n}{\log_2\left(1+\frac{\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)}}{\label{op:su_irs_wit}}{}
+				\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}
+				\addConstraint{\boldsymbol{\Phi}\succeq{0}}
+				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1}
+			\end{maxi!}
+			Problem \ref{op:su_irs_wit} can be solved after SDR. Similar to section \ref{se:fs_irs}, a best solution $\bar{\boldsymbol{\phi}}^\star$ can be obtained via Gaussian randomization method and $\boldsymbol{\phi}^\star$ can be recovered by $\phi_l^\star=\phi_l^\star/\phi_{L+1}^\star, \ l=1,\dots,L$. After constructing composite channel by \ref{eq:h_k}, we use water-filling algorithm and matched filter to obtain optimal power allocation $p_n=\lvert w_{I,n} \rvert^2$ and waveform phase $\psi_{I,n}^\star=-\bar{\psi}_n$, respectively. Therefore, the optimal information waveform at subband $n$ is
+			\begin{equation}\label{eq:w_wit}
+				w_{I,n}=\sqrt{p_n}e^{j \psi_{I,n}^\star}
+			\end{equation}
+			We update IRS and information waveform iteratively by \ref{op:su_irs_wit} and \ref{eq:w_wit} until convergence. The WIT algorithm is summarized in \ref{alg:wit}.
+			\begin{algorithm}
+				\caption{WIT Initialization}
+				\label{alg:wit}
+				\begin{algorithmic}[1]
+					\State \textbf{Input} $P, Q, \boldsymbol{R}_n, \sigma_n \ \forall n$
+					\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{w}_I^{(0)}$, $t_{I/P,n}^{\prime (0)} \ \forall n$
+					\Repeat
+					\State $i \leftarrow i + 1$
+					\State Obtain IRS matrix $\boldsymbol{\Phi}^{(i)}$ by solving problem \ref{op:su_irs_wit}
+					\State Perform EVD $\boldsymbol{\Phi}^{(i)}=\boldsymbol{U}_{\boldsymbol{\Phi}^{(i)}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{(i)}}\boldsymbol{U}_{\boldsymbol{\Phi}^{(i)}}^H$
+					\State Generate random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}) \ \forall q$
+					\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{(i)}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{(i)}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$ and matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
+					\State Select best solution $(\boldsymbol{\Phi}^{(i)})^\star$ and $(\boldsymbol{\phi}^{(i)})^\star$ for problem \ref{op:su_irs_wit}
+					\State Update composite channel $\boldsymbol{h}^{(i)}$ by \ref{eq:h_k}
+					\State Obtain optimal power allocation $p_n^{(i)} \ \forall n$ by water-filling algorithm
+					\State Obtain optimal waveform phase $\psi_{I,n}^{(i)} \ \forall n$ by \ref{eq:psi}
+					\State Update information waveform $\boldsymbol{w}_I^{(i)}$ by \ref{eq:w_wit}
+					\Until $\lvert R^{(i)}-R^{(i-1)} \rvert \le \epsilon$
+					\State \textbf{Output} $\boldsymbol{w}_I^\star, \boldsymbol{w}_P^\star, \boldsymbol{\phi}^\star$
+				\end{algorithmic}
+			\end{algorithm}
+		\end{subsection}
 	\end{subsection}
 \end{section}
 
