@@ -38,12 +38,14 @@ rePair = zeros(2, nSamples);
 for iSample = 1 : nSamples
     isConverged = false;
     current_ = 0;
+    rate_ = 0;
     while ~isConverged
         [irs] = irs_flat(irs, beta2, beta4, noisePower, rateConstraint(iSample), tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates);
         [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
         [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint(iSample), tolerance, compositeChannel, nCandidates);
-        isConverged = (current - current_) / current <= tolerance;
+        isConverged = (current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
         current_ = current;
+        rate_ = rate;
     end
     rePair(:, iSample) = [current; rate];
 end

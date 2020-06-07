@@ -23,11 +23,6 @@ function [irs, rate] = irs_flat_wit(noisePower, concatMatrix, infoWaveform, nCan
     % * Construct current SDR matrices
     nSubbands = size(infoWaveform, 1);
     nReflectors = size(concatMatrix{1}, 1) - 1;
-    irsMatrix_ = ones(nReflectors + 1);
-    compositeChannel_ = zeros(nSubbands, 1);
-    for iSubband = 1 : nSubbands
-        compositeChannel_(iSubband) = trace(concatMatrix{iSubband} * irsMatrix_);
-    end
     cvx_begin quiet
         cvx_solver mosek
         variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
