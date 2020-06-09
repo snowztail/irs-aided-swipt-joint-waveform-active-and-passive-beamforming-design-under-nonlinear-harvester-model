@@ -16,11 +16,11 @@ nUsers = 1;
 % txPower = db2pow(- 20 - 30);
 txPower = 1;
 % average noise power
-noisePower = db2pow(- 40 - 30);
+noisePower = db2pow(- 40);
 
 %% * Channel
 % AP-user distance
-directDistance = 10;
+directDistance = 5;
 incidentDistance = 1;
 reflectiveDistance = directDistance - incidentDistance;
 % center frequency
@@ -38,11 +38,9 @@ irsGain = 1;
 % number of channel realizations
 nRealizations = 1e2;
 % % number of reflecting elements in IRS
-nReflectors = 5;
+nReflectors = 10;
 
 %% * Algorithm
-% user rate constraint
-rateConstraint = 1;
 % minimum gain ratio per iteration
 tolerance = 1e-3;
 %  number of CSCG random vectors to generate

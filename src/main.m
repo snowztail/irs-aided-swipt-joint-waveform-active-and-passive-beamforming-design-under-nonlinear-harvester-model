@@ -22,13 +22,16 @@ reflectiveChannel = reflectiveFading / sqrt(reflectivePathloss);
 isConverged = false;
 maxRate_ = 0;
 irs = irsGain * ones(nReflectors, 1);
+[compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+[compositeCapacity_, subbandPower] = channel_capacity(compositeChannel, txPower, noisePower);
+[infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(compositeChannel, subbandPower);
 while ~isConverged
+    [irs, maxRate] = irs_flat_wit(noisePower, concatMatrix, infoWaveform, nCandidates);
     [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
     [compositeCapacity, subbandPower] = channel_capacity(compositeChannel, txPower, noisePower);
     [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(compositeChannel, subbandPower);
-    [irs, maxRate] = irs_flat_wit(noisePower, concatMatrix, infoWaveform, nCandidates);
-    isConverged = abs(maxRate - maxRate_) / maxRate <= tolerance;
-    maxRate_ = maxRate;
+    isConverged = abs(compositeCapacity - compositeCapacity_) / compositeCapacity <= tolerance;
+    compositeCapacity_ = compositeCapacity;
 end
 nSamples = floor(maxRate);
 rateConstraint = nSamples : -1 : 1;

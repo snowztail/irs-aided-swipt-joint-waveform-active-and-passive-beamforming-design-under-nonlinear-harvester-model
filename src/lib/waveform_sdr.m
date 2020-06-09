@@ -83,17 +83,21 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
         end
 
         % * Solve high-rank outer product matrix by CVX
-        cvx_begin quiet
+        cvx_begin
+            cvx_precision high
             cvx_solver mosek
             variable infoMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable powerMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable powerRatio nonnegative;
-            variable aLowerBound nonnegative;
-            variable bLowerBound nonnegative;
+            % variable aLowerBound nonnegative;
+            % variable bLowerBound nonnegative;
+            variable aLowerBound;
+            variable bLowerBound;
             expression rateLowerBound;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);
-            expression signalPower(nSubbands, 1)
+            expression signalPower(nSubbands, 1);
+            expression logTerm(nSubbands, 1);
             % t'_{I/P,n}
             for iSubband = - nSubbands + 1 : nSubbands - 1
                 infoAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
@@ -110,8 +114,10 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             end
             % \tilde{R}
             for iSubband = 1 : nSubbands
-                rateLowerBound = rateLowerBound + log(1 + signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
+                % rateLowerBound = rateLowerBound + log(1 + signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
+                logTerm(iSubband) = 1 + signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower;
             end
+            rateLowerBound = sum_log(logTerm) / log(2);
             % a
             a = 2 * powerRatio_ * powerRatio - powerRatio_ ^ 2;
             % b
@@ -121,6 +127,9 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             subject to
                 (1 / 2) * (trace(infoMatrix) + trace(powerMatrix)) <= txPower;
                 rateLowerBound >= rateConstraint;
+                % geo_mean(logTerm) >= log(rateConstraint * log(2)) ^ (1 / nSubbands);
+                % geo_mean(logTerm) >= 2 ^ (rateConstraint / nSubbands);
+%                 powerRatio >= powerRatio_;
                 a >= aLowerBound;
                 b >= bLowerBound;
         cvx_end
@@ -137,7 +146,10 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
         end
 
         % * Test convergence
-        isConverged = abs(current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
+        % isConverged = abs(current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
+        % isConverged = abs(current - current_) / current <= tolerance;
+        % isConverged = abs(rate - rate_) / rate <= tolerance;
+        isConverged = abs(rate - rateConstraint) <= tolerance;
         current_ = current;
         rate_ = rate;
     end
