@@ -26,10 +26,13 @@ function [irs, rate] = irs_flat_wit(noisePower, concatMatrix, infoWaveform, nCan
     cvx_begin quiet
         cvx_solver mosek
         variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
-        expression rate;
+        expression sinr(nSubbands, 1);
+        % \gamma
         for iSubband = 1 : nSubbands
-            rate = rate + log(1 + square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower) / log(2);
+            sinr(iSubband) = square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
         end
+        % R
+        rate = sum_log(1 + sinr) / log(2);
         maximize rate
         subject to
             diag(irsMatrix) == ones(nReflectors + 1, 1);

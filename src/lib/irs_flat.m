@@ -79,7 +79,7 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);
-            expression rateLowerBound;
+            expression sinr(nSubbands, 1);
             % t_{I/P,n}
             for iSubband = - nSubbands + 1 : nSubbands - 1
                 infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
@@ -89,14 +89,17 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
             currentLowerBound = real(trace(coefMatrix * irsMatrix)) ...
                 + (1 / 2) * real((infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands))) ...
                 - (1 / 4) * real(infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2;
-            % \tilde{R}
+            % \gamma
             for iSubband = 1 : nSubbands
-                rateLowerBound = rateLowerBound + log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower) / log(2);
+                sinr(iSubband) = infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
+                % rate = rate + log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower) / log(2);
             end
+            % R
+            rate = sum_log(1 + sinr) / log(2);
             maximize currentLowerBound;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
-                rateLowerBound >= rateConstraint;
+                rate >= rateConstraint;
         cvx_end
 
         % * Update rate and output current

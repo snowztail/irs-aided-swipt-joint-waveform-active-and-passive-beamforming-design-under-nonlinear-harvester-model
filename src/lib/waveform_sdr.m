@@ -65,6 +65,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
     isConverged = false;
     while ~isConverged
         % * Update solution, auxiliary, and SDR matrices
+        infoRatio_ = infoRatio;
         powerRatio_ = powerRatio;
         infoMatrix_ = infoMatrix;
         powerMatrix_ = powerMatrix;
@@ -83,19 +84,19 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
         end
 
         % * Solve high-rank outer product matrix by CVX
-        cvx_begin
+        cvx_begin quiet
             cvx_precision high
             cvx_solver mosek
             variable infoMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable powerMatrix(nSubbands, nSubbands) hermitian semidefinite;
+            variable infoRatio nonnegative;
             variable powerRatio nonnegative;
             variable aLowerBound nonnegative;
-            variable bLowerBound;
-            expression rateLowerBound;
+            variable bLowerBound nonnegative;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);
             expression signalPower(nSubbands, 1);
-            expression logTerm(nSubbands, 1);
+            expression sinr(nSubbands, 1);
             % t'_{I/P,n}
             for iSubband = - nSubbands + 1 : nSubbands - 1
                 infoAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
@@ -107,26 +108,28 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
                 + (1 / 2) * (aLowerBound_ + bLowerBound_) * (aLowerBound + bLowerBound) - (1 / 4) * (aLowerBound - bLowerBound) ^ 2;
             % g
             for iSubband = 1 : nSubbands
-                signalPower(iSubband) = (1 / 2) * ((1 - powerRatio_) + infoMatrix_(iSubband, iSubband)) * ((1 - powerRatio) + infoMatrix(iSubband, iSubband)) ...
-                    - (1 / 4) * ((1 - powerRatio_) + infoMatrix_(iSubband, iSubband)) ^ 2 - (1 / 4) * ((1 - powerRatio) - infoMatrix(iSubband, iSubband)) ^ 2;
+                signalPower(iSubband) = (1 / 2) * (infoRatio_ + infoMatrix_(iSubband, iSubband)) * (infoRatio + infoMatrix(iSubband, iSubband)) ...
+                    - (1 / 4) * (infoRatio_ + infoMatrix_(iSubband, iSubband)) ^ 2 - (1 / 4) * (infoRatio - infoMatrix(iSubband, iSubband)) ^ 2;
             end
-            % \tilde{R}
+            % \gamma
             for iSubband = 1 : nSubbands
                 % rateLowerBound = rateLowerBound + log(1 + signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
-                logTerm(iSubband) = 1 + signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower;
+                sinr(iSubband) = signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower;
             end
-            rateLowerBound = sum_log(logTerm) / log(2);
+            % \tilde{R}
+            % rateLowerBound = sum_log(1 + sinr) / log(2);
             % a
             a = 2 * powerRatio_ * powerRatio - powerRatio_ ^ 2;
             % b
             b = (1 / 2) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
-                    - (1 / 4) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) ^ 2 - (infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2;
+                - (1 / 4) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) ^ 2 - (1 / 4) * (infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2;
             maximize currentLowerBound;
             subject to
                 (1 / 2) * (trace(infoMatrix) + trace(powerMatrix)) <= txPower;
-                rateLowerBound >= rateConstraint;
-                % geo_mean(logTerm) >= log(rateConstraint * log(2)) ^ (1 / nSubbands);
-                % geo_mean(logTerm) >= 2 ^ (rateConstraint / nSubbands);
+                % rateLowerBound >= rateConstraint;
+                % geo_mean(sinr) >= log(rateConstraint * log(2)) ^ (1 / nSubbands);
+                geo_mean(1 + sinr) >= 2 ^ (rateConstraint / nSubbands);
+                powerRatio + infoRatio == 1;
                 powerRatio >= powerRatio_;
                 a >= aLowerBound;
                 b >= bLowerBound;
@@ -140,7 +143,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
         % R
         rate = 0;
         for iSubband = 1 : nSubbands
-            rate = rate + log2(1 + (1 - powerRatio) * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower);
+            rate = rate + log2(1 + infoRatio * infoMatrix(iSubband, iSubband) * square_abs(compositeChannel(iSubband)) / noisePower);
         end
 
         % * Test convergence
@@ -148,7 +151,6 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
         current_ = current;
         rate_ = rate;
     end
-    infoRatio = 1 - powerRatio;
     infoMatrix = full(infoMatrix);
     powerMatrix = full(powerMatrix);
 

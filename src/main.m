@@ -53,3 +53,4 @@ for iSample = 1 : nSamples
     end
     reSample(:, iSample) = [current; rate];
 end
+flag = 1;
