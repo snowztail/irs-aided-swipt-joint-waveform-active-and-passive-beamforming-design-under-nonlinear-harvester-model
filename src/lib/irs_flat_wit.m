@@ -26,10 +26,8 @@ function [irs, rate] = irs_flat_wit(noisePower, concatMatrix, infoWaveform, nCan
     cvx_begin quiet
         cvx_solver mosek
         variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
-        expression compositeChannel(nSubbands, 1)
         expression rate;
         for iSubband = 1 : nSubbands
-            compositeChannel(iSubband) = trace(concatMatrix{iSubband} * irsMatrix);
             rate = rate + log(1 + square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower) / log(2);
         end
         maximize rate

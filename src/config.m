@@ -45,3 +45,5 @@ nReflectors = 10;
 tolerance = 1e-3;
 %  number of CSCG random vectors to generate
 nCandidates = 1e4;
+% gap between rate samples
+resolution = 1e-1;

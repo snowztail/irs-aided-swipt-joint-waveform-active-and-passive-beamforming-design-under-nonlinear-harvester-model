@@ -89,9 +89,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             variable infoMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable powerMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable powerRatio nonnegative;
-            % variable aLowerBound nonnegative;
-            % variable bLowerBound nonnegative;
-            variable aLowerBound;
+            variable aLowerBound nonnegative;
             variable bLowerBound;
             expression rateLowerBound;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
@@ -129,7 +127,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
                 rateLowerBound >= rateConstraint;
                 % geo_mean(logTerm) >= log(rateConstraint * log(2)) ^ (1 / nSubbands);
                 % geo_mean(logTerm) >= 2 ^ (rateConstraint / nSubbands);
-%                 powerRatio >= powerRatio_;
+                powerRatio >= powerRatio_;
                 a >= aLowerBound;
                 b >= bLowerBound;
         cvx_end
@@ -146,10 +144,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
         end
 
         % * Test convergence
-        % isConverged = abs(current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
-        % isConverged = abs(current - current_) / current <= tolerance;
-        % isConverged = abs(rate - rate_) / rate <= tolerance;
-        isConverged = abs(rate - rateConstraint) <= tolerance;
+        isConverged = abs(current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
         current_ = current;
         rate_ = rate;
     end
