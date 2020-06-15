@@ -114,7 +114,8 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
         end
 
         % * Test convergence
-        isConverged = abs(current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
+        % isConverged = abs(current - current_) / current <= tolerance && abs(rate - rate_) / rate <= tolerance;
+        isConverged = abs(current - current_) / current <= tolerance;
         current_ = current;
         rate_ = rate;
     end

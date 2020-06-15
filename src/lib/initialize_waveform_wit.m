@@ -1,6 +1,6 @@
-function [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(compositeChannel, subbandPower)
+function [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform_wit(compositeChannel, subbandPower)
     % Function:
-    %   - initialize information and power waveform
+    %   - initialize information and power waveform for WIT
     %
     % Input:
     %   - compositeChannel (h) [nSubbands * nTxs * nRxs]: total composite channel

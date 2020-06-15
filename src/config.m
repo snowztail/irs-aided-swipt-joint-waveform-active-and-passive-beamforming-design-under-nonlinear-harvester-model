@@ -16,7 +16,7 @@ nUsers = 1;
 % txPower = db2pow(- 20 - 30);
 txPower = 1;
 % average noise power
-noisePower = db2pow(- 40);
+noisePower = db2pow(- 30);
 
 %% * Channel
 % AP-user distance
@@ -42,8 +42,8 @@ nReflectors = 10;
 
 %% * Algorithm
 % minimum gain ratio per iteration
-tolerance = 1e-3;
+tolerance = 1e-6;
 %  number of CSCG random vectors to generate
 nCandidates = 1e4;
 % gap between rate samples
-resolution = 1e-1;
+resolution = 5e-2;

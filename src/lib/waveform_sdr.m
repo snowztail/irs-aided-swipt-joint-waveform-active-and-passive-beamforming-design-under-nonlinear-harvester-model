@@ -91,8 +91,10 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             variable powerMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable infoRatio nonnegative;
             variable powerRatio nonnegative;
-            variable aLowerBound nonnegative;
-            variable bLowerBound nonnegative;
+            variable aLowerBound;
+            variable bLowerBound;
+%             variable bLowerBound;
+            % expression rateLowerBound;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);
             expression signalPower(nSubbands, 1);
@@ -106,6 +108,8 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             currentLowerBound = (1 / 2) * (powerRatio_ + trace(infoCoefMatrix_ * infoMatrix_)) * (powerRatio + trace(infoCoefMatrix * infoMatrix)) - (1 / 4) * (powerRatio - trace(infoCoefMatrix * infoMatrix)) ^ 2 ...
                 + (1 / 2) * real(powerRatio_ + trace(powerCoefMatrix_ * powerMatrix_)) * (powerRatio + trace(powerCoefMatrix * powerMatrix)) - (1 / 4) * (powerRatio - trace(powerCoefMatrix * powerMatrix)) ^ 2 ...
                 + (1 / 2) * (aLowerBound_ + bLowerBound_) * (aLowerBound + bLowerBound) - (1 / 4) * (aLowerBound - bLowerBound) ^ 2;
+%             currentLowerBound = (1 / 2) * (powerRatio_ + trace(infoCoefMatrix * infoMatrix_)) * (powerRatio + trace(infoCoefMatrix * infoMatrix)) - (1 / 4) * (powerRatio - trace(infoCoefMatrix * infoMatrix)) ^ 2 ...
+%                 + (1 / 2) * real(powerRatio_ + trace(powerCoefMatrix * powerMatrix_)) * (powerRatio + trace(powerCoefMatrix * powerMatrix)) - (1 / 4) * (powerRatio - trace(powerCoefMatrix * powerMatrix)) ^ 2;
             % g
             for iSubband = 1 : nSubbands
                 signalPower(iSubband) = (1 / 2) * (infoRatio_ + infoMatrix_(iSubband, iSubband)) * (infoRatio + infoMatrix(iSubband, iSubband)) ...
@@ -113,7 +117,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             end
             % \gamma
             for iSubband = 1 : nSubbands
-                % rateLowerBound = rateLowerBound + log(1 + signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
+%                 rateLowerBound = rateLowerBound + log(1 + signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower) / log(2);
                 sinr(iSubband) = signalPower(iSubband) * square_abs(compositeChannel(iSubband)) / noisePower;
             end
             % \tilde{R}
@@ -126,11 +130,11 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
             maximize currentLowerBound;
             subject to
                 (1 / 2) * (trace(infoMatrix) + trace(powerMatrix)) <= txPower;
-                % rateLowerBound >= rateConstraint;
+%                 rateLowerBound >= rateConstraint;
                 % geo_mean(sinr) >= log(rateConstraint * log(2)) ^ (1 / nSubbands);
                 geo_mean(1 + sinr) >= 2 ^ (rateConstraint / nSubbands);
-                powerRatio + infoRatio == 1;
-                powerRatio >= powerRatio_;
+                powerRatio + infoRatio <= 1;
+%                 signalPower >= 0;
                 a >= aLowerBound;
                 b >= bLowerBound;
         cvx_end
@@ -147,7 +151,8 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = w
         end
 
         % * Test convergence
-        isConverged = abs(current - current_) / current <= tolerance || abs(rate - rate_) / rate <= tolerance;
+        % isConverged = abs(current - current_) / current <= tolerance && abs(rate - rate_) / rate <= tolerance;
+        isConverged = abs(current - current_) / current <= tolerance;
         current_ = current;
         rate_ = rate;
     end
