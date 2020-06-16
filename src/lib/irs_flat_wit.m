@@ -31,9 +31,7 @@ function [irs, rate] = irs_flat_wit(noisePower, concatMatrix, infoWaveform, nCan
         for iSubband = 1 : nSubbands
             sinr(iSubband) = square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
         end
-        % R
-        rate = sum_log(1 + sinr) / log(2);
-        maximize rate
+        maximize geo_mean(1 + sinr)
         subject to
             diag(irsMatrix) == ones(nReflectors + 1, 1);
     cvx_end

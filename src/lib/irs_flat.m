@@ -58,7 +58,6 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
 
     % * SCA
     current_ = 0;
-    rate_ = 0;
     isConverged = false;
     while ~isConverged
         % * Update auxiliary and SDR matrices
@@ -92,32 +91,22 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
             % \gamma
             for iSubband = 1 : nSubbands
                 sinr(iSubband) = infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
-                % rate = rate + log(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower) / log(2);
             end
-            % R
-            rate = sum_log(1 + sinr) / log(2);
             maximize currentLowerBound;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
-                rate >= rateConstraint;
+                geo_mean(1 + sinr) >= 2 ^ (rateConstraint / nSubbands);
         cvx_end
 
-        % * Update rate and output current
+        % * Update output current
         % z
         current = real((1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
             + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
             + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
-        % R
-        rate = 0;
-        for iSubband = 1 : nSubbands
-            rate = rate + log2(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower);
-        end
 
         % * Test convergence
-        % isConverged = abs(current - current_) / current <= tolerance && abs(rate - rate_) / rate <= tolerance;
         isConverged = abs(current - current_) / current <= tolerance;
         current_ = current;
-        rate_ = rate;
     end
     irsMatrix = full(irsMatrix);
 
