@@ -1,19 +1,19 @@
 clear; clc; setup; config_reflector;
 
 % * Direct link
-[directTapGain, directTapDelay] = taps_tgn(nTxs, nRxs);
+[directTapGain, directTapDelay] = tap_tgn(nTxs, nRxs);
 [directFading] = fading_tgn(directTapGain, directTapDelay, nSubbands, subbandFrequency, fadingMode);
 [directPathloss] = path_loss(directDistance, "direct");
 directChannel = directFading / sqrt(directPathloss);
 
 % * Incident link
-[incidentTapGain, incidentTapDelay] = taps_tgn(nTxs, nReflectorsMax);
+[incidentTapGain, incidentTapDelay] = tap_tgn(nTxs, nReflectorsMax);
 [incidentFading] = fading_tgn(incidentTapGain, incidentTapDelay, nSubbands, subbandFrequency, fadingMode);
 [incidentPathloss] = path_loss(incidentDistance, "incident");
 incidentChannel_ = incidentFading / sqrt(incidentPathloss);
 
 % * Reflective link
-[reflectiveTapGain, reflectiveTapDelay] = taps_tgn(nReflectorsMax, nRxs);
+[reflectiveTapGain, reflectiveTapDelay] = tap_tgn(nReflectorsMax, nRxs);
 [reflectiveFading] = fading_tgn(reflectiveTapGain, reflectiveTapDelay, nSubbands, subbandFrequency, fadingMode);
 [reflectivePathloss] = path_loss(reflectiveDistance, "reflective");
 reflectiveChannel_ = reflectiveFading / sqrt(reflectivePathloss);

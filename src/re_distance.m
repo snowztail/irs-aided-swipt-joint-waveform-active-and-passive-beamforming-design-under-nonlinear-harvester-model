@@ -1,17 +1,17 @@
 clear; clc; setup; config_distance;
 
 % * Direct link
-[directTapGain, directTapDelay] = taps_tgn(nTxs, nRxs);
+[directTapGain, directTapDelay] = tap_tgn(nTxs, nRxs);
 [directFading] = fading_tgn(directTapGain, directTapDelay, nSubbands, subbandFrequency, fadingMode);
 [directPathloss] = path_loss(directDistance, "direct");
 directChannel = directFading / sqrt(directPathloss);
 
 % * Incident link
-[incidentTapGain, incidentTapDelay] = taps_tgn(nTxs, nReflectors);
+[incidentTapGain, incidentTapDelay] = tap_tgn(nTxs, nReflectors);
 [incidentFading] = fading_tgn(incidentTapGain, incidentTapDelay, nSubbands, subbandFrequency, fadingMode);
 
 % * Reflective link
-[reflectiveTapGain, reflectiveTapDelay] = taps_tgn(nReflectors, nRxs);
+[reflectiveTapGain, reflectiveTapDelay] = tap_tgn(nReflectors, nRxs);
 [reflectiveFading] = fading_tgn(reflectiveTapGain, reflectiveTapDelay, nSubbands, subbandFrequency, fadingMode);
 
 %% ! No-IRS: R-E region

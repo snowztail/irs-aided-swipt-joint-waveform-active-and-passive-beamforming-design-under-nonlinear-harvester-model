@@ -1,9 +1,9 @@
 clear; clc; setup; config_subband;
 
 % * Tap response
-[directTapGain, directTapDelay] = taps_tgn(nTxs, nRxs);
-[incidentTapGain, incidentTapDelay] = taps_tgn(nTxs, nReflectors);
-[reflectiveTapGain, reflectiveTapDelay] = taps_tgn(nReflectors, nRxs);
+[directTapGain, directTapDelay] = tap_tgn(nTxs, nRxs);
+[incidentTapGain, incidentTapDelay] = tap_tgn(nTxs, nReflectors);
+[reflectiveTapGain, reflectiveTapDelay] = tap_tgn(nReflectors, nRxs);
 
 % * R-E region vs number of subbands
 directReSample = cell(length(Variable.nSubbands), 1);
