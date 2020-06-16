@@ -13,15 +13,16 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit power
-% txPower = db2pow(- 20 - 30);
 txPower = 1;
 % average noise power
-noisePower = db2pow(- 30);
+noisePower = db2pow(-50);
 
 %% * Channel
 % AP-user distance
-directDistance = 5;
+directDistance = 10;
+% AP-IRS distance
 incidentDistance = 1;
+% IRS-user distance
 reflectiveDistance = directDistance - incidentDistance;
 % center frequency
 centerFrequency = 5.18e9;
@@ -35,9 +36,7 @@ fadingMode = "selective";
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % gain on each reflecting element
 irsGain = 1;
-% number of channel realizations
-nRealizations = 1e2;
-% % number of reflecting elements in IRS
+% number of reflecting elements in IRS
 nReflectors = 10;
 
 %% * Algorithm
