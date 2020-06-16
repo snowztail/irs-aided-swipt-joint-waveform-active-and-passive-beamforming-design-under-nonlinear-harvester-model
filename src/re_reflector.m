@@ -18,8 +18,21 @@ incidentChannel_ = incidentFading / sqrt(incidentPathloss);
 [reflectivePathloss] = path_loss(reflectiveDistance, "reflective");
 reflectiveChannel_ = reflectiveFading / sqrt(reflectivePathloss);
 
-% * R-E region vs AP-IRS distance
-reSample = cell(length(Variable.nReflectors));
+%% ! No-IRS: R-E region
+% * Initialize algorithm by WIT
+[directCapacity, subbandPower] = channel_capacity(directChannel, txPower, noisePower);
+[infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform_wit(directChannel, subbandPower);
+rateConstraint = directCapacity : -directCapacity / (nSamples - 1) : 0;
+
+% * Achievable R-E region without IRS
+directReSample = zeros(2, nSamples);
+for iSample = 1 : nSamples
+    [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint(iSample), tolerance, directChannel, nCandidates);
+    directReSample(:, iSample) = [current; rate];
+end
+
+%% ! IRS: R-E region vs number of IRS elements
+ffReSample = cell(length(Variable.nReflectors), 1);
 for iReflector = 1 : length(Variable.nReflectors)
     nReflectors = Variable.nReflectors(iReflector);
     incidentChannel = incidentChannel_(:, :, 1 : nReflectors);
@@ -37,11 +50,10 @@ for iReflector = 1 : length(Variable.nReflectors)
         isConverged = abs(maxRate - maxRate_) / maxRate <= tolerance;
         maxRate_ = maxRate;
     end
-    rateConstraint = resolution * (floor(maxRate / resolution) : -1 : 0);
-    nSamples = length(rateConstraint);
+    rateConstraint = maxRate : -maxRate / (nSamples - 1) : 0;
 
     % * Achievable R-E region by FF-IRS
-    reSample{iReflector} = zeros(2, nSamples);
+    ffReSample{iReflector} = zeros(2, nSamples);
     for iSample = 1 : nSamples
         isConverged = false;
         current_ = 0;
@@ -53,6 +65,6 @@ for iReflector = 1 : length(Variable.nReflectors)
             isConverged = abs(current - current_) / current <= tolerance;
             current_ = current;
         end
-        reSample{iReflector}(:, iSample) = [current; rate];
+        ffReSample{iReflector}(:, iSample) = [current; rate];
     end
 end

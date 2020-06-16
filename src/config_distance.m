@@ -42,6 +42,8 @@ tolerance = 1e-6;
 nCandidates = 1e4;
 % gap between rate samples
 resolution = 5e-2;
+% number of samples in R-E curves
+nSamples = 20;
 
 %% * Variable
 % AP-IRS distance

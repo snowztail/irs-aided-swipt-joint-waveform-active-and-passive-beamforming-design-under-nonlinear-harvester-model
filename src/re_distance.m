@@ -5,7 +5,6 @@ clear; clc; setup; config_distance;
 [directFading] = fading_tgn(directTapGain, directTapDelay, nSubbands, subbandFrequency, fadingMode);
 [directPathloss] = path_loss(directDistance, "direct");
 directChannel = directFading / sqrt(directPathloss);
-[directCapacity, subbandPower] = channel_capacity(directChannel, txPower, noisePower);
 
 % * Incident link
 [incidentTapGain, incidentTapDelay] = taps_tgn(nTxs, nReflectors);
@@ -15,8 +14,21 @@ directChannel = directFading / sqrt(directPathloss);
 [reflectiveTapGain, reflectiveTapDelay] = taps_tgn(nReflectors, nRxs);
 [reflectiveFading] = fading_tgn(reflectiveTapGain, reflectiveTapDelay, nSubbands, subbandFrequency, fadingMode);
 
-% * R-E region vs AP-IRS distance
-reSample = cell(length(Variable.incidentDistance));
+%% ! No-IRS: R-E region
+% * Initialize algorithm by WIT
+[directCapacity, subbandPower] = channel_capacity(directChannel, txPower, noisePower);
+[infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform_wit(directChannel, subbandPower);
+rateConstraint = directCapacity : -directCapacity / (nSamples - 1) : 0;
+
+% * Achievable R-E region without IRS
+directReSample = zeros(2, nSamples);
+for iSample = 1 : nSamples
+    [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint(iSample), tolerance, directChannel, nCandidates);
+    directReSample(:, iSample) = [current; rate];
+end
+
+%% ! IRS: R-E region vs AP-IRS distance
+ffReSample = cell(length(Variable.incidentDistance), 1);
 for iDistance = 1 : length(Variable.incidentDistance)
     incidentDistance = Variable.incidentDistance(iDistance);
     reflectiveDistance = directDistance - incidentDistance;
@@ -37,11 +49,10 @@ for iDistance = 1 : length(Variable.incidentDistance)
         isConverged = abs(maxRate - maxRate_) / maxRate <= tolerance;
         maxRate_ = maxRate;
     end
-    rateConstraint = resolution * (floor(maxRate / resolution) : -1 : 0);
-    nSamples = length(rateConstraint);
+    rateConstraint = maxRate : -maxRate / (nSamples - 1) : 0;
 
     % * Achievable R-E region by FF-IRS
-    reSample{iDistance} = zeros(2, nSamples);
+    ffReSample{iDistance} = zeros(2, nSamples);
     for iSample = 1 : nSamples
         isConverged = false;
         current_ = 0;
@@ -53,6 +64,6 @@ for iDistance = 1 : length(Variable.incidentDistance)
             isConverged = abs(current - current_) / current <= tolerance;
             current_ = current;
         end
-        reSample{iDistance}(:, iSample) = [current; rate];
+        ffReSample{iDistance}(:, iSample) = [current; rate];
     end
 end

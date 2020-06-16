@@ -18,6 +18,20 @@ incidentChannel = incidentFading / sqrt(incidentPathloss);
 [reflectivePathloss] = path_loss(reflectiveDistance, "reflective");
 reflectiveChannel = reflectiveFading / sqrt(reflectivePathloss);
 
+%% ! No-IRS: R-E region
+% * Initialize algorithm by WIT
+[directCapacity, subbandPower] = channel_capacity(directChannel, txPower, noisePower);
+[infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform_wit(directChannel, subbandPower);
+rateConstraint = directCapacity : -directCapacity / (nSamples - 1) : 0;
+
+% * Achievable R-E region without IRS
+directReSample = zeros(2, nSamples);
+for iSample = 1 : nSamples
+    [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint(iSample), tolerance, directChannel, nCandidates);
+    directReSample(:, iSample) = [current; rate];
+end
+
+%% ! IRS: R-E region
 % * Initialize algorithm by WIT
 isConverged = false;
 maxRate_ = 0;
@@ -30,11 +44,10 @@ while ~isConverged
     isConverged = abs(maxRate - maxRate_) / maxRate <= tolerance;
     maxRate_ = maxRate;
 end
-rateConstraint = resolution * (floor(maxRate / resolution) : -1 : 0);
-nSamples = length(rateConstraint);
+rateConstraint = maxRate : -maxRate / (nSamples - 1) : 0;
 
 % * Achievable R-E region by FF-IRS
-reSample{iDistance} = zeros(2, nSamples);
+ffReSample = zeros(2, nSamples);
 for iSample = 1 : nSamples
     isConverged = false;
     current_ = 0;
@@ -46,5 +59,5 @@ for iSample = 1 : nSamples
         isConverged = abs(current - current_) / current <= tolerance;
         current_ = current;
     end
-    reSample(:, iSample) = [current; rate];
+    ffReSample(:, iSample) = [current; rate];
 end
