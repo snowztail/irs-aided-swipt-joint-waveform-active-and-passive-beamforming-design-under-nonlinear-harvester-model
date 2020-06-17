@@ -1,6 +1,8 @@
-clear; clc; setup; config;
+clear; clc; setup; config; load('data/tap.mat');
 
-[directChannel, incidentChannel, reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, directDistance, incidentDistance, reflectiveDistance);
+[directChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, directDistance, directTapGain, directTapDelay, "direct");
+[incidentChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, incidentDistance, incidentTapGain, incidentTapDelay, "incident");
+[reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, reflectiveDistance, reflectiveTapGain, reflectiveTapDelay, "reflective");
 
 %% ! No-IRS: R-E region
 % * Initialize algorithm by WIT

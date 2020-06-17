@@ -1,4 +1,4 @@
-function [directChannel, incidentChannel, reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, directDistance, incidentDistance, reflectiveDistance)
+function [channel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, distance, tapGain, tapDelay, linkMode)
     % Function:
     %   - get frequency response of direct, incident and reflective channels
     %
@@ -7,14 +7,13 @@ function [directChannel, incidentChannel, reflectiveChannel] = frequency_respons
     %   - subbandFrequency (f_n) [nSubbands]: the center frequency of subbands
     %   - fadingMode: fading mode "flat" or "selective"
     %   - nReflectors: number of reflecting elements in IRS
-    %   - directDistance: AP-user distance
-    %   - incidentDistance: AP-IRS distance
-    %   - reflectiveDistance: IRS-user distance
+    %   - distance (d): distance between the transmitter and the receiver
+    %   - tapGain [nTaps * nTxs * nRxs]: complex tap gain
+    %   - tapDelay [nTaps]: tap delays
+    %   - linkMode: link mode "direct", "incident", or "reflective"
     %
     % Output:
-    %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: AP-user channel
-    %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: AP-IRS channel
-    %   - directChannel (h_R) [nSubbands * nReflectors * nRxs]: IRS-user channel
+    %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
     %
     % Comment:
     %   - based on generated tap data
@@ -23,23 +22,17 @@ function [directChannel, incidentChannel, reflectiveChannel] = frequency_respons
 
 
 
-    load('data/tap.mat');
+    % * Remove data of unused elements
+    switch linkMode
+    case "incident"
+        tapGain = tapGain(:, :, 1 : nReflectors);
+    case "reflective"
+        tapGain = tapGain(:, 1 : nReflectors, :);
+    end
 
-    % * Direct link
-    [directFading] = fading_tgn(directTapGain, directTapDelay, nSubbands, subbandFrequency, fadingMode);
-    [directPathloss] = path_loss(directDistance, "direct");
-    directChannel = directFading / sqrt(directPathloss);
-
-    % * Incident link
-    incidentTapGain = incidentTapGain(:, :, 1 : nReflectors);
-    [incidentFading] = fading_tgn(incidentTapGain, incidentTapDelay, nSubbands, subbandFrequency, fadingMode);
-    [incidentPathloss] = path_loss(incidentDistance, "incident");
-    incidentChannel = incidentFading / sqrt(incidentPathloss);
-
-    % * Reflective link
-    reflectiveTapGain = reflectiveTapGain(:, 1 : nReflectors, :);
-    [reflectiveFading] = fading_tgn(reflectiveTapGain, reflectiveTapDelay, nSubbands, subbandFrequency, fadingMode);
-    [reflectivePathloss] = path_loss(reflectiveDistance, "reflective");
-    reflectiveChannel = reflectiveFading / sqrt(reflectivePathloss);
+    % * Construct corresponding frequency response
+    [pathloss] = path_loss(distance, linkMode);
+    [fading] = fading_tgn(tapGain, tapDelay, nSubbands, subbandFrequency, fadingMode);
+    channel = fading / sqrt(pathloss);
 
 end
