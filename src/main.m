@@ -1,22 +1,6 @@
 clear; clc; setup; config;
 
-% * Direct link
-[directTapGain, directTapDelay] = tap_tgn(nTxs, nRxs);
-[directFading] = fading_tgn(directTapGain, directTapDelay, nSubbands, subbandFrequency, fadingMode);
-[directPathloss] = path_loss(directDistance, "direct");
-directChannel = directFading / sqrt(directPathloss);
-
-% * Incident link
-[incidentTapGain, incidentTapDelay] = tap_tgn(nTxs, nReflectors);
-[incidentFading] = fading_tgn(incidentTapGain, incidentTapDelay, nSubbands, subbandFrequency, fadingMode);
-[incidentPathloss] = path_loss(incidentDistance, "incident");
-incidentChannel = incidentFading / sqrt(incidentPathloss);
-
-% * Reflective link
-[reflectiveTapGain, reflectiveTapDelay] = tap_tgn(nReflectors, nRxs);
-[reflectiveFading] = fading_tgn(reflectiveTapGain, reflectiveTapDelay, nSubbands, subbandFrequency, fadingMode);
-[reflectivePathloss] = path_loss(reflectiveDistance, "reflective");
-reflectiveChannel = reflectiveFading / sqrt(reflectivePathloss);
+[directChannel, incidentChannel, reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, directDistance, incidentDistance, reflectiveDistance);
 
 %% ! No-IRS: R-E region
 % * Initialize algorithm by WIT
