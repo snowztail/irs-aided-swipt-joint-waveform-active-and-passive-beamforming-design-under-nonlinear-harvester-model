@@ -48,13 +48,17 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
         infoCoefMatrix{iSubband + nSubbands} = concatVector * diag(diag(conj(infoMatrix), iSubband), iSubband) * concatVector';
         powerCoefMatrix{iSubband + nSubbands} = concatVector * diag(diag(conj(powerMatrix), iSubband), iSubband) * concatVector';
     end
+    infoCoefMatrix{nSubbands} = hermitianize(infoCoefMatrix{nSubbands});
+    powerCoefMatrix{nSubbands} = hermitianize(powerCoefMatrix{nSubbands});
+    % t_{I/P,n}^{(0)}
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
     powerAuxiliary = zeros(2 * nSubbands - 1, 1);
-    % t_{I/P,n}^{(0)}
     for iSubband = - nSubbands + 1 : nSubbands - 1
         infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
         powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
     end
+    infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
+    powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
 
     % * SCA
     current_ = 0;
@@ -64,13 +68,6 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
         % t_{I/P,n}^{(i-1)}
         infoAuxiliary_ = infoAuxiliary;
         powerAuxiliary_ = powerAuxiliary;
-        % \boldsymbol{A}^{(i)}
-        coefMatrix = (1 / 2 * beta2) * powerRatio * (infoCoefMatrix{nSubbands} + powerCoefMatrix{nSubbands}) ...
-            + (3 / 2 * beta4) * powerRatio ^ 2 * infoAuxiliary_(nSubbands) * infoCoefMatrix{nSubbands};
-        for iSubband = - nSubbands + 1 : nSubbands - 1
-            coefMatrix = coefMatrix + (3 / 8 * beta4) * powerRatio ^ 2 * (conj(powerAuxiliary_(iSubband + nSubbands)) * powerCoefMatrix{iSubband + nSubbands} ...
-                + powerAuxiliary_(iSubband + nSubbands) * ctranspose(powerCoefMatrix{iSubband + nSubbands}));
-        end
 
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
@@ -84,10 +81,13 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
                 infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
                 powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
             end
+            infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
+            powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
+
             % \tilde{z}
-            currentLowerBound = real(trace(coefMatrix * irsMatrix)) ...
-                + (1 / 2) * real((infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands))) ...
-                - (1 / 4) * real(infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2;
+            currentLowerBound = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+                + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * (2 * infoAuxiliary(nSubbands) * infoAuxiliary_(nSubbands) - infoAuxiliary_(nSubbands) ^ 2) + (2 * real(powerAuxiliary_' * powerAuxiliary) - powerAuxiliary_' * powerAuxiliary_)) ...
+                + (3 / 2) * beta4 * powerRatio ^ 2 * ((1 / 2) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) - (1 / 4) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) ^ 2 - (1 / 4) * (infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2);
             % \gamma
             for iSubband = 1 : nSubbands
                 sinr(iSubband) = infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
