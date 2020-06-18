@@ -31,9 +31,8 @@ while ~isConverged
     maxRate_ = maxRate;
 end
 rateConstraint = maxRate : -maxRate / (nSamples - 1) : 0;
-
 % * Achievable R-E region by FF-IRS
-ffReSample = zeros(2, nSamples);
+ffReSample = zeros(3, nSamples);
 for iSample = 1 : nSamples
     isConverged = false;
     current_ = 0;
@@ -45,5 +44,5 @@ for iSample = 1 : nSamples
         isConverged = abs(current - current_) / current <= tolerance;
         current_ = current;
     end
-    ffReSample(:, iSample) = [current; rate];
+    ffReSample(:, iSample) = [current; rate; powerRatio];
 end

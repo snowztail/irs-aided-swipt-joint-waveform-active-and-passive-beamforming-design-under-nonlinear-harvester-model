@@ -125,9 +125,9 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
             powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
         end
         % z
-        current_ = real((1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+        current_ = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
             + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
-            + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
+            + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands);
         % R
         rate_ = 0;
         for iSubband = 1 : nSubbands
