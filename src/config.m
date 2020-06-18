@@ -48,3 +48,5 @@ nCandidates = 1e4;
 resolution = 5e-2;
 % number of samples in R-E curves
 nSamples = 20;
+% scale factor on auxiliary variables to avoid precision problem
+scaleFactor = 1e6;
