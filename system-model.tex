@@ -130,6 +130,7 @@
 			\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
 			\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi})w_{I,n}\rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}
 			\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}
+			\addConstraint{0 \le \rho \le 1}
 		\end{maxi!}
 	Problem \ref{op:su} is intricate due to the non-convex objective function with coupled variables. In the next section, we propose waveform and phase shift design algorithms for frequency-flat and frequency-selective IRS, respectively.
 
@@ -259,15 +260,15 @@
 			We use first-order Taylor expansion to approximate the second-order terms in \ref{eq:z_irs}. Based on the variables optimized at iteration $i - 1$, the local approximation at iteration $i$ suggests \cite{Adali2010}
 			\begin{align}
 				(t_{I,0}^{(i)})^2
-				& \ge 2 (t_{I,0}^{(i)})(t_{I,0}^{(i-1)}) - (t_{I,0}^{(i-1)})^2\label{eq:t_approx_begin}\\
+				& \ge 2 t_{I,0}^{(i)}t_{I,0}^{(i-1)} - (t_{I,0}^{(i-1)})^2\label{eq:t_{I,0}_square}\\
 				t_{P,n}^{(i)} (t_{P,n}^{(i)})^*
 				& \ge 2 \Re\left\{t_{P,n}^{(i)} (t_{P,n}^{(i-1)})^*\right\} - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\\
 				t_{I,0}^{(i)} t_{P,0}^{(i)}
 				& = \frac{1}{4}(t_{I,0}^{(i)} + t_{P,0}^{(i)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\nonumber\\
 				& \ge \frac{1}{2}(t_{I,0}^{(i)} + t_{P,0}^{(i)})(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})\nonumber\\
-				& \quad - \frac{1}{4}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\label{eq:t_approx_end}
+				& \quad - \frac{1}{4}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\label{eq:t_{I/P,0}}
 			\end{align}
-			\ref{eq:t_approx_begin} -- \ref{eq:t_approx_end} provide lower bounds to corresponding terms such that the approximated current function at iteration $i$ is given in \ref{eq:z_irs_approx}.
+			\ref{eq:t_{I,0}_square} -- \ref{eq:t_{I/P,0}} provide lower bounds to corresponding terms such that the approximated current function at iteration $i$ is given in \ref{eq:z_irs_approx}.
 			\begin{figure*}[b]
 				\hrule
 				\begin{equation}\label{eq:z_irs_approx}
@@ -323,7 +324,7 @@
 					&\quad+\frac{3}{2} \beta_4 \rho^2 t'_{I,0}t'_{P,0}
 				\end{split}
 			\end{equation}
-			Since \ref{eq:z_waveform} and \ref{eq:z_irs} are in the same form, we reuse \ref{eq:t_approx_begin} -- \ref{eq:t_approx_end} and bound \ref{eq:z_waveform} by replacing $t_{I/P,n}$ with $t_{I/P,n}'$ in \ref{eq:z_irs_approx}.	Hence, problem \ref{op:su} is transformed to
+			Since \ref{eq:z_waveform} and \ref{eq:z_irs} are in the same form, we reuse \ref{eq:t_{I,0}_square} -- \ref{eq:t_{I/P,0}} and bound \ref{eq:z_waveform} by replacing $t_{I/P,n}$ with $t_{I/P,n}'$ in \ref{eq:z_irs_approx}. Hence, problem \ref{op:su} is transformed to
 			\begin{maxi!}
 				{\boldsymbol{W}_I,\boldsymbol{W}_P}{\tilde{z}(\boldsymbol{W}_I,\boldsymbol{W}_P)}{\label{op:su_waveform}}{\label{eq:su_waveform_target}}
 				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)W_{I,n,n}\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_waveform_constraint}}
@@ -352,7 +353,21 @@
 			\end{algorithm}
 		\end{subsubsection}
 
-		\begin{subsection}{WIT initialization}
+		\begin{subsubsection}{Receive Splitting Ratio Optimization}
+			We then optimize the power splitting ratio $\rho$ for any fixed phase shift $\boldsymbol{\phi}$ and waveform $\boldsymbol{w}_{I/P}$. In this case, the output DC current is also expressed by \ref{eq:z_waveform} but as a function of $\rho$ with constant $t_{I/P,n}'$ defined in \ref{eq:t'}. Therefore, problem \ref{op:su} is transformed to
+			\begin{maxi!}
+				{\rho}{z(\rho)}{\label{op:su_ratio}}{\label{eq:su_ratio_target}}
+				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert h_n w_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_ratio_constraint}}
+				\addConstraint{0 \le \rho \le 1}
+			\end{maxi!}
+			It can be observed that $z(\rho)$ is a monotonically increasing function of $\rho$ such that the maximum value of \ref{eq:su_ratio_target} is achieved when equality in \ref{eq:su_ratio_constraint} holds, namely
+			\begin{equation}\label{eq:rho}
+				\prod_n \left(1 + \frac{(1 - \rho^\star)\lvert h_n w_n \rvert^2}{\sigma_n^2}\right) = 2^{\bar{R}}
+			\end{equation}
+			The optimal power splitting ratio can be obtained from \ref{eq:rho} in closed form.
+		\end{subsubsection}
+
+		\begin{subsubsection}{WIT Initialization}
 			To characterize the R-E region, we initialize the algorithm to WIT mode and reduce the rate constraint gradually to obtain the boundary points. Consider a rate maximization problem with given information waveform $\boldsymbol{w}_I$ and power splitting ratio $\rho = 0$ as
 			\begin{maxi!}
 				{\boldsymbol{\Phi}}{\sum_{n}{\log_2\left(1+\frac{\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)}}{\label{op:su_irs_wit}}{}
@@ -386,7 +401,7 @@
 					\State \textbf{Output} $\boldsymbol{w}_I^\star, \boldsymbol{\phi}^\star$
 				\end{algorithmic}
 			\end{algorithm}
-		\end{subsection}
+		\end{subsubsection}
 	\end{subsection}
 \end{section}
 
