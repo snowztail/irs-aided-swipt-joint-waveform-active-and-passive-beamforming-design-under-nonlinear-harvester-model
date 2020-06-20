@@ -356,17 +356,13 @@
 		\end{subsubsection}
 
 		\begin{subsubsection}{Receive Splitting Ratio Optimization}
-			We then optimize the power splitting ratio $\rho$ for any fixed phase shift $\boldsymbol{\phi}$ and waveform $\boldsymbol{w}_{I/P}$. In this case, the output DC current is also expressed by \ref{eq:z_waveform} but as a function of $\rho$ with constant $t_{I/P,n}'$ defined in \ref{eq:t'}. Therefore, problem \ref{op:su} is transformed to
+			We then optimize the power splitting ratio $\rho$ for any fixed phase shift $\boldsymbol{\phi}$ and waveform $\boldsymbol{w}_{I/P}$. In this case, the output DC current is also expressed by \ref{eq:z_waveform} but as a function of $\rho$ with constant $t_{I/P,n}'$ defined in \ref{eq:t'}. Since $z(\rho)$ is a monotonically increasing function of $\rho \in [0, 1]$, we replace convex objective function $z(\rho)$ with affine $\rho$ and transform problem \ref{op:su} to
 			\begin{maxi!}
-				{\rho}{z(\rho)}{\label{op:su_ratio}}{\label{eq:su_ratio_target}}
+				{\rho}{\rho}{\label{op:su_ratio}}{\label{eq:su_ratio_target}}
 				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert h_n w_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_ratio_constraint}}
 				\addConstraint{0 \le \rho \le 1}
 			\end{maxi!}
-			It can be observed that $z(\rho)$ is a monotonically increasing function of $\rho$ such that the maximum value of \ref{eq:su_ratio_target} is achieved when equality in \ref{eq:su_ratio_constraint} holds, namely
-			\begin{equation}\label{eq:rho}
-				\prod_n \left(1 + \frac{(1 - \rho^\star)\lvert h_n w_n \rvert^2}{\sigma_n^2}\right) = 2^{\bar{R}}
-			\end{equation}
-			The optimal power splitting ratio can be obtained from \ref{eq:rho} in closed form.
+			The optimal power splitting ratio $\rho^\star$ can be obtained from problem \ref{op:su_ratio}.
 		\end{subsubsection}
 
 		\begin{subsubsection}{WIT Initialization}
