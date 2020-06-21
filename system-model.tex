@@ -295,7 +295,7 @@
 				\caption{FF-IRS: IRS Phase Shift}
 				\label{al:ff_irs}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\bar{R},Q,\boldsymbol{w}_I,\boldsymbol{w}_P,\rho,\sigma_n,\boldsymbol{R}_n,\boldsymbol{C}_{I/P,n} \ \forall n$ by \ref{eq:R_n,phi}, \ref{eq:C_{I/P,n}}
+					\State \textbf{Input} $\beta_2,\beta_4,Q,\bar{R},\epsilon,\rho,\boldsymbol{w}_{I/P},\boldsymbol{M},\sigma_n,\boldsymbol{R}_n,\boldsymbol{C}_{I/P,n} \ \forall n$ by \ref{eq:R_n,phi}, \ref{eq:C_{I/P,n}}
 					\State \textbf{Initialize} $i \leftarrow 0,\boldsymbol{\Phi}^{(0)},t_{I/P,n}^{(0)}\ \forall n$ by \ref{eq:t}
 					\Repeat
 					\State $i \leftarrow i + 1$
@@ -306,8 +306,8 @@
 					\State Generate random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}) \ \forall q$
 					\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$ and matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
 					\State Select best solution $\boldsymbol{\Phi}^\star$ and $\boldsymbol{\phi}^\star$ for problem \ref{op:su_irs}
-					\State Compute phase shift by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
-					\State \textbf{Output} $\theta_l \ \forall l$
+					\State Compute phase shift by $\theta_l^\star=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
+					\State \textbf{Output} $\theta_l^\star \ \forall l$
 				\end{algorithmic}
 			\end{algorithm}
 		\end{subsubsection}
@@ -339,7 +339,7 @@
 				\caption{FF-IRS: Transmit Waveform Optimization}
 				\label{al:ff_waveform}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\bar{R},P,Q,\sigma_n,\boldsymbol{H}_n,\boldsymbol{R}_n \ \forall n$ by \ref{eq:R_n,phi}
+					\State \textbf{Input} $\beta_2,\beta_4,P,Q,\bar{R},\epsilon,\rho,\sigma_n,\boldsymbol{H}_n,\boldsymbol{R}_n \ \forall n$ by \ref{eq:R_n,phi}
 					\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{W}_{I/P}^{(0)}$, $t_{I/P,n}^{\prime (0)} \ \forall n$
 					\Repeat
 					\State $i \leftarrow i + 1$
@@ -382,8 +382,8 @@
 				\caption{FF-IRS: WIT Initialization}
 				\label{al:ff_wit}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $P, Q, \boldsymbol{R}_n, \sigma_n \ \forall n$
-					\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{w}_I^{(0)}$
+					\State \textbf{Input} $h_D, h_I, h_R, P, Q, \sigma_n, \boldsymbol{R}_n \ \forall n$ by \ref{eq:R_n,phi}
+					\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{w}_I^{(0)}$
 					\Repeat
 					\State $i \leftarrow i + 1$
 					\State Obtain IRS matrix $\boldsymbol{\Phi}^{(i)}$ by solving problem \ref{op:su_irs_wit}
@@ -396,7 +396,8 @@
 					\State Obtain optimal waveform phase $(\psi_{I,n}^{(i)})^\star \ \forall n$ by \ref{eq:psi}
 					\State Update information waveform $(\boldsymbol{w}_I^{(i)})^\star$ by \ref{eq:w_wit}
 					\Until $\lvert (R^{(i)}-R^{(i-1)}) / R^{(i)} \rvert \le \epsilon$
-					\State \textbf{Output} $\boldsymbol{w}_I^\star, \boldsymbol{\phi}^\star$
+					\State Compute phase shift by $\theta_l^\star=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
+					\State \textbf{Output} $\boldsymbol{w}_I^\star,\theta_l^\star \ \forall l$
 				\end{algorithmic}
 			\end{algorithm}
 		\end{subsubsection}
