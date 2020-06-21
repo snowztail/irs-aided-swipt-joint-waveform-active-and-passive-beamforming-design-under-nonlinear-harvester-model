@@ -1,27 +1,24 @@
-function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateConstraint, tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates)
+function [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint, tolerance, infoWaveform, powerWaveform, infoRatio, powerRatio, concatVector, noisePower, concatMatrix, irs)
     % Function:
     %   - optimize the IRS reflection coefficients to maximize the R-E region
-    %   - compute the output DC current and user rate
     %
     % Input:
-    %   - irs (\phi) [nReflectors]: IRS reflection coefficients (in the previous iteration)
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
-    %   - noisePower (\sigma_n^2): average noise power
+    %   - nCandidates (Q): number of CSCG random vectors to generate
     %   - rateConstraint (\bar{R}): user rate constraint
     %   - tolerance (\epsilon): minimum gain ratio per iteration
+    %   - infoWaveform (w_I) [nSubbands]: weight on information carriers
+    %   - powerWaveform (w_P) [nSubbands]: weight on power carriers
+    %   - infoRatio (\bar{\rho}): information splitting ratio
+    %   - powerRatio (\rho): power splitting ratio
     %   - concatVector (M) [(nReflectors + 1) * nSubbands]: concatenated channel vector
+    %   - noisePower (\sigma_n^2): average noise power
     %   - concatMatrix (R_n) [(nReflectors + 1) * (nReflectors + 1)]: rate SDR matrix
-    %   - infoWaveform (w_I) [nSubbands]: weight on information carriers (in the previous iteration)
-    %   - powerWaveform (w_P) [nSubbands]: weight on power carriers (in the previous iteration)
-    %   - infoRatio (\bar{\rho}): information splitting ratio (in the previous iteration)
-    %   - powerRatio (\rho): power splitting ratio (in the previous iteration)
-    %   - nCandidates (Q): number of CSCG random vectors to generate
+    %   - irs (\phi) [nReflectors]: IRS reflection coefficients (in the previous iteration)
     %
     % Output:
     %   - irs (\phi) [nReflectors]: IRS reflection coefficients
-    %   - current: maximum achievable output DC current
-    %   - rate: maximum achievable user rate
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank IRS outer product matrix
@@ -34,10 +31,6 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
     % * Initialize algorithm
     nSubbands = size(infoWaveform, 1);
     nReflectors = size(concatMatrix{1}, 1) - 1;
-    % \bar{\boldsymbol{\phi}}^{(0)}
-    irs = [irs; 1];
-    % \bar{\boldsymbol{\Phi}}^{(0)}
-    irsMatrix = irs * irs';
     % \boldsymbol{W}_{I/P}
     infoMatrix = infoWaveform * infoWaveform';
     powerMatrix = powerWaveform * powerWaveform';
@@ -50,6 +43,10 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
     end
     infoCoefMatrix{nSubbands} = hermitianize(infoCoefMatrix{nSubbands});
     powerCoefMatrix{nSubbands} = hermitianize(powerCoefMatrix{nSubbands});
+    % \bar{\boldsymbol{\phi}}^{(0)}
+    irs = [irs; 1];
+    % \bar{\boldsymbol{\Phi}}^{(0)}
+    irsMatrix = irs * irs';
     % t_{I/P,n}^{(0)}
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
     powerAuxiliary = zeros(2 * nSubbands - 1, 1);
@@ -64,7 +61,7 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
     current_ = 0;
     isConverged = false;
     while ~isConverged
-        % * Update auxiliary and SDR matrices
+        % * Update auxiliary variables
         % t_{I/P,n}^{(i-1)}
         infoAuxiliary_ = infoAuxiliary;
         powerAuxiliary_ = powerAuxiliary;
@@ -75,7 +72,7 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);
-            expression sinr(nSubbands, 1);
+            expression snr(nSubbands, 1);
             % t_{I/P,n}
             for iSubband = - nSubbands + 1 : nSubbands - 1
                 infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
@@ -83,29 +80,28 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
             end
             infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
             powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
-
             % \tilde{z}
-            currentLowerBound = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+            currentLb = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
                 + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * (2 * infoAuxiliary(nSubbands) * infoAuxiliary_(nSubbands) - infoAuxiliary_(nSubbands) ^ 2) + (2 * real(powerAuxiliary_' * powerAuxiliary) - powerAuxiliary_' * powerAuxiliary_)) ...
                 + (3 / 2) * beta4 * powerRatio ^ 2 * ((1 / 2) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) - (1 / 4) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) ^ 2 - (1 / 4) * (infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2);
             % \gamma
             for iSubband = 1 : nSubbands
-                sinr(iSubband) = infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
+                snr(iSubband) = infoRatio * abs(infoWaveform(iSubband)) ^ 2 * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
             end
-            maximize currentLowerBound;
+            maximize currentLb;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
-                geo_mean(1 + sinr) >= 2 ^ (rateConstraint / nSubbands);
+                geo_mean(1 + snr) >= 2 ^ (rateConstraint / nSubbands);
         cvx_end
 
         % * Update output current
         % z
-        current = real((1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+        current = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
             + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
-            + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands));
+            + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands);
 
         % * Test convergence
-        isConverged = abs(current - current_) / current <= tolerance;
+        isConverged = abs(current - current_) / current <= tolerance || current == 0;
         current_ = current;
     end
     irsMatrix = full(irsMatrix);
@@ -113,7 +109,6 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
     % * Recover rank-1 solution by randomization method
     [u, sigma] = eig(irsMatrix);
     current = 0;
-    rate = 0;
     for iCandidate = 1 : nCandidates
         % \bar{\boldsymbol{\phi}}_q
         irs_ = exp(1i * angle(u * sigma ^ (1 / 2) * (randn(nReflectors + 1, 1) + 1i * randn(nReflectors + 1, 1))));
@@ -128,14 +123,9 @@ function [irs, current, rate] = irs_flat(irs, beta2, beta4, noisePower, rateCons
         current_ = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
             + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
             + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands);
-        % R
-        rate_ = 0;
-        for iSubband = 1 : nSubbands
-            rate_ = rate_ + log2(1 + infoRatio * square_abs(infoWaveform(iSubband)) * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower);
-        end
-        if current_ >= current && rate_ >= rateConstraint
+        % \bar{\boldsymbol{\phi}}^\star
+        if current_ >= current
             current = current_;
-            rate = rate_;
             irs = irs_;
         end
     end

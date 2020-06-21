@@ -61,7 +61,7 @@ for iDistance = 1 : length(Variable.incidentDistance)
             [irs, currentInit, rateInit] = irs_flat(irs, beta2, beta4, noisePower, rateConstraint(iSample), tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates);
             [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
             [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint(iSample), tolerance, compositeChannel, nCandidates);
-            isConverged = abs(current - current_) / current <= tolerance;
+            isConverged = abs(current - current_) / current <= tolerance || current == 0;
             current_ = current;
         end
         ffReSample{iDistance}(:, iSample) = [current; rate];

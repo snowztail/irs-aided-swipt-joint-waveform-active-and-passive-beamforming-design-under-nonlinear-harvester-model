@@ -15,7 +15,7 @@ nUsers = 1;
 % average transmit power
 txPower = 1;
 % average noise power
-noisePower = db2pow(-50);
+noisePower = db2pow(-70);
 
 %% * Channel
 % AP-user distance
@@ -48,5 +48,3 @@ nCandidates = 1e4;
 resolution = 5e-2;
 % number of samples in R-E curves
 nSamples = 20;
-% scale factor on auxiliary variables to avoid precision problem
-scaleFactor = 1e6;

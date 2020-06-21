@@ -5,44 +5,43 @@ clear; clc; setup; config; load('data/tap.mat');
 [reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, reflectiveDistance, reflectiveTapGain, reflectiveTapDelay, "reflective");
 
 %% ! No-IRS: R-E region
-% % * Initialize algorithm by WIT
-% [directCapacity, subbandPower] = channel_capacity(directChannel, txPower, noisePower);
-% [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform_wit(directChannel, subbandPower);
-% rateConstraint = directCapacity : -directCapacity / (nSamples - 1) : 0;
-%
-% % * Achievable R-E region without IRS
-% directReSample = zeros(2, nSamples);
-% for iSample = 1 : nSamples
-%     [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint(iSample), tolerance, directChannel, nCandidates, scaleFactor);
-%     directReSample(:, iSample) = [current; rate];
-% end
+% * Initialize algorithm by WIT
+[capacity, infoWaveform, powerWaveform, infoRatio, powerRatio] = wit_no_irs(directChannel, txPower, noisePower);
+rateConstraint = capacity : -capacity / (nSamples - 1) : 0;
+
+% * Achievable R-E region without IRS
+directReSample = zeros(3, nSamples);
+for iSample = 1 : nSamples
+    isConverged = false;
+    current_ = 0;
+    while ~isConverged
+        [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCandidates, rateConstraint(iSample), tolerance, infoRatio, powerRatio, noisePower, directChannel, infoWaveform, powerWaveform);
+        [infoRatio, powerRatio] = split_ratio(infoWaveform, noisePower, rateConstraint(iSample), directChannel);
+        [rate, current] = re_sample(beta2, beta4, directChannel, noisePower, infoWaveform, powerWaveform, infoRatio, powerRatio);
+        isConverged = abs(current - current_) / current <= tolerance || current == 0;
+        current_ = current;
+    end
+    directReSample(:, iSample) = [rate; current; powerRatio];
+end
 
 %% ! IRS: R-E region
 % * Initialize algorithm by WIT
-isConverged = false;
-maxRate_ = 0;
-irs = irsGain * ones(nReflectors, 1);
-while ~isConverged
-    [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-    [compositeCapacity, subbandPower] = channel_capacity(compositeChannel, txPower, noisePower);
-    [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform_wit(compositeChannel, subbandPower);
-    [irs, maxRate] = irs_flat_wit(noisePower, concatMatrix, infoWaveform, nCandidates);
-    isConverged = abs(maxRate - maxRate_) / maxRate <= tolerance;
-    maxRate_ = maxRate;
-end
-rateConstraint = maxRate : -maxRate / (nSamples - 1) : 0;
+[capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
+rateConstraint = capacity : -capacity / (nSamples - 1) : 0;
+[compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 % * Achievable R-E region by FF-IRS
 ffReSample = zeros(3, nSamples);
 for iSample = 1 : nSamples
     isConverged = false;
     current_ = 0;
-    [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint(iSample), tolerance, compositeChannel, nCandidates, scaleFactor);
     while ~isConverged
-        [irs, currentInit, rateInit] = irs_flat(irs, beta2, beta4, noisePower, rateConstraint(iSample), tolerance, concatVector, concatMatrix, infoWaveform, powerWaveform, infoRatio, powerRatio, nCandidates);
-        [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-        [infoWaveform, powerWaveform, infoRatio, powerRatio, current, rate] = waveform_sdr(infoWaveform, powerWaveform, infoRatio, powerRatio, beta2, beta4, txPower, noisePower, rateConstraint(iSample), tolerance, compositeChannel, nCandidates, scaleFactor);
-        isConverged = abs(current - current_) / current <= tolerance;
+        [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint(iSample), tolerance, infoWaveform, powerWaveform, infoRatio, powerRatio, concatVector, noisePower, concatMatrix, irs);
+        [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+        [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCandidates, rateConstraint(iSample), tolerance, infoRatio, powerRatio, noisePower, compositeChannel, infoWaveform, powerWaveform);
+        [infoRatio, powerRatio] = split_ratio(infoWaveform, noisePower, rateConstraint(iSample), compositeChannel);
+        [rate, current] = re_sample(beta2, beta4, compositeChannel, noisePower, infoWaveform, powerWaveform, infoRatio, powerRatio);
+        isConverged = abs(current - current_) / current <= tolerance || current == 0;
         current_ = current;
     end
-    ffReSample(:, iSample) = [current; rate; powerRatio];
+    ffReSample(:, iSample) = [rate; current; powerRatio];
 end
