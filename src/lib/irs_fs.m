@@ -1,4 +1,4 @@
-function [irsPhase, compositeChannel] = irs_selective(directChannel, incidentChannel, reflectiveChannel)
+function [irsPhase, compositeChannel] = irs_fs(directChannel, incidentChannel, reflectiveChannel)
     % Function:
     %   - adjust intelligent reflecting surface to maximize the composite channel strength
     %   - align the extra channel with the direct channel at each subband

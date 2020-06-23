@@ -69,6 +69,7 @@ function [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint, tolerance, in
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
             cvx_solver mosek
+            cvx_precision high
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);
@@ -78,12 +79,10 @@ function [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint, tolerance, in
                 infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
                 powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
             end
-            infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
-            powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
             % \tilde{z}
             currentLb = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
-                + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * (2 * infoAuxiliary(nSubbands) * infoAuxiliary_(nSubbands) - infoAuxiliary_(nSubbands) ^ 2) + (2 * real(powerAuxiliary_' * powerAuxiliary) - powerAuxiliary_' * powerAuxiliary_)) ...
-                + (3 / 2) * beta4 * powerRatio ^ 2 * ((1 / 2) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) - (1 / 4) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) ^ 2 - (1 / 4) * (infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2);
+                + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * (2 * infoAuxiliary(nSubbands) * infoAuxiliary_(nSubbands) - infoAuxiliary_(nSubbands) ^ 2) + 2 * real(powerAuxiliary_' * powerAuxiliary) - powerAuxiliary_' * powerAuxiliary_) ...
+                + (3 / 2) * beta4 * powerRatio ^ 2 * ((1 / 2) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) - (1 / 4) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) ^ 2 - (1 / 4) * (infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2);
             % \gamma
             for iSubband = 1 : nSubbands
                 snr(iSubband) = infoRatio * abs(infoWaveform(iSubband)) ^ 2 * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
