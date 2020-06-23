@@ -26,14 +26,14 @@ function [infoRatio, powerRatio] = split_ratio(channel, noisePower, rateConstrai
     cvx_begin quiet
         cvx_solver mosek
         variable powerRatio nonnegative
-        expression sinr(nSubbands, 1);
+        expression snr(nSubbands, 1);
         % \gamma
         for iSubband = 1 : nSubbands
-            sinr(iSubband) = (1 - powerRatio) * abs(channel(iSubband) * infoWaveform(iSubband)) ^ 2 / noisePower;
+            snr(iSubband) = (1 - powerRatio) * abs(channel(iSubband) * infoWaveform(iSubband)) ^ 2 / noisePower;
         end
         maximize powerRatio
         subject to
-            geo_mean(1 + sinr) >= 2 ^ (rateConstraint / nSubbands);
+            geo_mean(1 + snr) >= 2 ^ (rateConstraint / nSubbands);
             powerRatio <= 1;
     cvx_end
     infoRatio = 1 - powerRatio;

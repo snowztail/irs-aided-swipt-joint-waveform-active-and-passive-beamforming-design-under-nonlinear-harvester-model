@@ -1,6 +1,7 @@
 function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCandidates, rateConstraint, tolerance, infoRatio, powerRatio, noisePower, channel, infoWaveform, powerWaveform)
     % Function:
     %   - optimize the information and power waveform to maximize the R-E region
+    %   - based on SDR
     %
     % Input:
     %   - beta2: coefficients on second-order current terms
@@ -60,6 +61,7 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCa
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
             cvx_solver mosek
+            cvx_precision high
             variable infoMatrix(nSubbands, nSubbands) hermitian semidefinite;
             variable powerMatrix(nSubbands, nSubbands) hermitian semidefinite;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
