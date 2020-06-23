@@ -25,6 +25,7 @@ function [infoRatio, powerRatio] = split_ratio(channel, noisePower, rateConstrai
     % * Solve splitting ratio by CVX
     cvx_begin quiet
         cvx_solver mosek
+        cvx_precision high
         variable powerRatio nonnegative
         expression snr(nSubbands, 1);
         % \gamma
