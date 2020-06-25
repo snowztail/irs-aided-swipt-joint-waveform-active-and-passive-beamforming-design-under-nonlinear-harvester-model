@@ -5,23 +5,30 @@ clear; clc; setup; config; load('data/tap.mat');
 [reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, reflectiveDistance, reflectiveTapGain, reflectiveTapDelay, "reflective");
 
 %% ! IRS: R-E region by SDR
-% * Initialize algorithm by WIT
-[capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
+% * Initialize algorithm
+[capacity, irs, infoWaveformOpt] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
+[current, ~, ~, powerWaveformOpt, infoRatio, powerRatio] = wpt_ff(beta2, beta4, tolerance, directChannel, incidentChannel, reflectiveChannel, irs, txPower, nCandidates, noisePower);
 [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-rateConstraint = capacity : -capacity / (nSamples - 1) : 0;
+rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
 
 % * SDR
 ffReSdrSample = zeros(3, nSamples);
 for iSample = 1 : nSamples
     isConverged = false;
     current_ = 0;
+
+    % * Initialize waveform and splitting ratio for each sample
+    infoWaveform = infoWaveformOpt;
+    powerWaveform = powerWaveformOpt;
     while ~isConverged
-        [infoRatio, powerRatio] = split_ratio(infoWaveform, noisePower, rateConstraint(iSample), compositeChannel);
+        [infoRatio, powerRatio] = split_ratio(compositeChannel, noisePower, rateConstraint(iSample), infoWaveform);
         [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCandidates, rateConstraint(iSample), tolerance, infoRatio, powerRatio, noisePower, compositeChannel, infoWaveform, powerWaveform);
         [rate, current] = re_sample(beta2, beta4, compositeChannel, noisePower, infoWaveform, powerWaveform, infoRatio, powerRatio);
         isConverged = abs(current - current_) / current <= tolerance || current <= 1e-10;
         current_ = current;
     end
+
+    % * AO
     isOuterConverged = false;
     current_ = 0;
     while ~isOuterConverged
@@ -30,7 +37,7 @@ for iSample = 1 : nSamples
         isInnerConverged = false;
         current__ = 0;
         while ~isInnerConverged
-            [infoRatio, powerRatio] = split_ratio(infoWaveform, noisePower, rateConstraint(iSample), compositeChannel);
+            [infoRatio, powerRatio] = split_ratio(compositeChannel, noisePower, rateConstraint(iSample), infoWaveform);
             [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCandidates, rateConstraint(iSample), tolerance, infoRatio, powerRatio, noisePower, compositeChannel, infoWaveform, powerWaveform);
             [rate, current] = re_sample(beta2, beta4, compositeChannel, noisePower, infoWaveform, powerWaveform, infoRatio, powerRatio);
             isInnerConverged = abs(current - current__) / current <= tolerance || current <= 1e-10;
@@ -43,18 +50,26 @@ for iSample = 1 : nSamples
 end
 
 %% ! IRS: R-E region by GP
-% * Initialize algorithm by WPT
-[capacity, irs] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
+% * Initialize algorithm
+[capacity, irs, infoWaveformOpt] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
+[current, ~, ~, powerWaveformOpt, infoRatio, powerRatio] = wpt_ff(beta2, beta4, tolerance, directChannel, incidentChannel, reflectiveChannel, irs, txPower, nCandidates, noisePower);
 [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-rateConstraint = 0 : capacity / (nSamples - 1) : capacity;
+rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
 
 % * GP
 ffReGpSample = zeros(3, nSamples);
 for iSample = 1 : nSamples
     isConverged = false;
     current_ = 0;
-    [infoWaveform, powerWaveform, infoRatio, powerRatio] = wpt_initialization(compositeChannel, txPower);
+
+    % * Initialize waveform and splitting ratio for each sample
+    infoRatio = 1 - eps;
+    powerRatio = eps;
+    infoWaveform = infoWaveformOpt;
+    powerWaveform = powerWaveformOpt;
     [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_split_ratio_gp(beta2, beta4, txPower, rateConstraint(iSample), tolerance, infoRatio, powerRatio, noisePower, compositeChannel, infoWaveform, powerWaveform);
+
+    % * AO
     while ~isConverged
         [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint(iSample), tolerance, infoWaveform, powerWaveform, infoRatio, powerRatio, concatVector, noisePower, concatMatrix, irs);
         [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
