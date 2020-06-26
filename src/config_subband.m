@@ -28,8 +28,8 @@ reflectiveDistance = directDistance - incidentDistance;
 centerFrequency = 5.18e9;
 % bandwidth
 bandwidth = 1e6;
-% channel fading mode ("flat" or "selective")
-fadingMode = "selective";
+% channel fading mode ('flat' or 'selective')
+fadingMode = 'selective';
 % gain on each reflecting element
 irsGain = 1;
 % number of reflecting elements in IRS
@@ -37,7 +37,7 @@ nReflectors = 10;
 
 %% * Algorithm
 % minimum gain ratio per iteration
-tolerance = 1e-6;
+tolerance = 1e-3;
 %  number of CSCG random vectors to generate
 nCandidates = 1e4;
 % number of samples in R-E curves

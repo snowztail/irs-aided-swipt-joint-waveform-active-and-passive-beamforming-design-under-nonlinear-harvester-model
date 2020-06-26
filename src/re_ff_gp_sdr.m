@@ -1,13 +1,17 @@
-clear; clc; setup; config; load('data/tap.mat');
+clear; clc; setup; config_ff_gp_sdr; load('data/tap.mat');
 
-[directChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, directDistance, directTapGain, directTapDelay, "direct");
-[incidentChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, incidentDistance, incidentTapGain, incidentTapDelay, "incident");
-[reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, reflectiveDistance, reflectiveTapGain, reflectiveTapDelay, "reflective");
+%% ! FF-IRS: R-E region by GP and SDR
+% * Generate channels
+[directChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, directDistance, directTapGain, directTapDelay, 'direct');
+[incidentChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, incidentDistance, incidentTapGain, incidentTapDelay, 'incident');
+[reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, reflectiveDistance, reflectiveTapGain, reflectiveTapDelay, 'reflective');
 
+% * SDR
 ff_gp;
 ff_sdr;
+save('data/re_ff_gp_sdr.mat');
 
-%% * R-E plot
+%% * R-E plots
 figure('name', 'FF-IRS: R-E region by GP and SDR')
 plot(ffGpSample(1, :), 1e6 * ffGpSample(2, :), 'k--');
 hold on;
@@ -17,5 +21,4 @@ grid minor;
 legend('GP', 'SDR');
 xlabel('Rate [bps/Hz]');
 ylabel('Average output DC current [\muA]');
-save('data/re_ff_gp_sdr.mat');
-savefig('plot/re_ff_gp_sdr.fig');
+savefig('plots/re_ff_gp_sdr.fig');

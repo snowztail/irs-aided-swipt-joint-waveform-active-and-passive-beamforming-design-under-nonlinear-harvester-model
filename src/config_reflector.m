@@ -30,8 +30,8 @@ centerFrequency = 5.18e9;
 bandwidth = 1e6;
 % number of frequency bands
 nSubbands = 4;
-% channel fading mode ("flat" or "selective")
-fadingMode = "selective";
+% channel fading mode ('flat' or 'selective')
+fadingMode = 'selective';
 % carrier frequency
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % gain on each reflecting element
@@ -46,7 +46,5 @@ nCandidates = 1e4;
 nSamples = 20;
 
 %% * Variable
-% max number of reflecting elements in IRS
-nReflectorsMax = 25;
 % number of reflecting elements in IRS
-Variable.nReflectors = nReflectorsMax : -5 : 5;
+Variable.nReflectors = 25 : -5 : 5;
