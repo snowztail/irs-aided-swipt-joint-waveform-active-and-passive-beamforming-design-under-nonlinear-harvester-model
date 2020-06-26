@@ -10,6 +10,7 @@ function [irsPhase, compositeChannel] = irs_fs(directChannel, incidentChannel, r
     %
     % OutputArg(s):
     %   - irsPhase (\phi) [nSubbands * nReflectors]: IRS reflection coefficients
+    %   - compositeChannel (h) [nSubbands * nTxs * nRxs]: the composite channel
     %
     % Comment(s):
     %   - assume frequency selective IRS (impractical)
