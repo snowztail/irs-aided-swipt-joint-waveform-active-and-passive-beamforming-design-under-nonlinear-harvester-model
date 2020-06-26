@@ -4,7 +4,7 @@ function [pathloss] = path_loss(distance, linkMode)
     %
     % Input:
     %   - distance (d): distance between the transmitter and the receiver
-    %   - linkMode: link mode "direct", "incident", or "reflective"
+    %   - linkMode: link mode 'direct', 'incident', or 'reflective'
     %
     % Output:
     %   - pathloss (\Lambda): large-scale channel strength reduction
@@ -17,9 +17,9 @@ function [pathloss] = path_loss(distance, linkMode)
 
 
     switch linkMode
-    case "direct"
+    case 'direct'
         exponent = 3.8;
-    case {"incident", "reflective"}
+    case {'incident', 'reflective'}
         exponent = 2.2;
     end
     pathloss = db2pow(30 + 10 * exponent * log10(distance / 1));

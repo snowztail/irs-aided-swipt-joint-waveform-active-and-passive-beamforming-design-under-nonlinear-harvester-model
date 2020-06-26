@@ -7,7 +7,7 @@ function [fading] = fading_tgn(tapGain, tapDelay, nSubbands, subbandFrequency, f
     %   - tapDelay [nTaps]: tap delays
     %   - nSubbands (N): number of subbands
     %   - subbandFrequency (f_n) [nSubbands]: the center frequency of subbands
-    %   - fadingMode: fading mode "flat" or "selective"
+    %   - fadingMode: fading mode 'flat' or 'selective'
     %
     % Output:
     %   - fading (h) [nSubbands * nTxs * nRxs]: fading at each subband
@@ -26,7 +26,7 @@ function [fading] = fading_tgn(tapGain, tapDelay, nSubbands, subbandFrequency, f
     [~, nTxs, nRxs] = size(tapGain);
     fading = zeros(nSubbands, nTxs, nRxs);
     switch fadingMode
-    case "selective"
+    case 'selective'
         for iSubband = 1 : nSubbands
             for iTx = 1 : nTxs
                 for iRx = 1 : nRxs
@@ -34,7 +34,7 @@ function [fading] = fading_tgn(tapGain, tapDelay, nSubbands, subbandFrequency, f
                 end
             end
         end
-    case "flat"
+    case 'flat'
         for iTx = 1 : nTxs
             for iRx = 1 : nRxs
                 fading(:, iTx, iRx) = repmat(sum(tapGain(:, iTx, iRx) .* exp(1i * 2 * pi * mean(subbandFrequency) * tapDelay)), [nSubbands 1]);

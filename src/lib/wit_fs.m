@@ -15,7 +15,8 @@ function [capacity, infoWaveform, powerWaveform, infoRatio, powerRatio] = wit_fs
     %   - powerRatio (\rho): power splitting ratio
     %
     % Comment:
-    %   - no IRS or frequency-selective IRS such that optimal channel is in closed form
+    %   - for no IRS or frequency-selective IRS
+    %   - optimal channel is in closed form
     %   - construct information waveform by water-filling algorithm and matched filter
     %
     % Author & Date: Yang (i@snowztail.com) - 21 Jun 20

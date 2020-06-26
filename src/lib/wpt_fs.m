@@ -19,7 +19,8 @@ function [current, infoWaveform, powerWaveform, infoRatio, powerRatio] = wpt_fs(
     %   - powerRatio (\rho): power splitting ratio
     %
     % Comment:
-    %   - no IRS or frequency-selective IRS such that optimal channel is in closed form
+    %   - for no IRS or frequency-selective IRS
+    %   - optimal channel is in closed form
     %   - initial waveforms by matched filter
     %
     % Author & Date: Yang (i@snowztail.com) - 24 Jun 20
