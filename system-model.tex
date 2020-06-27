@@ -134,107 +134,47 @@
 			\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}
 			\addConstraint{0 \le \rho \le 1}
 		\end{maxi!}
-	Problem \ref{op:su} is intricate due to the non-convex objective function with coupled variables. In the next section, we propose waveform and phase shift design algorithms for frequency-flat and frequency-selective IRS, respectively.
+	Problem \ref{op:su} is intricate due to the non-convex objective function with coupled variables. To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that iteratively updates the IRS phase shift, transmit waveform, and receive power splitting ratio iteratively.
+	% In the next section, we propose waveform and phase shift design algorithms for frequency-flat and frequency-selective IRS, respectively.
 
-	\begin{subsection}{Frequency-Selective IRS}
-		Each element in frequency-selective IRS is expected to provide subband-dependent reflection coefficients. Hence, $\boldsymbol{\phi}_n$ replaces $\boldsymbol{\phi}$ in \ref{op:su} and the IRS has a total degree of freedom (DoF) of $NL$. Note that $\lvert{(h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi}_n)w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{v}_n^H\boldsymbol{\phi}_n w_{I,n}}\rvert$ where the equality holds when the direct and IRS-aided links are aligned. Therefore, we choose the phase shift of element $l$ at subband $n$ as
-		\begin{equation}\label{eq:theta}
-			\theta_{n,l}^\star = \angle{h}_{D,n} - \angle{h_{R,n,l}}-\angle{h_{I,n,l}}
-		\end{equation}
-		That is to say, the optimal phase shift is obtained in closed form in the single-user scenario, and the phase of the composite channel equals that of the direct channel. Moreover, it can be observed from \ref{eq:R_k} and \ref{eq:z_k_expand} that the optimal phases of information and power waveform are both match to the composite channel as
-		\begin{equation}\label{eq:psi}
-			\psi_{I,n}^{\star}=\psi_{P,n}^{\star}=-\bar{\psi}_{n}
-		\end{equation}
-		By such a phase selection, we have
-		\begin{equation}
-			\lvert{(h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi}_n)w_{I,n}}\rvert = \lvert h_{D,n} \rvert \lvert w_{I,n} \rvert + \vert \boldsymbol{v}_n^H\boldsymbol{\phi}_n \rvert \lvert w_{I,n} \rvert
-		\end{equation}
-		Therefore, the original problem \ref{op:su} is reduced to an waveform magnitude optimization problem
-		\begin{maxi!}
-				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\label{op:su_gp}}{}
-				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
-				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho){A_n^2}{s_{I,n}^2}}{\sigma_n^2}\right)} \ge \bar{R}}
-			\end{maxi!}
-		\begin{figure*}[b]
-			\hrule
-			\begin{equation}\label{eq:z_gp}
+	\begin{subsection}{IRS Phase Shift}
+		\begin{subsubsection}{Frequency-Selective IRS}\label{se:fs_irs}
+			Each element in frequency-selective IRS is expected to provide subband-dependent reflection coefficients. Hence, $\boldsymbol{\phi}_n$ replaces $\boldsymbol{\phi}$ in \ref{op:su} and the IRS has a total degree of freedom (DoF) of $NL$. Note that $\lvert{(h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi}_n)w_{I,n}}\rvert \le \lvert{h_{D,n}w_{I,n}}\rvert+\lvert{\boldsymbol{v}_n^H\boldsymbol{\phi}_n w_{I,n}}\rvert$ where the equality holds when the direct and IRS-aided links are aligned. Therefore, we choose the phase shift of element $l$ at subband $n$ as
+			\begin{equation}\label{eq:theta}
+				\theta_{n,l}^\star = \angle{h}_{D,n} - \angle{h_{R,n,l}}-\angle{h_{I,n,l}}
+			\end{equation}
+			That is to say, the optimal phase shift is obtained in closed form in the single-user scenario, and the phase of the composite channel equals that of the direct channel.
+		\end{subsubsection}
+
+		\begin{subsubsection}{Frequency-Flat IRS}
+			In contrast, frequency-flat IRS reflects all subbands equally with a DoF of $L$. We observe that
+			\begin{equation}
 				\begin{split}
-					z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)
-					&=\frac{1}{2}{\beta_2}{\rho}\sum_n{A_n^2(s_{I,n}^2+s_{P,n}^2)}\\
-					&\quad+\frac{3}{8}{\beta_4}{\rho^2} \left(\left(\sum_{n}(A_n s_{I,n})(A_n s_{I,n})^*\right)^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{A_{n_1}A_{n_2}A_{n_3}A_{n_4}(s_{P,n_1}s_{P,n_2}s_{P,n_3}s_{P,n_4})}\right)\\
-					&\quad+\frac{3}{2}{\beta_4}{\rho^2}\sum_n{{A_n^4}{s_{I,n}^2}{s_{P,n}^2}}
+					\lvert{h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi}}\rvert^2
+					&=\lvert{h_{D,n}}\rvert^2+h_{D,n}^*\boldsymbol{v}_n^H\boldsymbol{\phi}+\boldsymbol{\phi}^H\boldsymbol{v}_n{h_{D,n}}+\boldsymbol{\phi}^H\boldsymbol{v}\boldsymbol{v}^H\boldsymbol{\phi}\\
+					&=\bar{\boldsymbol{\phi}}^H\boldsymbol{R}_n\bar{\boldsymbol{\phi}}=\mathrm{Tr}(\boldsymbol{R}_n\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H)=\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{\Phi})
 				\end{split}
 			\end{equation}
-		\end{figure*}
-		with $z$ given by \ref{eq:z_gp}. We introduce an auxiliary variable $t''$ and transform problem \ref{op:su_gp} into
-		\begin{mini!}
-				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,t''}{\frac{1}{t''}}{\label{op:su_gp_1}}{}
-				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P}) \le P}
-				\addConstraint{\frac{t''}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)} \le 1}
-				\addConstraint{\frac{2^{\bar{R}}}{\prod_n \left(1+\frac{(1-\rho){A_n^2}{s_{I,n}^2}}{\sigma_n^2}\right)} \le 1}
-			\end{mini!}
-		Problem \ref{op:su_gp_1} is a Reversed Geometric Program which can be transformed to standard Geometric Program (GP). The idea is to decompose the information and power posynomials as sum of monomials, then derive their upper bounds using Arithmetic Mean-Geometric Mean (AM-GM) inequality \cite{Clerckx2018b,Chiang2005}. Let $z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)=\sum_{m=1}^{M}{g_{P,m}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}$, problem \ref{op:su_gp_1} is equivalent to
-		\begin{mini}
-			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,\bar{\rho},t''}{\frac{1}{t''}}{\label{op:su_gp_2}}{}
-			\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
-			\addConstraint{{t''}\prod_m{\left(\frac{g_{P,m}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\gamma_{P,m}}\right)^{-\gamma_{P,m}}}\le{1}}
-			\addConstraint{2^{\bar{R}}\prod_{n}{\left(\frac{1}{\gamma_{I,n,1}}\right)^{-\gamma_{I,n,1}} \left(\frac{\bar{\rho}{A_n^2}{s_{I,n}^2}}{{\sigma_n^2}{\gamma_{I,n,2}}}\right)^{-\gamma_{I,n,2}}}\le{1}}
-			\addConstraint{\rho + \bar{\rho} \le 1}
-		\end{mini}
-		where $\gamma_{I,n,1},\gamma_{I,n,2} \ge 0$, $\gamma_{I,n,1}+\gamma_{I,n,2}=1$, $\gamma_{P,m} \ge 0 \ \forall m$, and $\sum_{m=1}^{M}{\gamma_m}=1$. The tightness of the AM-GM inequality depends on $\{\gamma_{I,n},\gamma_P\}$ that require successive update. At iteration $i$, we choose \cite{Clerckx2018b}
-		\begin{align}
-			\gamma_{I,n,1}^{(i)} & = \left. 1 \middle/ \left(1+\frac{\bar{\rho}^{(i-1)}{A_n^2}(s_{I,n}^{(i-1)})^2}{\sigma_n^2}\right) \right.\label{eq:gamma_I_1}\\
-			\gamma_{I,n,2}^{(i)} & = 1 - \gamma_{I,n,1}^{(i)}\label{eq:gamma_I_2}\\
-			\gamma_{P,m}^{(i)} & =\frac{g_{P,m}(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}
-		\end{align}
-		and then solve problem \ref{op:su_gp_2}. The algorithm is summarized in Algorithm \ref{al:fs_waveform}.
-		\begin{algorithm}
-			\caption{FS-IRS: Waveform and Splitting Ratio}
-			\label{al:fs_waveform}
-			\begin{algorithmic}[1]
-				\State \textbf{Input} $P, \bar{R}, A_n \ \forall n$ by \ref{eq:h_{k,n}}
-				\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{s}_{I/P}^{(0)}$, $\rho^{(0)}$
-				\Repeat
-				\State $i \leftarrow i + 1$
-				\State Update GM exponents $\{\gamma_{I,n}^{(i)},\gamma_{P}^{(i)}\}$ by \ref{eq:gamma_I_1} -- \ref{eq:gamma_P}
-				\State Obtain waveform amplitude $\boldsymbol{s}_{I/P}^{(i)}$ and power splitting ratio $\rho^{(i)}$ by solving problem \ref{op:su_gp_2}
-				\State Compute output DC current $z^{(i)}$ by \ref{eq:z_gp}
-				\Until $\lvert (z^{(i)} - z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
-				\State \textbf{Output} $\boldsymbol{s}_{I/P}^{\star}, \rho^{\star}, z^{\star}$
-			\end{algorithmic}
-		\end{algorithm}
-	\end{subsection}
+			where $t$ is an auxiliary variable with unit modulus and
+			\begin{equation}\label{eq:R_n,phi}
+				\boldsymbol{R}_n=
+				\begin{bmatrix}
+					\boldsymbol{v}_n\boldsymbol{v}_n^H & \boldsymbol{v}_n{h_{D,n}} \\
+					h_{D,n}^*{\boldsymbol{v}_n^H}      & h_{D,n}^*{h_{D,n}}
+				\end{bmatrix},
+				\quad \bar{\boldsymbol{\phi}}=\
+				\begin{bmatrix}
+					\boldsymbol{\phi} \\
+					t
+				\end{bmatrix},
+				\quad \boldsymbol{\Phi}=\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H
+			\end{equation}
+			with $\boldsymbol{R}_n,\boldsymbol{\Phi} \in \mathbb{C}^{(L+1) \times (L+1)}$ and $\bar{\boldsymbol{\phi}} \in \mathbb{C}^{(L+1) \times 1}$. On top of this, the outer product of composite channel rewrites as
+			\begin{equation}\label{eq:M}
+				\boldsymbol{h}\boldsymbol{h}^H=\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}
+			\end{equation}
+			where $\boldsymbol{M}=[\boldsymbol{V}^H,\boldsymbol{h}_D]^H \in \mathbb{C}^{(L+1) \times N}$.
 
-	\begin{subsection}{Frequency-Flat IRS}
-		In contrast, frequency-flat IRS reflects all subbands equally with a DoF of $L$. We observe that
-		\begin{equation}
-			\begin{split}
-				\lvert{h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi}}\rvert^2
-				&=\lvert{h_{D,n}}\rvert^2+h_{D,n}^*\boldsymbol{v}_n^H\boldsymbol{\phi}+\boldsymbol{\phi}^H\boldsymbol{v}_n{h_{D,n}}+\boldsymbol{\phi}^H\boldsymbol{v}\boldsymbol{v}^H\boldsymbol{\phi}\\
-				&=\bar{\boldsymbol{\phi}}^H\boldsymbol{R}_n\bar{\boldsymbol{\phi}}=\mathrm{Tr}(\boldsymbol{R}_n\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H)=\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{\Phi})
-			\end{split}
-		\end{equation}
-		where $t$ is an auxiliary variable with unit modulus and
-		\begin{equation}\label{eq:R_n,phi}
-			\boldsymbol{R}_n=
-			\begin{bmatrix}
-				\boldsymbol{v}_n\boldsymbol{v}_n^H & \boldsymbol{v}_n{h_{D,n}} \\
-				h_{D,n}^*{\boldsymbol{v}_n^H}      & h_{D,n}^*{h_{D,n}}
-			\end{bmatrix},
-			\quad \bar{\boldsymbol{\phi}}=\
-			\begin{bmatrix}
-				\boldsymbol{\phi} \\
-				t
-			\end{bmatrix},
-			\quad \boldsymbol{\Phi}=\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H
-		\end{equation}
-		with $\boldsymbol{R}_n,\boldsymbol{\Phi} \in \mathbb{C}^{(L+1) \times (L+1)}$ and $\bar{\boldsymbol{\phi}} \in \mathbb{C}^{(L+1) \times 1}$. On top of this, the outer product of composite channel rewrites as
-		\begin{equation}
-			\boldsymbol{h}\boldsymbol{h}^H=\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}
-		\end{equation}
-		where $\boldsymbol{M}=[\boldsymbol{V}^H,\boldsymbol{h}_D]^H \in \mathbb{C}^{(L+1) \times N}$. To reduce the design complexity, we propose an suboptimal alternating optimization algorithm that iteratively updates the IRS phase shift, transmit waveform, and receive power splitting ratio with the others being fixed.
-
-		\begin{subsubsection}{IRS Phase Shift Optimization}\label{se:fs_irs}
 			The phase optimization subproblem is formed as follows. With a given waveform $\boldsymbol{w}_I,\boldsymbol{w}_P,\rho$, introduce auxiliary variables
 			\begin{equation}\label{eq:t}
 				\begin{split}
@@ -292,13 +232,14 @@
 			\end{maxi!}
 			We then relax the rank constraint \ref{co:irs_rank} and solve the optimal IRS matrix $\boldsymbol{\Phi}^{\star}$ iteratively by interior-point method. If $\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ is attained by eigenvalue decomposition (EVD). Otherwise, a best feasible candidate $\bar{\boldsymbol{\phi}}^\star$ can be extracted through Gaussian randomization method \cite{Huang2010}. First, perform EVD on $\boldsymbol{\Phi}^{\star}$ as $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}^H$. Then, we generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$ and construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$. Next, the optimal solution $\bar{\boldsymbol{\phi}}^\star$ is approximated by the one achieving maximum objective value \ref{eq:su_irs_target}. Finally, we can retrieve the phase shift by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for the phase shift optimization subproblem is summarized in Algorithm \ref{al:ff_irs}.
 			\begin{algorithm}
-				\caption{FF-IRS: IRS Phase Shift}
+				\caption{FF-IRS: Phase Shift}
 				\label{al:ff_irs}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\beta_2,\beta_4,Q,\bar{R},\epsilon,\rho,\boldsymbol{w}_{I/P},\boldsymbol{M},\sigma_n,\boldsymbol{R}_n,\boldsymbol{C}_{I/P,n} \ \forall n$ by \ref{eq:R_n,phi}, \ref{eq:C_{I/P,n}}
-					\State \textbf{Initialize} $i \leftarrow 0,\boldsymbol{\Phi}^{(0)},t_{I/P,n}^{(0)}\ \forall n$ by \ref{eq:t}
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_D,\boldsymbol{h}_I,\boldsymbol{h}_R,Q,\bar{R},\epsilon,\rho,\boldsymbol{w}_{I/P},\sigma_n \ \forall n$ by \ref{eq:R_n,phi}, \ref{eq:C_{I/P,n}}
+					\State \textbf{Initialize} $i \gets 0,\boldsymbol{\Phi}^{(0)},t_{I/P,n}^{(0)}\ \forall n$ by \ref{eq:t}
+					\State Construct $\boldsymbol{M},\boldsymbol{R}_n,\boldsymbol{C}_{I/P,n} \ \forall n$ by \ref{eq:M}, \ref{eq:R_n,phi}, \ref{eq:C_{I/P,n}}
 					\Repeat
-					\State $i \leftarrow i + 1$
+					\State $i \gets i + 1$
 					\State Obtain IRS matrix $\boldsymbol{\Phi}^{(i)}$ by solving problem \ref{op:su_irs}
 					\State Update auxiliary $t_{I/P,n}^{(i)} \forall n$ by \ref{eq:t} for SCA
 					\Until $\lvert (z^{(i)}-z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
@@ -311,95 +252,230 @@
 				\end{algorithmic}
 			\end{algorithm}
 		\end{subsubsection}
+	\end{subsection}
 
-		\begin{subsubsection}{Transmit Waveform Optimization}
-			Consider the waveform optimization subproblem. Once $\boldsymbol{\Phi}$ and $\rho$ are obtained, introduce auxiliary variables
-			\begin{equation}\label{eq:t'}
-				t_{I/P,n}' = \boldsymbol{w}_{I/P}^H \boldsymbol{H}_n^* \boldsymbol{w}_{I/P} = \mathrm{Tr}(\boldsymbol{H}_n^*\boldsymbol{W}_{I/P})
+	\begin{subsection}{Waveform and Splitting Ratio}
+		\begin{subsubsection}{Geometric Programming}
+			Following \cite{Clerckx2018b}, it can be observed from \ref{eq:R_k} and \ref{eq:z_k_expand} that the optimal phases of information and power waveform are both match to the composite channel as
+			\begin{equation}\label{eq:psi}
+				\psi_{I,n}^{\star}=\psi_{P,n}^{\star}=-\bar{\psi}_{n}
 			\end{equation}
-			Therefore, \ref{eq:z_k_waveform} rewrites as
-			\begin{equation}\label{eq:z_waveform}
-				\begin{split}
-					z(\boldsymbol{W}_I,\boldsymbol{W}_P)
-					&=\frac{1}{2} \beta_2 \rho (t'_{I,0}+t'_{P,0})\\
-					&\quad+\frac{3}{8} \beta_4 \rho^2 \left(2(t'_{I,0})^2 + \sum_{n=-N+1}^{N-1}{t'_{P,n}(t'_{P,n})^*}\right)\\
-					&\quad+\frac{3}{2} \beta_4 \rho^2 t'_{I,0}t'_{P,0}
-				\end{split}
+			By such a phase selection, we have
+			\begin{equation}
+				\lvert{(h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi}_n)w_{I,n}}\rvert = \lvert h_{D,n} \rvert \lvert w_{I,n} \rvert + \vert \boldsymbol{v}_n^H\boldsymbol{\phi}_n \rvert \lvert w_{I,n} \rvert
 			\end{equation}
-			Since \ref{eq:z_waveform} and \ref{eq:z_irs} are in the same form, we reuse \ref{eq:t_{I,0}_square} -- \ref{eq:t_{I/P,0}} and bound \ref{eq:z_waveform} by replacing $t_{I/P,n}$ with $t_{I/P,n}'$ in \ref{eq:z_irs_approx}. Hence, problem \ref{op:su} is transformed to
+			Also, denote the waveform amplitude at subband $n$ as
+			\begin{equation}\label{eq:s}
+				s_{I/P,n} = \lvert w_{I/P,n} \rvert e^{j\psi_{I/P,n}}
+			\end{equation}
+			which is further collected into $\boldsymbol{s}_{I/P} \in \mathbb{C}^{N \times 1}$. Therefore, the original problem \ref{op:su} is reduced to an amplitude optimization problem
 			\begin{maxi!}
-				{\boldsymbol{W}_I,\boldsymbol{W}_P}{\tilde{z}(\boldsymbol{W}_I,\boldsymbol{W}_P)}{\label{op:su_waveform}}{\label{eq:su_waveform_target}}
-				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)W_{I,n,n}\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_waveform_constraint}}
-				\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
-				\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
-				\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1\label{co:waveform_rank}}
-			\end{maxi!}
-			We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can also be extracted using randomized vectors $\boldsymbol{r}_q \in \mathbb{C}^{(L+1) \times 1}, \ q=1,\dots,Q$, whose entries are uniformly distributed on the unit circle $r_{q,n}=e^{j\xi}$, $\xi \sim \mathcal{U}[0,2\pi)$. The algorithm is summarized in Algorithm \ref{al:ff_waveform}.
+					{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\label{op:su_gp}}{}
+					\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
+					\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho){A_n^2}{s_{I,n}^2}}{\sigma_n^2}\right)} \ge \bar{R}}
+				\end{maxi!}
+			\begin{figure*}[b]
+				\hrule
+				\begin{equation}\label{eq:z_gp}
+					\begin{split}
+						z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)
+						&=\frac{1}{2}{\beta_2}{\rho}\sum_n{A_n^2(s_{I,n}^2+s_{P,n}^2)}\\
+						&\quad+\frac{3}{8}{\beta_4}{\rho^2} \left(\left(\sum_{n}(A_n s_{I,n})(A_n s_{I,n})^*\right)^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{A_{n_1}A_{n_2}A_{n_3}A_{n_4}(s_{P,n_1}s_{P,n_2}s_{P,n_3}s_{P,n_4})}\right)\\
+						&\quad+\frac{3}{2}{\beta_4}{\rho^2}\sum_n{{A_n^4}{s_{I,n}^2}{s_{P,n}^2}}
+					\end{split}
+				\end{equation}
+			\end{figure*}
+			with $z$ given by \ref{eq:z_gp}. We introduce an auxiliary variable $t''$ and transform problem \ref{op:su_gp} into
+			\begin{mini!}
+					{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,t''}{\frac{1}{t''}}{\label{op:su_gp_1}}{}
+					\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P}) \le P}
+					\addConstraint{\frac{t''}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)} \le 1}
+					\addConstraint{\frac{2^{\bar{R}}}{\prod_n \left(1+\frac{(1-\rho){A_n^2}{s_{I,n}^2}}{\sigma_n^2}\right)} \le 1}
+				\end{mini!}
+			Problem \ref{op:su_gp_1} is a reversed GP which can be transformed to standard GP. The idea is to decompose the information and power posynomials as sum of monomials, then derive their upper bounds using Arithmetic Mean-Geometric Mean (AM-GM) inequality \cite{Clerckx2018b,Chiang2005}. Let $z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)=\sum_{m=1}^{M}{g_{P,m}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}$, problem \ref{op:su_gp_1} is equivalent to
+			\begin{mini}
+				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,\bar{\rho},t''}{\frac{1}{t''}}{\label{op:su_gp_2}}{}
+				\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
+				\addConstraint{{t''}\prod_m{\left(\frac{g_{P,m}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\gamma_{P,m}}\right)^{-\gamma_{P,m}}}\le{1}}
+				\addConstraint{2^{\bar{R}}\prod_{n}{\left(\frac{1}{\gamma_{I,n,1}}\right)^{-\gamma_{I,n,1}} \left(\frac{\bar{\rho}{A_n^2}{s_{I,n}^2}}{{\sigma_n^2}{\gamma_{I,n,2}}}\right)^{-\gamma_{I,n,2}}}\le{1}}
+				\addConstraint{\rho + \bar{\rho} \le 1}
+			\end{mini}
+			where $\gamma_{I,n,1},\gamma_{I,n,2} \ge 0$, $\gamma_{I,n,1}+\gamma_{I,n,2}=1$, $\gamma_{P,m} \ge 0 \ \forall m$, and $\sum_{m=1}^{M}{\gamma_m}=1$. The tightness of the AM-GM inequality depends on $\{\gamma_{I,n},\gamma_P\}$ that require successive update. At iteration $i$, we choose \cite{Clerckx2018b}
+			\begin{align}
+				\gamma_{I,n,1}^{(i)} & = \left. 1 \middle/ \left(1+\frac{\bar{\rho}^{(i-1)}{A_n^2}(s_{I,n}^{(i-1)})^2}{\sigma_n^2}\right) \right.\label{eq:gamma_I_1}\\
+				\gamma_{I,n,2}^{(i)} & = 1 - \gamma_{I,n,1}^{(i)}\label{eq:gamma_I_2}\\
+				\gamma_{P,m}^{(i)} & =\frac{g_{P,m}(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}
+			\end{align}
+			and then solve problem \ref{op:su_gp_2}. The GP algorithm is summarized in Algorithm \ref{al:waveform_split_ratio_gp}.
 			\begin{algorithm}
-				\caption{FF-IRS: Transmit Waveform Optimization}
-				\label{al:ff_waveform}
+				\caption{GP: Waveform and Splitting Ratio}
+				\label{al:waveform_split_ratio_gp}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\beta_2,\beta_4,P,Q,\bar{R},\epsilon,\rho,\sigma_n,\boldsymbol{H}_n,\boldsymbol{R}_n \ \forall n$ by \ref{eq:R_n,phi}
-					\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{W}_{I/P}^{(0)}$, $t_{I/P,n}^{\prime (0)} \ \forall n$
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h},P,\bar{R},\epsilon,\sigma_n \ \forall n$
+					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{s}_{I/P}^{(0)}$, $\rho^{(0)}$
+					\State Retrieve channel amplitude response $A_n \ \forall n$ by \ref{eq:h_{k,n}}
 					\Repeat
-					\State $i \leftarrow i + 1$
-					\State Obtain waveform matrices $\boldsymbol{W}_{I/P}^{(i)}$ by solving problem \ref{op:su_waveform}
-					\State Update auxiliary $t_{I/P,n}^{\prime (i)} \forall n$ by \ref{eq:t'} for SCA
-					\Until $\lvert (z^{(i)}-z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
-					\State Perform EVD $\boldsymbol{W}_{I/P}^{\star}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}^H$
-					\State Generate random vectors $\boldsymbol{r}_q \ \forall q$ with entries uniformly distributed on the unit circle
-					\State Construct candidate waveform vectors $\boldsymbol{w}_{I/P,r}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q$ and matrices $\boldsymbol{W}_{I/P,q}=\boldsymbol{w}_{I/P,q}\boldsymbol{w}_{I/P,q}^H  \ \forall q$
-					\State Select best solution $\boldsymbol{W}_{I/P}^\star$ and $\boldsymbol{w}_{I/P}^\star$ for problem \ref{op:su_waveform}
-					\State \textbf{Output} $\boldsymbol{w}_{I/P}^\star$
+					\State $i \gets i + 1$
+					\State Update GM exponents $\{\gamma_{I,n}^{(i)},\gamma_{P}^{(i)}\}$ by \ref{eq:gamma_I_1} -- \ref{eq:gamma_P}
+					\State Obtain waveform amplitude $\boldsymbol{s}_{I/P}^{(i)}$ and power splitting ratio $\rho^{(i)}$ by solving problem \ref{op:su_gp_2}
+					\State Compute output DC current $z^{(i)}$ by \ref{eq:z_gp}
+					\Until $\lvert (z^{(i)} - z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
+					\State Recover waveform $\boldsymbol{w}_{I/P}^{\star}$ by \ref{eq:psi} and \ref{eq:s}
+					\State \textbf{Output} $\boldsymbol{w}_{I/P}^{\star}, \rho^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
 		\end{subsubsection}
 
-		\begin{subsubsection}{Receive Splitting Ratio Optimization}
-			We then optimize the power splitting ratio $\rho$ for any fixed phase shift $\boldsymbol{\phi}$ and waveform $\boldsymbol{w}_{I/P}$. In this case, the output DC current is also expressed by \ref{eq:z_waveform} but as a function of $\rho$ with constant $t_{I/P,n}'$ defined in \ref{eq:t'}. Since $z(\rho)$ is a monotonically increasing function of $\rho \in [0, 1]$, we replace convex objective function $z(\rho)$ with affine $\rho$ and transform problem \ref{op:su} to
-			\begin{maxi!}
-				{\rho}{\rho}{\label{op:su_ratio}}{\label{eq:su_ratio_target}}
-				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert h_n w_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_ratio_constraint}}
-				\addConstraint{0 \le \rho \le 1}
-			\end{maxi!}
-			The optimal power splitting ratio $\rho^\star$ can be obtained from problem \ref{op:su_ratio}.
-		\end{subsubsection}
+		\begin{subsubsection}{Semi-Definite Relaxation}
+			In this case, waveform and splitting ratio are updated iteratively until convergence.
+			\begin{paragraph}{Transmit Waveform}
+				Consider the waveform optimization subproblem. Once $\boldsymbol{\phi}$ and $\rho$ are obtained, introduce auxiliary variables
+				\begin{equation}\label{eq:t'}
+					t_{I/P,n}' = \boldsymbol{w}_{I/P}^H \boldsymbol{H}_n^* \boldsymbol{w}_{I/P} = \mathrm{Tr}(\boldsymbol{H}_n^*\boldsymbol{W}_{I/P})
+				\end{equation}
+				Therefore, \ref{eq:z_k_waveform} rewrites as
+				\begin{equation}\label{eq:z_waveform}
+					\begin{split}
+						z(\boldsymbol{W}_I,\boldsymbol{W}_P)
+						&=\frac{1}{2} \beta_2 \rho (t'_{I,0}+t'_{P,0})\\
+						&\quad+\frac{3}{8} \beta_4 \rho^2 \left(2(t'_{I,0})^2 + \sum_{n=-N+1}^{N-1}{t'_{P,n}(t'_{P,n})^*}\right)\\
+						&\quad+\frac{3}{2} \beta_4 \rho^2 t'_{I,0}t'_{P,0}
+					\end{split}
+				\end{equation}
+				Since \ref{eq:z_waveform} and \ref{eq:z_irs} are in the same form, we reuse \ref{eq:t_{I,0}_square} -- \ref{eq:t_{I/P,0}} and bound \ref{eq:z_waveform} by replacing $t_{I/P,n}$ with $t_{I/P,n}'$ in \ref{eq:z_irs_approx}. Hence, problem \ref{op:su} is transformed to
+				\begin{maxi!}
+					{\boldsymbol{W}_I,\boldsymbol{W}_P}{\tilde{z}(\boldsymbol{W}_I,\boldsymbol{W}_P)}{\label{op:su_waveform}}{\label{eq:su_waveform_target}}
+					\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)W_{I,n,n}\lvert h_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_waveform_constraint}}
+					\addConstraint{\frac{1}{2}\left(\mathrm{Tr}(\boldsymbol{W}_I)+\mathrm{Tr}(\boldsymbol{W}_P)\right) \le P}
+					\addConstraint{\boldsymbol{W}_{I/P} \succeq 0}
+					\addConstraint{\mathrm{rank}(\boldsymbol{W}_{I/P})=1\label{co:waveform_rank}}
+				\end{maxi!}
+				We then perform SDR and solve the optimal waveform matrix $\boldsymbol{W}_{I/P}^{\star}$ iteratively by interior-point method. $\boldsymbol{w}_I^{\star}$ and $\boldsymbol{w}_P^{\star}$ can also be extracted using randomized vectors $\boldsymbol{r}_q \in \mathbb{C}^{(L+1) \times 1}, \ q=1,\dots,Q$, whose entries are uniformly distributed on the unit circle $r_{q,n}=e^{j\xi}$, $\xi \sim \mathcal{U}[0,2\pi)$. The algorithm is summarized in Algorithm \ref{al:waveform_sdr}.
+				\begin{algorithm}
+					\caption{SDR: Transmit Waveform}
+					\label{al:waveform_sdr}
+					\begin{algorithmic}[1]
+						\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_D,\boldsymbol{h}_I,\boldsymbol{h}_R,P,Q,\bar{R},\epsilon,\rho,\sigma_n \ \forall n$ by \ref{eq:R_n,phi}
+						\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{W}_{I/P}^{(0)}$, $t_{I/P,n}^{\prime (0)} \ \forall n$ by \ref{eq:t'}
+						\State Construct $\boldsymbol{H}_n,\boldsymbol{R}_n \ \forall n$ by \ref{eq:R_n,phi}
+						\Repeat
+						\State $i \gets i + 1$
+						\State Obtain waveform matrices $\boldsymbol{W}_{I/P}^{(i)}$ by solving problem \ref{op:su_waveform}
+						\State Update auxiliary $t_{I/P,n}^{\prime (i)} \forall n$ by \ref{eq:t'} for SCA
+						\Until $\lvert (z^{(i)}-z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
+						\State Perform EVD $\boldsymbol{W}_{I/P}^{\star}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}^H$
+						\State Generate random vectors $\boldsymbol{r}_q \ \forall q$ with entries uniformly distributed on the unit circle
+						\State Construct candidate waveform vectors $\boldsymbol{w}_{I/P,r}=\boldsymbol{U}_{\boldsymbol{W}_{I/P}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{W}_{I/P}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q$ and matrices $\boldsymbol{W}_{I/P,q}=\boldsymbol{w}_{I/P,q}\boldsymbol{w}_{I/P,q}^H  \ \forall q$
+						\State Select best solution $\boldsymbol{W}_{I/P}^\star$ and $\boldsymbol{w}_{I/P}^\star$ for problem \ref{op:su_waveform}
+						\State \textbf{Output} $\boldsymbol{w}_{I/P}^\star$
+					\end{algorithmic}
+				\end{algorithm}
+			\end{paragraph}
 
+			\begin{paragraph}{Receive Splitting Ratio Optimization}
+				We then optimize the power splitting ratio $\rho$ for any fixed phase shift $\boldsymbol{\phi}$ and waveform $\boldsymbol{w}_{I/P}$. In this case, the output DC current is also expressed in \ref{eq:z_waveform} but as a function of $\rho$ with constant $t_{I/P,n}'$ given by \ref{eq:t'}. Since $z(\rho)$ is a monotonically increasing function of $\rho \in [0, 1]$, we replace convex objective function $z(\rho)$ with affine $\rho$ and transform problem \ref{op:su} to
+				\begin{maxi!}
+					{\rho}{\rho}{\label{op:su_ratio}}{\label{eq:su_ratio_target}}
+					\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert h_n w_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_ratio_constraint}}
+					\addConstraint{0 \le \rho \le 1}
+				\end{maxi!}
+				The optimal power splitting ratio $\rho^\star$ can be obtained by solving problem \ref{op:su_ratio}.
+			\end{paragraph}
+		\end{subsubsection}
+	\end{subsection}
+
+	\begin{subsection}{R-E Region Characterization}
 		\begin{subsubsection}{WIT Initialization}
-			To characterize the R-E region, we initialize the algorithm to WIT mode and reduce the rate constraint gradually to obtain the boundary points. Consider a rate maximization problem with given information waveform $\boldsymbol{w}_I$ and power splitting ratio $\rho = 0$ as
-			\begin{maxi!}
-				{\boldsymbol{\Phi}}{\sum_{n}{\log_2\left(1+\frac{\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)}}{\label{op:su_irs_wit}}{}
-				\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}
-				\addConstraint{\boldsymbol{\Phi}\succeq{0}}
-				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1}
-			\end{maxi!}
-			Problem \ref{op:su_irs_wit} can be solved after SDR. Similar to section \ref{se:fs_irs}, a best solution $\bar{\boldsymbol{\phi}}^\star$ can be obtained via Gaussian randomization method and $\boldsymbol{\phi}^\star$ can be recovered by $\phi_l^\star=\phi_l^\star/\phi_{L+1}^\star, \ l=1,\dots,L$. After constructing composite channel $\boldsymbol{h}$ by \ref{eq:h_k}, we use water-filling algorithm and matched filter to obtain optimal power allocation $p_n^\star=\lvert w_{I,n} \rvert^2$ and beamforming phase $\psi_{I,n}^\star=-\bar{\psi}_n$, respectively. Therefore, the optimal information waveform at subband $n$ is
-			\begin{equation}\label{eq:w_wit}
-				w_{I,n}^\star=\sqrt{p_n^\star}e^{j \psi_{I,n}^\star}
-			\end{equation}
-			We update IRS phase shift by \ref{op:su_irs_wit} and information waveform by \ref{eq:w_wit} until convergence. The WIT initialization algorithm is summarized in \ref{al:ff_wit}.
-			\begin{algorithm}
-				\caption{FF-IRS: WIT Initialization}
-				\label{al:ff_wit}
-				\begin{algorithmic}[1]
-					\State \textbf{Input} $h_D, h_I, h_R, P, Q, \sigma_n, \boldsymbol{R}_n \ \forall n$ by \ref{eq:R_n,phi}
-					\State \textbf{Initialize} $i \leftarrow 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{w}_I^{(0)}$
-					\Repeat
-					\State $i \leftarrow i + 1$
-					\State Obtain IRS matrix $\boldsymbol{\Phi}^{(i)}$ by solving problem \ref{op:su_irs_wit}
-					\State Perform EVD $\boldsymbol{\Phi}^{(i)}=\boldsymbol{U}_{\boldsymbol{\Phi}^{(i)}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{(i)}}\boldsymbol{U}_{\boldsymbol{\Phi}^{(i)}}^H$
-					\State Generate random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}) \ \forall q$
-					\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{(i)}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{(i)}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$ and matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
-					\State Select best solution $(\boldsymbol{\Phi}^{(i)})^\star$ and $(\boldsymbol{\phi}^{(i)})^\star$ for problem \ref{op:su_irs_wit}
-					\State Update composite channel $(\boldsymbol{h}^{(i)})^\star$ by \ref{eq:h_k}
-					\State Obtain optimal power allocation $p_n^{(i)} \ \forall n$ by water-filling algorithm
-					\State Obtain optimal waveform phase $(\psi_{I,n}^{(i)})^\star \ \forall n$ by \ref{eq:psi}
-					\State Update information waveform $(\boldsymbol{w}_I^{(i)})^\star$ by \ref{eq:w_wit}
-					\Until $\lvert (R^{(i)}-R^{(i-1)}) / R^{(i)} \rvert \le \epsilon$
-					\State Compute phase shift by $\theta_l^\star=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
-					\State \textbf{Output} $\boldsymbol{w}_I^\star,\theta_l^\star \ \forall l$
-				\end{algorithmic}
-			\end{algorithm}
+			To characterize the R-E region, we initialize the algorithm to WIT mode ($\rho = 0$) and reduce the rate constraint gradually to obtain the boundary points.
+			\begin{paragraph}{FS-IRS}
+				As discussed in Section \ref{se:fs_irs}, the optimal FS-IRS and composite channel are obtained in closed form. We use water-filling algorithm and matched filter to obtain optimal power allocation $p_n^\star=\lvert w_{I,n} \rvert^2$ and information waveform phase $\psi_{I,n}^\star=-\bar{\psi}_n$, respectively. Hence, the optimal information waveform at subband $n$ is
+				\begin{equation}\label{eq:w_{I,n}}
+					w_{I,n}^\star=\sqrt{p_n^\star}e^{j \psi_{I,n}^\star}
+				\end{equation}
+			\end{paragraph}
+			\begin{paragraph}{FF-IRS}
+				Consider a rate maximization problem with given information waveform $\boldsymbol{w}_I$ as
+				\begin{maxi!}
+					{\boldsymbol{\Phi}}{\sum_{n}{\log_2\left(1+\frac{\lvert{w}_{I,n}\rvert^2\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)}}{\label{op:su_irs_wit}}{}
+					\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}
+					\addConstraint{\boldsymbol{\Phi}\succeq{0}}
+					\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1}
+				\end{maxi!}
+				Problem \ref{op:su_irs_wit} can be solved after SDR, and a best solution $\bar{\boldsymbol{\phi}}^\star$ can be obtained via Gaussian randomization method. $\boldsymbol{\phi}^\star$ can be recovered by $\phi_l^\star=\phi_l^\star/\phi_{L+1}^\star, \ l=1,\dots,L$. We then construct composite channel $\boldsymbol{h}$ by \ref{eq:h_k} and obtain the optimal information waveform from \ref{eq:w_{I,n}}. FF-IRS and information waveform are updated iteratively until convergence. The WIT algorithm for FF-IRS is summarized in Algorithm \ref{al:ff_wit}.
+				\begin{algorithm}
+					\caption{FF-IRS: WIT Initialization}
+					\label{al:ff_wit}
+					\begin{algorithmic}[1]
+						\State \textbf{Input} $\boldsymbol{h}_D, \boldsymbol{h}_I, \boldsymbol{h}_R, P, Q, \epsilon, \sigma_n$
+						\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{w}_I^{(0)}$
+						\State Construct $\boldsymbol{R}_n \ \forall n$ by \ref{eq:R_n,phi}
+						\Repeat
+						\State $i \gets i + 1$
+						\State Obtain IRS matrix $\boldsymbol{\Phi}^{(i)}$ by solving problem \ref{op:su_irs_wit}
+						\State Perform EVD $\boldsymbol{\Phi}^{(i)}=\boldsymbol{U}_{\boldsymbol{\Phi}^{(i)}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{(i)}}\boldsymbol{U}_{\boldsymbol{\Phi}^{(i)}}^H$
+						\State Generate random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}) \ \forall q$
+						\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{(i)}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{(i)}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$ and matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
+						\State Select best solution $(\boldsymbol{\Phi}^{(i)})^\star$ and $(\boldsymbol{\phi}^{(i)})^\star$ for problem \ref{op:su_irs_wit}
+						\State Update composite channel $(\boldsymbol{h}^{(i)})^\star$ by \ref{eq:h_k}
+						\State Obtain optimal power allocation $(p_n^{(i)})^\star \ \forall n$ by water-filling algorithm
+						\State Obtain optimal waveform phase $(\psi_{I,n}^{(i)})^\star \ \forall n$ by \ref{eq:psi}
+						\State Update information waveform $(\boldsymbol{w}_I^{(i)})^\star$ by \ref{eq:w_{I,n}}
+						\Until $\lvert (R^{(i)}-R^{(i-1)}) / R^{(i)} \rvert \le \epsilon$
+						\State Compute phase shift by $\theta_l^\star=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
+						\State \textbf{Output} $\boldsymbol{w}_I^\star,\theta_l^\star \ \forall l$
+					\end{algorithmic}
+				\end{algorithm}
+			\end{paragraph}
+		\end{subsubsection}
+
+		\begin{subsubsection}{R-E Sample}
+			Denote $S$ as the number of samples in the R-E boundary.
+			\begin{paragraph}{FS-IRS}
+				Since the optimal composite channel is fixed, we optimize the splitting ratio and waveform alternatively with the other being fixed. The procedure is included in Algorithm \ref{al:fs_ao}.
+				\begin{algorithm}
+					\caption{FS-IRS: AO Algorithm}
+					\label{al:fs_ao}
+					\begin{algorithmic}[1]
+						\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}, P, Q, S, \epsilon, \sigma_n \ \forall n$
+						\State \textbf{Initialize} $\rho_0^{\star} = 0$, $\boldsymbol{w}_{0,I}^{\star}$ by \ref{eq:w_{I,n}} and $\boldsymbol{w}_{0,P}^{\star} = \boldsymbol{0}$
+						\For{$s \gets 1, S$}
+						\State $i \gets 0$\label{st:inner_begin}
+						\State Initialize splitting ratio and waveform by previous solution $\rho_s^{(0)} = \rho_{s-1}^{\star}, \boldsymbol{w}_{s,I/P}^{(0)}=\boldsymbol{w}_{s-1,I/P}^{\star}$
+						\Repeat
+						\State $i \gets i + 1$
+						\State Update splitting ratio $\rho_s^{(i)}$ by solving problem \ref{op:su_ratio}
+						\State Update waveform $\boldsymbol{w}_{s,I/P}^{(i)}$ by Algorithm \ref{al:waveform_sdr}
+						\Until $\lvert (z_s^{(i)}-z_s^{(i-1)}) / z_s^{(i)} \rvert \le \epsilon$\label{st:inner_end}
+						\State \textbf{Return} ($R_s^\star, z_s^\star$)
+						\EndFor
+					\end{algorithmic}
+				\end{algorithm}
+			\end{paragraph}
+
+			\begin{paragraph}{FF-IRS}
+				We propose a two-layer AO algorithm to obtain the R-E region for FF-IRS-assisted SWIPT, where the inner loop updates the splitting ratio and waveform while the outer loop updates the IRS phase shifts, until convergence is achieved. The algorithm is summarized in Algorithm \ref{al:ff_ao}.
+				\begin{algorithm}
+					\caption{FF-IRS: AO Algorithm}
+					\label{al:ff_ao}
+					\begin{algorithmic}[1]
+						\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_D, \boldsymbol{h}_I, \boldsymbol{h}_R, P, Q, S, \epsilon, \sigma_n \ \forall n$
+						\State \textbf{Initialize} $\rho_0^{\star} = 0$, $\boldsymbol{\phi}_0^{\star}, \boldsymbol{w}_{0,I}^{\star}$ by Algorithm \ref{al:ff_wit} and $\boldsymbol{w}_{0,P}^{\star} = \boldsymbol{0}$
+						\For{$s \gets 1, S$}
+						\State $i \gets 0$
+						\State Initialize IRS, splitting ratio and waveform by previous solution $\boldsymbol{\phi}_s^{(0)} = \boldsymbol{\phi}_{s-1}^{\star}, \rho_s^{(0)} = \rho_{s-1}^{\star}, \boldsymbol{w}_{s,I/P}^{(0)}=\boldsymbol{w}_{s-1,I/P}^{\star}$
+						\State Initialize composite channel $\boldsymbol{h}_s^{(0)}$ by \ref{eq:h_k}
+						\State \textit{Inner loop}: Update splitting ratio $\rho_s^{(0)}$ and waveform $\boldsymbol{w}_{s,I/P}^{(0)}$ by SDR (Algorithm \algref{al:fs_ao}{st:inner_begin} -- \algref{al:fs_ao}{st:inner_end}) or GP (Algorithm \ref{al:waveform_split_ratio_gp})
+						\Repeat
+						\State $i \gets i + 1$
+						\State Update IRS phase shift $\boldsymbol{\phi}_s^{(i)}$ by Algorithm \ref{al:ff_irs}
+						\State Update composite channel $\boldsymbol{h}_s^{(i)}$ by \ref{eq:h_k}
+						\State \textit{Inner loop}: Update splitting ratio $\rho_s^{(i)}$ and waveform $\boldsymbol{w}_{s,I/P}^{(i)}$ by SDR (Algorithm \algref{al:fs_ao}{st:inner_begin} -- \algref{al:fs_ao}{st:inner_end}) or GP (Algorithm \ref{al:waveform_split_ratio_gp})
+						\Until $\lvert (z_s^{(i)}-z_s^{(i-1)}) / z_s^{(i)} \rvert \le \epsilon$
+						\State \textbf{Return} ($R_s^\star, z_s^\star$)
+						\EndFor
+					\end{algorithmic}
+				\end{algorithm}
+			\end{paragraph}
 		\end{subsubsection}
 	\end{subsection}
 \end{section}
