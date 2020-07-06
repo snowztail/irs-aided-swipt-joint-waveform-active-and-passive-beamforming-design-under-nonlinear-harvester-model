@@ -40,7 +40,7 @@ figure('name', 'FS-IRS: R-E region vs number of reflectors');
 legendString = cell(length(Variable.nReflectors), 1);
 for iReflector = 1 : length(Variable.nReflectors)
     plot(fsSample{iReflector}(1, :), 1e6 * fsSample{iReflector}(2, :));
-    legendString{iReflector} = sprintf('d_I = %d', Variable.nReflectors(iReflector));
+    legendString{iReflector} = sprintf('L = %d', Variable.nReflectors(iReflector));
     hold on;
 end
 hold off;

@@ -13,12 +13,12 @@ save('data/re_ff_gp_sdr.mat');
 
 %% * R-E plots
 figure('name', 'FF-IRS: R-E region by GP and SDR')
-plot(ffGpSample(1, :), 1e6 * ffGpSample(2, :), 'k--');
+plot(ffGpSample(1, :) / nSubbands, 1e6 * ffGpSample(2, :), 'k--');
 hold on;
-plot(ffSdrSample(1, :), 1e6 * ffSdrSample(2, :), 'r-');
+plot(ffSdrSample(1, :) / nSubbands, 1e6 * ffSdrSample(2, :), 'r-');
 hold off;
 grid minor;
 legend('GP', 'SDR');
-xlabel('Rate [bps/Hz]');
+xlabel('Rate per subband [bps/Hz]');
 ylabel('Average output DC current [\muA]');
 savefig('plots/re_ff_gp_sdr.fig');

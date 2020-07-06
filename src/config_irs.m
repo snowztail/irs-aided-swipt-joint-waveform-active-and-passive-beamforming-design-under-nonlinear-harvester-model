@@ -13,13 +13,17 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit power
-txPower = 1;
+txPower = 10;
 % average noise power
 noisePower = db2pow(-60);
 
 %% * Channel
 % AP-user distance
 directDistance = 10;
+% AP-IRS distance
+incidentDistance = 5;
+% IRS-user distance
+reflectiveDistance = directDistance - incidentDistance;
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -42,7 +46,3 @@ tolerance = 1e-3;
 nCandidates = 1e4;
 % number of samples in R-E curves
 nSamples = 40;
-
-%% * Variable
-% AP-IRS distance
-Variable.incidentDistance = 1 : 5;

@@ -1,4 +1,4 @@
-clear; clc; setup; config; load('data/tap.mat');
+clear; clc; setup; config_irs; load('data/tap.mat');
 
 %% ! R-E region by no IRS, FF-IRS and FS-IRS
 % * Generate channels
@@ -7,18 +7,18 @@ clear; clc; setup; config; load('data/tap.mat');
 [reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, reflectiveDistance, reflectiveTapGain, reflectiveTapDelay, 'reflective');
 
 % * SDR
-ni_sdr;
+% ni_sdr;
 ff_sdr;
 fs_sdr;
 save('data/re_irs.mat');
 
 %% * R-E plots
 figure('name', 'R-E region by no IRS, FF-IRS and FS-IRS');
-plot(niSdrSample(1, :), 1e6 * niSdrSample(2, :), 'k--');
+plot(niSdrSample(1, :) / nSubbands, 1e6 * niSdrSample(2, :), 'k--');
 hold on;
-plot(ffSdrSample(1, :), 1e6 * ffSdrSample(2, :), 'r-');
+plot(ffSdrSample(1, :) / nSubbands, 1e6 * ffSdrSample(2, :), 'r-');
 hold on;
-plot(fsSdrSample(1, :), 1e6 * fsSdrSample(2, :), 'b-.');
+plot(fsSdrSample(1, :) / nSubbands, 1e6 * fsSdrSample(2, :), 'b-.');
 hold off;
 grid minor;
 legend('No IRS', 'FF-IRS', 'FS-IRS');

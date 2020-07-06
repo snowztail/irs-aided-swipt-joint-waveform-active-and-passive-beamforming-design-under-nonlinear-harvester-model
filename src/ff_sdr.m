@@ -1,16 +1,16 @@
 %% ! FF-IRS: R-E region by SDR
 % * Initialize algorithm
-[capacity, irs, infoWaveformOpt] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
-[current, ~, ~, powerWaveformOpt] = wpt_ff(beta2, beta4, tolerance, directChannel, incidentChannel, reflectiveChannel, irs, txPower, nCandidates, noisePower);
+[capacity, irs, infoWaveform_] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
+[current, ~, ~, powerWaveform_] = wpt_ff(beta2, beta4, tolerance, directChannel, incidentChannel, reflectiveChannel, irs, txPower, nCandidates, noisePower);
 [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
+rateConstraint = linspace((1 - tolerance) * capacity, 0, nSamples);
 
 % * SDR
 ffSdrSample = zeros(3, nSamples);
 for iSample = 1 : nSamples
     % * Initialize waveform and splitting ratio for each sample
-    infoWaveform = infoWaveformOpt;
-    powerWaveform = powerWaveformOpt;
+    infoWaveform = infoWaveform_;
+    powerWaveform = powerWaveform_;
 
     isConverged = false;
     current_ = 0;

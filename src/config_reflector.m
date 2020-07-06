@@ -15,7 +15,7 @@ nUsers = 1;
 % average transmit power
 txPower = 1;
 % average noise power
-noisePower = db2pow(-50);
+noisePower = db2pow(-60);
 
 %% * Channel
 % AP-user distance
@@ -43,7 +43,7 @@ tolerance = 1e-3;
 %  number of CSCG random vectors to generate
 nCandidates = 1e4;
 % number of samples in R-E curves
-nSamples = 20;
+nSamples = 40;
 
 %% * Variable
 % number of reflecting elements in IRS
