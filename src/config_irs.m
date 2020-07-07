@@ -21,7 +21,7 @@ noisePower = db2pow(-60);
 % AP-user distance
 directDistance = 10;
 % AP-IRS distance
-incidentDistance = 5;
+incidentDistance = 1;
 % IRS-user distance
 reflectiveDistance = directDistance - incidentDistance;
 % center frequency
@@ -37,7 +37,7 @@ fadingMode = 'selective';
 % gain on each reflecting element
 irsGain = 1;
 % number of reflecting elements in IRS
-nReflectors = 10;
+nReflectors = 1;
 
 %% * Algorithm
 % minimum gain ratio per iteration

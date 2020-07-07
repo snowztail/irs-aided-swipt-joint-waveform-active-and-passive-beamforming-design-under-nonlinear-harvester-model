@@ -1,9 +1,11 @@
 %% ! FF-IRS: R-E region by SDR
 % * Initialize algorithm
-[capacity, irs, infoWaveform_] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
-[current, ~, ~, powerWaveform_] = wpt_ff(beta2, beta4, tolerance, directChannel, incidentChannel, reflectiveChannel, irs, txPower, nCandidates, noisePower);
-[compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-rateConstraint = linspace((1 - tolerance) * capacity, 0, nSamples);
+[capacity, irs_, infoWaveform_] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
+[current, ~, ~, powerWaveform_] = wpt_ff(beta2, beta4, tolerance, directChannel, incidentChannel, reflectiveChannel, irs_, txPower, nCandidates, noisePower);
+[compositeChannel_, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs_);
+rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
+    irs = irs_;
+    compositeChannel = compositeChannel_;
 
 % * SDR
 ffSdrSample = zeros(3, nSamples);

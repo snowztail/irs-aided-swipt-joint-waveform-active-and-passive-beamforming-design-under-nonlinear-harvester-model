@@ -3,7 +3,7 @@
 [~, compositeChannel] = irs_fs(directChannel, incidentChannel, reflectiveChannel);
 [capacity, infoWaveform_] = wit_fs(compositeChannel, txPower, noisePower);
 [current, ~, powerWaveform_] = wpt_fs(beta2, beta4, tolerance, compositeChannel, txPower, nCandidates, noisePower);
-rateConstraint = linspace((1 - tolerance) * capacity, 0, nSamples);
+rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
 
 % * SDR
 fsSdrSample = zeros(3, nSamples);

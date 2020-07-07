@@ -7,7 +7,7 @@ clear; clc; setup; config_irs; load('data/tap.mat');
 [reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, reflectiveDistance, reflectiveTapGain, reflectiveTapDelay, 'reflective');
 
 % * SDR
-% ni_sdr;
+ni_sdr;
 ff_sdr;
 fs_sdr;
 save('data/re_irs.mat');

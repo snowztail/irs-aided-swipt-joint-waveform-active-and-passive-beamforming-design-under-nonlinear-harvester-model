@@ -3,7 +3,7 @@
 [capacity, irs, infoWaveform_] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
 [current, ~, ~, powerWaveform_] = wpt_ff(beta2, beta4, tolerance, directChannel, incidentChannel, reflectiveChannel, irs, txPower, nCandidates, noisePower);
 [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-rateConstraint = linspace((1 - tolerance) * capacity, 0, nSamples);
+rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
 
 % * GP
 ffGpSample = zeros(3, nSamples);
