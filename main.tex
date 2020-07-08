@@ -36,46 +36,39 @@
 \end{section}
 
 \begin{section}{System Model}
-	Consider an IRS-aided multiuser SISO OFDM SWIPT system where the transmitter delivers information and power simultaneously, through the $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. We assume a total bandwidth $B$ with evenly-spaced carriers around center frequency $f_c$. Denote the frequency of the $n$-th subband as $f_n$ ($n=1,\dots,N$). Each subband is allocated to one user per time slot. Perfect Channel State Information (CSI) with negligible training overhead is considered to explore the analytical upper-bound of the proposed design. A quasi-static block fading channel model is considered for all links and we focus on one particular block where the channels are approximately unchanged. We characterize and compare the R-E region achieved by TS and PS receivers. Specifically, TS divides each time slot into orthogonal data and energy slots and performs a time sharing between WPT and Wireless Information Transfer (WIT). In comparison, PS splits the received signal into data and energy streams for ID and EH purposes, and the splitting ratio $\rho$ is coupled with waveform and IRS design. Perfect synchronization is assumed among the three parties in both scenarios, and signals reflected by IRS for two and more times are omitted.
+	Consider an IRS-aided multiuser MISO OFDM SWIPT system where the $M$-antenna transmitter delivers information and power simultaneously, through a single $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. We assume a total bandwidth $B$ with evenly-spaced carriers around center frequency $f_c$. Denote the frequency of the $n$-th subband as $f_n$ ($n=1,\dots,N$). Each subband is allocated to one user per time slot. Perfect Channel State Information (CSI) with negligible training overhead is considered to explore the analytical upper-bound of the proposed design. A quasi-static block fading channel model is considered for all links and we focus on one particular block where the channels are approximately unchanged. We characterize and compare the R-E region achieved by TS and PS receivers. Specifically, TS divides each time slot into orthogonal data and energy slots and performs a time sharing between WPT and Wireless Information Transfer (WIT). In comparison, PS splits the received signal into data and energy streams for ID and EH purposes, and the splitting ratio $\rho$ is coupled with waveform and IRS design. Perfect synchronization is assumed among the three parties in both scenarios, and signals reflected by IRS for two and more times are omitted.
 	\begin{subsection}{Transmit Signal}
-		Denote $\tilde{x}_{I,n}(t)$ as the information symbol transmitted over subband $n$, which belongs to one user at time $t$ and follows a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) distribution $\tilde{x}_{I,n}\sim\mathcal{CN}(0,1)$. Let $\alpha_{k,n}$ be the allocation indicator, namely if subband $n$ is given to user $k$ ($k=1,\dots,K$), we have $\alpha_{k,n}=1$ and $\alpha_{k',n}=0 \ \forall k' \ne k$. Let $\boldsymbol{\alpha}_k=[\alpha_{k,1},\dots,\alpha_{k,N}]^T \in \mathbb{C}^{N \times 1}$. The superposed transmit signal at time $t$ is
-		\begin{equation}\label{eq:x}
-			x(t)=\Re\left\{\sum_{n=1}^N\left({w_{I,n}\tilde{x}_{I,n}(t)}+w_{P,n}\right){e^{j2{\pi}{f_n}{t}}}\right\}
+		Denote $\tilde{x}_{I,n}(t)$ as the information symbol transmitted over subband $n$, which belongs to one user at time $t$ and follows a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) distribution $\tilde{x}_{I,n}\sim\mathcal{CN}(0,1)$. Let $\alpha_{k,n}$ be the allocation indicator, namely if subband $n$ is given to user $k$ ($k=1,\dots,K$), we have $\alpha_{k,n}=1$ and $\alpha_{k',n}=0 \ \forall k' \ne k$. Let $\boldsymbol{\alpha}_k=[\alpha_{k,1},\dots,\alpha_{k,N}]^T \in \mathbb{C}^{N \times 1}$. The superposed transmit signal at time $t$ on antenna $m$ ($m=1,\dots,M$) is
+		\begin{equation}\label{eq:x_m}
+			x_m(t)=\Re\left\{\sum_{n=1}^N\left({w_{I,n,m}\tilde{x}_{I,n}(t)}+w_{P,n,m}\right){e^{j2{\pi}{f_n}{t}}}\right\}
 		\end{equation}
-		where $w_{I/P,n}=s_{I/P,n}e^{j\psi_{I/P,n}}$ collects the magnitude and phase of the information and power signal at subband $n$. We further define the waveform vectors $\boldsymbol{w}_{I/P}=[w_{I/P,1},\dots,w_{I/P,N}]^T \in \mathbb{C}^{N{\times}1}$.
+		where $w_{I/P,n,m}=s_{I/P,n,m}e^{j\psi_{I/P,n,m}}$ denotes the weight on the information and power signal transmitted by antenna $m$ at subband $n$. We further define $\boldsymbol{w}_{I/P,n}=[w_{I/P,n,1},\dots,w_{I/P,n,M}]^T \in \mathbb{C}^{M \times 1}$ and $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^T,\dots,\boldsymbol{w}_{I/P,N}^T]^T \in \mathbb{C}^{MN \times 1}$ such that the transmit information and power signals write as
+		\begin{align}
+			\boldsymbol{x}_{I}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{I,n}\tilde{x}_{I,n}(t){e^{j2{\pi}{f_n}{t}}}\right\}}\label{eq:x_I}\\
+			\boldsymbol{x}_{P}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{P,n}{e^{j2{\pi}{f_n}{t}}}\right\}}\label{eq:x_P}
+		\end{align}
 	\end{subsection}
 
-	\begin{subsection}{Composite Channel Model}
-		Denote the frequency response of the AP-user $k$ direct link as $\boldsymbol{h}_{D,k}=[h_{D,k,1},\dots,h_{D,k,N}]^T \in \mathbb{C}^{N \times 1}$. Let $[\boldsymbol{h}_{I,1},\dots,\boldsymbol{h}_{I,N}] \in \mathbb{C}^{L \times N}$ be the frequency response of AP-IRS incident channel, where $\boldsymbol{h}_{I,n} \in \mathbb{C}^{L \times 1}$ corresponds to the $n$-th incident channel. Similarly, let $[\boldsymbol{h}_{R,k,1},\dots,\boldsymbol{h}_{R,k,N}]^H \in \mathbb{C}^{N \times L}$ be the frequency response of IRS-user $k$ reflective channel, where $\boldsymbol{h}_{R,k,n}^H \in \mathbb{C}^{1 \times L}$ corresponds to the $n$-th reflective channel. At the IRS, element $l$ ($l=1,\dots,L$) redistributes the received signal by adjusting the amplitude reflection coefficient $\beta_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$ \footnote{To investigate the performance upper bound of IRS, we suppose the reflection coefficient is maximized $\beta_l=1 \ \forall l$ while the phase shift is a continuous variable over $[0,2\pi)$.}. On top of this, the IRS matrix is constructed by collecting the reflection coefficients onto the main diagonal entries as $\boldsymbol{\Theta} = \mathrm{diag}\left\{\beta_1 e^{j \theta_1}, \dots, \beta_L e^{j \theta_L}\right\} \in \mathbb{C}^{L \times L}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, IRS reflection, and IRS-user channel, which for user $k$ over subband $n$ is
-		\begin{equation}\label{eq:h_{E,k,n}}
-			h_{E,k,n} = \boldsymbol{h}_{R,k,n}^H \boldsymbol{\Theta} \boldsymbol{h}_{I,n} = \boldsymbol{v}_{k,n}^H \boldsymbol{\phi}
-		\end{equation}
-		where $\boldsymbol{v}_{k,n}^H=\boldsymbol{h}_{R,k,n}^H \mathrm{diag}(\boldsymbol{h}_{I,n}) \in \mathbb{C}^{1 \times L}$ and $\boldsymbol{\phi}=[e^{j{\theta_1}},\dots,e^{j{\theta_L}}] \in \mathbb{C}^{L \times 1}$. Both direct and extra link contributes to the corresponding composite channel as
+	\begin{subsection}{Composite Channel}
+		At subband $n$, denote the AP-user $k$ direct channel as $\boldsymbol{h}_{D,k,n}^H \in \mathbb{C}^{1 \times M}$, AP-IRS incident channel as $\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times M}$, and the IRS-user $k$ reflective channel as $\boldsymbol{h}_{R,k,n}^H \in \mathbb{C}^{1 \times L}$. At the IRS, element $l$ ($l=1,\dots,L$) redistributes the incoming signal by adjusting the reflection amplitude $\gamma_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$ \footnote{To investigate the performance upper bound of IRS, we suppose the reflection coefficient is maximized $\gamma_l=1 \ \forall l$ while the phase shift is a continuous variable over $[0,2\pi)$.}. On top of this, the IRS matrix collects the reflection coefficients onto the main diagonal entries as $\boldsymbol{\Theta} = \mathrm{diag}(\gamma_1 e^{j \theta_1}, \dots, \gamma_L e^{j \theta_L}) \in \mathbb{C}^{L \times L}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, IRS reflection, and IRS-user channel. Hence, the composite channel for user $k$ over subband $n$ is
 		\begin{equation}\label{eq:h_{k,n}}
-			h_{k,n} = A_{k,n} e^{j\bar{\psi}_{k,n}}= h_{D,k,n} + \boldsymbol{v}_{k,n}^H \boldsymbol{\phi}
+			\boldsymbol{h}_{k,n}^H = \boldsymbol{h}_{D,k,n}^H + \boldsymbol{h}_{R,k,n}^H \boldsymbol{\Theta} \boldsymbol{H}_{I,n} = \boldsymbol{h}_{D,k,n}^H + \boldsymbol{\phi}^H \boldsymbol{V}_{k,n}
 		\end{equation}
-		where $A_{k,n}$ and $\bar{\psi}_{k,n}$ are the amplitude and phase of the composite channel of user $k$ at subband $n$. Let $\boldsymbol{V}_k^H=[\boldsymbol{v}_{k,1},\dots,\boldsymbol{v}_{k,N}]^H \in \mathbb{C}^{N \times L}$, the extra link for user $k$ is $\boldsymbol{h}_{E,k}=[h_{E,k,1},\dots,h_{E,k,N}]^T=\boldsymbol{V}_k^H \boldsymbol{\phi} \in \mathbb{C}^{N \times 1}$. Therefore, the composite channel of user $k$ is
-		\begin{equation}\label{eq:h_k}
-			\boldsymbol{h}_k = \boldsymbol{h}_{D,k} + \boldsymbol{V}_k^H \boldsymbol{\phi}
-		\end{equation}
+		where $\boldsymbol{\phi}=[\gamma_1 e^{j \theta_1}, \dots, \gamma_L e^{j \theta_L}]^H \in \mathbb{C}^{L \times 1}$ and $\boldsymbol{V}_{k,n}=\mathrm{diag}(\boldsymbol{h}_{R,k,n}^H)\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times M}$. Let $\boldsymbol{h}_k=[\boldsymbol{h}_{k,1}^T,\dots,\boldsymbol{h}_{k,N}^T]^T \in \mathbb{C}^{MN \times 1}$ and $\boldsymbol{V}_k=[\boldsymbol{V}_{k,1}^T,\dots,\boldsymbol{V}_{k,N}^T]^T \in \mathbb{C}^{L \times MN}$. Also, define $\boldsymbol{A}_{k,n}=\lvert \boldsymbol{h}_{k,n} \rvert$ and $\boldsymbol{\varsigma}_{k,n}=\angle{\boldsymbol{h}_{k,n}}$ as the magnitude and phase of the composite channel for user $k$ over subband $n$.
 	\end{subsection}
 
 	\begin{subsection}{Receive Signal}
-		The RF signal received by user $k$ captures the contribution of information and power waveforms through both direct and IRS-aided links as
-		\begin{equation}\label{eq:y_k}
-			y_k(t)=\Re\left\{\sum_{n=1}^N{h_{{k,n}}}\left({w_{I,n}\tilde{x}_{I,n}(t)}+w_{P,n}\right){e^{j2{\pi}{f_n}{t}}}\right\}
-		\end{equation}
-		which can be divided into
+		The information and power signals received by user $k$ through both direct and IRS-aided links write as
 		\begin{align}\label{eq:y_{I/P,k}}
-			y_{I,k}(t) & = \Re\left\{\sum_{n=1}^N{h_{{k,n}}}{w_{I,n}\tilde{x}_{I,n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}\\
-			y_{P,k}(t) & = \Re\left\{\sum_{n=1}^N{h_{{k,n}}}w_{P,n}{e^{j2{\pi}{f_n}{t}}}\right\}
+			y_{I,k}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{k,n}^H}{\boldsymbol{w}_{I,n}\tilde{x}_{I,n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}\\
+			y_{P,k}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{k,n}^H}\boldsymbol{w}_{P,n}{e^{j2{\pi}{f_n}{t}}}\right\}
 		\end{align}
 	\end{subsection}
 
 	\begin{subsection}{Information Decoder}
 		A major benefit of the proposed waveform is that the power component $y_{P,k}(t)$ creates no interference to the information component $y_{I,k}(t)$. Hence, the achievable rate of user $k$ is
 		\begin{equation}\label{eq:R_k}
-			R_k(\boldsymbol{w}_I,\boldsymbol{\phi},\rho,\boldsymbol{\alpha}_k)=\sum_{n=1}^N\alpha_{k,n}{\log_2\left(1+\frac{(1-\rho)\lvert h_{k,n}w_{I,n} \rvert^2}{\sigma_n^2}\right)}
+			R_k(\boldsymbol{w}_I,\boldsymbol{\phi},\rho,\boldsymbol{\alpha}_k)=\sum_{n=1}^N\alpha_{k,n}{\log_2\left(1+\frac{(1-\rho)\lvert \boldsymbol{h}_{k,n}\boldsymbol{w}_{I,n} \rvert^2}{\sigma_n^2}\right)}
 		\end{equation}
 		where $\sigma_n^2$ is the variance of the noise at RF band and during RF-to-BB conversion on tone $n$. Rate \ref{eq:R_k} is achievable with either waveform cancellation or translated demodulation \cite{Clerckx2018b}.
 	\end{subsection}
@@ -87,28 +80,28 @@
 		\end{equation}
 		where $R_{\text{ant}}$ is the impedance of the receive antenna, $k_0'=i_s(e^{-i_kR_{\text{ant}}/nv_t}-1)$, $k_i'=i_se^{-i_kR_{\text{ant}}/nv_t}/i!(nv_t)^i$ for $i=1,\dots,\infty$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. For a fixed channel and waveform, $\mathcal{A}\left\{.\right\}$ extracts the DC component of the received signal while $\mathcal{E}\left\{.\right\}$ covers the expectation over $\tilde{x}_{I,n}$.
 
-		With the assumption of evenly spaced frequencies, we have $\mathcal{E}\left\{y_k(t)^i\right\}=0$ for odd $i$ which has no contribution to DC components. For simplicity, we truncate the infinite series to the $n_0$-th order. As proved in \cite{Clerckx2016a}, maximizing a truncated \ref{eq:i_k} is equivalent to maximizing a monotonic function
+		With the assumption of evenly spaced frequencies, it holds that $\mathcal{E}\left\{y_k(t)^i\right\}=0$ for odd $i$ and the related terms has no contribution to DC components. For simplicity, we truncate the infinite series to the $n_0$-th order. As proved in \cite{Clerckx2016a}, maximizing a truncated $i_k$ is equivalent to maximizing a monotonic function
 		\begin{equation}\label{eq:z_k}
 			z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y_k(t)^i\right\}\right\}}
 		\end{equation}
-		where $k_i=i_s/i!(nv_t)^i$. We choose $n_0=4$ to investigate the fundamental impact of diode nonlinearity on waveform design. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
+		where $k_i=i_s/i!(nv_t)^i$. We choose $n_0=4$ to investigate fundamental nonlinearity and let $\beta_2={k_2}{R_{\text{ant}}}$ and $\beta_4={k_4}{R_{\text{ant}}^2}$. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
 
-		For simplicity, we define $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$ and $\boldsymbol{H}_k=\boldsymbol{h}_k\boldsymbol{h}_k^H$ as waveform matrices and channel matrix of user $k$. Let $\boldsymbol{W}_{I/P,n}$, $\boldsymbol{H}_{k,n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) diagonal of $\boldsymbol{W}_{I/P}$, $\boldsymbol{H}_k$ and null the remaining entries, respectively. Due to the positive definiteness of $\boldsymbol{W}_{I/P}$ and $\boldsymbol{H}_k$, we have $\boldsymbol{W}_{I/P,-n}=\boldsymbol{W}_{I/P,n}^H$ and $\boldsymbol{H}_{k,-n}=\boldsymbol{H}_{k,n}^H$. Let $\beta_2={k_2}{R_{\text{ant}}}$ and $\beta_4={k_4}{R_{\text{ant}}^2}$. On top of this, nonzero terms in \ref{eq:z_k} are detailed in \ref{eq:z_k_terms_begin} -- \ref{eq:z_k_terms_end} such that the current expression reduces to \ref{eq:z_k_expand} -- \ref{eq:z_k_waveform}.
+		Similar to \cite{Huang2017}, we define $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$, $\boldsymbol{H}_k=\boldsymbol{h}_k\boldsymbol{h}_k^H$ and let $\boldsymbol{W}_{I/P,n}$, $\boldsymbol{H}_{k,n}$ keep their $n$-th ($n=-N+1,\dots,N-1$) block diagonal and null the remaining entries, respectively. Due to the positive definiteness of $\boldsymbol{W}_{I/P}$ and $\boldsymbol{H}_k$, we have $\boldsymbol{W}_{I/P,-n}=\boldsymbol{W}_{I/P,n}^H$ and $\boldsymbol{H}_{k,-n}=\boldsymbol{H}_{k,n}^H$. On top of this, the nonzero terms in \ref{eq:z_k} are expressed by \ref{eq:z_k_terms_begin} -- \ref{eq:z_k_terms_end} and $z_k$ reduces to \ref{eq:z_k_expand} -- \ref{eq:z_k_waveform}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}
-				& = \frac{1}{2}\sum_n{(h_{k,n}w_{I,n})(h_{k,n}w_{I,n})^*}\label{eq:z_k_terms_begin}\\
+				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})^H}\label{eq:z_k_terms_begin}\\
 				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I\\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}
-				& = \frac{3}{4}\left(\sum_n{(h_{k,n}w_{I,n})(h_{k,n}w_{I,n})^*}\right)^2\\
+				& = \frac{3}{4}\left(\sum_n{(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})^H}\right)^2\\
 				& = \frac{3}{4}(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)^2 = \frac{3}{4}(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)^2\\
 				\mathcal{A}\left\{y_{P,k}^2(t)\right\}
-				& = \frac{1}{2}\sum_n{(h_{k,n}w_{P,n})(h_{k,n}w_{P,n})^*}\\
+				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{P,n})(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{P,n})^H}\\
 				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P\\
 				\mathcal{A}\left\{y_{P,k}^4(t)\right\}
-				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(h_{k,{n_1}}w_{P,{n_1}})(h_{k,{n_2}}w_{P,{n_2}})(h_{k,{n_3}}w_{P,{n_3}})^*(h_{k,{n_4}}w_{P,{n_4}})^*}\\
-				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^* = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^*\label{eq:z_k_terms_end}
+				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{k,{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{k,{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{k,{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{k,{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H}\\
+				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^H = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^H\label{eq:z_k_terms_end}
 			\end{align}
 		\end{figure*}
 		\begin{figure*}[b]
@@ -117,10 +110,10 @@
 				z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
 				& = \beta_2\rho\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+\beta_4\rho^2\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\label{eq:z_k_expand}\\
 				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k+\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)^2 + \sum_{n=-N+1}^{N-1} (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^*\right)\nonumber\\
+				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)^2 + \sum_{n=-N+1}^{N-1} (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^H\right)\nonumber\\
 				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\label{eq:z_k_channel}\\
 				& = \frac{1}{2}\beta_2\rho(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)^2 + \sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^* \right)\nonumber\\
+				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)^2 + \sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^H \right)\nonumber\\
 				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\label{eq:z_k_waveform}
 			\end{align}
 		\end{figure*}
@@ -144,7 +137,7 @@
 	\begin{maxi!}
 		{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho}{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)}{\label{op:su}}{\label{eq:su_target}}
 		\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
-		\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi})w_{I,n}\rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}\label{eq:su_rate_constraint}
+		\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\boldsymbol{w}_{I,n}\rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}\label{eq:su_rate_constraint}
 		\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}
 		\addConstraint{0 \le \rho \le 1}
 	\end{maxi!}
@@ -161,20 +154,21 @@
 
 		\begin{subsubsection}{Frequency-Flat IRS}
 			In contrast, FF-IRS reflects all subbands equally with a DoF of $L$. We observe that
-			\begin{equation}
+			\begin{equation}\label{eq:h_n_outer_product}
 				\begin{split}
-					\lvert{h_{D,n}+\boldsymbol{v}_n^H\boldsymbol{\phi}}\rvert^2
-					&=\lvert{h_{D,n}}\rvert^2+h_{D,n}^*\boldsymbol{v}_n^H\boldsymbol{\phi}+\boldsymbol{\phi}^H\boldsymbol{v}_n{h_{D,n}}+\boldsymbol{\phi}^H\boldsymbol{v}\boldsymbol{v}^H\boldsymbol{\phi}\\
-					&=\bar{\boldsymbol{\phi}}^H\boldsymbol{R}_n\bar{\boldsymbol{\phi}}=\mathrm{Tr}(\boldsymbol{R}_n\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H)=\mathrm{Tr}(\boldsymbol{R}_n\boldsymbol{\Phi})
+					\boldsymbol{h}_n\boldsymbol{h}_n^H
+					&=(\boldsymbol{h}_{D,n}+\boldsymbol{V}_n^H\boldsymbol{\phi})(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\\
+					&=\boldsymbol{h}_{D,n}\boldsymbol{h}_{D,n}^H+\boldsymbol{V}_n^H\boldsymbol{\phi}\boldsymbol{h}_{D,n}^H+\boldsymbol{h}_{D,n}\boldsymbol{\phi}^H\boldsymbol{V}_n+\boldsymbol{V}_n^H\boldsymbol{\phi}\boldsymbol{\phi}^H\boldsymbol{V}_n\\
+					&=\boldsymbol{M}_n^H\boldsymbol{\Phi}\boldsymbol{M}_n
 				\end{split}
 			\end{equation}
 			where $t$ is an auxiliary variable with unit modulus and
-			\begin{equation}\label{eq:R_n,phi}
-				\boldsymbol{R}_n=
+			\begin{equation}\label{eq:M_n,phi}
+				\boldsymbol{M}_n=
 				\begin{bmatrix}
-					\boldsymbol{v}_n\boldsymbol{v}_n^H & \boldsymbol{v}_n{h_{D,n}} \\
-					h_{D,n}^*{\boldsymbol{v}_n^H}      & h_{D,n}^*{h_{D,n}}
-				\end{bmatrix},
+					\boldsymbol{V}_n \\
+					\boldsymbol{h}_{D,n}^H
+				\end{bmatrix} \in \mathbb{C}^{(L+1) \times M},
 				\quad \bar{\boldsymbol{\phi}}=\
 				\begin{bmatrix}
 					\boldsymbol{\phi} \\
@@ -182,11 +176,28 @@
 				\end{bmatrix},
 				\quad \boldsymbol{\Phi}=\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H
 			\end{equation}
-			with $\boldsymbol{R}_n,\boldsymbol{\Phi} \in \mathbb{C}^{(L+1) \times (L+1)}$ and $\bar{\boldsymbol{\phi}} \in \mathbb{C}^{(L+1) \times 1}$. Therefore, the outer product of composite channel rewrites as
-			\begin{equation}\label{eq:M}
+			Therefore, it holds that
+			\begin{equation}
+				\begin{split}
+					\lvert(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\boldsymbol{w}_{I,n}\rvert^2
+					&=\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H\boldsymbol{\Phi}\boldsymbol{M}_n\boldsymbol{w}_{I,n}\\
+					&=\mathrm{Tr}(\boldsymbol{M}_n\boldsymbol{w}_{I,n}\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H\boldsymbol{\Phi})\\
+					&=\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})
+				\end{split}
+			\end{equation}
+			with $\boldsymbol{C}_n = \boldsymbol{M}_n\boldsymbol{w}_{I,n}\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Similarly, we have
+			\begin{equation}
 				\boldsymbol{h}\boldsymbol{h}^H=\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}
 			\end{equation}
-			where $\boldsymbol{M}=[\boldsymbol{V}^H,\boldsymbol{h}_D]^H \in \mathbb{C}^{(L+1) \times N}$. On top of this, we formulate the FF-IRS phase shift optimization subproblem as follows. With given waveform $\boldsymbol{w}_{I/P}$ and splitting ratio $\rho$, introduce auxiliary variables
+			where
+			\begin{equation}\label{eq:M}
+				\boldsymbol{M}=
+				\begin{bmatrix}
+					\boldsymbol{V} \\
+					\boldsymbol{h}_D^H
+				\end{bmatrix} \in \mathbb{C}^{(L+1) \times MN}
+			\end{equation}
+			We then introduce auxiliary variables
 			\begin{equation}\label{eq:t}
 				\begin{split}
 					t_{I/P,n}
@@ -197,11 +208,7 @@
 					&=\mathrm{Tr}(\boldsymbol{C}_{I/P,n}\boldsymbol{\Phi})
 				\end{split}
 			\end{equation}
-			where we define
-			\begin{equation}\label{eq:C_{I/P,n}}
-				\boldsymbol{C}_{I/P,n}=\boldsymbol{M}\boldsymbol{W}_{I/P,n}^*\boldsymbol{M}^H
-			\end{equation}
-			and $\boldsymbol{C}_{I/P,n} \in \mathbb{C}^{(L+1)\times(L+1)}$. Therefore, \ref{eq:z_k_channel} rewrites as
+			with $\boldsymbol{C}_{I/P,n}=\boldsymbol{M}\boldsymbol{W}_{I/P,n}^*\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Therefore, \ref{eq:z_k_channel} rewrites as
 			\begin{equation}\label{eq:z_irs}
 				\begin{split}
 					z(\boldsymbol{\Phi})
