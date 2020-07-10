@@ -2,10 +2,7 @@
 % * Initialize algorithm
 [capacity, infoWaveform_] = wit_fs(directChannel, txPower, noisePower);
 [current, ~, powerWaveform_] = wpt_fs(beta2, beta4, tolerance, directChannel, txPower, nCandidates, noisePower);
-% rateConstraint = linspace((1 - tolerance) * capacity, 0, nSamples);
 rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
-%     infoWaveform = infoWaveform_;
-%     powerWaveform = zeros(size(powerWaveform_)) + 1e-10;
 
 % * GP
 niGpSample = zeros(3, nSamples);

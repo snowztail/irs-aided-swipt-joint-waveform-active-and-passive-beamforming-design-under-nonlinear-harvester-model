@@ -6,7 +6,7 @@ clear; clc; setup; config_ff_gp_sdr; load('data/tap.mat');
 [incidentChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, incidentDistance, incidentTapGain, incidentTapDelay, 'incident');
 [reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, reflectiveDistance, reflectiveTapGain, reflectiveTapDelay, 'reflective');
 
-% * SDR
+% * GP and SDR
 ff_gp;
 ff_sdr;
 save('data/re_ff_gp_sdr.mat');
