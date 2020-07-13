@@ -48,6 +48,8 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCa
         infoAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
         powerAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
     end
+    infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
+    powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
 
     % * SCA
     current_ = 0;
@@ -72,6 +74,8 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCa
                 infoAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
                 powerAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
             end
+            infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
+            powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
             % \tilde{z}'
             currentLb = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
                 + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * (2 * infoAuxiliary(nSubbands) * infoAuxiliary_(nSubbands) - infoAuxiliary_(nSubbands) ^ 2) + 2 * real(powerAuxiliary_' * powerAuxiliary) - powerAuxiliary_' * powerAuxiliary_) ...
@@ -115,6 +119,8 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCa
             infoAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * infoMatrix);
             powerAuxiliary(iSubband + nSubbands) = trace(conj(channelCoefMatrix{iSubband + nSubbands}) * powerMatrix);
         end
+        infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
+        powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
         % z
         current_ = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
             + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...

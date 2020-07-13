@@ -79,6 +79,8 @@ function [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint, tolerance, in
                 infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
                 powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
             end
+            infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
+            powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
             % \tilde{z}
             currentLb = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
                 + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * (2 * infoAuxiliary(nSubbands) * infoAuxiliary_(nSubbands) - infoAuxiliary_(nSubbands) ^ 2) + 2 * real(powerAuxiliary_' * powerAuxiliary) - powerAuxiliary_' * powerAuxiliary_) ...
@@ -118,6 +120,8 @@ function [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint, tolerance, in
             infoAuxiliary(iSubband + nSubbands) = trace(infoCoefMatrix{iSubband + nSubbands} * irsMatrix);
             powerAuxiliary(iSubband + nSubbands) = trace(powerCoefMatrix{iSubband + nSubbands} * irsMatrix);
         end
+        infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
+        powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
         % z
         current_ = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
             + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...

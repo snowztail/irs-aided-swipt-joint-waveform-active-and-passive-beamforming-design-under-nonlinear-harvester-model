@@ -5,7 +5,7 @@ clear; clc; setup; config_ni_gp_sdr;  load('data/tap.mat');
 [directChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, directDistance, directTapGain, directTapDelay, 'direct');
 
 % * GP and SDR
-ni_gp;
+% ni_gp;
 ni_sdr;
 save('data/re_ni_gp_sdr.mat');
 

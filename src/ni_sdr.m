@@ -2,7 +2,9 @@
 % * Initialize algorithm
 [capacity, infoWaveform_] = wit_fs(directChannel, txPower, noisePower);
 [current, ~, powerWaveform_] = wpt_fs(beta2, beta4, tolerance, directChannel, txPower, nCandidates, noisePower);
-rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
+rateConstraint = linspace((1 - tolerance) * capacity, 0, nSamples);
+infoRatio = 1;
+powerRatio = 1 - infoRatio;
 
 % * SDR
 niSdrSample = zeros(3, nSamples);
