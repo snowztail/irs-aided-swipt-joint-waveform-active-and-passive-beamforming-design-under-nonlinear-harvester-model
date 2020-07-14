@@ -14,8 +14,8 @@ for iReflector = 1 : length(Variable.nReflectors)
     reflectiveChannel = reflectiveChannel_(:, 1 : nReflectors, :);
 
     % * GP and SDR
-    ff_gp;
-    gpSample{iReflector} = ffGpSample;
+%     ff_gp;
+%     gpSample{iReflector} = ffGpSample;
     ff_sdr;
     sdrSample{iReflector} = ffSdrSample;
 end

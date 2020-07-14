@@ -89,9 +89,11 @@ function [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint, tolerance, in
             for iSubband = 1 : nSubbands
                 snr(iSubband) = infoRatio * abs(infoWaveform(iSubband)) ^ 2 * real(trace(concatMatrix{iSubband} * irsMatrix)) / noisePower;
             end
+%             rate = sum_log(1 + snr) / log(2);
             maximize currentLb;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
+%                 rate >= rateConstraint;
                 geo_mean(1 + snr) >= 2 ^ (rateConstraint / nSubbands);
         cvx_end
 
