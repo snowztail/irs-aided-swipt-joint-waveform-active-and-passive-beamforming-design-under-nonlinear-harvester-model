@@ -37,7 +37,7 @@ fadingMode = 'selective';
 % gain on each reflecting element
 irsGain = 1;
 % number of reflecting elements in IRS
-nReflectors = 10;
+nReflectors = 1;
 
 %% * Algorithm
 % minimum gain ratio per iteration
