@@ -22,25 +22,24 @@ end
 save('data/re_reflector.mat')
 
 %% * R-E plots
-figure('name', 'GP: R-E region vs number of reflectors');
-legendString = cell(length(Variable.nReflectors), 1);
+figure('name', 'R-E region vs number of reflectors');
+legendString = cell(2 * length(Variable.nReflectors), 1);
+
+% * GP
+ax = gca;
+ax.ColorOrderIndex = 1;
 for iReflector = 1 : length(Variable.nReflectors)
     plot(gpSample{iReflector}(1, :), 1e6 * gpSample{iReflector}(2, :));
-    legendString{iReflector} = sprintf('L = %d', Variable.nReflectors(iReflector));
+    legendString{iReflector} = sprintf('GP: L = %d', Variable.nReflectors(iReflector));
     hold on;
 end
-hold off;
-grid minor;
-legend(legendString);
-xlabel('Rate [bps/Hz]');
-ylabel('Average output DC current [\muA]');
-savefig('plots/re_reflector_gp.fig');
 
-figure('name', 'SDR: R-E region vs number of reflectors');
-legendString = cell(length(Variable.nReflectors), 1);
+% * SDR
+ax = gca;
+ax.ColorOrderIndex = 1;
 for iReflector = 1 : length(Variable.nReflectors)
-    plot(sdrSample{iReflector}(1, :), 1e6 * sdrSample{iReflector}(2, :));
-    legendString{iReflector} = sprintf('L = %d', Variable.nReflectors(iReflector));
+    plot(sdrSample{iReflector}(1, :), 1e6 * sdrSample{iReflector}(2, :), '--');
+    legendString{length(Variable.nReflectors) + iReflector} = sprintf('SDR: L = %d', Variable.nReflectors(iReflector));
     hold on;
 end
 hold off;
@@ -48,4 +47,4 @@ grid minor;
 legend(legendString);
 xlabel('Rate [bps/Hz]');
 ylabel('Average output DC current [\muA]');
-savefig('plots/re_reflector_sdr.fig');
+savefig('plots/re_reflector.fig');

@@ -8,6 +8,7 @@ rateConstraint = linspace((1 - tolerance) * capacity, 0, nSamples);
 
 % * SDR
 ffSdrSample = zeros(3, nSamples);
+ffSdrWaveform = cell(2, nSamples);
 for iSample = 1 : nSamples
     % * Initialize waveform and splitting ratio for each sample
     irs = irs_;
@@ -44,4 +45,6 @@ for iSample = 1 : nSamples
         current_ = current;
     end
     ffSdrSample(:, iSample) = [rate; current; powerRatio];
+    ffSdrWaveform{1, iSample} = infoWaveform;
+    ffSdrWaveform{2, iSample} = powerWaveform;
 end
