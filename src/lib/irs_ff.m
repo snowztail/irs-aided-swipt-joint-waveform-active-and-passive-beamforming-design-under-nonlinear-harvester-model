@@ -93,8 +93,8 @@ function [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint, tolerance, in
             maximize currentLb;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
-%                 rate >= rateConstraint;
                 geo_mean(1 + snr) >= 2 ^ (rateConstraint / nSubbands);
+%                 rate >= rateConstraint;
         cvx_end
 
         % * Update output current

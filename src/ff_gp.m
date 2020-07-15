@@ -1,25 +1,22 @@
 %% ! FF-IRS: R-E region by GP
 % * Initialize algorithm
-[capacity, irs_, infoWaveform_] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
-[current, irs__, ~, powerWaveform_] = wpt_ff(beta2, beta4, tolerance, directChannel, incidentChannel, reflectiveChannel, irs_, txPower, nCandidates, noisePower);
-[compositeChannel_, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs_);
-rateConstraint = linspace((1 - tolerance) * capacity, 0, nSamples);
-    irs = irs_;
-    compositeChannel = compositeChannel_;
-    infoWaveform = infoWaveform_;
-    powerWaveform = powerWaveform_;
-    infoRatio = 1 - eps;
-    powerRatio = 1 - infoRatio;
+[capacity, irs, infoWaveform, powerWaveform] = wit_ff(irsGain, tolerance, directChannel, incidentChannel, reflectiveChannel, txPower, nCandidates, noisePower);
+[compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+infoRatio = 1 - eps;
+powerRatio = 1 - infoRatio;
 
+rateConstraint = linspace(capacity, 0, nSamples);
+
+ffGpSolution = cell(nSamples, 1);
+ffGpSolution{1}.powerRatio = powerRatio;
+ffGpSolution{1}.infoWaveform = infoWaveform;
+ffGpSolution{1}.powerWaveform = powerWaveform;
+
+ffGpSample = zeros(2, nSamples);
+ffGpSample(:, 1) = [capacity; 0];
 
 % * GP
-ffGpSample = zeros(3, nSamples);
-ffGpWaveform = cell(2, nSamples);
-for iSample = 1 : nSamples
-    
-    % * Initialize waveform and splitting ratio for each sample
-    [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_split_ratio_gp(beta2, beta4, txPower, rateConstraint(iSample), tolerance, infoRatio, powerRatio, noisePower, compositeChannel, infoWaveform, powerWaveform);
-
+for iSample = 2 : nSamples
     isConverged = false;
     current_ = 0;
     % * AO
@@ -30,7 +27,8 @@ for iSample = 1 : nSamples
         isConverged = abs(current - current_) / current <= tolerance || current <= 1e-10;
         current_ = current;
     end
-    ffGpSample(:, iSample) = [rate; current; powerRatio];
-    ffGpWaveform{1, iSample} = infoWaveform;
-    ffGpWaveform{2, iSample} = powerWaveform;
+    ffGpSolution{iSample}.powerRatio = powerRatio;
+    ffGpSolution{iSample}.infoWaveform = infoWaveform;
+    ffGpSolution{iSample}.powerWaveform = powerWaveform;
+    ffGpSample(:, iSample) = [rate; current];
 end

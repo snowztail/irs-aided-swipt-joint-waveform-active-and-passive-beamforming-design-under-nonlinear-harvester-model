@@ -38,13 +38,13 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
     % p_n^{(0)}
     [~, subbandPower] = channel_capacity(compositeChannel, txPower, noisePower);
     % \rho
-    powerRatio = 0;
+    powerRatio = eps;
     % \bar{\rho}
     infoRatio = 1 - powerRatio;
     % \boldsymbol{W}_I^{(0)}
     infoWaveform = sqrt(subbandPower) .* exp(1i * angle(conj(compositeChannel)));
     % \boldsymbol{W}_P
-    powerWaveform = zeros(size(compositeChannel));
+    powerWaveform = zeros(size(compositeChannel)) + eps;
 
     % * AO
     isConverged = false;
@@ -53,6 +53,7 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
             cvx_solver mosek
+            cvx_precision high
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression snr(nSubbands, 1);
             % \gamma

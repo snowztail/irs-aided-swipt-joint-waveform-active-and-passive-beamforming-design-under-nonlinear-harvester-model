@@ -84,10 +84,12 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCa
             for iSubband = 1 : nSubbands
                 snr(iSubband) = infoRatio * infoMatrix(iSubband, iSubband) * abs(channel(iSubband)) ^ 2 / noisePower;
             end
+%             rate = sum_log(1 + snr) / log(2);
             maximize currentLb;
             subject to
                 (1 / 2) * (trace(infoMatrix) + trace(powerMatrix)) <= txPower;
                 geo_mean(1 + snr) >= 2 ^ (rateConstraint / nSubbands);
+%                 rate >= rateConstraint;
         cvx_end
 
         % * Update output current

@@ -26,12 +26,12 @@ function [capacity, infoWaveform, powerWaveform, infoRatio, powerRatio] = wit_fs
     % p_n^{(0)}
     [capacity, subbandPower] = channel_capacity(channel, txPower, noisePower);
     % \rho
-    powerRatio = 0;
+    powerRatio = eps;
     % \bar{\rho}
     infoRatio = 1 - powerRatio;
     % \boldsymbol{W}_I^{(0)}
     infoWaveform = sqrt(subbandPower) .* exp(1i * angle(conj(channel)));
     % \boldsymbol{W}_P
-    powerWaveform = zeros(size(channel));
+    powerWaveform = zeros(size(channel)) + eps;
 
 end

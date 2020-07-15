@@ -1,16 +1,19 @@
 %% ! No IRS: R-E region by SDR
 % * Initialize algorithm
-[capacity, infoWaveform_] = wit_fs(directChannel, txPower, noisePower);
-[current, ~, powerWaveform_] = wpt_fs(beta2, beta4, tolerance, directChannel, txPower, nCandidates, noisePower);
-rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
+[capacity, infoWaveform, powerWaveform, infoRatio, powerRatio] = wit_fs(directChannel, txPower, noisePower);
+
+rateConstraint = linspace(capacity, 0, nSamples);
+
+niSdrSolution = cell(nSamples, 1);
+niSdrSolution{1}.powerRatio = powerRatio;
+niSdrSolution{1}.infoWaveform = infoWaveform;
+niSdrSolution{1}.powerWaveform = powerWaveform;
+
+niSdrSample = zeros(2, nSamples);
+niSdrSample(:, 1) = [capacity; 0];
 
 % * SDR
-niSdrSample = zeros(3, nSamples);
-for iSample = 1 : nSamples
-    % * Initialize waveform and splitting ratio for each sample
-    infoWaveform = infoWaveform_;
-    powerWaveform = powerWaveform_;
-
+for iSample = 2 : nSamples
     % * AO
     isConverged = false;
     current_ = 0;
@@ -21,5 +24,8 @@ for iSample = 1 : nSamples
         isConverged = abs(current - current_) / current <= tolerance;
         current_ = current;
     end
-    niSdrSample(:, iSample) = [rate; current; powerRatio];
+    niSdrSolution{iSample}.powerRatio = powerRatio;
+    niSdrSolution{iSample}.infoWaveform = infoWaveform;
+    niSdrSolution{iSample}.powerWaveform = powerWaveform;
+    niSdrSample(:, iSample) = [rate; current];
 end
