@@ -6,7 +6,7 @@ function [infoRatio, powerRatio] = split_ratio(channel, noisePower, rateConstrai
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
     %   - noisePower (\sigma_n^2): average noise power
     %   - rateConstraint (\bar{R}): user rate constraint
-    %   - infoWaveform (w_I) [nSubbands]: weight on information carriers
+    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
     %
     % Output:
     %   - infoRatio (\bar{\rho}): information splitting ratio

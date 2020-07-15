@@ -9,8 +9,8 @@ function [capacity, infoWaveform, powerWaveform, infoRatio, powerRatio] = wit_fs
     %
     % Output:
     %   - capacity (R): channel capacity
-    %   - infoWaveform (w_I) [nSubbands]: weight on information carriers
-    %   - powerWaveform (w_P) [nSubbands]: weight on power carriers
+    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
+    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %   - infoRatio (\bar{\rho}): information splitting ratio
     %   - powerRatio (\rho): power splitting ratio
     %

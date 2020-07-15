@@ -14,12 +14,12 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, txPower, nCa
     %   - powerRatio (\rho): power splitting ratio
     %   - noisePower (\sigma_n^2): average noise power
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
-    %   - infoWaveform (w_I) [nSubbands]: weight on information carriers (in the previous iteration)
-    %   - powerWaveform (w_P) [nSubbands]: weight on power carriers (in the previous iteration)
+    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform (in the previous iteration)
+    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform (in the previous iteration)
     %
     % Output:
-    %   - infoWaveform (w_I) [nSubbands]: weight on information carriers
-    %   - powerWaveform (w_P) [nSubbands]: weight on power carriers
+    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
+    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank waveform outer product matrices

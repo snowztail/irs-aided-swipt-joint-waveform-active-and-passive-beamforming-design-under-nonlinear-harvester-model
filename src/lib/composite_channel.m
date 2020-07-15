@@ -14,7 +14,7 @@ function [compositeChannel, concatChannel, concatSubchannel] = composite_channel
     %   - concatSubchannel (V_n) {nSubbands}[nReflectors * nTxs]: AP-IRS-user concatenated subchannel
     %
     % Comment:
-    %   - \boldsymbol{h}_{D,n}^H = directChannel(iSubband, :)
+    %   - \boldsymbol{h}_{D,n}^H = directandChannel(iSubband, :)
     %   - \boldsymbol{H}_{I,n} = permute(incidentChannel(iSubband, :, :), [2 3 1])'
     %   - \boldsymbol{h}_{R,n}^H = reflectiveChannel(iSubband, :)
     %   - \boldsymbol{\Phi} = diag(irs')

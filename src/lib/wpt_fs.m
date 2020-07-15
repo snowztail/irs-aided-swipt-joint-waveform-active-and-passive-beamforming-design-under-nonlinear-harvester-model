@@ -14,7 +14,7 @@ function [current, infoWaveform, powerWaveform, infoRatio, powerRatio] = wpt_fs(
     % Output:
     %   - current (z): harvester output DC current
     %   - infoWavefaaorm (w_I) [nSubbands]: weight on information carriers
-    %   - powerWaveform (w_P) [nSubbands]: weight on power carriers
+    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %   - infoRatio (\bar{\rho}): information splitting ratio
     %   - powerRatio (\rho): power splitting ratio
     %

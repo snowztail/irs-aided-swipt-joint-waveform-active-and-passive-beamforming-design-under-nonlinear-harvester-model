@@ -14,8 +14,8 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
     % Output:
     %   - capacity (R): channel capacity
     %   - irs (\phi) [nReflectors]: IRS reflection coefficients
-    %   - infoWaveform (w_I) [nSubbands]: weight on information waveform
-    %   - powerWaveform (w_P) [nSubbands]: weight on power waveform
+    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
+    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %   - infoRatio (\bar{\rho}): information splitting ratio
     %   - powerRatio (\rho): power splitting ratio
     %
@@ -32,7 +32,8 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
     [nSubbands, nTxs, nReflectors] = size(incidentChannel);
 
     % * Initialize IRS and composite channel
-    irs = exp(1i * 2 * pi * rand(nReflectors, 1));
+    irs = ones(nReflectors, 1);
+%     irs = exp(1i * 2 * pi * rand(nReflectors, 1));
     [compositeChannel, ~, concatSubchannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 
     % * Construct waveform (water-filling + MRT) and splitting ratio
@@ -47,11 +48,11 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
 
     % * Obtain coefficients
     % \boldsymbol{M}_n, \boldsymbol{C}_n
-    M_n = cell(nSubbands, 1);
+    stackSubmatrix = cell(nSubbands, 1);
     rateMatrix = cell(nSubbands, 1);
     for iSubband = 1 : nSubbands
-        M_n = [concatSubchannel{iSubband}; directChannel(iSubband, :)];
-        rateMatrix{iSubband} = M_n * infoWaveform(:, iSubband) * infoWaveform(:, iSubband)' * M_n';
+        stackSubmatrix{iSubband} = [concatSubchannel{iSubband}; directChannel(iSubband, :)];
+        rateMatrix{iSubband} = stackSubmatrix{iSubband} * infoWaveform(:, iSubband) * infoWaveform(:, iSubband)' * stackSubmatrix{iSubband}';
         rateMatrix{iSubband} = hermitianize(rateMatrix{iSubband});
     end
 
@@ -102,7 +103,7 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
 
         % * Update coefficients
         for iSubband = 1 : nSubbands
-            rateMatrix{iSubband} = M_n * infoWaveform(:, iSubband) * infoWaveform(:, iSubband)' * M_n';
+            rateMatrix{iSubband} = stackSubmatrix{iSubband} * infoWaveform(:, iSubband) * infoWaveform(:, iSubband)' * stackSubmatrix{iSubband}';
             rateMatrix{iSubband} = hermitianize(rateMatrix{iSubband});
         end
 

@@ -11,14 +11,14 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
     %   - tolerance (\epsilon): minimum gain ratio per iteration
     %   - noisePower (\sigma_n^2): average noise power
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
-    %   - infoWaveform (w_I) [nSubbands]: weight on information carriers (in the previous iteration)
-    %   - powerWaveform (w_P) [nSubbands]: weight on power carriers (in the previous iteration)
+    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform (in the previous iteration)
+    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform (in the previous iteration)
     %   - infoRatio (\bar{\rho}): information splitting ratio (in the previous iteration)
     %   - powerRatio (\rho): power splitting ratio (in the previous iteration)
     %
     % Output:
-    %   - infoWaveform (w_I) [nSubbands]: weight on information carriers
-    %   - powerWaveform (w_P) [nSubbands]: weight on power carriers
+    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
+    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %   - infoRatio (\bar{\rho}): information splitting ratio
     %   - powerRatio (\rho): power splitting ratio
     %   - rate (R): user sum rate over all subbands

@@ -1,20 +1,18 @@
-function [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint, tolerance, infoWaveform, powerWaveform, infoRatio, powerRatio, concatVector, noisePower, concatMatrix, irs)
+function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates, tolerance)
     % Function:
     %   - optimize the IRS reflection coefficients to maximize the R-E region
     %
     % Input:
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
-    %   - nCandidates (Q): number of CSCG random vectors to generate
-    %   - rateConstraint (\bar{R}): user rate constraint
-    %   - tolerance (\epsilon): minimum gain ratio per iteration
-    %   - infoWaveform (w_I) [nSubbands]: weight on information carriers
-    %   - powerWaveform (w_P) [nSubbands]: weight on power carriers
+    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
+    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %   - infoRatio (\bar{\rho}): information splitting ratio
     %   - powerRatio (\rho): power splitting ratio
-    %   - concatVector (M) [(nReflectors + 1) * nSubbands]: concatenated channel vector
     %   - noisePower (\sigma_n^2): average noise power
-    %   - concatMatrix (R_n) [(nReflectors + 1) * (nReflectors + 1)]: rate SDR matrix
+    %   - rateConstraint (\bar{R}): user rate constraint
+    %   - nCandidates (Q): number of CSCG random vectors to generate
+    %   - tolerance (\epsilon): minimum gain ratio per iteration
     %   - irs (\phi) [nReflectors]: IRS reflection coefficients (in the previous iteration)
     %
     % Output:
@@ -27,8 +25,59 @@ function [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint, tolerance, in
     % Author & Date: Yang (i@snowztail.com) - 21 May 20
 
 
+    % * Get data
+    [nSubbands, nTxs, nReflectors] = size(incidentChannel);
+    [compositeChannel, concatChannel, concatSubchannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 
-    % * Initialize algorithm
+    % * Construct coefficient matrices
+    % \boldsymbol{W}_{I/P}
+    infoMatrix = vec(infoWaveform) * vec(infoWaveform)';
+    powerMatrix = vec(powerWaveform) * vec(powerWaveform)';
+
+    iM_ = cell(nSubbands, 1);
+    pM_ = cell(nSubbands, 1);
+    for iSubband = 1 : nSubbands
+        iM_{iSubband} = zeros(nTxs * nSubbands);
+        pM_{iSubband} = zeros(nTxs * nSubbands);
+        for jSubband = 1 : nSubbands + 1 - iSubband
+            iM_{iSubband}((jSubband - 1) * nTxs + 1 : jSubband * nTxs, (iSubband - 1) * nTxs + (jSubband - 1) * nTxs + 1 : (iSubband - 1) * nTxs + jSubband * nTxs) = infoMatrix((jSubband - 1) * nTxs + 1 : jSubband * nTxs, (iSubband - 1) * nTxs + (jSubband - 1) * nTxs + 1 : (iSubband - 1) * nTxs + jSubband * nTxs);
+            pM_{iSubband}((jSubband - 1) * nTxs + 1 : jSubband * nTxs, (iSubband - 1) * nTxs + (jSubband - 1) * nTxs + 1 : (iSubband - 1) * nTxs + jSubband * nTxs) = powerMatrix((jSubband - 1) * nTxs + 1 : jSubband * nTxs, (iSubband - 1) * nTxs + (jSubband - 1) * nTxs + 1 : (iSubband - 1) * nTxs + jSubband * nTxs);
+        end
+    end
+
+    iM = cell(2 * nSubbands - 1, 1);
+    pM = cell(2 * nSubbands - 1, 1);
+    for iSubband = - nSubbands + 1 : nSubbands - 1
+        if iSubband >= 0
+            iM{iSubband + nSubbands} = iM_{iSubband + 1};
+            pM{iSubband + nSubbands} = pM_{iSubband + 1};
+        else
+            iM{iSubband + nSubbands} = iM_{-iSubband + 1}';
+            pM{iSubband + nSubbands} = pM_{-iSubband + 1}';
+        end
+    end
+
+    % \boldsymbol{M}_n, \boldsymbol{C}_n
+    stackSubmatrix = cell(nSubbands, 1);
+    rateMatrix = cell(nSubbands, 1);
+    for iSubband = 1 : nSubbands
+        stackSubmatrix{iSubband} = [concatSubchannel{iSubband}; directChannel(iSubband, :)];
+        rateMatrix{iSubband} = stackSubmatrix{iSubband} * infoWaveform(:, iSubband) * infoWaveform(:, iSubband)' * stackSubmatrix{iSubband}';
+        rateMatrix{iSubband} = hermitianize(rateMatrix{iSubband});
+    end
+
+    % \boldsymbol{M}, \boldsymbol{C}_{I/P,n}
+    stackMatrix = [concatChannel; vec(directChannel')'];
+    infoCurrentMatrix = cell(2 * nSubbands - 1, 1);
+    powerCurrentMatrix = cell(2 * nSubbands - 1, 1);
+    for iSubband = - nSubbands + 1 : nSubbands - 1
+        infoCurrentMatrix{iSubband} = stackMatrix * conj(iM{iSubband + nSubbands}) * stackMatrix';
+        powerCurrentMatrix{iSubband} = stackMatrix * conj(pM{iSubband + nSubbands}) * stackMatrix';
+    end
+
+
+
+
     nSubbands = size(infoWaveform, 1);
     nReflectors = size(concatMatrix{1}, 1) - 1;
     % \boldsymbol{W}_{I/P}

@@ -6,9 +6,8 @@ clear; clc; setup; config; load('data/tap.mat');
 [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, nReflectors, subbandFrequency, fadingMode, 'reflective');
 
 [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
-irs = exp(1i * 2 * pi * rand(nReflectors, 1));
 
-[compositeChannel, concatChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+[irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, capacity, nCandidates, tolerance);
 
 rateConstraint = linspace(capacity, 0, nSamples);
 
