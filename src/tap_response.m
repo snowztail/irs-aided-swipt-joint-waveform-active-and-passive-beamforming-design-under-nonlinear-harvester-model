@@ -2,10 +2,10 @@ clear; clc; setup;
 
 %% * Transceiver
 % number of transmit and receive antennas
-nTxs = 1;
+nTxs = 2;
 nRxs = 1;
 % max number of reflecting elements in IRS
-nReflectors = 25;
+nReflectors = 100;
 
 %% * Tap response
 [directTapGain, directTapDelay] = tap_tgn(nTxs, nRxs);

@@ -1,4 +1,4 @@
-function [compositeChannel, concatVector, concatMatrix] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs)
+function [compositeChannel, concatChannel, concatSubchannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs)
     % Function:
     %   - obtain the composition of direct channel and IRS-aided channel
     %
@@ -6,30 +6,36 @@ function [compositeChannel, concatVector, concatMatrix] = composite_channel(dire
     %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
     %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
     %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
-    %   - irs (\phi) [nReflectors]: the IRS gain vector
+    %   - irs (\phi) [nReflectors]: IRS reflection coefficient
     %
     % Output:
-    %   - compositeChannel (h) [nSubbands * nTxs * nRxs]: the composite channel
-    %   - concatVector (M) [(nReflectors + 1) * nSubbands]: concatenated channel vector
-    %   - concatMatrix (R_n) [(nReflectors + 1) * (nReflectors + 1)]: rate SDR matrix
+    %   - compositeChannel (h) [nSubbands * nTxs * nRxs]: superposition of direct and extra channels
+    %   - concatChannel (V) [nReflectors * (nTxs * nSubbands)]: AP-IRS-user concatenated channel
+    %   - concatSubchannel (V_n) {nSubbands}[nReflectors * nTxs]: AP-IRS-user concatenated subchannel
     %
     % Comment:
-    %   - for frequency-flat IRS
+    %   - \boldsymbol{h}_{D,n}^H = directChannel(iSubband, :)
+    %   - \boldsymbol{H}_{I,n} = permute(incidentChannel(iSubband, :, :), [2 3 1])'
+    %   - \boldsymbol{h}_{R,n}^H = reflectiveChannel(iSubband, :)
+    %   - \boldsymbol{\Phi} = diag(irs')
     %
     % Author & Date: Yang (i@snowztail.com) - 21 May 20
 
 
 
-    [nSubbands, ~, nReflectors] = size(incidentChannel);
-    compositeChannel = zeros(size(directChannel));
-    concatMatrix = cell(nSubbands, 1);
-    concatVector = zeros(nReflectors + 1, nSubbands);
+    % * Get data
+    [nSubbands, nTxs, ~] = size(incidentChannel);
+
+    % * Construct IRS-aided extra channel and AP-IRS-user concatenated channel
+    extraChannel = zeros(nSubbands, nTxs);
+    concatSubchannel = cell(nSubbands, 1);
     for iSubband = 1 : nSubbands
-        concatChannel = ctranspose(reflectiveChannel(iSubband, :, :) * diag(squeeze(incidentChannel(iSubband, :, :))));
-        compositeChannel(iSubband, :, :) = directChannel(iSubband, :, :) + concatChannel' * irs;
-        concatMatrix{iSubband} = [concatChannel * concatChannel', concatChannel * directChannel(iSubband, :, :); directChannel(iSubband, :, :)' * concatChannel', directChannel(iSubband, :, :)' * directChannel(iSubband, :, :)];
-        concatVector(1 : end - 1, iSubband) = concatChannel;
+        concatSubchannel{iSubband} = diag(reflectiveChannel(iSubband, :)) * permute(incidentChannel(iSubband, :, :), [2 3 1])';
+        extraChannel(iSubband, :) = irs' * concatSubchannel{iSubband};
     end
-    concatVector(end, :) = directChannel';
+    concatChannel = cat(2, concatSubchannel{:});
+
+    % * Combine for composite channel
+    compositeChannel = directChannel + extraChannel;
 
 end

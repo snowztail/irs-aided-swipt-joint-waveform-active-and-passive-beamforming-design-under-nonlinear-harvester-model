@@ -3,7 +3,7 @@ function [capacity, subbandPower] = channel_capacity(channel, txPower, noisePowe
     %   - calculate the maximum achievable rate based on water-filling power allocation
     %
     % Input:
-    %   - channel (h) [nSubbands]: the wireless channel
+    %   - channel (h) [nSubbands * nTxs * nRxs]: the wireless channel
     %   - txPower (P): average transmit power
     %   - noisePower (\sigma_n^2): average noise power
     %
@@ -12,14 +12,19 @@ function [capacity, subbandPower] = channel_capacity(channel, txPower, noisePowe
     %   - subbandPower: optimal power allocation
     %
     % Comment:
-    %   - for SISO OFDM channels
+    %   - for MISO OFDM channels
     %
     % Author & Date: Yang (i@snowztail.com) - 28 Aug 19
 
 
 
-    subbandStrength = abs(channel) .^ 2;
+    % * MRT within each subband
+    subbandStrength = vecnorm(channel, 2, 2) .^ 2;
+
+    % * Power allocation
     subbandPower = water_filling(subbandStrength, 2 * txPower, noisePower);
+
+    % * Compute capacity
     capacity = sum(log2(1 + subbandPower .* subbandStrength / noisePower));
 
 end

@@ -1,4 +1,4 @@
-function [fading] = fading_tgn(tapGain, tapDelay, nSubbands, subbandFrequency, fadingMode)
+function [fading] = fading_tgn(tapGain, tapDelay, subbandFrequency, fadingMode)
     % Function:
     %   - simulate channel using the power delay profile of the IEEE TGn NLOS channel model E
     %
@@ -22,8 +22,11 @@ function [fading] = fading_tgn(tapGain, tapDelay, nSubbands, subbandFrequency, f
     % Author & Date: Yang (i@snowztail.com) - 07 Mar 20
 
 
-
+    % * Get data
+    nSubbands = length(subbandFrequency);
     [~, nTxs, nRxs] = size(tapGain);
+
+    % * Obtain fading gain
     fading = zeros(nSubbands, nTxs, nRxs);
     switch fadingMode
     case 'selective'
