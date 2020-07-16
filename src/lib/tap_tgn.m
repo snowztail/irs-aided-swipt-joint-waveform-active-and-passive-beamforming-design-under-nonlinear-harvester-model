@@ -3,7 +3,7 @@ function [tapGain, tapDelay] = tap_tgn(nTxs, nRxs)
     %   - simulate channel using the power delay profile of the IEEE TGn NLOS channel model E
     %
     % Input:
-    %   - nTxs: number of transmit antennas
+    %   - nTxs (M): number of transmit antennas
     %   - nRxs: number of receive antennas
     %
     % Output:

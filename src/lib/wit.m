@@ -63,7 +63,7 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
             cvx_solver mosek
-            cvx_precision high
+%             cvx_precision high
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression snr(nSubbands, 1);
             for iSubband = 1 : nSubbands
@@ -87,6 +87,8 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
                 snr(iSubband) = real(trace(rateMatrix{iSubband} * irsMatrix)) / noisePower;
             end
             rateCandidate = sum(log2(1 + snr));
+
+            % * Choose best candidate
             if rateCandidate > rate
                 rate = rateCandidate;
                 irs = irsCandidate;

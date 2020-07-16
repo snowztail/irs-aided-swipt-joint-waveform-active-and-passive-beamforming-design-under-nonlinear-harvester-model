@@ -71,7 +71,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
         [rate, ~, rateExponent] = rate_gp(noisePower, channel, infoWaveform, infoRatio);
 
         % * Test convergence
-        isConverged = abs(current - current_) / current <= tolerance || current == 0;
+        isConverged = abs(current - current_) / current <= tolerance;
         current_ = current;
     end
     infoWaveform = infoWaveform .* exp(1i * phase);
