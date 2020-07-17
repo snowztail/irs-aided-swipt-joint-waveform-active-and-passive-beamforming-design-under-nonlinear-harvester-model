@@ -1,13 +1,13 @@
-function [rate, rateMonomial, rateExponent] = rate_gp(noisePower, channel, infoWaveform, infoRatio)
+function [rate, rateMonomial, rateExponent] = rate_gp(channelAmplitude, infoWaveform, infoRatio, noisePower)
     % Function:
     %   - formulate rate as a function of waveform amplitudes
     %   - decompose rate as sum of monomials
     %
     % Input:
-    %   - noisePower (\sigma_n^2): average noise power
-    %   - channel (h) [nSubbands * nTxs * nRxs]: channel amplitude response
-    %   - infoWaveform (w_I) [nSubbands]: amplitude on information carriers
+    %   - channelAmplitude (a) [nSubbands * nTxs * nRxs]: channel amplitude response
+    %   - infoWaveform (s_I) [nSubbands]: amplitude on information carriers
     %   - infoRatio (\bar{\rho}): information splitting ratio
+    %   - noisePower (\sigma_n^2): average noise power
     %
     % Output:
     %   - rate (R): maximum achievable rate
@@ -22,8 +22,8 @@ function [rate, rateMonomial, rateExponent] = rate_gp(noisePower, channel, infoW
 
 
 
-    % * Initialize algorithm
-    nSubbands = size(infoWaveform, 1);
+    % * Get data
+    nSubbands = size(channelAmplitude, 1);
     nTerms = 2;
 
     % * Type of variables
@@ -37,14 +37,14 @@ function [rate, rateMonomial, rateExponent] = rate_gp(noisePower, channel, infoW
     end
 
     % * SNR term in rate expression
-    for iSubband = 1: nSubbands
-        rateMonomial(iSubband, 2) = infoRatio / noisePower * (infoWaveform(iSubband) ^ 2 * norm(channel(iSubband, :)) ^ 2);
+    for iSubband = 1 : nSubbands
+        rateMonomial(iSubband, 2) = infoRatio * (infoWaveform(iSubband) ^ 2 * norm(channelAmplitude(iSubband, :)) ^ 2) / noisePower;
     end
 
     if isKnown
         ratePosynomial = sum(rateMonomial, 2);
         rateExponent = rateMonomial ./ repmat(ratePosynomial, [1 nTerms]);
-        rate = log(prod(ratePosynomial)) / log(2);
+        rate = log2(prod(ratePosynomial));
     else
         rateExponent = NaN;
         rate = NaN;

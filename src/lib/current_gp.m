@@ -1,4 +1,4 @@
-function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, channel, infoWaveform, powerWaveform, powerRatio)
+function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio)
     % Function:
     %   - formulate output DC current as a function of waveform amplitudes
     %   - decompose current as sum of monomials
@@ -6,9 +6,9 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     % Input:
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
-    %   - channel (h) [nSubbands * nTxs * nRxs]: channel amplitude response
-    %   - infoWaveform (w_I) [nSubbands]: amplitude on information carriers
-    %   - powerWaveform (w_P) [nSubbands]: amplitude on power carriers
+    %   - channelAmplitude (a) [nSubbands * nTxs * nRxs]: channel amplitude response
+    %   - infoAmplitude (s_I) [nSubbands]: amplitude on information carriers
+    %   - powerAmplitude (s_P) [nSubbands]: amplitude on power carriers
     %   - powerRatio (\rho): power splitting ratio
     %
     % Output:
@@ -23,8 +23,8 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     % Author & Date: Yang (i@snowztail.com) - 04 Jun 19
 
 
-    % * Initialize algorithm
-    nSubbands = size(infoWaveform, 1);
+    % * Get data
+    nSubbands = size(channelAmplitude, 1);
     nTermsP2 = nSubbands;
     nTermsP4 = nSubbands * (2 * nSubbands ^ 2 + 1) / 3;
     nTermsI2 = nSubbands;
@@ -32,7 +32,7 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     nTermsP2I2 = nSubbands ^ 2;
 
     % * Type of variables
-    isKnown = isa(infoWaveform, 'double');
+    isKnown = isa(infoAmplitude, 'double');
     if isKnown
         currentMonomialP2 = zeros(1, nTermsP2);
         currentMonomialP4 = zeros(1, nTermsP4);
@@ -49,24 +49,24 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
 
     % * Monomials
     iTermP2 = 0;
-    for iSubband = 1: nSubbands
+    for iSubband = 1 : nSubbands
         iTermP2 = iTermP2 + 1;
-        currentMonomialP2(iTermP2) = norm(channel(iSubband, :)) ^ 2 * powerWaveform(iSubband) ^ 2;
+        currentMonomialP2(iTermP2) = norm(channelAmplitude(iSubband, :)) ^ 2 * powerAmplitude(iSubband) ^ 2;
     end
     clearvars iSubband;
 
     iTermP4 = 0;
-    for iSubband1 = 1: nSubbands
-        for iSubband2 = 1: nSubbands
-            for iSubband3 = 1: nSubbands
-                for iSubband4 = 1: nSubbands
+    for iSubband1 = 1 : nSubbands
+        for iSubband2 = 1 : nSubbands
+            for iSubband3 = 1 : nSubbands
+                for iSubband4 = 1 : nSubbands
                     if iSubband1 + iSubband2 == iSubband3 + iSubband4
                         iTermP4 = iTermP4 + 1;
                         currentMonomialP4(iTermP4) = ...
-                            (powerWaveform(iSubband1) * norm(channel(iSubband1, :))) * ...
-                            (powerWaveform(iSubband2) * norm(channel(iSubband2, :))) * ...
-                            (powerWaveform(iSubband3) * norm(channel(iSubband3, :))) * ...
-                            (powerWaveform(iSubband4) * norm(channel(iSubband4, :)));
+                            (powerAmplitude(iSubband1) * norm(channelAmplitude(iSubband1, :))) * ...
+                            (powerAmplitude(iSubband2) * norm(channelAmplitude(iSubband2, :))) * ...
+                            (powerAmplitude(iSubband3) * norm(channelAmplitude(iSubband3, :))) * ...
+                            (powerAmplitude(iSubband4) * norm(channelAmplitude(iSubband4, :)));
                     end
                 end
             end
@@ -75,30 +75,30 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     clearvars iSubband1 iSubband2 iSubband3 iSubband4;
 
     iTermI2 = 0;
-    for iSubband = 1: nSubbands
+    for iSubband = 1 : nSubbands
         iTermI2 = iTermI2 + 1;
-        currentMonomialI2(iTermI2) = norm(channel(iSubband, :)) ^ 2 * infoWaveform(iSubband) ^ 2;
+        currentMonomialI2(iTermI2) = norm(channelAmplitude(iSubband, :)) ^ 2 * infoAmplitude(iSubband) ^ 2;
     end
     clearvars iSubband;
 
     iTermI4 = 0;
-    for iSubband1 = 1: nSubbands
-        for iSubband2 = 1: nSubbands
+    for iSubband1 = 1 : nSubbands
+        for iSubband2 = 1 : nSubbands
             iTermI4 = iTermI4 + 1;
             currentMonomialI4(iTermI4) = ...
-                (infoWaveform(iSubband1) ^ 2 * norm(channel(iSubband1, :)) ^ 2) * ...
-                (infoWaveform(iSubband2) ^ 2 * norm(channel(iSubband2, :)) ^ 2);
+                (infoAmplitude(iSubband1) ^ 2 * norm(channelAmplitude(iSubband1, :)) ^ 2) * ...
+                (infoAmplitude(iSubband2) ^ 2 * norm(channelAmplitude(iSubband2, :)) ^ 2);
         end
     end
     clearvars iSubband1 iSubband2;
 
     iTermP2I2 = 0;
-    for iSubband1 = 1: nSubbands
-        for iSubband2 = 1: nSubbands
+    for iSubband1 = 1 : nSubbands
+        for iSubband2 = 1 : nSubbands
             iTermP2I2 = iTermP2I2 + 1;
             currentMonomialP2I2(iTermP2I2) = ...
-                (norm(channel(iSubband1, :)) ^ 2 * powerWaveform(iSubband1) ^ 2) * ...
-                (norm(channel(iSubband2, :)) ^ 2 * infoWaveform(iSubband2) ^ 2);
+                (norm(channelAmplitude(iSubband1, :)) ^ 2 * powerAmplitude(iSubband1) ^ 2) * ...
+                (norm(channelAmplitude(iSubband2, :)) ^ 2 * infoAmplitude(iSubband2) ^ 2);
         end
     end
     clearvars iSubband1 iSubband2;
