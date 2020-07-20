@@ -139,7 +139,7 @@
 		{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho}{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)}{\label{op:su}}{\label{eq:su_target}}
 		\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
 		\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\boldsymbol{w}_{I,n}\rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}\label{eq:su_rate_constraint}
-		\addConstraint{\lvert{\phi}\rvert=1, \quad l=1,\dots,L}
+		\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}
 		\addConstraint{0 \le \rho \le 1}
 	\end{maxi!}
 	Problem \ref{op:su} is intricate due to coupled variables and non-convex objective function \ref{eq:su_target} and constraint \ref{eq:su_rate_constraint}. To reduce the design complexity, we propose an suboptimal AO algorithm that updates the IRS phase shift, transmit waveform, and receive splitting ratio iteratively.
@@ -242,12 +242,12 @@
 		\end{figure*}
 		Hence, problem \ref{op:su} is transformed to
 		\begin{maxi!}
-				{\boldsymbol{\boldsymbol{\Phi}}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:su_irs}}{\label{eq:su_irs_target}}
-				\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)} \ge \bar{R}}
-				\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}
-				\addConstraint{\boldsymbol{\Phi}\succeq{0}}
-				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
-			\end{maxi!}
+			{\boldsymbol{\boldsymbol{\Phi}}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:su_irs}}{\label{eq:su_irs_target}}
+			\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)} \ge \bar{R}}
+			\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}
+			\addConstraint{\boldsymbol{\Phi}\succeq{0}}
+			\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
+		\end{maxi!}
 		We then relax the rank constraint \ref{co:irs_rank} and solve the optimal IRS matrix $\boldsymbol{\Phi}^{\star}$ iteratively by interior-point method. If $\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ is attained by eigenvalue decomposition (EVD). Otherwise, a solution can be extracted through Gaussian randomization method \cite{Huang2010}. We first perform EVD on $\boldsymbol{\Phi}^{\star}$ as $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}^H$. Then, we generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$ and construct the corresponding candidates by
 		\begin{equation}
 			\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}
