@@ -86,7 +86,7 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
             cvx_solver mosek
-            cvx_precision high
+            % cvx_precision high
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);
@@ -106,12 +106,10 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
             for iSubband = 1 : nSubbands
                 snr(iSubband) = infoRatio * trace(rateMatrix{iSubband} * irsMatrix) / noisePower;
             end
-%             rate = sum(log(1 + snr)) / log(2);
             maximize currentSca;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
                 geo_mean(1 + snr) >= 2 ^ (rateConstraint / nSubbands);
-%                 rate >= rateConstraint;
         cvx_end
 
         % * Update output current
@@ -152,7 +150,6 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
 
         % * Choose best candidate
         if currentCandidate >= current && rateCandidate >= rateConstraint
-%         if currentCandidate >= current
             current = currentCandidate;
             irs = irsCandidate;
         end

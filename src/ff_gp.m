@@ -24,7 +24,7 @@ for iSample = 2 : nSamples
         [irs] = irs_ff(beta2, beta4, nCandidates, rateConstraint(iSample), tolerance, infoWaveform, powerWaveform, infoRatio, powerRatio, concatVector, noisePower, concatMatrix, irs);
         [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
         [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_split_ratio_gp(beta2, beta4, txPower, rateConstraint(iSample), tolerance, infoRatio, powerRatio, noisePower, compositeChannel, infoWaveform, powerWaveform);
-        isConverged = abs(current - current_) / current <= tolerance || current <= 1e-10;
+        isConverged = abs(current - current_) / current <= tolerance;
         current_ = current;
     end
     ffGpSolution{iSample}.powerRatio = powerRatio;

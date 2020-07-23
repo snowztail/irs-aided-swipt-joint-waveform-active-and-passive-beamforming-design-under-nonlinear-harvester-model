@@ -2,7 +2,7 @@ clear; clc; setup;
 
 %% * Transceiver
 % number of transmit and receive antennas
-nTxs = 2;
+nTxs = 1;
 nRxs = 1;
 % max number of reflecting elements in IRS
 nReflectors = 100;

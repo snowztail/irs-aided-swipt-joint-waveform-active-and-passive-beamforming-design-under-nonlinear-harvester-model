@@ -25,7 +25,7 @@ function [rate, current] = re_sample(beta2, beta4, channel, infoWaveform, powerW
 
 
     % * Get data
-    [nSubbands, nTxs] = size(channel);
+    [nSubbands, nTxs, ~] = size(channel);
 
     % * Construct coefficient matrices
     % \boldsymbol{W}_{I/P}, \boldsymbol{W}_{I/P,n}

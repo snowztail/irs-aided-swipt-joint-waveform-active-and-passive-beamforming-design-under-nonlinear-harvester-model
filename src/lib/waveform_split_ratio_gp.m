@@ -73,7 +73,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio] = waveform_split_r
         cvx_end
 
         [current, ~, currentExponent] = current_gp(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);
-        [rate, ~, rateExponent] = rate_gp(channelAmplitude, infoAmplitude, infoRatio, noisePower);
+        [~, ~, rateExponent] = rate_gp(channelAmplitude, infoAmplitude, infoRatio, noisePower);
 
         % * Test convergence
         isConverged = abs(current - current_) / current <= tolerance;

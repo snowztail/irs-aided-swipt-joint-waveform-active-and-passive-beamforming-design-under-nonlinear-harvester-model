@@ -32,16 +32,12 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
     [nSubbands, nTxs, nReflectors] = size(incidentChannel);
 
     % * Initialize IRS and composite channel
-    irs = ones(nReflectors, 1);
-%     irs = exp(1i * 2 * pi * rand(nReflectors, 1));
+    % irs = ones(nReflectors, 1);
+    irs = exp(1i * 2 * pi * rand(nReflectors, 1));
     [compositeChannel, ~, concatSubchannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 
-    % * Construct waveform (water-filling + MRT) and splitting ratio
-    [~, subbandPower] = channel_capacity(compositeChannel, txPower, noisePower);
-    infoWaveform = zeros(nTxs, nSubbands);
-    for iSubband = 1 : nSubbands
-        infoWaveform(:, iSubband) = sqrt(subbandPower(iSubband)) * compositeChannel(iSubband, :)' / norm(compositeChannel(iSubband, :));
-    end
+    % * Construct waveform (water-filling + MRT) and initialize splitting ratio
+    [~, infoWaveform] = channel_capacity(compositeChannel, txPower, noisePower);
     powerWaveform = zeros(nTxs, nSubbands) + eps;
     infoRatio = 1 - eps;
     powerRatio = 1 - infoRatio;
@@ -63,7 +59,7 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
             cvx_solver mosek
-%             cvx_precision high
+            % cvx_precision high
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression snr(nSubbands, 1);
             for iSubband = 1 : nSubbands
@@ -98,10 +94,7 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
 
         % * Update composite channel and optimal waveform
         [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-        [capacity, subbandPower] = channel_capacity(compositeChannel, txPower, noisePower);
-        for iSubband = 1 : nSubbands
-            infoWaveform(:, iSubband) = sqrt(subbandPower(iSubband)) * compositeChannel(iSubband, :)' / norm(compositeChannel(iSubband, :));
-        end
+        [capacity, infoWaveform] = channel_capacity(compositeChannel, txPower, noisePower);
 
         % * Update coefficients
         for iSubband = 1 : nSubbands
