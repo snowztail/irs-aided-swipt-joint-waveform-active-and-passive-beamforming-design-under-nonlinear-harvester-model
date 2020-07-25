@@ -1,4 +1,4 @@
-function [infoWaveform, powerWaveform, infoRatio, powerRatio] = waveform_split_ratio_gp(beta2, beta4, channel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance)
+function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_split_ratio_gp(beta2, beta4, channel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance)
     % Function:
     %   - jointly optimize waveform and splitting ratio to maximize the R-E region
     %
@@ -54,7 +54,6 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio] = waveform_split_r
     while ~isConverged
         cvx_begin gp quiet
             cvx_solver mosek
-            % cvx_precision high
             variable auxiliary
             variable infoAmplitude(nSubbands, 1) nonnegative
             variable powerAmplitude(nSubbands, 1) nonnegative
@@ -73,7 +72,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio] = waveform_split_r
         cvx_end
 
         [current, ~, currentExponent] = current_gp(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);
-        [~, ~, rateExponent] = rate_gp(channelAmplitude, infoAmplitude, infoRatio, noisePower);
+        [rate, ~, rateExponent] = rate_gp(channelAmplitude, infoAmplitude, infoRatio, noisePower);
 
         % * Test convergence
         isConverged = abs(current - current_) / current <= tolerance;
@@ -81,9 +80,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio] = waveform_split_r
     end
 
     % * Reconstruct waveform by power allocation + beamforming
-    for iSubband = 1 : nSubbands
-        infoWaveform(:, iSubband) = infoAmplitude(iSubband) * channel(iSubband, :)' / norm(channel(iSubband, :));
-        powerWaveform(:, iSubband) = powerAmplitude(iSubband) * channel(iSubband, :)' / norm(channel(iSubband, :));
-    end
+    infoWaveform = transpose(infoAmplitude) .* channel' ./ vecnorm(channel, 2, 2)';
+    powerWaveform = transpose(powerAmplitude) .* channel' ./ vecnorm(channel, 2, 2)';
 
 end

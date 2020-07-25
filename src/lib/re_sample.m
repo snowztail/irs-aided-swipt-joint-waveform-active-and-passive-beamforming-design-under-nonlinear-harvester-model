@@ -41,8 +41,8 @@ function [rate, current] = re_sample(beta2, beta4, channel, infoWaveform, powerW
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
     powerAuxiliary = zeros(2 * nSubbands - 1, 1);
     for iSubband = - nSubbands + 1 : nSubbands - 1
-        infoAuxiliary(iSubband + nSubbands) = trace(conj(channelBlkDiag{iSubband + nSubbands}) * infoMatrix);
-        powerAuxiliary(iSubband + nSubbands) = trace(conj(channelBlkDiag{iSubband + nSubbands}) * powerMatrix);
+        infoAuxiliary(iSubband + nSubbands) = trace(channelBlkDiag{iSubband + nSubbands} * infoMatrix);
+        powerAuxiliary(iSubband + nSubbands) = trace(channelBlkDiag{iSubband + nSubbands} * powerMatrix);
     end
     infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
     powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));

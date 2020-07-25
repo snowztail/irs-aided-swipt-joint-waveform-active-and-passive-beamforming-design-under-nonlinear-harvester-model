@@ -26,7 +26,7 @@ function [capacity, infoWaveform] = channel_capacity(channel, txPower, noisePowe
     subbandPower = water_filling(subbandStrength, 2 * txPower, noisePower);
 
     % * Construct waveform
-    infoWaveform = sqrt(subbandPower') .* channel' ./ vecnorm(channel, 2, 2)';
+    infoWaveform = sqrt(transpose(subbandPower)) .* channel' ./ vecnorm(channel, 2, 2)';
 
     % * Compute capacity
     capacity = sum(log2(1 + subbandPower .* subbandStrength / noisePower));

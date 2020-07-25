@@ -53,8 +53,8 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
     infoCurrentMatrix = cell(2 * nSubbands - 1, 1);
     powerCurrentMatrix = cell(2 * nSubbands - 1, 1);
     for iSubband = - nSubbands + 1 : nSubbands - 1
-        infoCurrentMatrix{iSubband + nSubbands} = stackMatrix * conj(infoBlkDiag{iSubband + nSubbands}) * stackMatrix';
-        powerCurrentMatrix{iSubband + nSubbands} = stackMatrix * conj(powerBlkDiag{iSubband + nSubbands}) * stackMatrix';
+        infoCurrentMatrix{iSubband + nSubbands} = stackMatrix * infoBlkDiag{iSubband + nSubbands} * stackMatrix';
+        powerCurrentMatrix{iSubband + nSubbands} = stackMatrix * powerBlkDiag{iSubband + nSubbands} * stackMatrix';
     end
     infoCurrentMatrix{nSubbands} = hermitianize(infoCurrentMatrix{nSubbands});
     powerCurrentMatrix{nSubbands} = hermitianize(powerCurrentMatrix{nSubbands});
@@ -86,7 +86,6 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
             cvx_solver mosek
-            % cvx_precision high
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);

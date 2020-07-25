@@ -41,8 +41,8 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, channel, inf
     infoAuxiliary = zeros(2 * nSubbands - 1, 1);
     powerAuxiliary = zeros(2 * nSubbands - 1, 1);
     for iSubband = - nSubbands + 1 : nSubbands - 1
-        infoAuxiliary(iSubband + nSubbands) = trace(conj(channelBlkDiag{iSubband + nSubbands}) * infoMatrix);
-        powerAuxiliary(iSubband + nSubbands) = trace(conj(channelBlkDiag{iSubband + nSubbands}) * powerMatrix);
+        infoAuxiliary(iSubband + nSubbands) = trace(channelBlkDiag{iSubband + nSubbands} * infoMatrix);
+        powerAuxiliary(iSubband + nSubbands) = trace(channelBlkDiag{iSubband + nSubbands} * powerMatrix);
     end
     infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
     powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
@@ -58,15 +58,14 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, channel, inf
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
             cvx_solver mosek
-            % cvx_precision high
             variable infoMatrix(nTxs * nSubbands, nTxs * nSubbands) hermitian semidefinite;
             variable powerMatrix(nTxs * nSubbands, nTxs * nSubbands) hermitian semidefinite;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);
             % t'_{I/P,n}
             for iSubband = - nSubbands + 1 : nSubbands - 1
-                infoAuxiliary(iSubband + nSubbands) = trace(conj(channelBlkDiag{iSubband + nSubbands}) * infoMatrix);
-                powerAuxiliary(iSubband + nSubbands) = trace(conj(channelBlkDiag{iSubband + nSubbands}) * powerMatrix);
+                infoAuxiliary(iSubband + nSubbands) = trace(channelBlkDiag{iSubband + nSubbands} * infoMatrix);
+                powerAuxiliary(iSubband + nSubbands) = trace(channelBlkDiag{iSubband + nSubbands} * powerMatrix);
             end
             infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
             powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
@@ -103,8 +102,8 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, channel, inf
 
         % * Update auxiliaries
         for iSubband = - nSubbands + 1 : nSubbands - 1
-            infoAuxiliary(iSubband + nSubbands) = trace(conj(channelBlkDiag{iSubband + nSubbands}) * infoMatrix);
-            powerAuxiliary(iSubband + nSubbands) = trace(conj(channelBlkDiag{iSubband + nSubbands}) * powerMatrix);
+            infoAuxiliary(iSubband + nSubbands) = trace(channelBlkDiag{iSubband + nSubbands} * infoMatrix);
+            powerAuxiliary(iSubband + nSubbands) = trace(channelBlkDiag{iSubband + nSubbands} * powerMatrix);
         end
         infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
         powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
