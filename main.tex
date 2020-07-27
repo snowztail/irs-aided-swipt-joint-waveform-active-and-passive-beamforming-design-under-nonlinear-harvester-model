@@ -8,7 +8,7 @@
 % \input{cover.tex}
 
 \begin{abstract}
-	Simultaneous Wireless Information and Power Transfer (SWIPT) is severely restricted by the low power level of the receive Radio-Frequency (RF) signal. To tackle this problem, we introduce Intelligent Reflecting Surface (IRS) that brings a high passive beamforming gain to compensate the propagation loss and boost the energy efficiency with a low power consumption. This paper investigates an IRS-aided multiuser Orthogonal Frequency Division Multiplexing (OFDM) SWIPT system based on practical nonlinear harvester model, where the single-antenna Access Point (AP) transmits information and energy simultaneously to multiple single-antenna users under the assist of IRS. We aim to maximize the weighted sum Rate-Energy (R-E) region via jointly optimizing the phase shifts at the IRS, the transmit waveform at the AP, and the power splitting ratio for all users. The problem is equivalent to a current maximization problems subject to rate constraint, and we propose an low-complexity alternating algorithm to obtain suboptimal solutions iteratively. Numerical results demonstrated that dedicated power signal is beneficial to multicarrier SWIPT, while IRS brings significant R-E region enlargement over benchmark schemes when properly configured.
+	Simultaneous Wireless Information and Power Transfer (SWIPT) is severely restricted by the low power level of the receive Radio-Frequency (RF) signal. To tackle this problem, we introduce Intelligent Reflecting Surface (IRS) that brings a high passive beamforming gain to compensate the propagation loss and boost the energy efficiency with a low power consumption. This paper investigates an IRS-aided Orthogonal Frequency Division Multiplexing (OFDM) SWIPT system based on practical nonlinear harvester model, where a multi-antenna Access Point (AP) transmits information and energy simultaneously to a single-antenna user under the assist of IRS. We aim to maximize the Rate-Energy (R-E) region via jointly optimizing the transmit waveform at the AP, the phase shifts at the IRS, and the splitting ratio at the user. The problem is formulated as current maximization problem subject to rate constraint, and we propose an low-complexity alternating algorithm to obtain suboptimal solutions iteratively. Numerical results demonstrated that dedicated power signal is beneficial to multicarrier SWIPT, while IRS brings significant R-E region enlargement over benchmark schemes when properly configured.
 \end{abstract}
 
 \begin{section}{Introduction}
@@ -23,7 +23,7 @@
 
 		Inspired by the advance in real-time reconfigurable metamaterials \cite{Cui2014}, \cite{Liaskos2018} introduced a programmable metasurface that steers or polarizes the EM wave at specific frequency to mitigate signal attenuation. At the same time, \cite{Tan2018} constructed an adjustable reflect array that ensures reliable millimeter-wave (mmWave) communication based on a beam-searching algorithm to reduce indoor signal blockage. Motivated by this, \cite{Wu2018,Wu2019} introduced an IRS-assisted MISO system and proposed a beamforming algorithm that jointly optimizes the precoder at the Access Point (AP) and the phase shifts at the IRS to maximize Signal-to-Noise Ratio (SNR). The active and passive beamforming problem was extended to the discrete phase shift case \cite{Wu2019a} and the multiuser case \cite{Guo2019a}. In \cite{Nadeem2019}, channel estimation for Time-Division Duplex (TDD) systems was carried through a two-stage Minimum Mean Squared Error (MMSE)-based protocol that sequentially estimates the cascaded channel of each IRS element with the others switched off. Starting from the impedance equation, \cite{Abeywickrama2019} investigated the influence of phase shift on the reflection amplitude and proposed a parametric IRS model via curve fitting. Recent research also explored the opportunity of integrating IRS with Orthogonal Frequency-Division Multiplexing (OFDM) systems. \cite{Yang2019} exploited spatial correlation to reduce estimation overhead and design complexity by assuming adjacent elements share a common reflection coefficient. On top of this, group-based OFDM channel estimation was investigated in \cite{Zheng2019}. By adjusting IRS over time slots, \cite{Yang2020} introduced artificial diversity within coherence time and investigated resource allocation and IRS configuration per Resource Block (RB). Real-time high-definition video transmission was performed over a prototype constructed with Positive Intrinsic-Negative (PIN) diodes, which demonstrated the feasibility and benefit of IRS at GHz and mmWave frequency \cite{Dai2020}.
 
-		To the best of authors' knowledge, most existing papers assume a Frequency-Flat (FF) IRS where all elements reflect the signal of different frequency equally. Although Frequency-Selective Surface (FSS) has received much attention for wideband communications, it is different from IRS since active FSS requires RF-chains \cite{Kim2006,Xu2014} while passive FSS has fixed physical characteristics \cite{Anwar2018}.
+		Most existing papers assume a Frequency-Flat (FF) IRS where all elements reflect different frequencies equally. Although Frequency-Selective Surface (FSS) has received much attention for wideband communications, it is prohibitive since active FSS requires RF-chains \cite{Kim2006,Xu2014} while passive FSS has fixed physical characteristics and unable to adjust channel adaptively \cite{Anwar2018}.
 	\end{subsection}
 
 	\begin{subsection}{IRS-aided SWIPT}
@@ -31,68 +31,95 @@
 	\end{subsection}
 
 	\begin{subsection}{Objective and Methodology}
-		In this paper, we study an IRS-aided multiuser MISO SWIPT system where the IRS assists the information and energy transmission of all users. A multicarrier unmodulated power waveform (deterministic multisine) is superposed to a multicarrier modulated information waveform (e.g. OFDM) to boost the energy transfer efficiency without introducing additional interference. The transmit waveform, IRS phase shift and receive splitting ratio are jointly optimized to maximize the R-E tradeoff. Different from previous research, this paper investigates the fundamental impact of harvester nonlinearity on waveform and IRS design. We transform the R-E region characterization problem into multiple current maximization problems subject to different rate constraints. To reduce the design complexity, we	propose an Alternating Optimization (AO) algorithm that updates the channel and transceiver iteratively based on Semi-Definite Relaxation (SDR) technique. It was demonstrated that dedicated power waveform boosts the energy transmission efficiency such that TS and PS are preferred for low-rate and high-rate applications respectively. Also, IRS brings a significant channel amplification and R-E enhancement especially when located near the transmitter, and the performance loss compared with ideal Frequency-Selective (FS) IRS decreases as the number of reflectors increases.
+		In this paper, we study an IRS-aided broadband downlink MISO SWIPT system where the IRS assists the information and energy transmission of a single user. A multicarrier unmodulated power waveform (deterministic multisine) is superposed to a multicarrier modulated information waveform (e.g. OFDM) to boost the energy transfer efficiency without introducing additional interference. The transmit waveform, IRS phase shift and receive splitting ratio are jointly optimized to maximize the R-E tradeoff. Different from previous research, this paper focus on broadband SWIPT and investigates the fundamental impact of harvester nonlinearity on IRS design. We transform the R-E region characterization problem into multiple current maximization problems subject to different rate constraints. To reduce the design complexity, we propose an Alternating Optimization (AO) algorithm that updates the channel and transceiver iteratively based on Semi-Definite Relaxation (SDR) and Geometric Programming (GP) technique. Numerical results showed that SDR is tight and the proposed algorithm can find a stationary point for all tested channel realizations. We demonstrate that dedicated power waveform boosts the energy transmission efficiency, such that TS and PS are preferred for low-rate and high-rate applications respectively. Also, IRS brings a significant channel amplification thus R-E enhancement especially when located near the transmitter/receiver, and the performance loss compared with ideal Frequency-Selective (FS) IRS decreases as the number of reflectors increases.
 	\end{subsection}
 \end{section}
 
 \begin{section}{System Model}
-	Consider an IRS-aided multiuser MISO OFDM SWIPT system where the $M$-antenna transmitter delivers information and power simultaneously, through a single $L$-reflector IRS, to $K$ single-antenna users over $N$ orthogonal subbands. We assume a total bandwidth $B$ with evenly-spaced subbands around center frequency $f_c$. Each subband is allocated to one user per time slot, and denote the frequency of the $n$-th subband as $f_n$ ($n=1,\dots,N$). Perfect Channel State Information (CSI) with negligible training overhead is assumed to explore the analytical upper-bound of the proposed design. A quasi-static block fading channel model is considered for all links and we focus on one particular block where the channels are approximately unchanged. We characterize and compare the R-E region achieved by TS and PS receivers. Specifically, TS divides each time slot into orthogonal data and energy slots and performs a time sharing between WPT and Wireless Information Transfer (WIT). In comparison, PS splits the received signal into data and energy streams for ID and EH, and the splitting ratio $\rho$ is coupled with waveform and IRS design. Perfect synchronization is assumed among the three parties in both scenarios, and signals reflected by IRS for two and more times are omitted.
+	Consider an IRS-aided SWIPT system where a $M$-antenna transmitter delivers information and power simultaneously, through a $L$-reflector IRS, to a single-antenna user over $N$ orthogonal subbands. We assume a total bandwidth $B$ with evenly-spaced subbands centered at frequency $f_n$ ($n=1,\dots,N$). Perfect Channel State Information (CSI) with negligible training overhead is assumed to explore the analytical upper-bound of the proposed design. A quasi-static block fading channel model is considered for all links, and we focus on one particular block where the channels are approximately unchanged. Two practical co-located receiver architectures are compared in terms of R-E region. Specifically, TS divides each time slot into orthogonal data and energy slots and performs a time sharing between WPT and Wireless Information Transfer (WIT). In comparison, PS splits the received signal into individual ID and EH streams such that the splitting ratio $\rho$ is coupled with waveform and IRS design. Perfect synchronization is assumed among the three parties in both scenarios, and signals reflected by IRS for two and more times are omitted.
 	\begin{subsection}{Transmit Signal}
-		Denote $\tilde{x}_{I,n}(t)$ as the information symbol transmitted over subband $n$, which belongs to one user at time $t$ and follows a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) distribution $\tilde{x}_{I,n}\sim\mathcal{CN}(0,1)$. Let $\alpha_{k,n}$ be the allocation indicator, namely if subband $n$ is given to user $k$ ($k=1,\dots,K$), we have $\alpha_{k,n}=1$ and $\alpha_{k',n}=0$ for $k' \ne k$. Let $\boldsymbol{\alpha}_k=[\alpha_{k,1},\dots,\alpha_{k,N}]^T \in \mathbb{C}^{N \times 1}$. The superposed transmit signal at time $t$ on antenna $m$ ($m=1,\dots,M$) is
+		Denote $\tilde{x}_{I,n}(t)$ as the information symbol transmitted over subband $n$, which follows a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) distribution with zero mean and unit variance $\tilde{x}_{I,n}\sim\mathcal{CN}(0,1)$. The superposed transmit signal on antenna $m$ ($m=1,\dots,M$) at time $t$ is
 		\begin{equation}\label{eq:x_m}
 			x_m(t)=\Re\left\{\sum_{n=1}^N\left({w_{I,n,m}\tilde{x}_{I,n}(t)}+w_{P,n,m}\right){e^{j2{\pi}{f_n}{t}}}\right\}
 		\end{equation}
-		where $w_{I/P,n,m}=s_{I/P,n,m}e^{j\psi_{I/P,n,m}}$ denotes the weight on the information and power signal transmitted by antenna $m$ at subband $n$. Let $\boldsymbol{w}_{I/P,n}=[w_{I/P,n,1},\dots,w_{I/P,n,M}]^T \in \mathbb{C}^{M \times 1}$ such that the transmit information and power signals write as
+		where $w_{I/P,n,m}=s_{I/P,n,m}e^{j\psi_{I/P,n,m}}$ denotes the weight on the information and power signal transmitted by antenna $m$ at subband $n$. Define $\boldsymbol{w}_{I/P,n}=[w_{I/P,n,1},\dots,w_{I/P,n,M}]^T \in \mathbb{C}^{M \times 1}$ by stacking up weights across all antennas and let $\boldsymbol{s}_{I/P,n}$, $\boldsymbol{\psi}_{I/P,n}$ be the magnitude and phase of $\boldsymbol{w}_{I/P,n}$. Therefore, the transmit information and power signals write as
 		\begin{align}
 			\boldsymbol{x}_{I}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{I,n}\tilde{x}_{I,n}(t){e^{j2{\pi}{f_n}{t}}}\right\}}\label{eq:x_I}\\
 			\boldsymbol{x}_{P}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{P,n}{e^{j2{\pi}{f_n}{t}}}\right\}}\label{eq:x_P}
 		\end{align}
-		We also define $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^T,\dots,\boldsymbol{w}_{I/P,N}^T]^T \in \mathbb{C}^{MN \times 1}$ and let $\boldsymbol{s}_{I/P}=\lvert{\boldsymbol{w}_{I/P}}\rvert$, $\boldsymbol{\psi}_{I/P}=\angle{\boldsymbol{w}_{I/P}}$ be the magnitude and phase of the waveforms.
+
+		% We also define $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^T,\dots,\boldsymbol{w}_{I/P,N}^T]^T \in \mathbb{C}^{MN \times 1}$ and let $\boldsymbol{s}_{I/P}=\lvert{\boldsymbol{w}_{I/P}}\rvert$, $\boldsymbol{\psi}_{I/P}=\angle{\boldsymbol{w}_{I/P}}$ be the waveform magnitude and phase.
 	\end{subsection}
 
 	\begin{subsection}{Composite Channel}
-		At subband $n$, denote the AP-user $k$ direct channel as $\boldsymbol{h}_{D,k,n}^H \in \mathbb{C}^{1 \times M}$, AP-IRS incident channel as $\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times M}$, and IRS-user $k$ reflective channel as $\boldsymbol{h}_{R,k,n}^H \in \mathbb{C}^{1 \times L}$. At the IRS, element $l$ ($l=1,\dots,L$) redistributes the incoming signal by adjusting the reflection amplitude $\gamma_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$ \footnote{To investigate the performance upper bound of IRS, we suppose the reflection coefficient is maximized $\gamma_l=1 \ \forall l$ while the phase shift is a continuous variable over $[0,2\pi)$.}. On top of this, the IRS matrix collects the reflection coefficients onto the main diagonal entries as $\boldsymbol{\Theta} = \mathrm{diag}(\gamma_1 e^{j \theta_1}, \dots, \gamma_L e^{j \theta_L}) \in \mathbb{C}^{L \times L}$. The IRS-aided extra link can be modeled as a concatenation of the AP-IRS channel, IRS reflection, and IRS-user channel. Hence, the composite channel for user $k$ over subband $n$ is
-		\begin{equation}\label{eq:h_{k,n}}
-			\boldsymbol{h}_{k,n}^H = \boldsymbol{h}_{D,k,n}^H + \boldsymbol{h}_{R,k,n}^H \boldsymbol{\Theta} \boldsymbol{H}_{I,n} = \boldsymbol{h}_{D,k,n}^H + \boldsymbol{\phi}^H \boldsymbol{V}_{k,n}
+		At subband $n$, denote the AP-user direct channel as $\boldsymbol{h}_{D,n}^H \in \mathbb{C}^{1 \times M}$, AP-IRS incident channel as $\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times M}$, and IRS-user reflective channel as $\boldsymbol{h}_{R,n}^H \in \mathbb{C}^{1 \times L}$. At the IRS, element $l$ ($l=1,\dots,L$) redistributes the incoming signal by adjusting the reflection amplitude $\gamma_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$ \footnote{To investigate the performance upper bound of IRS, we suppose the reflection coefficient is maximized $\gamma_l=1 \ \forall l$ while the phase shift is a continuous variable over $[0,2\pi)$.}. On top of this, the IRS matrix collects the reflection coefficients onto the main diagonal entries as $\boldsymbol{\Theta} = \mathrm{diag}(\gamma_1 e^{j \theta_1}, \dots, \gamma_L e^{j \theta_L}) \in \mathbb{C}^{L \times L}$. The extra link introduced by IRS can be modeled as a concatenation of the AP-IRS channel, IRS reflection, and IRS-user channel. On top of this, the total composite channel is formed by adding the IRS-aided extra channel to the AP-user direct channel as
+		\begin{equation}\label{eq:h_n}
+			\boldsymbol{h}_{n}^H = \boldsymbol{h}_{D,n}^H + \boldsymbol{h}_{R,n}^H \boldsymbol{\Theta} \boldsymbol{H}_{I,n} = \boldsymbol{h}_{D,n}^H + \boldsymbol{\phi}^H \boldsymbol{V}_{n}
 		\end{equation}
-		where $\boldsymbol{\phi}=[\gamma_1 e^{j \theta_1}, \dots, \gamma_L e^{j \theta_L}]^H \in \mathbb{C}^{L \times 1}$ and $\boldsymbol{V}_{k,n}=\mathrm{diag}(\boldsymbol{h}_{R,k,n}^H)\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times M}$. Similarly, we define $\boldsymbol{h}_k=[\boldsymbol{h}_{k,1}^T,\dots,\boldsymbol{h}_{k,N}^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{V}_k=[\boldsymbol{V}_{k,1},\dots,\boldsymbol{V}_{k,N}] \in \mathbb{C}^{L \times MN}$ and let $\boldsymbol{a}_{k}=\lvert \boldsymbol{h}_{k} \rvert$, $\boldsymbol{\varsigma}_{k}=\angle{\boldsymbol{h}_{k}}$ be the magnitude and phase of the composite channel for user $k$.
+		where $\boldsymbol{\phi}=[\gamma_1 e^{j \theta_1}, \dots, \gamma_L e^{j \theta_L}]^H \in \mathbb{C}^{L \times 1}$ and $\boldsymbol{V}_{n}=\mathrm{diag}(\boldsymbol{h}_{R,n}^H)\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times M}$. Note that the Hermitian transpose in the definition of $\boldsymbol{\phi}$ makes its entries complex conjugate of the diagonal entries of $\boldsymbol{\Theta}$.
+
+		% Similarly, we define $\boldsymbol{h}_k=[\boldsymbol{h}_{k,1}^T,\dots,\boldsymbol{h}_{k,N}^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{V}_k=[\boldsymbol{V}_{k,1},\dots,\boldsymbol{V}_{k,N}] \in \mathbb{C}^{L \times MN}$ and let $\boldsymbol{a}_{k}=\lvert \boldsymbol{h}_{k} \rvert$, $\boldsymbol{\varsigma}_{k}=\angle{\boldsymbol{h}_{k}}$ be the magnitude and phase of the composite channel for user $k$.
 	\end{subsection}
 
 	\begin{subsection}{Receive Signal}
-		The information and power signals received by user $k$ through both direct and IRS-aided links write as
-		\begin{align}\label{eq:y_{I/P,k}}
-			y_{I,k}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{k,n}^H}{\boldsymbol{w}_{I,n}\tilde{x}_{I,n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}\\
-			y_{P,k}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{k,n}^H}\boldsymbol{w}_{P,n}{e^{j2{\pi}{f_n}{t}}}\right\}
+		At the single-antenna receiver, the total received signal $y(t)=y_I(t)+y_P(t)$ captures the contribution of information and power components over $N$ subbands, where
+		\begin{align}\label{eq:y_{I/P}}
+			y_{I}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{n}^H}{\boldsymbol{w}_{I,n}\tilde{x}_{I,n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}\\
+			y_{P}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{n}^H}\boldsymbol{w}_{P,n}{e^{j2{\pi}{f_n}{t}}}\right\}
 		\end{align}
 	\end{subsection}
 
 	\begin{subsection}{Information Decoder}
-		A major benefit of the proposed waveform is that the power component $y_{P,k}(t)$ creates no interference to the information component $y_{I,k}(t)$. Hence, the achievable rate of user $k$ is
-		\begin{equation}\label{eq:R_k}
-			R_k(\boldsymbol{w}_I,\boldsymbol{\phi},\rho,\boldsymbol{\alpha}_k)=\sum_{n=1}^N\alpha_{k,n}{\log_2\left(1+\frac{(1-\rho)\lvert \boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n} \rvert^2}{\sigma_n^2}\right)}
+		A major benefit of the proposed waveform is that the determined power waveform creates no interference to the information waveform. Therefore, the achievable rate writes as
+		\begin{equation}\label{eq:R}
+			R(\boldsymbol{w}_I,\boldsymbol{\phi},\rho)=\sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert \boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n} \rvert^2}{\sigma_n^2}\right)}
 		\end{equation}
-		where $\sigma_n^2$ is the variance of the noise at RF band and during RF-to-BB conversion on tone $n$. Rate \ref{eq:R_k} is achievable with either waveform cancellation or translated demodulation \cite{Clerckx2018b}.
+		where $\sigma_n^2$ is the variance of the total noise (RF-band and RF-to-baseband conversion) on tone $n$. Rate \ref{eq:R} is achievable with either waveform cancellation or translated demodulation \cite{Clerckx2018b}.
 	\end{subsection}
 
 	\begin{subsection}{Energy Harvester}
-		Consider a nonlinear diode model based on the Taylor expansion of a small signal model \cite{Clerckx2016a,Clerckx2018b}, which highlights for user $k$ the dependency of harvester output DC current on the received waveform as
-		\begin{equation}\label{eq:i_k}
-			i_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y_k(t)^i\right\}}\right\}
-		\end{equation}
-		where $R_{\text{ant}}$ is the impedance of the receive antenna, $k_0'=i_s(e^{-i_kR_{\text{ant}}/nv_t}-1)$, $k_i'=i_se^{-i_kR_{\text{ant}}/nv_t}/i!(nv_t)^i$ for $i=1,\dots,\infty$, $i_s$ is saturation current, $n$ is diode ideality factor, $v_t$ is thermal voltage. For a fixed channel and waveform, $\mathcal{A}\left\{.\right\}$ extracts the DC component of the received signal while $\mathcal{E}\left\{.\right\}$ covers the expectation over $\tilde{x}_{I,n}$.
+		In this section, we briefly revisit a tractable nonlinear rectenna model that relates the harvester output DC current to the received waveform \cite{Clerckx2016a,Clerckx2018b}. Fig. \ref{fi:antenna_equivalent_circuit} illustrates the equivalent circuit of a lossless antenna, where the incoming signal creates an voltage source $v_s(t)$ and the antenna has an impedance $R_{\text{ant}}$. Let $R_{\text{in}}$ be the total input impedance of the rectifier and matching network. Assume the voltage across matching network is negligible and the RF-band noise is too small to harvest. When perfectly matched ($R_{\text{in}}=R_{\text{ant}}$) with power splitting ratio $\rho$, the rectifier input voltage is $v_{\text{in}}(t)=y(t)\sqrt{\rho R_{\text{ant}}}$.
 
-		With the assumption of evenly spaced frequencies, it holds that $\mathcal{E}\left\{y_k(t)^i\right\}=0$ for odd $i$ and the related terms has no contribution to DC components. For simplicity, we truncate the infinite series to the $n_0$-th order. As proved in \cite{Clerckx2016a}, maximizing a truncated $i_k$ is equivalent to maximizing a monotonic function
-		\begin{equation}\label{eq:z_k}
-			z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y_k(t)^i\right\}\right\}}
-		\end{equation}
-		where $k_i=i_s/i!(nv_t)^i$. We choose $n_0=4$ to investigate fundamental nonlinearity and let $\beta_2={k_2}{R_{\text{ant}}}$ and $\beta_4={k_4}{R_{\text{ant}}^2}$. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ and $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
+		\begin{figure}
+			\centering
+			\begin{subfigure}[t]{0.45\linewidth}
+				\centering
+				\includegraphics[width=\linewidth]{assets/antenna_equivalent_circuit.eps}
+				\caption{Antenna equivalent circuit}
+				\label{fi:antenna_equivalent_circuit}
+			\end{subfigure}%
+			~
+			\begin{subfigure}[t]{0.45\linewidth}
+				\centering
+				\includegraphics[width=\linewidth]{assets/single_diode_rectifier.eps}
+				\caption{A single diode rectifier}
+				\label{fi:single_diode_rectifier}
+			\end{subfigure}
+			\caption{Rectenna circuit}
+		\end{figure}
 
-		Similar to \cite{Huang2017}, we define $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$, $\boldsymbol{H}_k=\boldsymbol{h}_k\boldsymbol{h}_k^H$ and let $\boldsymbol{W}_{I/P,n}$, $\boldsymbol{H}_{k,n}$ keep their $n$-th ($n=-N+1,\dots,N-1$) block diagonal and null the remaining entries, respectively. Due to the positive definiteness of $\boldsymbol{W}_{I/P}$ and $\boldsymbol{H}_k$, we have $\boldsymbol{W}_{I/P,-n}=\boldsymbol{W}_{I/P,n}^H$ and $\boldsymbol{H}_{k,-n}=\boldsymbol{H}_{k,n}^H$. On top of this, the nonzero terms in \ref{eq:z_k} are expressed by \ref{eq:z_k_terms_begin} -- \ref{eq:z_k_terms_end} and $z_k$ reduces to \ref{eq:z_k_expand} -- \ref{eq:z_k_waveform}.
+		Rectifiers consist of nonlinear components as diode and capacitor to produce DC and store energy \cite{Hagerty2004,Pinuela2013}. Consider a simplified rectifier in Fig. \ref{fi:single_diode_rectifier} where a single series diode is followed by a low-pass filter with load. Denote $v_d(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the voltage across the load. A Taylor expansion of the diode characteristic equation $i_d(t)=i_s(e^{v_d(t)/n' v_t}-1)$ (with $i_s$ the reverse bias saturation current, $n'$ the diode ideality factor, $v_t$ the thermal voltage) around a quiescent operating point $v_d=a$ writes as $i_d(t)=\sum_{i=0}^{\infty}k_i'(v_d(t)-a)^i$, where $k_0'=i_s(e^{a/n' v_t}-1)$ and $k_i'=i_se^{a/n'v_t}/i!(n'v_t)^i,i=1,\dots,\infty$. Note that this small signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_d(t)\}=-v_{\text{out}}$ such that
+		\begin{equation}\label{eq:i_d}
+			i_d(t)=\sum_{i=0}^{\infty}k_i'\rho^{i/2}R_{\text{ant}}^{i/2}y(t)^i
+		\end{equation}
+
+		By truncating \ref{eq:i_d} to the $n_0$-th order, discarding non-DC components, and taking expectation over symbol distribution, we approximate the average output DC current for a given channel as
+		\begin{equation}\label{eq:i_out}
+			i_{\text{out}}(t)=\mathcal{A}\{i_d(t)\}\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y(t)^i\right\}}\right\}
+		\end{equation}
+
+		With the assumption of evenly spaced frequencies, it holds that $\mathcal{E}\left\{y(t)^i\right\}=0$ for odd $i$ thus the related terms has no contribution to DC components. It is also proved in \cite{Clerckx2016a} that maximizing a truncated $i_{\text{out}}$ is equivalent to maximizing a monotonic function
+		\begin{equation}\label{eq:z}
+			z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y(t)^i\right\}\right\}}
+		\end{equation}
+		where $k_i=i_s/i!(nv_t)^i$. For simplicity, we choose $n_0=4$ to investigate fundamental nonlinearity and let $\beta_2={k_2}{R_{\text{ant}}}$, $\beta_4={k_4}{R_{\text{ant}}^2}$. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ but $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$ can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
+
+		Similar to \cite{Huang2017}, we define $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$, $\boldsymbol{H}_k=\boldsymbol{h}_k\boldsymbol{h}_k^H$ and let $\boldsymbol{W}_{I/P,n}$, $\boldsymbol{H}_{k,n}$ keep their $n$-th ($n=-N+1,\dots,N-1$) block diagonal and null the remaining entries, respectively. Due to the positive definiteness of $\boldsymbol{W}_{I/P}$ and $\boldsymbol{H}_k$, we have $\boldsymbol{W}_{I/P,-n}=\boldsymbol{W}_{I/P,n}^H$ and $\boldsymbol{H}_{k,-n}=\boldsymbol{H}_{k,n}^H$. On top of this, the nonzero terms in \ref{eq:z} are expressed by \ref{eq:z_terms_begin} -- \ref{eq:z_terms_end} and $z$ reduces to \ref{eq:z_expand} -- \ref{eq:z_waveform}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}
-				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})^H}\label{eq:z_k_terms_begin}\\
+				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})^H}\label{eq:z_terms_begin}\\
 				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I\\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}
 				& = \frac{3}{4}\left(\sum_n{(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})^H}\right)^2\\
@@ -102,20 +129,20 @@
 				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P\\
 				\mathcal{A}\left\{y_{P,k}^4(t)\right\}
 				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{k,{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{k,{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{k,{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{k,{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H}\\
-				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^H = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^H\label{eq:z_k_terms_end}
+				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^H = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^H\label{eq:z_terms_end}
 			\end{align}
 		\end{figure*}
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
-				z_k(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
-				& = \beta_2\rho\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+\beta_4\rho^2\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\label{eq:z_k_expand}\\
+				z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
+				& = \beta_2\rho\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+\beta_4\rho^2\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\label{eq:z_expand}\\
 				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k+\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\nonumber\\
 				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)^2 + \sum_{n=-N+1}^{N-1} (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^H\right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\label{eq:z_k_channel}\\
+				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\label{eq:z_channel}\\
 				& = \frac{1}{2}\beta_2\rho(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\nonumber\\
 				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)^2 + \sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^H \right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\label{eq:z_k_waveform}
+				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\label{eq:z_waveform}
 			\end{align}
 		\end{figure*}
 	\end{subsection}
@@ -125,7 +152,7 @@
 		\begin{equation}
 			\begin{split}
 				C_{R-Z}(P)
-				&\triangleq \biggl\{(R,Z):R\le\sum_{k=1}^K{u_{I,k}R_k},Z\le\sum_{k=1}^K u_{P,k}z_k,\\
+				&\triangleq \biggl\{(R,Z):R\le\sum_{k=1}^K{u_{I,k}R_k},Z\le\sum_{k=1}^K u_{P,k}z,\\
 				&\quad \frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P}) \le P\biggr\}
 			\end{split}
 		\end{equation}
@@ -208,7 +235,7 @@
 		\begin{equation}\label{eq:C_{I/P,n}}
 			\boldsymbol{C}_{I/P,n}=\boldsymbol{M}\boldsymbol{W}_{I/P,n}^*\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}
 		\end{equation}
-		Therefore, \ref{eq:z_k_channel} rewrites as
+		Therefore, \ref{eq:z_channel} rewrites as
 		\begin{equation}\label{eq:z_irs}
 			\begin{split}
 				z(\boldsymbol{\Phi})
@@ -277,7 +304,7 @@
 
 	\begin{subsection}{Waveform and Splitting Ratio}
 		\begin{subsubsection}{Geometric Programming}
-			Following \cite{Clerckx2018b}, it can be observed from \ref{eq:R_k} and \ref{eq:z_k_expand} -- \ref{eq:z_k_waveform} that the optimal phases of information and power waveform are both match to the composite channel as
+			Following \cite{Clerckx2018b}, it can be observed from \ref{eq:R} and \ref{eq:z_expand} -- \ref{eq:z_waveform} that the optimal phases of information and power waveform are both match to the composite channel as
 			\begin{equation}\label{eq:psi}
 				\boldsymbol{\psi}_{I}^{\star}=\boldsymbol{\psi}_{P}^{\star}=-\boldsymbol{\varsigma}
 			\end{equation}
@@ -355,7 +382,7 @@
 				\begin{equation}\label{eq:t'}
 					t_{I/P,n}' = \boldsymbol{w}_{I/P}^H \boldsymbol{H}_n^* \boldsymbol{w}_{I/P} = \mathrm{Tr}(\boldsymbol{H}_n^*\boldsymbol{W}_{I/P})
 				\end{equation}
-				Therefore, \ref{eq:z_k_waveform} rewrites as
+				Therefore, \ref{eq:z_waveform} rewrites as
 				\begin{equation}\label{eq:z_waveform}
 					\begin{split}
 						z(\boldsymbol{W}_I,\boldsymbol{W}_P)
@@ -439,7 +466,7 @@
 					\addConstraint{\boldsymbol{\Phi}\succeq{0}}
 					\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1}
 				\end{maxi!}
-			Problem \ref{op:su_irs_wit} can be solved after SDR, and a best solution $\bar{\boldsymbol{\phi}}^\star$ can be obtained via Gaussian randomization method. $\boldsymbol{\phi}^\star$ can be recovered by $\phi_l^\star=\phi_l^\star/\phi_{L+1}^\star, \ l=1,\dots,L$ and $\boldsymbol{h}$ can be constructed by \ref{eq:h_{k,n}}. On top of this, the optimal information waveform can be obtained by Maximum-Ratio Transmission (MRT). The IRS phase shift and information waveform are updated iteratively until convergence.
+			Problem \ref{op:su_irs_wit} can be solved after SDR, and a best solution $\bar{\boldsymbol{\phi}}^\star$ can be obtained via Gaussian randomization method. $\boldsymbol{\phi}^\star$ can be recovered by $\phi_l^\star=\phi_l^\star/\phi_{L+1}^\star, \ l=1,\dots,L$ and $\boldsymbol{h}$ can be constructed by \ref{eq:h_n}. On top of this, the optimal information waveform can be obtained by Maximum-Ratio Transmission (MRT). The IRS phase shift and information waveform are updated iteratively until convergence.
 		\end{subsubsection}
 
 		\begin{subsubsection}{WPT}
@@ -458,7 +485,7 @@
 					\Repeat
 					\State $i \gets i + 1$
 					\State Update IRS phase shift $\boldsymbol{\phi}^{(i)}$ by Algorithm \ref{al:ff_irs}
-					\State Update composite channel $\boldsymbol{h}^{(i)}$ by \ref{eq:h_{k,n}}
+					\State Update composite channel $\boldsymbol{h}^{(i)}$ by \ref{eq:h_n}
 					\State Update splitting ratio $\rho^{(i)}$ and waveform $\boldsymbol{w}_{I/P}^{(i)}$ by GP (Algorithm \ref{al:waveform_split_ratio_gp}) or inner loop (Algorithm \ref{al:inner_loop})
 					\Until $\lvert (z^{(i)}-z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
 					\State \textbf{Output} $\boldsymbol{w}_{I/P}^{\star}, \rho^{\star}, R^{\star}, z^{\star}$
