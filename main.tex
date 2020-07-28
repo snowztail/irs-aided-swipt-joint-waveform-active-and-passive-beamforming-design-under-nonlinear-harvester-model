@@ -72,7 +72,11 @@
 	\begin{subsection}{Information Decoder}
 		A major benefit of the proposed waveform is that the determined power waveform creates no interference to the information waveform. Therefore, the achievable rate writes as
 		\begin{equation}\label{eq:R}
-			R(\boldsymbol{w}_I,\boldsymbol{\phi},\rho)=\sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert \boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n} \rvert^2}{\sigma_n^2}\right)}
+			\begin{split}
+				R(\boldsymbol{w}_I,\boldsymbol{\phi},\rho)
+				& = \sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert \boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n} \rvert^2}{\sigma_n^2}\right)}\\
+				& = \sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\boldsymbol{w}_{I,n}\rvert^2}{\sigma_n^2}\right)}
+			\end{split}
 		\end{equation}
 		where $\sigma_n^2$ is the variance of the total noise (RF-band and RF-to-baseband conversion) on tone $n$. Rate \ref{eq:R} is achievable with either waveform cancellation or translated demodulation \cite{Clerckx2018b}.
 	\end{subsection}
@@ -108,35 +112,33 @@
 			i_{\text{out}}(t)=\mathcal{A}\{i_d(t)\}\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y(t)^i\right\}}\right\}
 		\end{equation}
 
-		With the assumption of evenly spaced frequencies, it holds that $\mathcal{A}\left\{y(t)^i\right\}=0$ for odd $i$ thus the related terms has no contribution to DC components. It is also proved in \cite{Clerckx2016a} that maximizing a truncated $i_{\text{out}}$ is equivalent to maximizing a monotonic function
+		With the assumption of evenly spaced frequencies, it holds that $\mathcal{A}\left\{y(t)^i\right\}=0$ for odd $i$ thus the related terms has no contribution to DC components. However, $k_i'$ is still a function of $i_{\text{out}}$, and \cite{Clerckx2016a} proved that maximizing a truncated $i_{\text{out}}$ is equivalent to maximizing a monotonic function
 		\begin{equation}\label{eq:z}
 			z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y(t)^i\right\}\right\}}
 		\end{equation}
-		where $k_i=i_s/i!(nv_t)^i$. It can be observed that the traditional linear harvester model, where the output DC power is the sum of the power harvested on each frequency, is a special case of \ref{eq:z} with $n_0=2$. However, due to the coupling among different frequencies, some high-order terms also cancel out non-DC components thus contribute to the output DC power. In other words, even terms with $i \ge 4$ account for the nonlinear behavior of the diode. For simplicity, we choose $n_0=4$ to investigate fundamental nonlinearity and let $\beta_2={k_2}{R_{\text{ant}}}$, $\beta_4={k_4}{R_{\text{ant}}^2}$. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ but $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$ can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
+		where $k_i=i_s/i!(nv_t)^i$. It can be observed that the traditional linear harvester model, where the output DC power equals the sum of the power harvested on each frequency, is a special case of \ref{eq:z} with $n_0=2$. However, due to the coupling among different frequencies, some high-order terms also cancel out non-DC components thus contribute to the output DC power. In other words, even terms with $i \ge 4$ account for the nonlinear behavior of the diode. For simplicity, we choose $n_0=4$ to investigate fundamental nonlinearity and let $\beta_2={k_2}{R_{\text{ant}}}$, $\beta_4={k_4}{R_{\text{ant}}^2}$. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ but $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$ can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
 
-		Following \cite{Huang2017}, we further stack up channel and waveform vectors over all subbands to define $\boldsymbol{h}=[\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^T,\dots,\boldsymbol{w}_{I/P,N}^T]^T \in \mathbb{C}^{MN \times 1}$. Moreover, let $\boldsymbol{W}_{I/P,n}$, $\boldsymbol{H}_{n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) block diagonal of $\boldsymbol{H}=\boldsymbol{h}\boldsymbol{h}^H$, $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$ and null the remaining entries, respectively. On top of this, DC terms are expressed in \ref{eq:y_I2} -- \ref{eq:y_P4} and $z$ is reduced to \ref{eq:z_expand} -- \ref{eq:z_expand_2}.
+		Similar to \cite{Huang2017}, we further stack up channel and waveform vectors over all subbands to define $\boldsymbol{h}=[\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^T,\dots,\boldsymbol{w}_{I/P,N}^T]^T \in \mathbb{C}^{MN \times 1}$. Moreover, let $\boldsymbol{W}_{I/P,n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) block diagonal of $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$ and null the remaining entries. On top of this, $z$ is reduced to \ref{eq:z_expand} with DC terms expressed in \ref{eq:y_I2} -- \ref{eq:y_P4}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
+				z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
+				& = \beta_2\rho\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)\label{eq:z_expand}\\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}
-				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H}\label{eq:y_I2}\\
-				& = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h} = \frac{1}{2}\boldsymbol{w}_I^H\boldsymbol{H}_{0}\boldsymbol{w}_I\\
+				& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h}\label{eq:y_I2}\\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}
-				& = \frac{3}{4}\left(\sum_n{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H}\right)^2\\
-				& = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})^2 = \frac{3}{4}(\boldsymbol{w}_I^H\boldsymbol{H}_{0}\boldsymbol{w}_I)^2\\
+				& = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})^2\\
 				\mathcal{A}\left\{y_{P}^2(t)\right\}
-				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})^H}\\
-				& = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h} = \frac{1}{2}\boldsymbol{w}_P^H\boldsymbol{H}_{0}\boldsymbol{w}_P\\
+				& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h}\\
 				\mathcal{A}\left\{y_{P}^4(t)\right\}
-				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H}\\
-				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})^H = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{n}\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{n}\boldsymbol{w}_P)^H\label{eq:y_P4}
+				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H} = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})^H\label{eq:y_P4}
 			\end{align}
 		\end{figure*}
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
 				z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
-				& = \beta_2\rho\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)\label{eq:z_expand}\\
+				& = \beta_2\rho\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)\\
 				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h}+\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h})\nonumber\\
 				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})^2 + \sum_{n=-N+1}^{N-1} (\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})^H\right)\nonumber\\
 				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h})\label{eq:z_expand_1}\\
@@ -147,29 +149,29 @@
 		\end{figure*}
 	\end{subsection}
 
-	\begin{subsection}{Weighted Sum Rate-Energy Region}
-		Define the achievable weighted sum R-E region as
+	\begin{subsection}{Rate-Energy Region}
+		Define the achievable R-E region as
 		\begin{equation}
 			\begin{split}
-				C_{R-Z}(P)
-				&\triangleq \biggl\{(R,Z):R\le\sum_{k=1}^K{u_{I,k}R_k},Z\le\sum_{k=1}^K u_{P,k}z,\\
+				C_{R_{\text{ID}}-I_{\text{EH}}}(P)
+				&\triangleq \biggl\{(R_{\text{ID}}, I_{\text{EH}}): R_{\text{ID}} \le R, I_{\text{EH}} \le z,\\
 				&\quad \frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P}) \le P\biggr\}
 			\end{split}
 		\end{equation}
-		where $P$ is the transmit power budget and $u_{I,k},u_{P,k}$ are the information and power weight of user $k$.
+		where $P$ is the average transmit power budget.
 	\end{subsection}
 \end{section}
 
-\begin{section}{Single-User Optimization}
-	Consider a single-user waveform and IRS optimization problem where $\boldsymbol{\alpha}=\boldsymbol{1}^{N \times 1}$. We characterize the rate-energy region through a current maximization problem subject to transmit power, rate, and IRS constraints
+\begin{section}{Problem Formulation}
+	We characterize the R-E region through multiple current maximization problems subject to transmit power, IRS magnitude, and different rate constraints
 	\begin{maxi!}
 		{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho}{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)}{\label{op:su}}{\label{eq:su_target}}
 		\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
-		\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\boldsymbol{w}_{I,n}\rvert^2}{\sigma_n^2}\right)} \ge \bar{R}}\label{eq:su_rate_constraint}
+		\addConstraint{R \ge \bar{R}}\label{eq:su_rate_constraint}
 		\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}
 		\addConstraint{0 \le \rho \le 1}
 	\end{maxi!}
-	Problem \ref{op:su} is intricate due to coupled variables and non-convex objective function \ref{eq:su_target} and constraint \ref{eq:su_rate_constraint}. To reduce the design complexity, we propose an suboptimal AO algorithm that updates the IRS phase shift, transmit waveform, and receive splitting ratio iteratively.
+	Problem \ref{op:su} is intricate with coupled variables involved in non-convex objective function \ref{eq:su_target} and rate constraint \ref{eq:su_rate_constraint}. To reduce the design complexity, we propose an suboptimal AO algorithm that iteratively updates the IRS phase shift and transmit waveform together with receive splitting ratio until convergence.
 
 	\begin{subsection}{IRS Phase Shift}
 		We optimize the IRS phase shift $\boldsymbol{\phi}$ for any given waveform $\boldsymbol{w}_{I/P,n}$ and splitting ratio $\rho$. Since
