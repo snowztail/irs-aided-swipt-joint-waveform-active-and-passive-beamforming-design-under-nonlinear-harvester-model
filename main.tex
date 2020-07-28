@@ -98,51 +98,51 @@
 			\caption{Rectenna circuit}
 		\end{figure}
 
-		Rectifiers consist of nonlinear components as diode and capacitor to produce DC and store energy \cite{Hagerty2004,Pinuela2013}. Consider a simplified rectifier in Fig. \ref{fi:single_diode_rectifier} where a single series diode is followed by a low-pass filter with load. Denote $v_d(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the voltage across the load. A Taylor expansion of the diode characteristic equation $i_d(t)=i_s(e^{v_d(t)/n' v_t}-1)$ (with $i_s$ the reverse bias saturation current, $n'$ the diode ideality factor, $v_t$ the thermal voltage) around a quiescent operating point $v_d=a$ writes as $i_d(t)=\sum_{i=0}^{\infty}k_i'(v_d(t)-a)^i$, where $k_0'=i_s(e^{a/n' v_t}-1)$ and $k_i'=i_se^{a/n'v_t}/i!(n'v_t)^i,i=1,\dots,\infty$. Note that this small signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_d(t)\}=-v_{\text{out}}$ such that
+		Rectifiers consist of nonlinear components as diode and capacitor to produce DC and store energy \cite{Hagerty2004,Pinuela2013}. Consider a simplified rectifier in Fig. \ref{fi:single_diode_rectifier} where a single series diode is followed by a low-pass filter with load. Denote $v_d(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the output voltage across the load. A Taylor expansion of the diode characteristic equation $i_d(t)=i_s(e^{v_d(t)/n' v_t}-1)$ (with $i_s$ the reverse bias saturation current, $n'$ the diode ideality factor, $v_t$ the thermal voltage) around a quiescent operating point $v_d=a$ writes as $i_d(t)=\sum_{i=0}^{\infty}k_i'(v_d(t)-a)^i$, where $k_0'=i_s(e^{a/n' v_t}-1)$ and $k_i'=i_se^{a/n'v_t}/i!(n'v_t)^i,i=1,\dots,\infty$. Note that this small signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_d(t)\}=-v_{\text{out}}$ such that
 		\begin{equation}\label{eq:i_d}
 			i_d(t)=\sum_{i=0}^{\infty}k_i'\rho^{i/2}R_{\text{ant}}^{i/2}y(t)^i
 		\end{equation}
 
-		By truncating \ref{eq:i_d} to the $n_0$-th order, discarding non-DC components, and taking expectation over symbol distribution, we approximate the average output DC current for a given channel as
+		By discarding non-DC components, taking expectation over symbol distribution, and truncating \ref{eq:i_d} to the $n_0$-th order, we approximate the average output DC current for a given channel as
 		\begin{equation}\label{eq:i_out}
 			i_{\text{out}}(t)=\mathcal{A}\{i_d(t)\}\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y(t)^i\right\}}\right\}
 		\end{equation}
 
-		With the assumption of evenly spaced frequencies, it holds that $\mathcal{E}\left\{y(t)^i\right\}=0$ for odd $i$ thus the related terms has no contribution to DC components. It is also proved in \cite{Clerckx2016a} that maximizing a truncated $i_{\text{out}}$ is equivalent to maximizing a monotonic function
+		With the assumption of evenly spaced frequencies, it holds that $\mathcal{A}\left\{y(t)^i\right\}=0$ for odd $i$ thus the related terms has no contribution to DC components. It is also proved in \cite{Clerckx2016a} that maximizing a truncated $i_{\text{out}}$ is equivalent to maximizing a monotonic function
 		\begin{equation}\label{eq:z}
 			z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y(t)^i\right\}\right\}}
 		\end{equation}
-		where $k_i=i_s/i!(nv_t)^i$. For simplicity, we choose $n_0=4$ to investigate fundamental nonlinearity and let $\beta_2={k_2}{R_{\text{ant}}}$, $\beta_4={k_4}{R_{\text{ant}}^2}$. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ but $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$ can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
+		where $k_i=i_s/i!(nv_t)^i$. It can be observed that the traditional linear harvester model, where the output DC power is the sum of the power harvested on each frequency, is a special case of \ref{eq:z} with $n_0=2$. However, due to the coupling among different frequencies, some high-order terms also cancel out non-DC components thus contribute to the output DC power. In other words, even terms with $i \ge 4$ account for the nonlinear behavior of the diode. For simplicity, we choose $n_0=4$ to investigate fundamental nonlinearity and let $\beta_2={k_2}{R_{\text{ant}}}$, $\beta_4={k_4}{R_{\text{ant}}^2}$. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ but $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$ can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
 
-		Similar to \cite{Huang2017}, we define $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$, $\boldsymbol{H}_k=\boldsymbol{h}_k\boldsymbol{h}_k^H$ and let $\boldsymbol{W}_{I/P,n}$, $\boldsymbol{H}_{k,n}$ keep their $n$-th ($n=-N+1,\dots,N-1$) block diagonal and null the remaining entries, respectively. Due to the positive definiteness of $\boldsymbol{W}_{I/P}$ and $\boldsymbol{H}_k$, we have $\boldsymbol{W}_{I/P,-n}=\boldsymbol{W}_{I/P,n}^H$ and $\boldsymbol{H}_{k,-n}=\boldsymbol{H}_{k,n}^H$. On top of this, the nonzero terms in \ref{eq:z} are expressed by \ref{eq:z_terms_begin} -- \ref{eq:z_terms_end} and $z$ reduces to \ref{eq:z_expand} -- \ref{eq:z_waveform}.
+		Following \cite{Huang2017}, we further stack up channel and waveform vectors over all subbands to define $\boldsymbol{h}=[\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^T,\dots,\boldsymbol{w}_{I/P,N}^T]^T \in \mathbb{C}^{MN \times 1}$. Moreover, let $\boldsymbol{W}_{I/P,n}$, $\boldsymbol{H}_{n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) block diagonal of $\boldsymbol{H}=\boldsymbol{h}\boldsymbol{h}^H$, $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$ and null the remaining entries, respectively. On top of this, DC terms are expressed in \ref{eq:y_I2} -- \ref{eq:y_P4} and $z$ is reduced to \ref{eq:z_expand} -- \ref{eq:z_expand_2}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
-				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}
-				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})^H}\label{eq:z_terms_begin}\\
-				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I\\
-				\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}
-				& = \frac{3}{4}\left(\sum_n{(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{I,n})^H}\right)^2\\
-				& = \frac{3}{4}(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)^2 = \frac{3}{4}(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)^2\\
-				\mathcal{A}\left\{y_{P,k}^2(t)\right\}
-				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{P,n})(\boldsymbol{h}_{k,n}^H\boldsymbol{w}_{P,n})^H}\\
-				& = \frac{1}{2}\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k = \frac{1}{2}\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P\\
-				\mathcal{A}\left\{y_{P,k}^4(t)\right\}
-				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{k,{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{k,{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{k,{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{k,{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H}\\
-				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^H = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^H\label{eq:z_terms_end}
+				\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}
+				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H}\label{eq:y_I2}\\
+				& = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h} = \frac{1}{2}\boldsymbol{w}_I^H\boldsymbol{H}_{0}\boldsymbol{w}_I\\
+				\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}
+				& = \frac{3}{4}\left(\sum_n{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H}\right)^2\\
+				& = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})^2 = \frac{3}{4}(\boldsymbol{w}_I^H\boldsymbol{H}_{0}\boldsymbol{w}_I)^2\\
+				\mathcal{A}\left\{y_{P}^2(t)\right\}
+				& = \frac{1}{2}\sum_n{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})^H}\\
+				& = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h} = \frac{1}{2}\boldsymbol{w}_P^H\boldsymbol{H}_{0}\boldsymbol{w}_P\\
+				\mathcal{A}\left\{y_{P}^4(t)\right\}
+				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H}\\
+				& = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})^H = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{n}\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{n}\boldsymbol{w}_P)^H\label{eq:y_P4}
 			\end{align}
 		\end{figure*}
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
 				z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
-				& = \beta_2\rho\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)+\beta_4\rho^2\left(\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P,k}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I,k}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P,k}^2(t)\right\}\right)\label{eq:z_expand}\\
-				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k+\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)^2 + \sum_{n=-N+1}^{N-1} (\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,n}^*\boldsymbol{h}_k)^H\right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}_k^H\boldsymbol{W}_{I,0}\boldsymbol{h}_k)(\boldsymbol{h}_k^H\boldsymbol{W}_{P,0}\boldsymbol{h}_k)\label{eq:z_channel}\\
+				& = \beta_2\rho\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)\label{eq:z_expand}\\
+				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h}+\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h})\nonumber\\
+				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})^2 + \sum_{n=-N+1}^{N-1} (\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})^H\right)\nonumber\\
+				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h})\label{eq:z_expand_1}\\
 				& = \frac{1}{2}\beta_2\rho(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)^2 + \sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}^*\boldsymbol{w}_P)^H \right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\label{eq:z_waveform}
+				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)^2 + \sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}\boldsymbol{w}_P)^H \right)\nonumber\\
+				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\label{eq:z_expand_2}
 			\end{align}
 		\end{figure*}
 	\end{subsection}
