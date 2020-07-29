@@ -118,7 +118,7 @@
 		\end{equation}
 		where $k_i=i_s/i!(nv_t)^i$. It can be observed that the traditional linear harvester model, where the output DC power equals the sum of the power harvested on each frequency, is a special case of \ref{eq:z} with $n_0=2$. However, due to the coupling among different frequencies, some high-order terms also cancel out non-DC components thus contribute to the output DC power. In other words, even terms with $i \ge 4$ account for the nonlinear behavior of the diode. For simplicity, we choose $n_0=4$ to investigate fundamental nonlinearity and let $\beta_2={k_2}{R_{\text{ant}}}$, $\beta_4={k_4}{R_{\text{ant}}^2}$. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ but $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$ can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
 
-		Similar to \cite{Huang2017}, we further stack up channel and waveform vectors over all subbands to define $\boldsymbol{h}=[\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^T,\dots,\boldsymbol{w}_{I/P,N}^T]^T \in \mathbb{C}^{MN \times 1}$. Moreover, let $\boldsymbol{W}_{I/P,n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) block diagonal of $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$ and null the remaining entries. On top of this, $z$ is reduced to \ref{eq:z_expand} with DC terms expressed in \ref{eq:y_I2} -- \ref{eq:y_P4}.
+		Similar to \cite{Huang2017}, we further stack up channel and waveform vectors over all subbands to define $\boldsymbol{h}=[\boldsymbol{h}_1^H,\dots,\boldsymbol{h}_N^H]^H \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^H,\dots,\boldsymbol{w}_{I/P,N}^H]^H \in \mathbb{C}^{MN \times 1}$. Moreover, let $\boldsymbol{W}_{I/P,n}$ keep the $n$-th ($n=-N+1,\dots,N-1$) block diagonal of $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$ and null the remaining entries. On top of this, $z$ is reduced to \ref{eq:z_expand} with DC terms expressed in \ref{eq:y_I2} -- \ref{eq:y_P4}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
@@ -132,19 +132,6 @@
 				& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h}\\
 				\mathcal{A}\left\{y_{P}^4(t)\right\}
 				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H} = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})^H\label{eq:y_P4}
-			\end{align}
-		\end{figure*}
-		\begin{figure*}[b]
-			\hrule
-			\begin{align}
-				z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
-				& = \beta_2\rho\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)\\
-				& = \frac{1}{2}\beta_2\rho(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h}+\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h})\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})^2 + \sum_{n=-N+1}^{N-1} (\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})^H\right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h})\label{eq:z_expand_1}\\
-				& = \frac{1}{2}\beta_2\rho(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I+\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\nonumber\\
-				& \quad+ \frac{3}{8}\beta_4\rho^2 \left(2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)^2 + \sum_{n=-N+1}^{N-1}(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}\boldsymbol{w}_P)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,n}\boldsymbol{w}_P)^H \right)\nonumber\\
-				& \quad+ \frac{3}{2}\beta_4\rho^2(\boldsymbol{w}_I^H\boldsymbol{H}_{k,0}\boldsymbol{w}_I)(\boldsymbol{w}_P^H\boldsymbol{H}_{k,0}\boldsymbol{w}_P)\label{eq:z_expand_2}
 			\end{align}
 		\end{figure*}
 	\end{subsection}
@@ -165,79 +152,41 @@
 \begin{section}{Problem Formulation}
 	We characterize the R-E region through multiple current maximization problems subject to transmit power, IRS magnitude, and different rate constraints
 	\begin{maxi!}
-		{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho}{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)}{\label{op:su}}{\label{eq:su_target}}
+		{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho}{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)}{\label{op:original}}{\label{eq:su_target}}
 		\addConstraint{\frac{1}{2}({\boldsymbol{w}_I^H}{\boldsymbol{w}_I}+{\boldsymbol{w}_P^H}{\boldsymbol{w}_P})\le{P}}
 		\addConstraint{R \ge \bar{R}}\label{eq:su_rate_constraint}
 		\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}
 		\addConstraint{0 \le \rho \le 1}
 	\end{maxi!}
-	Problem \ref{op:su} is intricate with coupled variables involved in non-convex objective function \ref{eq:su_target} and rate constraint \ref{eq:su_rate_constraint}. To reduce the design complexity, we propose an suboptimal AO algorithm that iteratively updates the IRS phase shift and transmit waveform together with receive splitting ratio until convergence.
+	Problem \ref{op:original} is intricate with coupled variables involved in non-convex objective function \ref{eq:su_target} and rate constraint \ref{eq:su_rate_constraint}. To reduce the design complexity, we propose an suboptimal AO algorithm that iteratively updates the IRS phase shift and transmit waveform together with receive splitting ratio until convergence.
 
 	\begin{subsection}{IRS Phase Shift}
-		We optimize the IRS phase shift $\boldsymbol{\phi}$ for any given waveform $\boldsymbol{w}_{I/P,n}$ and splitting ratio $\rho$. Since
-		\begin{equation}\label{eq:h_n_outer_product}
-			\begin{split}
-				\boldsymbol{h}_n\boldsymbol{h}_n^H
-				&=(\boldsymbol{h}_{D,n}+\boldsymbol{V}_n^H\boldsymbol{\phi})(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\\
-				&=\boldsymbol{h}_{D,n}\boldsymbol{h}_{D,n}^H+\boldsymbol{V}_n^H\boldsymbol{\phi}\boldsymbol{h}_{D,n}^H+\boldsymbol{h}_{D,n}\boldsymbol{\phi}^H\boldsymbol{V}_n+\boldsymbol{V}_n^H\boldsymbol{\phi}\boldsymbol{\phi}^H\boldsymbol{V}_n\\
-				&=\boldsymbol{M}_n^H\boldsymbol{\Phi}\boldsymbol{M}_n
-			\end{split}
-		\end{equation}
-		where $t$ is an auxiliary variable with unit modulus and
-		\begin{equation}\label{eq:M_n,phi}
-			\boldsymbol{M}_n=
-			\begin{bmatrix}
-				\boldsymbol{V}_n \\
-				\boldsymbol{h}_{D,n}^H
-			\end{bmatrix} \in \mathbb{C}^{(L+1) \times M},
-			\quad \bar{\boldsymbol{\phi}}=\
-			\begin{bmatrix}
-				\boldsymbol{\phi} \\
-				t
-			\end{bmatrix},
-			\quad \boldsymbol{\Phi}=\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H
-		\end{equation}
-		Therefore, it holds that
+		In this section, the IRS phase shift $\boldsymbol{\phi}$ is optimized for any given waveform $\boldsymbol{w}_{I/P}$ and splitting ratio $\rho$. We observe that
 		\begin{equation}
 			\begin{split}
-				\lvert(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\boldsymbol{w}_{I,n}\rvert^2
-				&=\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H\boldsymbol{\Phi}\boldsymbol{M}_n\boldsymbol{w}_{I,n}\\
-				&=\mathrm{Tr}(\boldsymbol{M}_n\boldsymbol{w}_{I,n}\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H\boldsymbol{\Phi})\\
-				&=\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})
+				\lvert \boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n} \rvert^2
+				& = \boldsymbol{w}_{I,n}^H\boldsymbol{h}_n\boldsymbol{h}_n^H\boldsymbol{w}_{I,n}\\
+				& = \boldsymbol{w}_{I,n}^H(\boldsymbol{h}_{D,n}+\boldsymbol{V}_n^H\boldsymbol{\phi})(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\boldsymbol{w}_{I,n}\\
+				& = \boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H\boldsymbol{\Phi}\boldsymbol{M}_n\boldsymbol{w}_{I,n}\\
+				& = \mathrm{Tr}(\boldsymbol{M}_n\boldsymbol{w}_{I,n}\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H\boldsymbol{\Phi})\\
+				& = \mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})
 			\end{split}
 		\end{equation}
-		with
-		\begin{equation}\label{eq:C_n}
-			\boldsymbol{C}_n = \boldsymbol{M}_n\boldsymbol{w}_{I,n}\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H \in \mathbb{C}^{(L+1)\times(L+1)}
-		\end{equation}
-		Similarly, we have
+		where $t$ is an auxiliary variable with unit modulus, $\boldsymbol{M}_n=[\boldsymbol{V}_n^H, \boldsymbol{h}_{D,n}]^H \in \mathbb{C}^{(L+1) \times M}$, $\bar{\boldsymbol{\phi}}=[\boldsymbol{\phi}^H, t]^H \in \mathbb{C}^{(L+1) \times 1}$, $\boldsymbol{\Phi}=\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H \in \mathbb{C}^{(L+1) \times (L+1)}$, $\boldsymbol{C}_n = \boldsymbol{M}_n\boldsymbol{w}_{I,n}\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Similarly, we define $t_{I/P,n}$ ($n=-N+1,\dots,N-1$) as
 		\begin{equation}
-			\boldsymbol{h}\boldsymbol{h}^H=\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}
-		\end{equation}
-		where
-		\begin{equation}\label{eq:M}
-			\boldsymbol{M}=
-			\begin{bmatrix}
-				\boldsymbol{V} \\
-				\boldsymbol{h}_D^H
-			\end{bmatrix} \in \mathbb{C}^{(L+1) \times MN}
-		\end{equation}
-		Next, introduce auxiliary variables
-		\begin{equation}\label{eq:t}
 			\begin{split}
 				t_{I/P,n}
-				&=\boldsymbol{h}^H\boldsymbol{W}_{I/P,n}^*\boldsymbol{h}\\
-				&=\mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{W}_{I/P,n}^*)\\
-				&=\mathrm{Tr}(\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}\boldsymbol{W}_{I/P,n}^*)\\
-				&=\mathrm{Tr}(\boldsymbol{M}\boldsymbol{W}_{I/P,n}^*\boldsymbol{M}^H\boldsymbol{\Phi})\\
-				&=\mathrm{Tr}(\boldsymbol{C}_{I/P,n}\boldsymbol{\Phi})
+				& = \boldsymbol{h}^H\boldsymbol{W}_{I/P,n}\boldsymbol{h}\\
+				& = \mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{W}_{I/P,n})\\
+				& = \mathrm{Tr}\left((\boldsymbol{h}_{D}+\boldsymbol{V}^H\boldsymbol{\phi})(\boldsymbol{h}_{D}^H+\boldsymbol{\phi}^H\boldsymbol{V})\boldsymbol{W}_{I/P,n}\right)\\
+				& = \mathrm{Tr}(\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}\boldsymbol{W}_{I/P,n})\\
+				& = \mathrm{Tr}(\boldsymbol{M}\boldsymbol{W}_{I/P,n}\boldsymbol{M}^H\boldsymbol{\Phi})\\
+				& = \mathrm{Tr}(\boldsymbol{C}_{I/P,n}\boldsymbol{\Phi})
 			\end{split}
 		\end{equation}
-		with
-		\begin{equation}\label{eq:C_{I/P,n}}
-			\boldsymbol{C}_{I/P,n}=\boldsymbol{M}\boldsymbol{W}_{I/P,n}^*\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}
-		\end{equation}
-		Therefore, \ref{eq:z_channel} rewrites as
+		where $\boldsymbol{h}_D=[\boldsymbol{h}_{D,1}^H,\dots,\boldsymbol{h}_{D,N}^H]^H \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{V}=[\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M}=[\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{I/P,n}=\boldsymbol{M}\boldsymbol{W}_{I/P,n}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$.
+
+		Therefore, the objective function \ref{eq:z_expand} rewrites as
 		\begin{equation}\label{eq:z_irs}
 			\begin{split}
 				z(\boldsymbol{\Phi})
@@ -246,7 +195,8 @@
 				&\quad+\frac{3}{2}{\beta_4}{\rho^2}t_{I,0}t_{P,0}
 			\end{split}
 		\end{equation}
-		We use first-order Taylor expansion to approximate the second-order terms in \ref{eq:z_irs}. Based on the variables optimized at iteration $i - 1$, the local approximation at iteration $i$ suggests \cite{Adali2010}
+
+		To maximize non-concave expression \ref{eq:z_irs}, we use first-order Taylor expansion to approximate its second-order terms. Based on the variables optimized at iteration $i - 1$, the local approximation at iteration $i$ suggests \cite{Adali2010}
 		\begin{align}
 			(t_{I,0}^{(i)})^2
 			& \ge 2 t_{I,0}^{(i)}t_{I,0}^{(i-1)} - (t_{I,0}^{(i-1)})^2\label{eq:t_{I,0}_square}\\
@@ -257,7 +207,7 @@
 			& \ge \frac{1}{2}(t_{I,0}^{(i)} + t_{P,0}^{(i)})(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})\nonumber\\
 			& \quad - \frac{1}{4}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\label{eq:t_{I/P,0}}
 		\end{align}
-		\ref{eq:t_{I,0}_square} -- \ref{eq:t_{I/P,0}} provide lower bounds to the corresponding terms in \ref{eq:z_irs}, and the approximated current function at iteration $i$ is given in \ref{eq:z_irs_approx}.
+		which provide lower bounds to the corresponding terms in \ref{eq:z_irs}. At iteration $i$, the approximated objection function $\tilde{z}(\boldsymbol{\Phi}^{(i)})$ is detailed in \ref{eq:z_irs_approx}.
 		\begin{figure*}[b]
 			\hrule
 			\begin{equation}\label{eq:z_irs_approx}
@@ -269,37 +219,41 @@
 				\end{split}
 			\end{equation}
 		\end{figure*}
-		Hence, problem \ref{op:su} is transformed to
+		Hence, problem \ref{op:original} is transformed to
 		\begin{maxi!}
-			{\boldsymbol{\boldsymbol{\Phi}}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:su_irs}}{\label{eq:su_irs_target}}
-			\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)} \ge \bar{R}}
+			{\boldsymbol{\boldsymbol{\Phi}}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{eq:su_irs_target}}
+			\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)} \ge \bar{R}}\label{co:irs_rate}
 			\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}
 			\addConstraint{\boldsymbol{\Phi}\succeq{0}}
 			\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
 		\end{maxi!}
-		We then relax the rank constraint \ref{co:irs_rank} and solve the optimal IRS matrix $\boldsymbol{\Phi}^{\star}$ iteratively by interior-point method. If $\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ is attained by eigenvalue decomposition (EVD). Otherwise, a solution can be extracted through Gaussian randomization method \cite{Huang2010}. We first perform EVD on $\boldsymbol{\Phi}^{\star}$ as $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}^H$. Then, we generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$ and construct the corresponding candidates by
-		\begin{equation}
-			\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}
-		\end{equation}
-		The candidate maximizing the objective function \ref{eq:su_irs_target} is chosen as the optimal solution $\bar{\boldsymbol{\phi}}^\star$. Finally, we can retrieve the phase shift by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for the phase shift optimization is summarized in Algorithm \ref{al:ff_irs}.
+
+		Problem \ref{op:irs} is not a standard Semi-Definite Programming (SDP) due to the rate constraint \ref{co:irs_rate}. Therefore, even if we relax the rank constraint \ref{co:irs_rank} to formulate a convex problem, there is no guarantee that the optimal rank-1 solution $\bar{\boldsymbol{\phi}}^{\star}$ extracted from $\boldsymbol{\Phi}^{\star}$ is a stationary point of the original problem \ref{op:original}. In Section [TODO], we numerically show that $\boldsymbol{\Phi}^{\star}$ is rank-1 for all tested channel realizations so that the performance loss is insignificant.
+
+		When $\boldsymbol{\Phi}^{\star}$ is rank-1, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ is obtained by Eigenvalue Decomposition (EVD). Otherwise, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$, construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the one that maximizes the objective function \ref{eq:su_irs_target}. Finally, the phase shift is retrieved by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for the phase shift optimization is summarized in Algorithm \ref{al:irs}.
 		\begin{algorithm}
 			\caption{IRS Phase Shift}
-			\label{al:ff_irs}
+			\label{al:irs}
 			\begin{algorithmic}[1]
-				\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_D,\boldsymbol{h}_I,\boldsymbol{h}_R,Q,\bar{R},\epsilon,\rho,\boldsymbol{w}_{I/P},\sigma_n \ \forall n$
-				\State \textbf{Initialize} $i \gets 0,\boldsymbol{\Phi}^{(0)},t_{I/P,n}^{(0)}\ \forall n$ by \ref{eq:t}
-				\State Construct $\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n},\boldsymbol{C}_{I/P,n} \ \forall n$ by \ref{eq:M}, \ref{eq:M_n,phi}, \ref{eq:C_n}, \ref{eq:C_{I/P,n}}
-				\Repeat;
-				\State $i \gets i + 1$
-				\State Obtain IRS matrix $\boldsymbol{\Phi}^{(i)}$ by solving problem \ref{op:su_irs}
-				\State Update auxiliary $t_{I/P,n}^{(i)} \forall n$ by \ref{eq:t} for SCA
+				\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_D,\boldsymbol{h}_I,\boldsymbol{h}_R,\boldsymbol{w}_I,\boldsymbol{w}_P,\rho,\sigma_n,\bar{R},Q,\epsilon$
+				\State Construct $\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n}$ for $n=1,\dots,N$, $\boldsymbol{C}_{I/P,n}$ for $n=-N+1,\dots,N-1$
+				\State \textbf{Initialize} $i \gets 0,\boldsymbol{\Phi}^{(0)},t_{I/P,n}^{(0)}$, $n=-N+1,\dots,N-1$
+				\Repeat
+					\State $i \gets i + 1$
+					\State Obtain $\boldsymbol{\Phi}^{(i)}, t_{I/P,n}^{(i)}$ by solving problem \ref{op:irs}
 				\Until $\lvert (z^{(i)}-z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
-				\State Perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}^H$
-				\State Generate CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}) \ \forall q$
-				\State Construct candidate IRS vectors $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}_{\boldsymbol{\Phi}^{\star}}\boldsymbol{\Sigma}_{\boldsymbol{\Phi}^{\star}}^{\frac{1}{2}}\boldsymbol{r}_q\right)}$ and matrices $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H  \ \forall q$
-				\State Select the best solution $\boldsymbol{\Phi}^\star$ and $\bar{\boldsymbol{\phi}}^\star$ for problem \ref{op:su_irs}
-				\State Compute phase shift by $\theta_l^\star=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
-				\State \textbf{Output} $\theta_l^\star \ \forall l$
+				\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
+				\If{$\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$}
+					\State Obtain $\bar{\boldsymbol{\phi}}^\star$ by $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
+				\Else
+					\State Obtain $\boldsymbol{U},\boldsymbol{\Sigma}$ by $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$
+
+					\State Generate $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $q=1,\dots,Q$
+					\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$
+					\State Set $q^{\star}=\arg\max_q{z(\boldsymbol{\Phi}_q)}$, $\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
+				\EndIf
+				\State Set $\theta_l^\star=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
+				\State \textbf{Output} $\theta_l^\star$
 			\end{algorithmic}
 		\end{algorithm}
 	\end{subsection}
@@ -314,7 +268,7 @@
 			\begin{equation}
 				\lvert{\boldsymbol{h}_n^H\boldsymbol{w}_{I,n}}\rvert^2=(\boldsymbol{a}_n^H\boldsymbol{s}_{I,n})^2=\sum_{m_1,m_2}\prod_{j=1}^2{a_{n,m}s_{I,n,m}} \triangleq E_n
 			\end{equation}
-			Therefore, the original problem \ref{op:su} is reduced to an amplitude optimization problem
+			Therefore, the original problem \ref{op:original} is reduced to an amplitude optimization problem
 			\begin{maxi!}
 					{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\label{op:su_gp}}{}
 					\addConstraint{\frac{1}{2}({\boldsymbol{s}_I^H}{\boldsymbol{s}_I}+{\boldsymbol{s}_P^H}{\boldsymbol{s}_P})\le{P}}
@@ -397,7 +351,7 @@
 				\begin{equation}
 					\lvert{\boldsymbol{h}_n^H\boldsymbol{w}_{I,n}}\rvert^2=\boldsymbol{w}_{I,n}^H\boldsymbol{h}_n\boldsymbol{h}_n^H\boldsymbol{w}_{I,n}=\mathrm{Tr}(\boldsymbol{h}_n\boldsymbol{h}_n^H\boldsymbol{W}_{I,n}')
 				\end{equation}
-				Hence, problem \ref{op:su} is transformed to
+				Hence, problem \ref{op:original} is transformed to
 				\begin{maxi!}
 					{\boldsymbol{W}_I,\boldsymbol{W}_P}{\tilde{z}(\boldsymbol{W}_I,\boldsymbol{W}_P)}{\label{op:su_waveform}}{\label{eq:su_waveform_target}}
 					\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{h}_n\boldsymbol{h}_n^H\boldsymbol{W}_{I,n}')}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_waveform_constraint}}
@@ -428,7 +382,7 @@
 			\end{paragraph}
 
 			\begin{paragraph}{Receive Splitting Ratio}
-				We then optimize the power splitting ratio $\rho$ for any fixed phase shift $\boldsymbol{\phi}$ and waveform $\boldsymbol{w}_{I/P}$. In this case, $z(\rho)$ is also expressed in \ref{eq:z_waveform} with constant $t_{I/P,n}'$ given by \ref{eq:t'}. Since $z(\rho)$ is a quadratic function that monotonically increases over $\rho \in [0, 1]$, we replace the convex objective function with affine $\rho$ and transform problem \ref{op:su} to
+				We then optimize the power splitting ratio $\rho$ for any fixed phase shift $\boldsymbol{\phi}$ and waveform $\boldsymbol{w}_{I/P}$. In this case, $z(\rho)$ is also expressed in \ref{eq:z_waveform} with constant $t_{I/P,n}'$ given by \ref{eq:t'}. Since $z(\rho)$ is a quadratic function that monotonically increases over $\rho \in [0, 1]$, we replace the convex objective function with affine $\rho$ and transform problem \ref{op:original} to
 				\begin{maxi!}
 					{\rho}{\rho}{\label{op:su_ratio}}{\label{eq:su_ratio_target}}
 					\addConstraint{\sum_{n}{\log_2\left(1+\frac{(1-\rho)\lvert \boldsymbol{h}_n^H \boldsymbol{w}_n \rvert^2}{\sigma_n^2}\right)} \ge \bar{R}\label{eq:su_ratio_constraint}}
@@ -472,7 +426,7 @@
 		\end{subsubsection}
 
 		\begin{subsubsection}{WPT}
-			The current maximization problem can be solved by setting $\rho = 1$, removing the rate constraint in problem \ref{op:su_irs} and \ref{op:su_waveform} then solving them iteratively.
+			The current maximization problem can be solved by setting $\rho = 1$, removing the rate constraint in problem \ref{op:irs} and \ref{op:su_waveform} then solving them iteratively.
 		\end{subsubsection}
 
 		\begin{subsubsection}{R-E Sample}
@@ -486,7 +440,7 @@
 					\State Obtain splitting ratio $\rho^{(0)}$ and waveform $\boldsymbol{w}_{I/P}^{(0)}$ by GP (Algorithm \ref{al:waveform_split_ratio_gp}) or inner loop (Algorithm \ref{al:inner_loop})
 					\Repeat
 					\State $i \gets i + 1$
-					\State Update IRS phase shift $\boldsymbol{\phi}^{(i)}$ by Algorithm \ref{al:ff_irs}
+					\State Update IRS phase shift $\boldsymbol{\phi}^{(i)}$ by Algorithm \ref{al:irs}
 					\State Update composite channel $\boldsymbol{h}^{(i)}$ by \ref{eq:h_n}
 					\State Update splitting ratio $\rho^{(i)}$ and waveform $\boldsymbol{w}_{I/P}^{(i)}$ by GP (Algorithm \ref{al:waveform_split_ratio_gp}) or inner loop (Algorithm \ref{al:inner_loop})
 					\Until $\lvert (z^{(i)}-z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
