@@ -70,7 +70,7 @@
 		A major benefit of the proposed waveform is that the determined power waveform creates no interference to the information waveform. Therefore, the achievable rate writes as
 		\begin{equation}\label{eq:R}
 			\begin{split}
-				R(\boldsymbol{w}_I,\boldsymbol{\phi},\rho)
+				R(\boldsymbol{\phi},\boldsymbol{w}_I,\rho)
 				& = \sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert \boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n} \rvert^2}{\sigma_n^2}\right)}\\
 				& = \sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert(\boldsymbol{h}_{D,n}^H+\boldsymbol{\phi}^H\boldsymbol{V}_n)\boldsymbol{w}_{I,n}\rvert^2}{\sigma_n^2}\right)}
 			\end{split}
@@ -111,7 +111,7 @@
 
 		With the assumption of evenly spaced frequencies, it holds that $\mathcal{A}\left\{y(t)^i\right\}=0$ for odd $i$ thus the related terms has no contribution to DC components. However, $k_i'$ is still a function of $i_{\text{out}}$, and \cite{Clerckx2016a} proved that maximizing a truncated $i_{\text{out}}$ is equivalent to maximizing a monotonic function
 		\begin{equation}\label{eq:z}
-			z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y(t)^i\right\}\right\}}
+			z(\boldsymbol{\phi},\boldsymbol{w}_I,\boldsymbol{w}_P,\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y(t)^i\right\}\right\}}
 		\end{equation}
 		where $k_i=i_s/i!(nv_t)^i$. It can be observed that the traditional linear harvester model, where the output DC power equals the sum of the power harvested on each frequency, is a special case of \ref{eq:z} with $n_0=2$. However, due to the coupling among different frequencies, some high-order terms also cancel out non-DC components thus contribute to the output DC power. In other words, even terms with $i \ge 4$ account for the nonlinear behavior of the diode. For simplicity, we choose $n_0=4$ to investigate fundamental nonlinearity and let $\beta_2={k_2}{R_{\text{ant}}}$, $\beta_4={k_4}{R_{\text{ant}}^2}$. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ but $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$ can be interpreted as a modulation gain on the nonlinear terms of the output DC current.
 
@@ -119,7 +119,7 @@
 		\begin{figure*}[b]
 			\hrule
 			\begin{align}
-				z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)
+				z(\boldsymbol{\phi},\boldsymbol{w}_I,\boldsymbol{w}_P,\rho)
 				& = \beta_2\rho\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{P}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}\mathcal{A}\left\{y_{P}^2(t)\right\}\Bigr)\label{eq:z_expand}\\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}
 				& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h}\label{eq:y_I2}\\
@@ -149,10 +149,10 @@
 \begin{section}{Problem Formulation}
 	We characterize the R-E region through multiple current maximization problems subject to transmit power, IRS magnitude, and different rate constraints
 	\begin{maxi!}
-		{\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho}{z(\boldsymbol{w}_I,\boldsymbol{w}_P,\boldsymbol{\phi},\rho)}{\label{op:original}}{\label{ob:original}}
-		\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{w}_I}\rVert^2+\lVert{\boldsymbol{w}_P}\rVert^2\right)\le{P}}
-		\addConstraint{R(\boldsymbol{w}_I,\boldsymbol{\phi},\rho) \ge \bar{R}}\label{co:original_rate}
-		\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}
+		{\boldsymbol{\phi},\boldsymbol{w}_I,\boldsymbol{w}_P,\rho}{z(\boldsymbol{\phi},\boldsymbol{w}_I,\boldsymbol{w}_P,\rho)}{\label{op:original}}{\label{ob:original}}
+		\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{w}_I}\rVert^2+\lVert{\boldsymbol{w}_P}\rVert^2\right)\le{P}}\label{co:original_power}
+		\addConstraint{R(\boldsymbol{\phi},\boldsymbol{w}_I,\rho) \ge \bar{R}}\label{co:original_rate}
+		\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}\label{co:original_modulus}
 		\addConstraint{0 \le \rho \le 1}
 	\end{maxi!}
 	Problem \ref{op:original} is intricate with coupled variables involved in non-convex objective function \ref{ob:original} and rate constraint \ref{co:original_rate}. To reduce the design complexity, we propose an suboptimal AO algorithm that iteratively updates the IRS phase shift and transmit waveform together with receive splitting ratio until convergence.
@@ -194,16 +194,16 @@
 			\end{split}
 		\end{equation}
 
-		To maximize non-concave expression \ref{eq:z_irs}, we use first-order Taylor expansion to approximate its second-order terms. Based on the variables optimized at iteration $i - 1$, the local approximation at iteration $i$ suggests \cite{Adali2010}
+		To maximize non-concave expression \ref{eq:z_irs}, we propose a Successive Convex Approximation (SCA)-based algorithm that approximate the second-order terms by first-order Taylor expansion. Based on the variables optimized at iteration $i - 1$, the local approximation at iteration $i$ suggests \cite{Adali2010}
 		\begin{align}
 			(t_{I,0}^{(i)})^2
-			& \ge 2 t_{I,0}^{(i)}t_{I,0}^{(i-1)} - (t_{I,0}^{(i-1)})^2\\
+			& \ge 2 t_{I,0}^{(i)}t_{I,0}^{(i-1)} - (t_{I,0}^{(i-1)})^2\label{eq:taylor_1}\\
 			t_{P,n}^{(i)} (t_{P,n}^{(i)})^*
-			& \ge 2 \Re\left\{t_{P,n}^{(i)} (t_{P,n}^{(i-1)})^*\right\} - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\\
+			& \ge 2 \Re\left\{t_{P,n}^{(i)} (t_{P,n}^{(i-1)})^*\right\} - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\label{eq:taylor_2}\\
 			t_{I,0}^{(i)} t_{P,0}^{(i)}
 			& = \frac{1}{4}(t_{I,0}^{(i)} + t_{P,0}^{(i)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\nonumber\\
 			& \ge \frac{1}{2}(t_{I,0}^{(i)} + t_{P,0}^{(i)})(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})\nonumber\\
-			& \quad - \frac{1}{4}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2
+			& \quad - \frac{1}{4}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\label{eq:taylor_3}
 		\end{align}
 		which provide lower bounds to the corresponding terms in \ref{eq:z_irs}. At iteration $i$, the approximated objection function $\tilde{z}(\boldsymbol{\Phi}^{(i)})$ is detailed in \ref{eq:z_irs_approx}.
 		\begin{figure*}[b]
@@ -219,18 +219,18 @@
 		\end{figure*}
 		Hence, problem \ref{op:original} is transformed to
 		\begin{maxi!}
-			{\boldsymbol{\boldsymbol{\Phi}}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{eq:su_irs_target}}
+			{\boldsymbol{\boldsymbol{\Phi}}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{ob:irs}}
 			\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_rate}
-			\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}
+			\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}\label{co:irs_modulus}
 			\addConstraint{\boldsymbol{\Phi}\succeq{0}}
 			\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
 		\end{maxi!}
 
 		Problem \ref{op:irs} is not a standard Semidefinite Programming (SDP) due to the rate constraint \ref{co:irs_rate}. Therefore, even if we relax the rank constraint \ref{co:irs_rank} to formulate a convex problem, there is no guarantee that the optimal rank-1 solution $\bar{\boldsymbol{\phi}}^{\star}$ extracted from $\boldsymbol{\Phi}^{\star}$ is a stationary point of the original problem \ref{op:original}. In Section [TODO], we numerically show that $\boldsymbol{\Phi}^{\star}$ is rank-1 for all tested channel realizations so that the performance loss is insignificant.
 
-		When $\boldsymbol{\Phi}^{\star}$ is rank-1, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ is obtained by Eigenvalue Decomposition (EVD). Otherwise, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$, construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the one that maximizes the objective function \ref{eq:su_irs_target}. Finally, the phase shift is retrieved by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for the phase shift optimization is summarized in Algorithm \ref{al:irs}.
+		When $\boldsymbol{\Phi}^{\star}$ is rank-1, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ is obtained by Eigenvalue Decomposition (EVD). Otherwise, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$, construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the one that maximizes the objective function \ref{ob:irs}. Finally, the phase shift is retrieved by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for the phase shift optimization is summarized in Algorithm \ref{al:irs}.
 		\begin{algorithm}
-			\caption{SDR: IRS Phase Shift}
+			\caption{SCA: IRS Phase Shift}
 			\label{al:irs}
 			\begin{algorithmic}[1]
 				\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_D,\boldsymbol{h}_I,\boldsymbol{h}_R,\boldsymbol{w}_I,\boldsymbol{w}_P,\rho,\sigma_n,\bar{R},Q,\epsilon$
@@ -252,7 +252,7 @@
 					\State Set $q^{\star}=\arg\max_q{z(\boldsymbol{\Phi}_q)}$, $\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
 				\EndIf
 				\State Set $\theta_l^\star=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
-				\State \textbf{Output} $\theta_l^\star$
+				\State \textbf{Output} $\boldsymbol{\phi}^{\star}$
 			\end{algorithmic}
 		\end{algorithm}
 	\end{subsection}
@@ -286,7 +286,7 @@
 		Since problem \ref{op:waveform} involves the production of nonnegative real variables, we introduce auxiliary variables $t',\bar{\rho}$ and transform it into a reversed GP
 		\begin{mini!}
 			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,\bar{\rho},t'}{\frac{1}{t'}}{\label{op:waveform_rgp}}{}
-			\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_I}\rVert^2+\lVert{\boldsymbol{s}_P}\rVert^2\right) \le P}
+			\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_I}\rVert^2+\lVert{\boldsymbol{s}_P}\rVert^2\right) \le P}\label{co:waveform_power}
 			\addConstraint{\frac{t'}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)} \le 1}\label{co:waveform_objective}
 			\addConstraint{\frac{2^{\bar{R}}}{\prod_{n=1}^N \left(1+{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{I,n}^2}/{\sigma_n^2}\right)} \le 1}\label{co:waveform_rate}
 			\addConstraint{\rho + \bar{\rho} \le 1}
@@ -309,7 +309,7 @@
 			\gamma_{m_P}^{(i)} & = \frac{g_{m_P}(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_I^{(i-1)},\boldsymbol{s}_P^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}\\
 			\gamma_{m_{I,n}}^{(i)} & = \frac{g_{m_{I,n}}(s_{I,n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{I,n}^{(i-1)})^2}/{\sigma_n^2}}\label{eq:gamma_I}
 		\end{align}
-		$\boldsymbol{s}_I,\boldsymbol{s}_P,\rho$ are updated iteratively until convergence and the GP algorithm is summarized in Algorithm \ref{al:waveform}. It is also known as a inner approximation algorithm that only provides a KKT solution \cite{Marks1978a}.
+		$\boldsymbol{s}_I,\boldsymbol{s}_P,\rho$ are updated iteratively until convergence and the GP algorithm is summarized in Algorithm \ref{al:waveform}. It is also known as a inner approximation algorithm that only provides a KKT solution \cite{Marks1978}.
 		\begin{algorithm}
 			\caption{GP: Waveform and Splitting Ratio}
 			\label{al:waveform}
@@ -322,47 +322,46 @@
 					\State Obtain $\boldsymbol{s}_{I/P}^{(i)},\rho^{(i)}$ by solving problem \ref{op:waveform_gp}
 					\State Compute $z^{(i)}$ by \ref{eq:z_waveform}
 				\Until $\lvert (z^{(i)} - z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
-				\State Retrieve $\boldsymbol{w}_{I/P}^{\star}$ by \ref{eq:w_IP}
+				\State Set $\boldsymbol{s}_{I/P}^{\star}=\boldsymbol{s}_{I/P}^{(i)}$, $\rho^{\star}=\rho^{(i)}$, retrieve $\boldsymbol{w}_{I/P}^{\star}$ by \ref{eq:w_IP}
 				\State \textbf{Output} $\boldsymbol{w}_{I/P}^{\star}, \rho^{\star}$
 			\end{algorithmic}
 		\end{algorithm}
 	\end{subsection}
 
-	\begin{subsection}{R-E Region Characterization}
-		To characterize the R-E region, we initialize the algorithm to WPT mode and increase the rate constraint gradually to obtain $S$ boundary points. At each point, information and power waveform are initialized to WIT and WPT solutions.
-		\begin{subsubsection}{WIT}
-			Consider a rate maximization problem with given information waveform $\boldsymbol{w}_I$ as
-			\begin{maxi!}
-					{\boldsymbol{\Phi}}{\sum_{n}{\log_2\left(1+\frac{\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)}}{\label{op:su_irs_wit}}{}
-					\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}
-					\addConstraint{\boldsymbol{\Phi}\succeq{0}}
-					\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1}
-				\end{maxi!}
-			Problem \ref{op:su_irs_wit} can be solved after SDR, and a best solution $\bar{\boldsymbol{\phi}}^\star$ can be obtained via Gaussian randomization method. $\boldsymbol{\phi}^\star$ can be recovered by $\phi_l^\star=\phi_l^\star/\phi_{L+1}^\star, \ l=1,\dots,L$ and $\boldsymbol{h}$ can be constructed by \ref{eq:h_n}. On top of this, the optimal information waveform can be obtained by Maximum-Ratio Transmission (MRT). The IRS phase shift and information waveform are updated iteratively until convergence.
-		\end{subsubsection}
-
-		\begin{subsubsection}{WPT}
-			The current maximization problem can be solved by setting $\rho = 1$, removing the rate constraint in problem \ref{op:irs} and \ref{op:su_waveform} then solving them iteratively.
-		\end{subsubsection}
-
-		\begin{subsubsection}{R-E Sample}
-			We propose a two-layer AO algorithm to maximize the R-E region where the outer loop updates the phase shifts and the inner loop updates the splitting ratio and waveform until convergence. It is summarized in Algorithm \ref{al:ff_ao}.
-			\begin{algorithm}
-				\caption{Outer Loop: Phase Shift, Waveform and Splitting Ratio}
-				\label{al:ff_ao}
-				\begin{algorithmic}[1]
-					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_D, \boldsymbol{h}_I, \boldsymbol{h}_R, P, Q, S, \epsilon, \sigma_n \ \forall n$
-					\State \textbf{Initialize} $i \gets 0, \boldsymbol{\phi}^{(0)}, \boldsymbol{h}^{(0)}, \boldsymbol{w}_{I/P}^{(0)}$ by WIT/WPT solutions
-					\State Obtain splitting ratio $\rho^{(0)}$ and waveform $\boldsymbol{w}_{I/P}^{(0)}$ by GP (Algorithm \ref{al:waveform}) or inner loop (Algorithm \ref{al:inner_loop})
-					\Repeat
+	\begin{subsection}{Alternating Optimization}
+		For any direct, incident and reflective channels, we iteratively update the IRS phase shift by Algorithm \ref{al:irs} and transmit waveform together with receive splitting ratio by Algorithm \ref{al:waveform} until convergence. The alternating algorithm is summarized in Algorithm \ref{al:alternating}.
+		\begin{algorithm}
+			\caption{Alternating Algorithm for Problem \ref{op:original}}
+			\label{al:alternating}
+			\begin{algorithmic}[1]
+				\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_D,\boldsymbol{h}_I,\boldsymbol{h}_R,P,\sigma_n,\bar{R},Q,\epsilon$
+				\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{w}_{I/P}^{(0)},\rho^{(0)}$
+				\Repeat
 					\State $i \gets i + 1$
-					\State Update IRS phase shift $\boldsymbol{\phi}^{(i)}$ by Algorithm \ref{al:irs}
-					\State Update composite channel $\boldsymbol{h}^{(i)}$ by \ref{eq:h_n}
-					\State Update splitting ratio $\rho^{(i)}$ and waveform $\boldsymbol{w}_{I/P}^{(i)}$ by GP (Algorithm \ref{al:waveform}) or inner loop (Algorithm \ref{al:inner_loop})
-					\Until $\lvert (z^{(i)}-z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
-					\State \textbf{Output} $\boldsymbol{w}_{I/P}^{\star}, \rho^{\star}, R^{\star}, z^{\star}$
-				\end{algorithmic}
-			\end{algorithm}
+					\State Fix $\boldsymbol{w}_{I/P}^{(i-1)},\rho^{(i-1)}$ and obtain $\boldsymbol{\phi}^{(i)}$ by Algorithm \ref{al:irs}
+					\State Fix $\boldsymbol{\phi}^{(i)}$, update $\boldsymbol{h}_n^{(i)}$, $n=1,\dots,N$ by \ref{eq:h_n} and obtain $\boldsymbol{w}_{I/P}^{(i)}, \rho^{(i)}$ by Algorithm \ref{al:waveform}
+					\State Compute $z^{(i)}$ by \ref{eq:z_irs}
+				\Until $\lvert (z^{(i)} - z^{(i-1)}) / z^{(i)} \rvert \le \epsilon$
+				\State \textbf{Output} $\boldsymbol{\phi}^{\star}, \boldsymbol{w}_{I/P}^{\star}, \rho^{\star}$
+			\end{algorithmic}
+		\end{algorithm}
+	\end{subsection}
+
+	\begin{subsection}{Convergence and Complexity}
+		\begin{subsubsection}{Convergence}
+			The proposed alternating algorithm iteratively employs SCA-based IRS phase shift Algorithm \ref{al:irs} and GP-based waveform and splitting ratio Algorithm \ref{al:waveform} until convergence.
+
+			\textbf{Proposition 1}. \textit{For any feasible initial point, the proposed SCA-based Algorithm \ref{al:irs} is guaranteed to converge to a stationary point of the IRS phase shift subproblem.}
+
+			\textit{Proof:} The objective function \ref{ob:irs} is non-decreasing over iterations because the solution of problem \ref{op:irs} at iteration $i-1$ is still a feasible point at iteration $i$. Moreover, the sequence $\{\tilde{z}(\boldsymbol{\Phi}^{(i)})\}_{i=1}^{\infty}$ is bounded above due to the unit-modulus constraint \ref{co:irs_modulus}. Thus, Algorithm \ref{al:irs} is guaranteed to converge. To prove $\boldsymbol{\Phi}^{(i)}$ converge to the set of stationary points of IRS subproblem, we notice that the SCA-based Algorithm \ref{al:irs} is indeed an inner approximation algorithm \cite{Marks1978}, since $\tilde{z}(\boldsymbol{\Phi}) \le z(\boldsymbol{\Phi})$, $\partial\tilde{z}(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}=\partial z(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}$, and the approximation \ref{eq:taylor_1} -- \ref{eq:taylor_3} are asymptotically tight as $i \to \infty$ \cite{Adali2010,Li2013}. Therefore, Algorithm \ref{al:irs} converges to a stationary point.
+
+			\textbf{Proposition 2}. \textit{For any feasible initial point, the GP-based Algorithm \ref{al:waveform} is guaranteed to converge to a stationary point of the waveform and splitting ratio subproblem.}
+
+			\textit{Proof:} See \cite{Clerckx2016a,Clerckx2018b}.
+
+			\textbf{Proposition 3}. \textit{Every limit point $(\boldsymbol{\phi}^{\star},\boldsymbol{w}_I^{\star},\boldsymbol{w}_P^{\star},\rho^{\star})$ of the proposed alternating algorithm is a stationary point of the original problem \ref{op:original}.}
+
+			\textit{Proof:} The objective function \ref{ob:original} is non-decreasing over iterations of Algorithm \ref{al:alternating}, which is also upper-bounded due to the unit-modulus constraint \ref{co:original_modulus} and the average transmit power constraint \ref{co:original_power}. Thus, Algorithm \ref{al:alternating} is guaranteed to converge, namely the sequence $\{\boldsymbol{\phi}^{(i)},\boldsymbol{w}_I^{(i)},\boldsymbol{w}_P^{(i)},\rho^{(i)}\}$ generated by optimizing $\boldsymbol{\phi}$ and $\boldsymbol{w}_I,\boldsymbol{w}_P,\rho$ alternatively has limit points. As demonstrated in \cite{Grippo2000,Hong2016,Li2013a}, the solution is a stationary point of problem \ref{op:original}.
 		\end{subsubsection}
 	\end{subsection}
 \end{section}
