@@ -1,4 +1,4 @@
-function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_split_ratio_gp(beta2, beta4, channel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance)
+function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, channel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance)
     % Function:
     %   - jointly optimize waveform and splitting ratio to maximize the R-E region
     %
@@ -31,19 +31,14 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
     % Author & Date: Yang (i@snowztail.com) - 21 Jun 20
 
 
-
     % * Get data
     [nSubbands] = size(channel, 1);
 
     % * Initialize algorithm
     % \boldsymbol{a}, \boldsymbol{s}_{I/P}
     channelAmplitude = vecnorm(channel, 2, 2);
-    infoAmplitude = zeros(nSubbands, 1);
-    powerAmplitude = zeros(nSubbands, 1);
-    for iSubband = 1 : nSubbands
-        infoAmplitude(iSubband) = abs(channel(iSubband, :) / norm(channel(iSubband, :)) * infoWaveform(:, iSubband));
-        powerAmplitude(iSubband) = abs(channel(iSubband, :) / norm(channel(iSubband, :)) * powerWaveform(:, iSubband));
-    end
+    infoAmplitude = vecnorm(infoWaveform, 2, 1);
+    powerAmplitude = vecnorm(powerWaveform, 2, 1);
     % \gamma_{I/P}
     [~, ~, currentExponent] = current_gp(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);
     [~, ~, rateExponent] = rate_gp(channelAmplitude, infoAmplitude, infoRatio, noisePower);
@@ -55,8 +50,8 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
         cvx_begin gp quiet
             cvx_solver mosek
             variable auxiliary
-            variable infoAmplitude(nSubbands, 1) nonnegative
-            variable powerAmplitude(nSubbands, 1) nonnegative
+            variable infoAmplitude(1, nSubbands) nonnegative
+            variable powerAmplitude(1, nSubbands) nonnegative
             variable infoRatio nonnegative
             variable powerRatio nonnegative
 
@@ -65,7 +60,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
 
             minimize (1 / auxiliary)
             subject to
-                (1 / 2) * (infoAmplitude' * infoAmplitude + powerAmplitude' * powerAmplitude) <= txPower;
+                (1 / 2) * (norm(infoAmplitude) ^ 2 + norm(powerAmplitude) ^ 2) <= txPower;
                 auxiliary * prod((currentMonomial ./ currentExponent) .^ (-currentExponent)) <= 1;
                 2 ^ rateConstraint * prod(prod((rateMonomial ./ rateExponent) .^ (-rateExponent))) <= 1;
                 powerRatio + infoRatio <= 1;
@@ -80,7 +75,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
     end
 
     % * Reconstruct waveform by power allocation + beamforming
-    infoWaveform = transpose(infoAmplitude) .* channel' ./ vecnorm(channel, 2, 2)';
-    powerWaveform = transpose(powerAmplitude) .* channel' ./ vecnorm(channel, 2, 2)';
+    infoWaveform = infoAmplitude .* channel' ./ vecnorm(channel, 2, 2)';
+    powerWaveform = powerAmplitude .* channel' ./ vecnorm(channel, 2, 2)';
 
 end
