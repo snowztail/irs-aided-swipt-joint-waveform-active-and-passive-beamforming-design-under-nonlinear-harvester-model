@@ -6,9 +6,9 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     % Input:
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
-    %   - channelAmplitude (a) [nSubbands * nTxs * nRxs]: channel amplitude response
-    %   - infoAmplitude (s_I) [nSubbands]: amplitude on information carriers
-    %   - powerAmplitude (s_P) [nSubbands]: amplitude on power carriers
+    %   - channelAmplitude (a) [nSubbands * 1]: channel amplitude response
+    %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude on information carriers
+    %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude on power carriers
     %   - powerRatio (\rho): power splitting ratio
     %
     % Output:
@@ -51,7 +51,7 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     iTermP2 = 0;
     for iSubband = 1 : nSubbands
         iTermP2 = iTermP2 + 1;
-        currentMonomialP2(iTermP2) = norm(channelAmplitude(iSubband, :)) ^ 2 * powerAmplitude(iSubband) ^ 2;
+        currentMonomialP2(iTermP2) = channelAmplitude(iSubband) ^ 2 * powerAmplitude(iSubband) ^ 2;
     end
     clearvars iSubband;
 
@@ -63,10 +63,10 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
                     if iSubband1 + iSubband2 == iSubband3 + iSubband4
                         iTermP4 = iTermP4 + 1;
                         currentMonomialP4(iTermP4) = ...
-                            (powerAmplitude(iSubband1) * norm(channelAmplitude(iSubband1, :))) * ...
-                            (powerAmplitude(iSubband2) * norm(channelAmplitude(iSubband2, :))) * ...
-                            (powerAmplitude(iSubband3) * norm(channelAmplitude(iSubband3, :))) * ...
-                            (powerAmplitude(iSubband4) * norm(channelAmplitude(iSubband4, :)));
+                            (powerAmplitude(iSubband1) * channelAmplitude(iSubband1)) * ...
+                            (powerAmplitude(iSubband2) * channelAmplitude(iSubband2)) * ...
+                            (powerAmplitude(iSubband3) * channelAmplitude(iSubband3)) * ...
+                            (powerAmplitude(iSubband4) * channelAmplitude(iSubband4));
                     end
                 end
             end
@@ -77,7 +77,7 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     iTermI2 = 0;
     for iSubband = 1 : nSubbands
         iTermI2 = iTermI2 + 1;
-        currentMonomialI2(iTermI2) = norm(channelAmplitude(iSubband, :)) ^ 2 * infoAmplitude(iSubband) ^ 2;
+        currentMonomialI2(iTermI2) = channelAmplitude(iSubband) ^ 2 * infoAmplitude(iSubband) ^ 2;
     end
     clearvars iSubband;
 
@@ -86,8 +86,8 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
         for iSubband2 = 1 : nSubbands
             iTermI4 = iTermI4 + 1;
             currentMonomialI4(iTermI4) = ...
-                (infoAmplitude(iSubband1) ^ 2 * norm(channelAmplitude(iSubband1, :)) ^ 2) * ...
-                (infoAmplitude(iSubband2) ^ 2 * norm(channelAmplitude(iSubband2, :)) ^ 2);
+                (infoAmplitude(iSubband1) ^ 2 * channelAmplitude(iSubband1) ^ 2) * ...
+                (infoAmplitude(iSubband2) ^ 2 * channelAmplitude(iSubband2) ^ 2);
         end
     end
     clearvars iSubband1 iSubband2;
@@ -97,8 +97,8 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
         for iSubband2 = 1 : nSubbands
             iTermP2I2 = iTermP2I2 + 1;
             currentMonomialP2I2(iTermP2I2) = ...
-                (norm(channelAmplitude(iSubband1, :)) ^ 2 * powerAmplitude(iSubband1) ^ 2) * ...
-                (norm(channelAmplitude(iSubband2, :)) ^ 2 * infoAmplitude(iSubband2) ^ 2);
+                (channelAmplitude(iSubband1) ^ 2 * powerAmplitude(iSubband1) ^ 2) * ...
+                (channelAmplitude(iSubband2) ^ 2 * infoAmplitude(iSubband2) ^ 2);
         end
     end
     clearvars iSubband1 iSubband2;
@@ -109,7 +109,7 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     currentMonomialI4 = (3 / 4) * beta4 * powerRatio ^ 2 * currentMonomialI4;
     currentMonomialP2I2 = (3 / 2) * beta4 * powerRatio ^ 2 *  currentMonomialP2I2;
 
-    currentMonomial = [currentMonomialP2 currentMonomialP4 currentMonomialI2 currentMonomialI4 currentMonomialP2I2];
+    currentMonomial = [currentMonomialP2, currentMonomialP4, currentMonomialI2, currentMonomialI4, currentMonomialP2I2];
 
     % * Posynomial and exponents
     if isKnown

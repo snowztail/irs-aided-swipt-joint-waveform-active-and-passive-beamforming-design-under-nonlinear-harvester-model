@@ -1,11 +1,11 @@
-function [rate, rateMonomial, rateExponent] = rate_gp(channelAmplitude, infoWaveform, infoRatio, noisePower)
+function [rate, rateMonomial, rateExponent] = rate_gp(channelAmplitude, infoAmplitude, infoRatio, noisePower)
     % Function:
     %   - formulate rate as a function of waveform amplitudes
     %   - decompose rate as sum of monomials
     %
     % Input:
-    %   - channelAmplitude (a) [nSubbands * nTxs * nRxs]: channel amplitude response
-    %   - infoWaveform (s_I) [nSubbands]: amplitude on information carriers
+    %   - channelAmplitude (a) [nSubbands * 1]: channel amplitude response
+    %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude on information carriers
     %   - infoRatio (\bar{\rho}): information splitting ratio
     %   - noisePower (\sigma_n^2): average noise power
     %
@@ -21,13 +21,12 @@ function [rate, rateMonomial, rateExponent] = rate_gp(channelAmplitude, infoWave
     % Author & Date: Yang (i@snowztail.com) - 04 Jun 19
 
 
-
     % * Get data
     nSubbands = size(channelAmplitude, 1);
     nTerms = 2;
 
     % * Type of variables
-    isKnown = isa(infoWaveform, 'double');
+    isKnown = isa(infoAmplitude, 'double');
 
     % * Constant term 1 in rate expression
     if isKnown
@@ -38,7 +37,7 @@ function [rate, rateMonomial, rateExponent] = rate_gp(channelAmplitude, infoWave
 
     % * SNR term in rate expression
     for iSubband = 1 : nSubbands
-        rateMonomial(iSubband, 2) = infoRatio * (infoWaveform(iSubband) ^ 2 * norm(channelAmplitude(iSubband, :)) ^ 2) / noisePower;
+        rateMonomial(iSubband, 2) = infoRatio * (infoAmplitude(iSubband) ^ 2 * channelAmplitude(iSubband) ^ 2) / noisePower;
     end
 
     if isKnown
