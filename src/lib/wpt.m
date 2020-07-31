@@ -15,7 +15,7 @@ function [current, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = wp
     %
     % Output:
     %   - current (z): harvester output DC current
-    %   - irs (\phi) [nReflectors]: IRS reflection coefficients
+    %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
     %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
     %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %   - infoRatio (\bar{\rho}): information splitting ratio

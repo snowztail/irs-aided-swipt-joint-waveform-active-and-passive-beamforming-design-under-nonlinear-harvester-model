@@ -16,7 +16,6 @@ function [blkDiagComponents] = block_diagonal(matrix, nTxs, nSubbands)
     % Author & Date: Yang (i@snowztail.com) - 16 Jul 20
 
 
-
     blkDiagComponents = cell(2 * nSubbands - 1, 1);
     for blkDiagIndex = - nSubbands + 1 : nSubbands - 1
         blkDiagComponents{-blkDiagIndex + nSubbands} = zeros(nTxs * nSubbands);

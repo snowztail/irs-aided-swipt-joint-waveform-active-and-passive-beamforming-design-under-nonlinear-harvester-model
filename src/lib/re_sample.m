@@ -22,8 +22,6 @@ function [rate, current] = re_sample(beta2, beta4, channel, infoWaveform, powerW
     % Author & Date: Yang (i@snowztail.com) - 21 Jun 20
 
 
-
-
     % * Get data
     [nSubbands, nTxs, ~] = size(channel);
 

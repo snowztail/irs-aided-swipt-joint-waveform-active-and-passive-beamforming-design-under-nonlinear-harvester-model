@@ -6,7 +6,7 @@ function [compositeChannel, concatChannel, concatSubchannel] = composite_channel
     %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
     %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
     %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
-    %   - irs (\phi) [nReflectors]: IRS reflection coefficient
+    %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficient
     %
     % Output:
     %   - compositeChannel (h) [nSubbands * nTxs * nRxs]: superposition of direct and extra channels
@@ -20,7 +20,6 @@ function [compositeChannel, concatChannel, concatSubchannel] = composite_channel
     %   - \boldsymbol{\Phi} = diag(irs')
     %
     % Author & Date: Yang (i@snowztail.com) - 21 May 20
-
 
 
     % * Get data

@@ -14,7 +14,6 @@ function [hermitianTerm] = hermitianize(term)
     % Author & Date: Yang (i@snowztail.com) - 17 Jun 20
 
 
-
     hermitianTerm = (1 / 2) * (term + term');
 
 end

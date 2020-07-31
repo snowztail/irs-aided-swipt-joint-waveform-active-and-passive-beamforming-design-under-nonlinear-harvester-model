@@ -15,7 +15,6 @@ function [pathloss] = path_loss(distance, linkMode)
     % Author & Date: Yang (i@snowztail.com) - 30 Mar 20
 
 
-
     switch linkMode
     case 'direct'
         exponent = 3.8;

@@ -8,7 +8,7 @@ function [tapGain, tapDelay] = tap_tgn(nTxs, nRxs)
     %
     % Output:
     %   - tapGain [nTaps * nTxs * nRxs]: complex tap gain
-    %   - tapDelay [nTaps]: tap delays
+    %   - tapDelay [nTaps * 1]: tap delays
     %
     % Comment:
     %   - for single-user MIMO
@@ -18,8 +18,6 @@ function [tapGain, tapDelay] = tap_tgn(nTxs, nRxs)
     %   - V. Erceg et al., "TGn channel models," in Version 4. IEEE 802.11–03/940r4, May 2004.
     %
     % Author & Date: Yang (i@snowztail.com) - 07 Mar 20
-
-
 
 
     % * Define parameters

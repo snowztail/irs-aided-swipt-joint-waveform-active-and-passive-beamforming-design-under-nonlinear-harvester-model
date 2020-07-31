@@ -22,7 +22,6 @@ function [irs, compositeChannel] = irs_fs(directChannel, incidentChannel, reflec
     % Author & Date: Yang (i@snowztail.com) - 28 Apr 20
 
 
-
     % * Get data
     [nSubbands, ~, nReflectors] = size(incidentChannel);
 
