@@ -13,7 +13,7 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
     %
     % Output:
     %   - capacity (R): channel capacity
-    %   - irs (\phi) [nReflectors]: IRS reflection coefficients
+    %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
     %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
     %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %   - infoRatio (\bar{\rho}): information splitting ratio
@@ -25,7 +25,6 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
     %   - construct information waveform by water-filling algorithm and matched filter
     %
     % Author & Date: Yang (i@snowztail.com) - 21 Jun 20
-
 
 
     % * Get data
@@ -89,7 +88,7 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
                 irs = irsCandidate;
             end
         end
-        irs = irs(1 : nReflectors) / irs(end);
+        irs = reshape(irs(1 : nReflectors) / irs(end), [nReflectors, 1]);
 
         % * Update composite channel and optimal waveform
         [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);

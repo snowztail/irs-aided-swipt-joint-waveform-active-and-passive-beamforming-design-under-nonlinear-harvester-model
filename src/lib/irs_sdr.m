@@ -8,7 +8,7 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
     %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
     %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
     %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
-    %   - irs (\phi) [nReflectors]: IRS reflection coefficients (in the previous iteration)
+    %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients (in the previous iteration)
     %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
     %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %   - infoRatio (\bar{\rho}): information splitting ratio
@@ -19,7 +19,7 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
     %   - tolerance (\epsilon): minimum gain ratio per iteration
     %
     % Output:
-    %   - irs (\phi) [nReflectors]: IRS reflection coefficients
+    %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank IRS outer product matrix
@@ -153,6 +153,6 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
             irs = irsCandidate;
         end
     end
-    irs = irs(1 : nReflectors) / irs(end);
+    irs = reshape(irs(1 : nReflectors) / irs(end), [nReflectors, 1]);
 
 end
