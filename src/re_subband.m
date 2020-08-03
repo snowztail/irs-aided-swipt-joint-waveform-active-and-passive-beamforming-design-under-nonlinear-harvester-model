@@ -1,54 +1,32 @@
-clear; clc; setup; config_subband; load('data/tap.mat');
+clear; clc; setup; config_subband; load('data/taps.mat');
 
 %% ! R-E region vs number of subbands
-niSample = cell(2, length(Variable.nSubbands));
-niSolution = cell(2, length(Variable.nSubbands));
-ffSample = cell(2, length(Variable.nSubbands));
-ffSolution = cell(2, length(Variable.nSubbands));
+reSample = cell(length(Variable.nSubbands), 1);
+reSolution = cell(length(Variable.nSubbands), 1);
+
+% * Get tap data
+directTapGain = directTapGain(:, 1 : nTxs);
+incidentTapGain = incidentTapGain(:, 1 : nTxs, :);
 
 for iSubband = 1 : length(Variable.nSubbands)
-    % * Update channels
+    % * Generate channels
     nSubbands = Variable.nSubbands(iSubband);
     [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
-    [directChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, directDistance, directTapGain, directTapDelay, 'direct');
-    [incidentChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, incidentDistance, incidentTapGain, incidentTapDelay, 'incident');
-    [reflectiveChannel] = frequency_response(nSubbands, subbandFrequency, fadingMode, nReflectors, reflectiveDistance, reflectiveTapGain, reflectiveTapDelay, 'reflective');
+    [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, nReflectors, subbandFrequency, fadingMode, 'direct');
+    [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, nReflectors, subbandFrequency, fadingMode, 'incident');
+    [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, nReflectors, subbandFrequency, fadingMode, 'reflective');
 
-    % * GP and SDR
-    ni_gp;
-    niSample{1, iSubband} = niGpSample;
-    niSolution{1, iSubband} = niGpSolution;
-    ni_sdr;
-    niSample{2, iSubband} = niSdrSample;
-    niSolution{2, iSubband} = niSdrSolution;
-
-    ff_gp;
-    ffSample{1, iSubband} = ffGpSample;
-    ffSolution{1, iSubband} = ffGpSolution;
-    ff_sdr;
-    ffSample{2, iSubband} = ffSdrSample;
-    ffSolution{2, iSubband} = ffSdrSolution;
+    % * Alternating optimization
+    [reSample{iSubband}, reSolution{iSubband}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 end
 save('data/re_subband.mat');
 
 %% * R-E plots
-% * No IRS/
-figure('name', 'No IRS: R-E region vs number of subbands');
-legendString = cell(2 * length(Variable.nSubbands), 1);
-% * GP
-ax = gca;
-ax.ColorOrderIndex = 1;
+figure('name', 'R-E region vs number of subbands');
+legendString = cell(length(Variable.nSubbands), 1);
 for iSubband = 1 : length(Variable.nSubbands)
-    plot(niSample{1, iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * niSample{1, iSubband}(2, :));
-    legendString{iSubband} = sprintf('GP: N = %d', Variable.nSubbands(iSubband));
-    hold on;
-end
-% * SDR
-ax = gca;
-ax.ColorOrderIndex = 1;
-for iSubband = 1 : length(Variable.nSubbands)
-    plot(niSample{2, iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * niSample{2, iSubband}(2, :), '--');
-    legendString{length(Variable.nSubbands) + iSubband} = sprintf('SDR: N = %d', Variable.nSubbands(iSubband));
+    plot(reSample{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reSample{iSubband}(2, :));
+    legendString{iSubband} = sprintf('N = %d', Variable.nSubbands(iSubband));
     hold on;
 end
 hold off;
@@ -57,31 +35,4 @@ legend(legendString);
 xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [\muA]');
 ylim([0 inf]);
-savefig('plots/re_subband_ni.fig');
-
-% * IRS
-figure('name', 'IRS: R-E region vs number of subbands');
-legendString = cell(2 * length(Variable.nSubbands), 1);
-% * GP
-ax = gca;
-ax.ColorOrderIndex = 1;
-for iSubband = 1 : length(Variable.nSubbands)
-    plot(ffSample{1, iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * ffSample{1, iSubband}(2, :));
-    legendString{iSubband} = sprintf('GP: N = %d', Variable.nSubbands(iSubband));
-    hold on;
-end
-% * SDR
-ax = gca;
-ax.ColorOrderIndex = 1;
-for iSubband = 1 : length(Variable.nSubbands)
-    plot(ffSample{2, iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * ffSample{2, iSubband}(2, :), '--');
-    legendString{length(Variable.nSubbands) + iSubband} = sprintf('SDR: N = %d', Variable.nSubbands(iSubband));
-    hold on;
-end
-hold off;
-grid minor;
-legend(legendString);
-xlabel('Per-subband rate [bps/Hz]');
-ylabel('Average output DC current [\muA]');
-ylim([0 inf]);
-savefig('plots/re_subband_ff.fig');
+savefig('plots/re_subband.fig');

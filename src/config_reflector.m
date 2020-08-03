@@ -13,7 +13,7 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit power
-txPower = 10;
+txPower = 1;
 % average noise power
 noisePower = db2pow(-60);
 
@@ -34,8 +34,6 @@ nSubbands = 4;
 fadingMode = 'selective';
 % carrier frequency
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
-% gain on each reflecting element
-irsGain = 1;
 
 %% * Algorithm
 % minimum gain ratio per iteration
@@ -43,7 +41,7 @@ tolerance = 1e-3;
 %  number of CSCG random vectors to generate
 nCandidates = 1e4;
 % number of samples in R-E curves
-nSamples = 20;
+nSamples = 40;
 
 %% * Variable
 % number of reflecting elements in IRS

@@ -13,7 +13,7 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit power
-txPower = 10;
+txPower = 1;
 % average noise power
 noisePower = db2pow(-60);
 
@@ -30,8 +30,6 @@ centerFrequency = 5.18e9;
 bandwidth = 1e6;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
-% gain on each reflecting element
-irsGain = 1;
 % number of reflecting elements in IRS
 nReflectors = 10;
 

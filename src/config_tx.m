@@ -7,8 +7,7 @@ resistance = 50;
 % coefficients on current terms
 beta2 = k2 * resistance;
 beta4 = k4 * resistance ^ 2;
-% number of transmit and receive antennas
-nTxs = 1;
+% number of receive antennas
 nRxs = 1;
 % number of users
 nUsers = 1;
@@ -44,3 +43,7 @@ tolerance = 1e-3;
 nCandidates = 1e4;
 % number of samples in R-E curves
 nSamples = 40;
+
+%% * Variable
+% number of transmit antennas
+Variable.nTxs = 1 : 5;
