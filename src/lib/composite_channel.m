@@ -18,6 +18,7 @@ function [compositeChannel, concatChannel, concatSubchannel] = composite_channel
     %   - \boldsymbol{H}_{I,n} = permute(incidentChannel(iSubband, :, :), [2 3 1])'
     %   - \boldsymbol{h}_{R,n}^H = reflectiveChannel(iSubband, :)
     %   - \boldsymbol{\Phi} = diag(irs')
+    %   - \boldsymbol{h}_n^H = compositeChannel(iSubband, :)
     %
     % Author & Date: Yang (i@snowztail.com) - 21 May 20
 

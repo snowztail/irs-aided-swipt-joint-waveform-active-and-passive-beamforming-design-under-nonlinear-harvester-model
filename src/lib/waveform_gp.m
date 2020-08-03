@@ -10,7 +10,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
     %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform (in the previous iteration)
     %   - infoRatio (\bar{\rho}): information splitting ratio (in the previous iteration)
     %   - powerRatio (\rho): power splitting ratio (in the previous iteration)
-    %   - txPower (P): transmit power constraint
+    %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %   - rateConstraint (\bar{R}): user rate constraint
     %   - tolerance (\epsilon): minimum gain ratio per iteration

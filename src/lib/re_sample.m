@@ -25,11 +25,9 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
 
 
     % * Initialize algorithm and set rate constraints
-    [capacity, ~, infoWaveform] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+    [capacity, irs] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
     rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
-%     [~, irs, ~, powerWaveform, infoRatio, powerRatio] = wpt(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
     [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-    % [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(compositeChannel, txPower, noisePower);
 
     % * R-E sample
     solution = cell(nSamples, 1);
@@ -37,8 +35,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     for iSample = 1 : nSamples
         isConverged = false;
         current_ = 0;
-%         infoWaveform = infoWaveform_;
-%         infoRatio = 1;
+        [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(compositeChannel, txPower, noisePower);
         [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
         while ~isConverged
             [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);

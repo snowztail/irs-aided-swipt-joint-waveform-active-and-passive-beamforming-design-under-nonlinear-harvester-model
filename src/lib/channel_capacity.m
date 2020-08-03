@@ -4,7 +4,7 @@ function [capacity, infoWaveform] = channel_capacity(channel, txPower, noisePowe
     %
     % Input:
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
-    %   - txPower (P): average transmit power
+    %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %
     % Output:

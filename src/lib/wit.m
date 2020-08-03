@@ -6,7 +6,7 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
     %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
     %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
     %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
-    %   - txPower (P): transmit power constraint
+    %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %   - nCandidates (Q): number of CSCG random vectors to generate
     %   - tolerance (\epsilon): minimum gain ratio per iteration
