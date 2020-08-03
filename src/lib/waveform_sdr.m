@@ -1,4 +1,4 @@
-function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, channel, infoWaveform, powerWaveform, txPower, nCandidates, tolerance)
+function [infoWaveform, powerWaveform, current] = waveform_sdr(beta2, beta4, channel, infoWaveform, powerWaveform, txPower, nCandidates, tolerance)
     % Function:
     %   - optimize the information and power waveform to maximize the R-E region
     %
@@ -8,13 +8,14 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, channel, inf
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
     %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform (in the previous iteration)
     %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform (in the previous iteration)
-    %   - txPower (P): transmit power constraint
+    %   - txPower (P): average transmit power budget
     %   - nCandidates (Q): number of CSCG random vectors to generate
     %   - tolerance (\epsilon): minimum gain ratio per iteration
     %
     % Output:
     %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
     %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
+    %   - current (z): harvester output DC current
     %
     % Comment:
     %   - suitable for WPT
@@ -120,5 +121,6 @@ function [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, channel, inf
             powerWaveform = reshape(powerWaveformCandidate, [nTxs, nSubbands]);
         end
     end
+    [~, current] = re(beta2, beta4, channel, infoWaveform, powerWaveform, 0, 1, 0);
 
 end

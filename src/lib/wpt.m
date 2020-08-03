@@ -8,7 +8,7 @@ function [current, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = wp
     %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
     %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
     %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
-    %   - txPower (P): transmit power constraint
+    %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %   - nCandidates (Q): number of CSCG random vectors to generate
     %   - tolerance (\epsilon): minimum gain ratio per iteration
@@ -49,8 +49,8 @@ function [current, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = wp
     while ~isConverged
         [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates, tolerance);
         [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-        [infoWaveform, powerWaveform] = waveform_sdr(beta2, beta4, compositeChannel, infoWaveform, powerWaveform, txPower, nCandidates, tolerance);
-        [~, current] = re_sample(beta2, beta4, compositeChannel, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower);
+        % [infoWaveform1, powerWaveform1, ~, ~, ~, current1] = waveform_gp(beta2, beta4, compositeChannel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance);
+        [infoWaveform, powerWaveform, current] = waveform_sdr(beta2, beta4, compositeChannel, infoWaveform, powerWaveform, txPower, nCandidates, tolerance);
         isConverged = abs(current - current_) / current <= tolerance;
         current_ = current;
     end
