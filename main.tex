@@ -260,7 +260,7 @@
 	\begin{subsection}{Waveform and Splitting Ratio}
 		Next, we jointly optimize both information and power waveforms $\boldsymbol{w}_{I/P}$ together with splitting ratio $\rho$ for any given IRS phase shift $\boldsymbol{\phi}$. As pointed out in \cite{Clerckx2018b}, the waveform design in frequency and spatial domain can be decoupled without performance loss, and the optimal spatial weight is given by Maximum-Ratio Transmission (MRT) beamformer
 		\begin{equation}\label{eq:w_IP}
-			\boldsymbol{w}_{I/P,n}=s_{I/P,n}\frac{\boldsymbol{h}_n^H}{\lVert{\boldsymbol{h}_n}\rVert}
+			\boldsymbol{w}_{I/P,n}=s_{I/P,n}\frac{\boldsymbol{h}_n}{\lVert{\boldsymbol{h}_n}\rVert}
 		\end{equation}
 		That is to say, it is only necessary to determine the amplitudes $s_{I/P,n}$ at different tones for single-user MISO SWIPT, and the original waveform optimization with $2MN$ variables is converted into a power allocation problem with $2N$ nonnegative real variables. Let $\boldsymbol{s}_{I/P}=[s_{I/P,1},\dots,s_{I/P,N}]^T \in \mathbb{C}^{N \times 1}$. At subband $n$, the effective channel gain is given by $\lVert{\boldsymbol{h}_n}\rVert$ and the power allocated to the modulated and unmodulated waveform are given by $s_{I,n}^2$ and $s_{P,n}^2$, respectively. With such a beamformer selection, we have $\boldsymbol{h}_n^H\boldsymbol{w}_{I,n}=\lvert{\boldsymbol{h}_n^H\boldsymbol{w}_{I,n}}\rvert=\lVert{\boldsymbol{h}_n}\rVert s_{I,n}$ such that the rate and objective expressions \ref{eq:R} and \ref{eq:z_expand} reduces to \ref{eq:R_waveform} and \ref{eq:z_waveform}.
 		\begin{equation}\label{eq:R_waveform}
