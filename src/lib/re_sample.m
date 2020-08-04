@@ -26,7 +26,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
 
     % * Initialize algorithm and set rate constraints
     [capacity, irs] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
-    rateConstraint = linspace(0, (1 - tolerance) * capacity, nSamples);
+    rateConstraint = linspace(0, (1 - 1e-3) * capacity, nSamples);
     [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 
     % * R-E sample
