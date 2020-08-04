@@ -41,7 +41,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
             [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
             [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
             [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
-            isConverged = abs(current - current_) / current <= tolerance;
+            isConverged = abs(current - current_) <= tolerance;
             current_ = current;
         end
         sample(:, iSample) = [rate; current];

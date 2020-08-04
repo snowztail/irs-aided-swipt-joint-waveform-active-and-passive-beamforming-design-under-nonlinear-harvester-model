@@ -118,7 +118,7 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
             + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands);
 
         % * Test convergence
-        isConverged = abs(current - current_) / current <= tolerance;
+        isConverged = abs(current - current_) <= tolerance;
         current_ = current;
     end
     irsMatrix = full(irsMatrix);
