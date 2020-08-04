@@ -49,6 +49,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
     while ~isConverged
         cvx_begin gp quiet
             cvx_solver mosek
+            cvx_precision high
             variable auxiliary
             variable infoAmplitude(1, nSubbands) nonnegative
             variable powerAmplitude(1, nSubbands) nonnegative
