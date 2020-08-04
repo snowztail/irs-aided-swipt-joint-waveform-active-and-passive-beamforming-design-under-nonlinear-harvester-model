@@ -19,7 +19,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_wavef
     %   - cvx crashes when initial rate is far from constraint
     %       - use matched filter to initialize power waveform with power P
     %       - use water-filling + MRT to initialize information waveform with power P
-    %       - initialize information splitting ratio to 1
+    %       - initialize both splitting ratio to 1
     %
     % Author & Date: Yang (i@snowztail.com) - 31 Jul 20
 
@@ -28,10 +28,14 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_wavef
     nSubbands = size(channel, 1);
 
     % * Initialize algorithm
+    % infoRatio = 0.5;
+    % powerRatio = 0.5;
+    % [~, infoWaveform] = channel_capacity(channel, txPower, noisePower);
+    % infoWaveform = sqrt(1 / 2) * infoWaveform;
+    % powerWaveform = sqrt(txPower / nSubbands) * channel' ./ vecnorm(channel, 2, 2)';
     infoRatio = 1;
     powerRatio = 1;
     [~, infoWaveform] = channel_capacity(channel, txPower, noisePower);
-    % infoWaveform = sqrt(txPower / nSubbands) * channel' ./ vecnorm(channel, 2, 2)';
-    powerWaveform = sqrt(txPower / nSubbands) * channel' ./ vecnorm(channel, 2, 2)';
+    powerWaveform = sqrt(2 * txPower / nSubbands) * channel' ./ vecnorm(channel, 2, 2)';
 
 end

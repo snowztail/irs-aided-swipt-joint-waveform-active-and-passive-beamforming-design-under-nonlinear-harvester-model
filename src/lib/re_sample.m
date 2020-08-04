@@ -45,8 +45,10 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
             current_ = current;
         end
         sample(:, iSample) = [rate; current];
+        solution{iSample}.compositeChannel = compositeChannel;
         solution{iSample}.infoWaveform = infoWaveform;
         solution{iSample}.powerWaveform = powerWaveform;
+        solution{iSample}.infoRatio = infoRatio;
         solution{iSample}.powerRatio = powerRatio;
     end
 
