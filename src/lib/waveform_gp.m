@@ -1,4 +1,4 @@
-function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, channel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance)
+function [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, channel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance)
     % Function:
     %   - jointly optimize waveform and splitting ratio to maximize the R-E region
     %
@@ -6,8 +6,8 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
-    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform (in the previous iteration)
-    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform (in the previous iteration)
+    %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain (in the previous iteration)
+    %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain (in the previous iteration)
     %   - infoRatio (\bar{\rho}): information splitting ratio (in the previous iteration)
     %   - powerRatio (\rho): power splitting ratio (in the previous iteration)
     %   - txPower (P): average transmit power budget
@@ -16,13 +16,13 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
     %   - tolerance (\epsilon): minimum gain ratio per iteration
     %
     % Output:
-    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
-    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
+    %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
+    %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
     %   - infoRatio (\bar{\rho}): information splitting ratio
     %   - powerRatio (\rho): power splitting ratio
     %
     % Comment:
-    %   - the optimal spatial single-user beamformer is MRT
+    %   - obtain waveform amplitude in frequency domain
     %   - effective channel is given by Euclidean norm
     %   - only power allocation (amplitude optimization) problem in frequency domain (DoF = N)
     %   - AM-GM is only suitable for real variables, thus not for multiuser case (need to optimize spatial beamformer)
@@ -32,13 +32,11 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
 
 
     % * Get data
-    [nSubbands] = size(channel, 1);
+    nSubbands = size(channel, 1);
 
     % * Initialize algorithm
-    % \boldsymbol{a}, \boldsymbol{s}_{I/P}
+    % \boldsymbol{a}
     channelAmplitude = vecnorm(channel, 2, 2);
-    infoAmplitude = vecnorm(infoWaveform, 2, 1);
-    powerAmplitude = vecnorm(powerWaveform, 2, 1);
     % \gamma_{I/P}
     [~, ~, currentExponent] = current_gp(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);
     [~, ~, rateExponent] = rate_gp(channelAmplitude, infoAmplitude, infoRatio, noisePower);
@@ -49,7 +47,7 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
     while ~isConverged
         cvx_begin gp quiet
             cvx_solver mosek
-            cvx_precision high
+            % cvx_precision high
             variable auxiliary
             variable infoAmplitude(1, nSubbands) nonnegative
             variable powerAmplitude(1, nSubbands) nonnegative
@@ -74,9 +72,5 @@ function [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = w
         isConverged = abs(current - current_) <= tolerance;
         current_ = current;
     end
-
-    % * Reconstruct waveform by power allocation + beamforming
-    infoWaveform = infoAmplitude .* channel' ./ vecnorm(channel, 2, 2)';
-    powerWaveform = powerAmplitude .* channel' ./ vecnorm(channel, 2, 2)';
 
 end

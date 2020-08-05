@@ -1,4 +1,4 @@
-function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
+function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
     %   - optimize the waveform and IRS reflection coefficients to maximize user rate
     %
@@ -14,8 +14,8 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
     % Output:
     %   - capacity (R): channel capacity
     %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
-    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
-    %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
+    %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
+    %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
     %   - infoRatio (\bar{\rho}): information splitting ratio
     %   - powerRatio (\rho): power splitting ratio
     %
@@ -28,7 +28,7 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
 
 
     % * Get data
-    [nSubbands, nTxs, nReflectors] = size(incidentChannel);
+    [nSubbands, ~, nReflectors] = size(incidentChannel);
 
     % * Initialize IRS and composite channel
     % irs = ones(nReflectors, 1);
@@ -36,8 +36,9 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
     [compositeChannel, ~, concatSubchannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 
     % * Construct waveform (water-filling + MRT) and initialize splitting ratio
-    [~, infoWaveform] = channel_capacity(compositeChannel, txPower, noisePower);
-    powerWaveform = zeros(nTxs, nSubbands) + eps;
+    [~, infoAmplitude] = channel_capacity(compositeChannel, txPower, noisePower);
+    powerAmplitude = zeros(1, nSubbands) + eps;
+    [infoWaveform, ~] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
     infoRatio = 1 - eps;
     powerRatio = 1 - infoRatio;
 
@@ -92,7 +93,8 @@ function [capacity, irs, infoWaveform, powerWaveform, infoRatio, powerRatio] = w
 
         % * Update composite channel and optimal waveform
         [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-        [capacity, infoWaveform] = channel_capacity(compositeChannel, txPower, noisePower);
+        [capacity, infoAmplitude] = channel_capacity(compositeChannel, txPower, noisePower);
+        [infoWaveform, ~] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
 
         % * Update coefficients
         for iSubband = 1 : nSubbands

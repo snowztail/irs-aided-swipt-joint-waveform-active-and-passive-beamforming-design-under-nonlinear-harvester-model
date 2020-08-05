@@ -35,12 +35,14 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     for iSample = 1 : nSamples
         isConverged = false;
         current_ = 0;
-        [infoWaveform, powerWaveform, infoRatio, powerRatio] = initialize_waveform(compositeChannel, txPower, noisePower);
-        [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+        [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(compositeChannel, txPower, noisePower);
+        [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+        [infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
         while ~isConverged
             [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
             [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-            [infoWaveform, powerWaveform, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoWaveform, powerWaveform, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+            [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+            [infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
             isConverged = abs(current - current_) <= tolerance;
             current_ = current;
         end
