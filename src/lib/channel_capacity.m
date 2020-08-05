@@ -1,4 +1,4 @@
-function [capacity, infoWaveform] = channel_capacity(channel, txPower, noisePower)
+function [capacity, infoAmplitude] = channel_capacity(channel, txPower, noisePower)
     % Function:
     %   - calculate the maximum achievable rate based on water-filling power allocation
     %
@@ -9,7 +9,7 @@ function [capacity, infoWaveform] = channel_capacity(channel, txPower, noisePowe
     %
     % Output:
     %   - capacity: the maximum achievable rate
-    %   - infoWaveform (w_I) [nTxs * nSubbands]: weight on information waveform
+    %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
     %
     % Comment:
     %   - for MISO OFDM channels
@@ -27,12 +27,12 @@ function [capacity, infoWaveform] = channel_capacity(channel, txPower, noisePowe
     snr = txPower / noisePower;
 
     % * Obtain subchannel strength (MRT within each subband)
-    strength = vecnorm(channel, 2, 2) .^ 2;
+    subbandStrength = transpose(vecnorm(channel, 2, 2)) .^ 2;
 
-    % * Iterative water-filling power allocation
-    subbandPower = zeros(nSubbands, 1);
-    [strength, index] = sort(strength, 'descend');
-    baseLevel = 1 ./ (snr * strength);
+    % * Iterative water-filling power allocation (strongest -> weakest)
+    subbandPower = zeros(1, nSubbands);
+    [subbandStrength, index] = sort(subbandStrength, 'descend');
+    baseLevel = 1 ./ (snr * subbandStrength);
     for iSubband = 1 : nSubbands
         waterLevel = 1 / (nSubbands - iSubband + 1) * (1 + sum(baseLevel(1 : (nSubbands - iSubband + 1))));
         candidate = waterLevel - baseLevel(1 : iSubband);
@@ -43,12 +43,13 @@ function [capacity, infoWaveform] = channel_capacity(channel, txPower, noisePowe
             break;
         end
     end
+
+    % * Restore index and apply power budget
+    subbandStrength(index) = subbandStrength;
     subbandPower(index) = txPower * (subbandPower ./ sum(subbandPower));
 
-    % * Construct waveform
-    infoWaveform = sqrt(transpose(subbandPower)) .* channel' ./ vecnorm(channel, 2, 2)';
-
-    % * Compute capacity
-    capacity = sum(log2(1 + subbandPower .* strength / noisePower));
+    % * Obtain amplitude and compute capacity
+    infoAmplitude = sqrt(subbandPower);
+    capacity = sum(log2(1 + subbandPower .* subbandStrength / noisePower));
 
 end
