@@ -13,7 +13,7 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit power
-txPower = 1;
+txPower = 4;
 % average noise power
 noisePower = db2pow(-60);
 
@@ -21,7 +21,7 @@ noisePower = db2pow(-60);
 % AP-user distance
 directDistance = 10;
 % AP-IRS distance
-incidentDistance = 1;
+incidentDistance = 2;
 % IRS-user distance
 reflectiveDistance = directDistance - incidentDistance;
 % center frequency
@@ -39,7 +39,7 @@ nReflectors = 10;
 
 %% * Algorithm
 % minimum gain per iteration
-tolerance = 1e-8;
+tolerance = 1e-9;
 %  number of CSCG random vectors to generate
 nCandidates = 1e4;
 % number of samples in R-E curves
