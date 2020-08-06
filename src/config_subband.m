@@ -39,7 +39,7 @@ tolerance = 1e-8;
 %  number of CSCG random vectors to generate
 nCandidates = 1e4;
 % number of samples in R-E curves
-nSamples = 40;
+nSamples = 20;
 
 %% * Variable
 % number of frequency bands
