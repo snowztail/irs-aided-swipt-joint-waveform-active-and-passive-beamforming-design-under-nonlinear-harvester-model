@@ -35,7 +35,7 @@ nReflectors = 10;
 
 %% * Algorithm
 % minimum gain per iteration
-tolerance = 1e-9;
+tolerance = 1e-8;
 %  number of CSCG random vectors to generate
 nCandidates = 1e4;
 % number of samples in R-E curves
