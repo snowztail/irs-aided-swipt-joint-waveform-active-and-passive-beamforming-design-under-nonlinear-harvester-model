@@ -366,6 +366,14 @@
 	\end{subsection}
 \end{section}
 
+\begin{section}{Performance Evaluations}
+	To evaluate the performance of the proposed IRS-aided SWIPT system, we characterize and compare typical R-E regions under different setups through simulations. Consider a large open space WiFi-like environment at a center frequency of 5.18 \si{GHz} with bandwidth $B=1$ \si{MHz}. The power delay profile of the frequency-selective fading channels are obtained from IEEE TGn NLOS channel model E \cite{Erceg2004}. Taps are modelled as i.i.d. CSCG random variables with normalized total power, and we assume no spatial correlation across all channels. The path loss model is given by
+	\begin{equation}
+		L(d)=L_0\left(\frac{d}{d_0}\right)^{-\alpha}
+	\end{equation}
+	where $L_0$ is the path loss at a reference distance $d_0$, $d$ is the distance between transmitter and receiver, $\alpha$ is the path loss exponent. We set $d_0=1$ \si{\metre}, $L_0=-30$ \si{\decibel}, and let $\alpha_D=3.8$, $\alpha_I=2.2$, $\alpha_R=2.2$ be the path loss exponents of direct, incident and reflective links, respectively. Rectenna parameters are taken as $k_2=0.0034$, $k_4=0.3829$, $R_{\text{ant}}=50$ \si{\ohm}. The average transmit power is fixed to $P=4$ \si{\W} while the average noise power is $\sigma_n=-60$ \si{\dBm} at all subbands. Each transmit/receive antenna and IRS element is assumed to have a $0$ \si{\dBi} antenna gain. Also, we choose a tolerance $\epsilon=10^{-8}$ and set $Q=10^{3}$ for the Gaussian randomization method.
+\end{section}
+
 \bibliographystyle{IEEEtran}
 \bibliography{library.bib}
 \end{document}
