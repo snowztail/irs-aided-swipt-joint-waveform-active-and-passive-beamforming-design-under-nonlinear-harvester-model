@@ -1,6 +1,6 @@
 function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance)
     % Function:
-    %   - compute the output DC current and rate
+    %   - sample R-E region by computing the output DC current and rate
     %
     % Input:
     %   - beta2: coefficients on second-order current terms
@@ -19,35 +19,44 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     %   - solution: waveform and splitting ratio
     %
     % Comment:
-    %   - sample R-E region
+    %   - suboptimal algorithm only converge to stationary points
+    %   - proceed from high rate points to high current points
+    %   - results are sensitive to initialization
+    %   - under default initialization, some samples may be strictly worse than previous ones (especially for a large number of transmit antennas or reflectors)
+    %   - if the issue above happens, we discard the result based on default initialization and reinitialize this point by previous solution
     %
     % Author & Date: Yang (i@snowztail.com) - 21 Jun 20
 
 
+    sample = zeros(2, nSamples);
+    solution = cell(nSamples, 1);
+
     % * Initialize algorithm and set rate constraints
     [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
     [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-    [infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
     rateConstraint = linspace(capacity, 0, nSamples);
 
-    % * R-E sample
-    sample = zeros(2, nSamples);
-    solution = cell(nSamples, 1);
+    % * WIT point
     sample(:, 1) = [capacity; 0];
-    solution{1}.compositeChannel = compositeChannel;
-    solution{1}.infoWaveform = infoWaveform;
-    solution{1}.powerWaveform = powerWaveform;
-    solution{1}.infoRatio = infoRatio;
-    solution{1}.powerRatio = powerRatio;
+    solution{1} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio);
 
-    try
-        for iSample = 2 : nSamples
+    % * Non-WIT points
+    for iSample = 2 : nSamples
+        isDominated = false;
+        while true
+            if ~isDominated
+                % * Default initialization
+                [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(compositeChannel, txPower, noisePower);
+            else
+                % * Initialize with previous solution
+                struct2variables(solution{iSample - 1});
+            end
+            [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+            [infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
+
             % * Alternating optimization
             isConverged = false;
             current_ = 0;
-            [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(compositeChannel, txPower, noisePower);
-            [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
-            [infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
             while ~isConverged
                 [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
                 [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
@@ -56,15 +65,15 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
                 isConverged = abs(current - current_) <= tolerance;
                 current_ = current;
             end
-            sample(:, iSample) = [rate; current];
-            solution{iSample}.compositeChannel = compositeChannel;
-            solution{iSample}.infoWaveform = infoWaveform;
-            solution{iSample}.powerWaveform = powerWaveform;
-            solution{iSample}.infoRatio = infoRatio;
-            solution{iSample}.powerRatio = powerRatio;
+
+            % * Check whether strictly dominated
+            isDominated = current <= sample(2, iSample - 1);
+            if ~isDominated
+                break;
+            end
         end
-    catch
-        flag = 1;
+        sample(:, iSample) = [rate; current];
+        solution{iSample} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio);
     end
 
 end
