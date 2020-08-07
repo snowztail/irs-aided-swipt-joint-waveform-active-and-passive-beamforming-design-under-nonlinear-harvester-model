@@ -103,7 +103,7 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
         end
 
         % * Test convergence
-        isConverged = abs(capacity - capacity_) / capacity <= tolerance;
+        isConverged = abs(capacity - capacity_) <= tolerance;
         capacity_ = capacity;
     end
 

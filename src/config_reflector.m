@@ -15,15 +15,17 @@ nUsers = 1;
 % average transmit power
 txPower = 4;
 % average noise power
-noisePower = db2pow(-60);
+noisePower = db2pow(-70);
 
 %% * Channel
 % AP-user distance
 directDistance = 10;
-% AP-IRS distance
-incidentDistance = 2;
-% IRS-user distance
-reflectiveDistance = directDistance - incidentDistance;
+% vertical distance from the IRS to the AP-user path
+verticalDistance = 2;
+% projection of AP-IRS distance to the AP-user path
+horizontalDistance = 2;
+% AP-IRS and IRS-user distance
+[incidentDistance, reflectiveDistance] = distance_irs(directDistance, verticalDistance, horizontalDistance);
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -38,8 +40,8 @@ fadingMode = 'selective';
 %% * Algorithm
 % minimum gain per iteration
 tolerance = 1e-8;
-%  number of CSCG random vectors to generate
-nCandidates = 1e4;
+% number of CSCG random vectors to generate
+nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 40;
 

@@ -15,11 +15,13 @@ nUsers = 1;
 % average transmit power
 txPower = 4;
 % average noise power
-noisePower = db2pow(-60);
+noisePower = db2pow(-70);
 
 %% * Channel
 % AP-user distance
 directDistance = 10;
+% vertical distance from the IRS to the AP-user path
+verticalDistance = 2;
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -36,11 +38,11 @@ nReflectors = 10;
 %% * Algorithm
 % minimum gain per iteration
 tolerance = 1e-8;
-%  number of CSCG random vectors to generate
-nCandidates = 1e4;
+% number of CSCG random vectors to generate
+nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 40;
 
 %% * Variable
-% AP-IRS distance
-Variable.incidentDistance = 1 : 5;
+% projection of AP-IRS distance to the AP-user path
+Variable.horizontalDistance = 0 : 5;
