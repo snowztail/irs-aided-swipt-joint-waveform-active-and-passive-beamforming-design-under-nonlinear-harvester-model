@@ -47,4 +47,4 @@ nSamples = 40;
 
 %% * Variable
 % number of reflecting elements in IRS
-Variable.nReflectors = 5: 5: 20;
+Variable.nReflectors = 0: 5: 20;

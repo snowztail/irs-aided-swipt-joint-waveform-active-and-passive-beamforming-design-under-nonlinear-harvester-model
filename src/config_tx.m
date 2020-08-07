@@ -48,4 +48,4 @@ nSamples = 40;
 
 %% * Variable
 % number of transmit antennas
-Variable.nTxs = 5 : -1 : 1;
+Variable.nTxs = 1 : 5;
