@@ -7,10 +7,13 @@ nRxs = 1;
 % max number of reflecting elements in IRS
 nReflectors = 100;
 
-%% * Tap response
-[directTapGain, directTapDelay] = tap_tgn(nTxs, nRxs);
-[incidentTapGain, incidentTapDelay] = tap_tgn(nTxs, nReflectors);
-[reflectiveTapGain, reflectiveTapDelay] = tap_tgn(nReflectors, nRxs);
+%% * NLOS tap response
+[directTapGain, directTapDelay] = tap_tgn(nTxs, nRxs, 'nlos');
+[incidentTapGain, incidentTapDelay] = tap_tgn(nTxs, nReflectors, 'nlos');
+[reflectiveTapGain, reflectiveTapDelay] = tap_tgn(nReflectors, nRxs, 'nlos');
+save('data/tap_nlos.mat', 'directTapGain', 'directTapDelay', 'incidentTapGain', 'incidentTapDelay', 'reflectiveTapGain', 'reflectiveTapDelay');
 
-clearvars nTxs nRxs nReflectors;
-save('data/taps.mat');
+%% * LOS tap response
+[incidentTapGain, incidentTapDelay] = tap_tgn(nTxs, nReflectors, 'los');
+[reflectiveTapGain, reflectiveTapDelay] = tap_tgn(nReflectors, nRxs, 'los');
+save('data/tap_los.mat', 'directTapGain', 'directTapDelay', 'incidentTapGain', 'incidentTapDelay', 'reflectiveTapGain', 'reflectiveTapDelay');
