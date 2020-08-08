@@ -1,6 +1,6 @@
 function [pathloss] = path_loss(distance, linkMode)
     % Function:
-    %   - calculate the large-scale fading
+    %   - calculate the large-scale signal attenuation
     %
     % Input:
     %   - distance (d): distance between the transmitter and the receiver
@@ -10,17 +10,17 @@ function [pathloss] = path_loss(distance, linkMode)
     %   - pathloss (\Lambda): large-scale channel strength reduction
     %
     % Comment:
-    %   - assume direct link is blocked so that its exponent is larger than indirect links
+    %   - assume direct link is blocked while incident and reflective links are not blocked
+    %   - assume 3 dBi gain at each IRS element
     %
     % Author & Date: Yang (i@snowztail.com) - 30 Mar 20
 
 
     switch linkMode
     case 'direct'
-        exponent = 3.8;
+        pathloss = db2pow(-30) * distance ^ (-3.2);
     case {'incident', 'reflective'}
-        exponent = 2.2;
+        pathloss = db2pow(-30) * distance ^ (-2.4) * db2pow(3);
     end
-    pathloss = db2pow(30 + 10 * exponent * log10(distance / 1));
 
 end

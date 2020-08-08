@@ -33,6 +33,6 @@ function [channel] = frequency_response(tapGain, tapDelay, distance, nReflectors
     [fading] = fading_tgn(tapGain, tapDelay, subbandFrequency, fadingMode);
 
     % * Construct frequency response
-    channel = fading / sqrt(pathloss);
+    channel = sqrt(pathloss) * fading;
 
 end
