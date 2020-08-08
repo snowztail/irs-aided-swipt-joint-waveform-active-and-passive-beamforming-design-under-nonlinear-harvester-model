@@ -13,13 +13,13 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit power
-txPower = 4;
+txPower = db2pow(6);
 % average noise power
 noisePower = db2pow(-70);
 
 %% * Channel
 % AP-user distance
-directDistance = 10;
+directDistance = 15;
 % vertical distance from the IRS to the AP-user path
 verticalDistance = 2;
 % projection of AP-IRS distance to the AP-user path
@@ -33,7 +33,7 @@ bandwidth = 1e6;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
 % number of reflecting elements in IRS
-nReflectors = 10;
+nReflectors = 20;
 
 %% * Algorithm
 % minimum gain per iteration

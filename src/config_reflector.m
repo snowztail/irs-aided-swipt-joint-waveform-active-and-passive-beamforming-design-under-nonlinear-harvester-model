@@ -13,13 +13,13 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit power
-txPower = 4;
+txPower = db2pow(6);
 % average noise power
 noisePower = db2pow(-70);
 
 %% * Channel
 % AP-user distance
-directDistance = 10;
+directDistance = 15;
 % vertical distance from the IRS to the AP-user path
 verticalDistance = 2;
 % projection of AP-IRS distance to the AP-user path
@@ -47,4 +47,4 @@ nSamples = 40;
 
 %% * Variable
 % number of reflecting elements in IRS
-Variable.nReflectors = 0: 5: 20;
+Variable.nReflectors = 0: 10: 50;
