@@ -1,4 +1,4 @@
-clear; clc; setup; config_subband; load('data/taps.mat');
+clear; clc; setup; config_subband; load('data/tap_los.mat');
 
 %% ! R-E region vs number of subbands
 reSample = cell(length(Variable.nSubbands), 1);

@@ -1,4 +1,4 @@
-clear; clc; setup; config_reflector; load('data/taps.mat');
+clear; clc; setup; config_reflector; load('data/tap_los.mat');
 
 %% ! R-E region vs number of IRS elements
 reSample = cell(length(Variable.nReflectors), 1);

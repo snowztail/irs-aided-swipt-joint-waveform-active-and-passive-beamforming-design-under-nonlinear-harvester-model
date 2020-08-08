@@ -1,4 +1,4 @@
-clear; clc; setup; config_tx; load('data/taps.mat');
+clear; clc; setup; config_tx; load('data/tap_los.mat');
 
 %% ! R-E region vs number of transmit antennas
 reSample = cell(length(Variable.nTxs), 1);

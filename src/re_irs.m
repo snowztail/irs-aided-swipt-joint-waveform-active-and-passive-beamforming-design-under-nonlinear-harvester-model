@@ -1,4 +1,4 @@
-clear; clc; setup; config_irs; load('data/taps.mat');
+clear; clc; setup; config_irs; load('data/tap_los.mat');
 
 %% ! R-E region for fixed and adaptive IRS
 reSample = cell(2, 1);

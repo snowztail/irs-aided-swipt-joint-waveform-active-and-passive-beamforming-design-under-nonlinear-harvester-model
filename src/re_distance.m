@@ -1,4 +1,4 @@
-clear; clc; setup; config_distance; load('data/taps.mat');
+clear; clc; setup; config_distance; load('data/tap_los.mat');
 
 %% ! R-E region vs AP-IRS distance
 reSample = cell(length(Variable.horizontalDistance), 1);
