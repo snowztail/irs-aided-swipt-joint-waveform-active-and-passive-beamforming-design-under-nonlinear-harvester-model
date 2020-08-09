@@ -1,16 +1,15 @@
-function [sample, solution] = re_sample_fixed_irs(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance)
+function [sample, solution] = re_sample_reference(beta2, beta4, channel, txPower, noisePower, nSamples, tolerance)
     % Function:
-    %   - sample R-E region with fixed WIT-optimized IRS by computing the output DC current and rate
+    %   - sample R-E region by computing the output DC current and rate
     %
     % Input:
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
-    %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
+    %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
     %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
     %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
     %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
-    %   - nCandidates (Q): number of CSCG random vectors to generate
     %   - nSamples (S): number of samples in R-E region
     %   - tolerance (\epsilon): minimum gain ratio per iteration
     %
@@ -19,7 +18,7 @@ function [sample, solution] = re_sample_fixed_irs(beta2, beta4, directChannel, i
     %   - solution: waveform and splitting ratio
     %
     % Comment:
-    %   - fix IRS, only optimize waveform
+    %   - fix channel (no IRS or WIT/WPT optimized IRS), only optimize waveform
     %   - suboptimal algorithm only converge to stationary points
     %   - proceed from high rate points to high current points
     %   - results are sensitive to initialization
@@ -33,9 +32,11 @@ function [sample, solution] = re_sample_fixed_irs(beta2, beta4, directChannel, i
     solution = cell(nSamples, 1);
 
     % * Initialize algorithm and set rate constraints
-    [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
-    [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+    [capacity, infoAmplitude] = channel_capacity(channel, txPower, noisePower);
     rateConstraint = linspace(capacity, 0, nSamples);
+    powerAmplitude = zeros(size(infoAmplitude)) + eps;
+    infoRatio = 1 - eps;
+    powerRatio = 1 - infoRatio;
 
     % * WIT point
     sample(:, 1) = [capacity; 0];
@@ -47,13 +48,13 @@ function [sample, solution] = re_sample_fixed_irs(beta2, beta4, directChannel, i
         while true
             if ~isDominated
                 % * Default initialization
-                [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(compositeChannel, txPower, noisePower);
+                [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(channel, txPower, noisePower);
             else
                 % * Initialize with previous solution
                 struct2variables(solution{iSample - 1});
             end
             % * Optimize waveform with WIT-optimized IRS
-            [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+            [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, channel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
 
             % * Check whether strictly dominated
             isDominated = current <= sample(2, iSample - 1);
