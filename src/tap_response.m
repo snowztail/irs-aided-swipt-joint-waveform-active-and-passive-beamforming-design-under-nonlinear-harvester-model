@@ -13,14 +13,14 @@ nClusters = 4;
 nTaps = 18;
 
 %% * Generate CSCG variables as uncorrelated tap response
-directVariable = cell(nClusters, nTaps);
-incidentVariable = cell(nClusters, nTaps);
-reflectiveVariable = cell(nClusters, nTaps);
+directVariable = zeros(nClusters, nTaps, nRxs, nTxs);
+incidentVariable = zeros(nClusters, nTaps, nReflectors, nTxs);
+reflectiveVariable = zeros(nClusters, nTaps, nRxs, nReflectors);
 for iCluster = 1 : nClusters
     for iTap = 1 : nTaps
-        directVariable{iCluster, iTap} = sqrt(1 / 2) * (randn(nRxs, nTxs) + 1i * randn(nRxs, nTxs));
-        incidentVariable{iCluster, iTap} = sqrt(1 / 2) * (randn(nReflectors, nTxs) + 1i * randn(nReflectors, nTxs));
-        reflectiveVariable{iCluster, iTap} = sqrt(1 / 2) * (randn(nRxs, nReflectors) + 1i * randn(nRxs, nReflectors));
+        directVariable(iCluster, iTap, :, :) = sqrt(1 / 2) * (randn(nRxs, nTxs) + 1i * randn(nRxs, nTxs));
+        incidentVariable(iCluster, iTap, :, :) = sqrt(1 / 2) * (randn(nReflectors, nTxs) + 1i * randn(nReflectors, nTxs));
+        reflectiveVariable(iCluster, iTap, :, :) = sqrt(1 / 2) * (randn(nRxs, nReflectors) + 1i * randn(nRxs, nReflectors));
     end
 end
 

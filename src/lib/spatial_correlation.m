@@ -1,4 +1,4 @@
-function [corMatrix] = spatial_correlation(nElements, azimuthAngle, elevationAngle, wavelength, elementType)
+function [corMatrix] = spatial_correlation(nElements, azimuthAngle, wavelength, elementType)
     % Function:
     %   - obtain spatial correlation matrices of transmitter, receiver and IRS
     %   - obtain LOS matrices of direct, incident and reflective links
@@ -6,7 +6,6 @@ function [corMatrix] = spatial_correlation(nElements, azimuthAngle, elevationAng
     % Input:
     %   - nElements: number of antennas or reflectors
     %   - azimuthAngle: horizontal angle between Tx-Rx and y-axis
-    %   - elevationAngle: vertical angle between Tx-Rx and z-axis
     %   - wavelength: wavelength
     %   - elementType: element type 'transmitter', 'receiver', or 'irs'
     %
@@ -39,7 +38,7 @@ function [corMatrix] = spatial_correlation(nElements, azimuthAngle, elevationAng
     % * Obtain correlation matrix
     for iElement = 1 : nElements
         for jElement = 1 : nElements
-            corMatrix(iElement, jElement) = exp(1i * 2 * pi * norm(coordinate(:, iElement) - coordinate(:, jElement)) * sin(azimuthAngle) * sin(elevationAngle));
+            corMatrix(iElement, jElement) = exp(1i * 2 * pi * norm(coordinate(:, iElement) - coordinate(:, jElement)) * sin(azimuthAngle));
         end
     end
 
