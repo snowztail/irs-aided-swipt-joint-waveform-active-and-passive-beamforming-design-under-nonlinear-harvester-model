@@ -1,12 +1,8 @@
-clear; clc; setup; config_distance; load('data/tap_los.mat');
+clear; clc; setup; config_distance;
 
 %% ! R-E region vs AP-IRS distance
 reSample = cell(length(Variable.horizontalDistance), 1);
 reSolution = cell(length(Variable.horizontalDistance), 1);
-
-% * Get tap data
-directTapGain = directTapGain(:, 1 : nTxs);
-incidentTapGain = incidentTapGain(:, 1 : nTxs, :);
 
 % * Generate direct channel
 [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, nReflectors, subbandFrequency, fadingMode, 'direct');
@@ -14,7 +10,7 @@ incidentTapGain = incidentTapGain(:, 1 : nTxs, :);
 for iDistance = 1 : length(Variable.horizontalDistance)
     % * Generate extra channels
     horizontalDistance = Variable.horizontalDistance(iDistance);
-    [incidentDistance, reflectiveDistance] = distance_irs(directDistance, verticalDistance, horizontalDistance);
+    [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
     [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, nReflectors, subbandFrequency, fadingMode, 'incident');
     [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, nReflectors, subbandFrequency, fadingMode, 'reflective');
 

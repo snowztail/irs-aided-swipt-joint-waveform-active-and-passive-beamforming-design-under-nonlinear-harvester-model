@@ -1,12 +1,8 @@
-clear; clc; setup; config_subband; load('data/tap_los.mat');
+clear; clc; setup; config_subband;
 
 %% ! R-E region vs number of subbands
 reSample = cell(length(Variable.nSubbands), 1);
 reSolution = cell(length(Variable.nSubbands), 1);
-
-% * Get tap data
-directTapGain = directTapGain(:, 1 : nTxs);
-incidentTapGain = incidentTapGain(:, 1 : nTxs, :);
 
 for iSubband = 1 : length(Variable.nSubbands)
     % * Generate channels

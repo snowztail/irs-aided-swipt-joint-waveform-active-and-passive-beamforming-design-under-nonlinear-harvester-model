@@ -24,12 +24,14 @@ directDistance = 15;
 verticalDistance = 2;
 % projection of AP-IRS distance to the AP-user path
 horizontalDistance = 2;
-% AP-IRS and IRS-user distance
-[incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
+% channel distances and angles
+[incidentDistance, reflectiveDistance, directAzimuth, incidentAzimuth, reflectiveAzimuth] = coordinate(directDistance, verticalDistance, horizontalDistance);
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
 bandwidth = 1e6;
+% wavelength
+wavelength = 3e8 / centerFrequency;
 % number of frequency bands
 nSubbands = 4;
 % channel fading mode ('flat' or 'selective')
@@ -49,14 +51,24 @@ reflectiveVariable = reflectiveVariable(:, :, 1 : nRxs, 1 : nReflectors);
 directLosMatrix = directLosMatrix(1 : nRxs, 1 : nTxs);
 incidentLosMatrix = incidentLosMatrix(1 : nReflectors, 1 : nTxs);
 reflectiveLosMatrix = reflectiveLosMatrix(1 : nRxs, 1 : nReflectors);
-% no spatial correlation
+
+% * No spatial correlation
 corTx = eye(nTxs);
 corRx = eye(nRxs);
 corIrs = eye(nReflectors);
-% tap gains and delays
-[directTapGain, directTapDelay] = tap_tgn(corTx, corRx, directLosMatrix, directVariable, 'nlos');
-[incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, incidentLosMatrix, incidentVariable, 'nlos');
-[reflectiveTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, reflectiveLosMatrix, reflectiveVariable, 'nlos');
+
+[directUncorrelatedTapGain, directTapDelay] = tap_tgn(corTx, corRx, directLosMatrix, directVariable, 'nlos');
+[incidentUncorrelatedTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, incidentLosMatrix, incidentVariable, 'nlos');
+[reflectiveUncorrelatedTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, reflectiveLosMatrix, reflectiveVariable, 'nlos');
+
+% * Spatial correlation
+[directCorTx, directCorRx] = spatial_correlation(wavelength, nTxs, nRxs, directAzimuth, 'transmitter', 'receiver');
+[incidentCorTx, incidentCorIrs] = spatial_correlation(wavelength, nTxs, nReflectors, incidentAzimuth, 'transmitter', 'irs');
+[reflectiveCorIrs, reflectiveCorRx] = spatial_correlation(wavelength, nReflectors, nRxs, reflectiveAzimuth, 'irs', 'receiver');
+
+[directCorrelatedTapGain, ~] = tap_tgn(directCorTx, directCorRx, directLosMatrix, directVariable, 'nlos');
+[incidentCorrelatedTapGain, ~] = tap_tgn(incidentCorTx, incidentCorIrs, incidentLosMatrix, incidentVariable, 'nlos');
+[reflectiveCorrelatedTapGain, ~] = tap_tgn(reflectiveCorIrs, reflectiveCorRx, reflectiveLosMatrix, reflectiveVariable, 'nlos');
 
 %% * Algorithm
 % minimum gain per iteration

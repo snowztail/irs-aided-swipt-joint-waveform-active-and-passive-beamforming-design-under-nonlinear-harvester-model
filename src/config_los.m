@@ -53,10 +53,13 @@ reflectiveLosMatrix = reflectiveLosMatrix(1 : nRxs, 1 : nReflectors);
 corTx = eye(nTxs);
 corRx = eye(nRxs);
 corIrs = eye(nReflectors);
-% tap gains and delays
-[directTapGain, directTapDelay] = tap_tgn(corTx, corRx, directLosMatrix, directVariable, 'nlos');
-[incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, incidentLosMatrix, incidentVariable, 'nlos');
-[reflectiveTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, reflectiveLosMatrix, reflectiveVariable, 'nlos');
+% all links NLOS
+[directNlosTapGain, directTapDelay] = tap_tgn(corTx, corRx, directLosMatrix, directVariable, 'nlos');
+[incidentNlosTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, incidentLosMatrix, incidentVariable, 'nlos');
+[reflectiveNlosTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, reflectiveLosMatrix, reflectiveVariable, 'nlos');
+% IRS-aided links LOS
+[incidentLosTapGain, ~] = tap_tgn(corTx, corIrs, incidentLosMatrix, incidentVariable, 'los');
+[reflectiveLosTapGain, ~] = tap_tgn(corIrs, corRx, reflectiveLosMatrix, reflectiveVariable, 'los');
 
 %% * Algorithm
 % minimum gain per iteration

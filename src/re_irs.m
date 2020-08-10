@@ -1,13 +1,6 @@
-clear; clc; setup; config_irs; load('data/tap_los.mat');
+clear; clc; setup; config_irs;
 
 %% ! R-E region for fixed and adaptive IRS
-reSample = cell(4, 1);
-reSolution = cell(4, 1);
-
-% * Get tap data
-directTapGain = directTapGain(:, 1 : nTxs);
-incidentTapGain = incidentTapGain(:, 1 : nTxs, :);
-
 % * Generate channels
 [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, nReflectors, subbandFrequency, fadingMode, 'direct');
 [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, nReflectors, subbandFrequency, fadingMode, 'incident');

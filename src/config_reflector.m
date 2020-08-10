@@ -25,7 +25,7 @@ verticalDistance = 2;
 % projection of AP-IRS distance to the AP-user path
 horizontalDistance = 2;
 % AP-IRS and IRS-user distance
-[incidentDistance, reflectiveDistance] = distance_irs(directDistance, verticalDistance, horizontalDistance);
+[incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -47,4 +47,23 @@ nSamples = 40;
 
 %% * Variable
 % number of reflecting elements in IRS
-Variable.nReflectors = 0: 10: 50;
+Variable.nReflectors = 0 : 10 : 50;
+% tap gains and delays
+Variable.directTapGain = cell(length(Variable.nReflectors), 1);
+Variable.incidentTapGain = cell(length(Variable.nReflectors), 1);
+Variable.reflectiveTapGain = cell(length(Variable.nReflectors), 1);
+
+%% * Taps
+load('data/variable.mat');
+for iReflector = 1 : length(Variable.nReflectors)
+    nReflectors = Variable.nReflectors(iReflector);
+    % no spatial correlation
+    corTx = eye(nTxs);
+    corRx = eye(nRxs);
+    corIrs = eye(nReflectors);
+    % tap gains and delays
+    [Variable.directTapGain{iReflector}, directTapDelay] = tap_tgn(corTx, corRx, directLosMatrix(1 : nRxs, 1 : nTxs), directVariable(:, :, 1 : nRxs, 1 : nTxs), 'nlos');
+    [Variable.incidentTapGain{iReflector}, incidentTapDelay] = tap_tgn(corTx, corIrs, incidentLosMatrix(1 : nReflectors, 1 : nTxs), incidentVariable(:, :, 1 : nReflectors, 1 : nTxs), 'nlos');
+    [Variable.reflectiveTapGain{iReflector}, reflectiveTapDelay] = tap_tgn(corIrs, corRx, reflectiveLosMatrix(1 : nRxs, 1 : nReflectors), reflectiveVariable(:, :, 1 : nRxs, 1 : nReflectors), 'nlos');
+end
+clearvars nReflectors directVariable incidentVariable reflectiveVariable directLosMatrix incidentLosMatrix reflectiveLosMatrix;
