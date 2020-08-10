@@ -8,8 +8,8 @@ function [channel] = frequency_response(tapGain, tapDelay, distance, nReflectors
     %   - distance (d): distance between the transmitter and the receiver
     %   - nReflectors (L): number of reflecting elements in IRS
     %   - subbandFrequency (f_n) [1 * nSubbands]: the center frequency of subbands
-    %   - fadingMode: fading mode 'flat' or 'selective'
-    %   - linkMode: link mode 'direct', 'incident', or 'reflective'
+    %   - fadingMode: fading mode ('flat', 'selective')
+    %   - linkMode: link mode ('direct', 'incident', 'reflective')
     %
     % Output:
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response

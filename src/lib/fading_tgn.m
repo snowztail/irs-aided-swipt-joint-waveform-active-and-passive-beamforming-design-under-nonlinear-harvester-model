@@ -7,7 +7,7 @@ function [fading] = fading_tgn(tapGain, tapDelay, subbandFrequency, fadingMode)
     %   - tapDelay [nTaps * 1]: tap delays
     %   - nSubbands (N): number of subbands
     %   - subbandFrequency (f_n) [1 * nSubbands]: the center frequency of subbands
-    %   - fadingMode: fading mode 'flat' or 'selective'
+    %   - fadingMode: fading mode ('flat', 'selective')
     %
     % Output:
     %   - fading (h) [nSubbands * nTxs * nRxs]: fading at each subband

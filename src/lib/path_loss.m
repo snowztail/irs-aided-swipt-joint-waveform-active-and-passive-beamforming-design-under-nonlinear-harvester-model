@@ -4,7 +4,7 @@ function [pathloss] = path_loss(distance, linkMode)
     %
     % Input:
     %   - distance (d): distance between the transmitter and the receiver
-    %   - linkMode: link mode 'direct', 'incident', or 'reflective'
+    %   - linkMode: link mode ('direct', 'incident', 'reflective')
     %
     % Output:
     %   - pathloss (\Lambda): large-scale channel strength reduction
