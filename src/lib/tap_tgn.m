@@ -7,7 +7,7 @@ function [tapGain, tapDelay] = tap_tgn(corTx, corRx, losMatrix, variable, propag
     %   - corRx (R_r) [nRxs * nRxs]: receive correlation matrix
     %   - losMatrix [nRxs * nTxs]: fixed LOS response matrix (entries with unit modulus)
     %   - variable {nClusters * nTaps}: i.i.d. CSCG variables as uncorrelated tap response
-    %   - propagationMode: propagration mode ('los' or 'nlos')
+    %   - propagationMode: propagration mode ('los', 'nlos')
     %
     % Output:
     %   - tapGain [nTaps * nTxs * nRxs]: complex tap gain
@@ -51,7 +51,7 @@ function [tapGain, tapDelay] = tap_tgn(corTx, corRx, losMatrix, variable, propag
             else
                 losGain(iCluster, iTap, :, :) = sqrt(nlosRiceanFactor / (nlosRiceanFactor + 1)) * losMatrix;
             end
-            nlosGain(iCluster, iTap, :, :) = sqrt(1 / (nlosRiceanFactor + 1)) * (corRx ^ (1 / 2) * sqrt(1 / 2) * variable{iCluster, iTap}(1 : nRxs, 1 : nTxs) * transpose(corTx ^ (1 / 2)));
+            nlosGain(iCluster, iTap, :, :) = sqrt(1 / (nlosRiceanFactor + 1)) * (corRx ^ (1 / 2) * permute(variable(iCluster, iTap, 1 : nRxs, 1 : nTxs), [3 4 1 2]) * corTx ^ (1 / 2));
             tapGain(iCluster, iTap, :, :) = sqrt(tapPower(iCluster, iTap)) * (losGain(iCluster, iTap, :, :) + nlosGain(iCluster, iTap, :, :));
         end
     end
