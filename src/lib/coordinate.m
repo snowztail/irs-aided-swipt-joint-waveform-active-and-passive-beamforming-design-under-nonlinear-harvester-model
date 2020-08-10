@@ -10,20 +10,30 @@ function [incidentDistance, reflectiveDistance, directAzimuth, incidentAzimuth, 
     % Output:
     %   - directDistance (d_I): AP-IRS distance
     %   - reflectiveDistance (d_R): IRS-user distance
-    %   - incidentAzimuth: angle of IRS-AP and AP-user path
-    %   - reflectiveAzimuth: angle of IRS-user and AP-user path
+    %   - directAzimuth [2 * 1]: azimuth AoD, AoA of direct channel
+    %   - incidentAzimuth [2 * 1]: azimuth AoD, AoA of incident channel
+    %   - reflectiveAzimuth [2 * 1]: azimuth AoD, AoA of reflective channel
     %
     % Comment:
     %   - fix AP and user, move IRS
     %   - set AP-user path as reference
+    %   - note direction of vectors
     %
     % Author & Date: Yang (i@snowztail.com) - 7 Aug 20
 
 
+    % * Distances
     incidentDistance = sqrt(verticalDistance ^ 2 + horizontalDistance ^ 2);
     reflectiveDistance = sqrt(verticalDistance ^ 2 + (directDistance - horizontalDistance) ^ 2);
-    directAzimuth = 0;
-    incidentAzimuth = atan(verticalDistance / horizontalDistance);
-    reflectiveAzimuth = - atan(verticalDistance / (directDistance - horizontalDistance));
+
+    % * AoD
+    directAzimuth(1) = 0;
+    incidentAzimuth(1) = atan(verticalDistance / horizontalDistance);
+    reflectiveAzimuth(1) = - atan(verticalDistance / (directDistance - horizontalDistance));
+
+    % * AoA
+    directAzimuth(2) = directAzimuth(1) + pi;
+    incidentAzimuth(2) = incidentAzimuth(1) + pi;
+    reflectiveAzimuth(2) = reflectiveAzimuth(1) + pi;
 
 end
