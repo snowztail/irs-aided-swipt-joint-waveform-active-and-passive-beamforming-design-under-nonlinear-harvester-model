@@ -24,4 +24,9 @@ for iCluster = 1 : nClusters
     end
 end
 
-save('data/variable.mat', 'directVariable', 'incidentVariable', 'reflectiveVariable');
+%% * Generate LOS matrix
+directLosMatrix = exp(1i * 2 * pi * rand(nRxs, nTxs));
+incidentLosMatrix = exp(1i * 2 * pi * rand(nReflectors, nTxs));
+reflectiveLosMatrix = exp(1i * 2 * pi * rand(nRxs, nReflectors));
+
+save('data/variable.mat', 'directVariable', 'incidentVariable', 'reflectiveVariable', 'directLosMatrix', 'incidentLosMatrix', 'reflectiveLosMatrix');
