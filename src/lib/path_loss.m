@@ -22,7 +22,7 @@ function [pathloss] = path_loss(distance, linkMode)
     case 'incident'
         pathloss = db2pow(-30) * distance ^ (-2.2) * db2pow(3);
     case 'reflective'
-        pathloss = db2pow(-30) * distance ^ (-2.6) * db2pow(3);
+        pathloss = db2pow(-30) * distance ^ (-2.4) * db2pow(3);
     end
 
 end
