@@ -8,9 +8,9 @@ for iSubband = 1 : length(Variable.nSubbands)
     % * Generate channels
     nSubbands = Variable.nSubbands(iSubband);
     [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
-    [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, nReflectors, subbandFrequency, fadingMode, 'direct');
-    [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, nReflectors, subbandFrequency, fadingMode, 'incident');
-    [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, nReflectors, subbandFrequency, fadingMode, 'reflective');
+    [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, subbandFrequency, fadingMode);
+    [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
+    [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
 
     % * Alternating optimization
     [reSample{iSubband}, reSolution{iSubband}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);

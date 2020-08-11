@@ -2,14 +2,14 @@ clear; clc; setup; config_los;
 
 %% ! R-E region for IRS-aided NLOS and LOS channels
 % * NLOS channels
-[directNlosChannel] = frequency_response(directNlosTapGain, directTapDelay, directDistance, nReflectors, subbandFrequency, fadingMode, 'direct');
-[incidentNlosChannel] = frequency_response(incidentNlosTapGain, incidentTapDelay, incidentDistance, nReflectors, subbandFrequency, fadingMode, 'incident');
-[reflectiveNlosChannel] = frequency_response(reflectiveNlosTapGain, reflectiveTapDelay, reflectiveDistance, nReflectors, subbandFrequency, fadingMode, 'reflective');
+[directNlosChannel] = frequency_response(directNlosTapGain, directTapDelay, directDistance, subbandFrequency, fadingMode);
+[incidentNlosChannel] = frequency_response(incidentNlosTapGain, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
+[reflectiveNlosChannel] = frequency_response(reflectiveNlosTapGain, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
 [reSample{1}, reSolution{1}] = re_sample(beta2, beta4, directNlosChannel, incidentNlosChannel, reflectiveNlosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 
 % * (IRS-aided) LOS channels
-[incidentLosChannel] = frequency_response(incidentLosTapGain, incidentTapDelay, incidentDistance, nReflectors, subbandFrequency, fadingMode, 'incident');
-[reflectiveLosChannel] = frequency_response(reflectiveLosTapGain, reflectiveTapDelay, reflectiveDistance, nReflectors, subbandFrequency, fadingMode, 'reflective');
+[incidentLosChannel] = frequency_response(incidentLosTapGain, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
+[reflectiveLosChannel] = frequency_response(reflectiveLosTapGain, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
 [reSample{2}, reSolution{2}] = re_sample(beta2, beta4, directNlosChannel, incidentLosChannel, reflectiveLosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 
 save('data/re_los.mat');

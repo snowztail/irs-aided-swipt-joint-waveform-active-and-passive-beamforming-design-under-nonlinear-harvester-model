@@ -7,9 +7,9 @@ reSolution = cell(length(Variable.nReflectors), 1);
 for iReflector = 1 : length(Variable.nReflectors)
     % * Generate channels
     nReflectors = Variable.nReflectors(iReflector);
-    [directChannel] = frequency_response(Variable.directTapGain{iReflector}, directTapDelay, directDistance, nReflectors, subbandFrequency, fadingMode, 'direct');
-    [incidentChannel] = frequency_response(Variable.incidentTapGain{iReflector}, incidentTapDelay, incidentDistance, nReflectors, subbandFrequency, fadingMode, 'incident');
-    [reflectiveChannel] = frequency_response(Variable.reflectiveTapGain{iReflector}, reflectiveTapDelay, reflectiveDistance, nReflectors, subbandFrequency, fadingMode, 'reflective');
+    [directChannel] = frequency_response(Variable.directTapGain{iReflector}, directTapDelay, directDistance, subbandFrequency, fadingMode);
+    [incidentChannel] = frequency_response(Variable.incidentTapGain{iReflector}, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
+    [reflectiveChannel] = frequency_response(Variable.reflectiveTapGain{iReflector}, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
 
     % * Alternating optimization
     [reSample{iReflector}, reSolution{iReflector}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);

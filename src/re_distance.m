@@ -5,14 +5,14 @@ reSample = cell(length(Variable.horizontalDistance), 1);
 reSolution = cell(length(Variable.horizontalDistance), 1);
 
 % * Generate direct channel
-[directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, nReflectors, subbandFrequency, fadingMode, 'direct');
+[directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, subbandFrequency, fadingMode);
 
 for iDistance = 1 : length(Variable.horizontalDistance)
     % * Generate extra channels
     horizontalDistance = Variable.horizontalDistance(iDistance);
     [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
-    [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, nReflectors, subbandFrequency, fadingMode, 'incident');
-    [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, nReflectors, subbandFrequency, fadingMode, 'reflective');
+    [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
+    [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
 
     % * Alternating optimization
     [reSample{iDistance}, reSolution{iDistance}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
