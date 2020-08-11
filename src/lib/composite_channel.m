@@ -14,6 +14,7 @@ function [compositeChannel, concatChannel, concatSubchannel] = composite_channel
     %   - concatSubchannel (V_n) {nSubbands}[nReflectors * nTxs]: AP-IRS-user concatenated subchannel
     %
     % Comment:
+    %   - assume 3 dBi gain at each IRS element
     %   - \boldsymbol{h}_{D,n}^H = directChannel(iSubband, :)
     %   - \boldsymbol{H}_{I,n} = permute(incidentChannel(iSubband, :, :), [2 3 1])'
     %   - \boldsymbol{h}_{R,n}^H = reflectiveChannel(iSubband, :)
@@ -31,7 +32,7 @@ function [compositeChannel, concatChannel, concatSubchannel] = composite_channel
     concatSubchannel = cell(nSubbands, 1);
     for iSubband = 1 : nSubbands
         concatSubchannel{iSubband} = diag(reflectiveChannel(iSubband, :)) * permute(incidentChannel(iSubband, :, :), [2 3 1])';
-        extraChannel(iSubband, :) = irs' * concatSubchannel{iSubband};
+        extraChannel(iSubband, :) = db2pow(3) * irs' * concatSubchannel{iSubband};
     end
     concatChannel = cat(2, concatSubchannel{:});
 

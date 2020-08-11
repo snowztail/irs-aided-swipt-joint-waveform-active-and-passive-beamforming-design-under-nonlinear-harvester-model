@@ -1,28 +1,27 @@
-function [pathloss] = path_loss(distance, linkMode)
+function [pathloss] = path_loss(distance)
     % Function:
-    %   - calculate the large-scale signal attenuation
+    %   - calculate the large-scale signal attenuation based on IEEE TGn channel model D
     %
     % Input:
     %   - distance (d): distance between the transmitter and the receiver
-    %   - linkMode: link mode ('direct', 'incident', 'reflective')
     %
     % Output:
     %   - pathloss (\Lambda): large-scale channel strength reduction
     %
     % Comment:
-    %   - assume direct link is blocked while incident and reflective links are not blocked
-    %   - assume 3 dBi gain at each IRS element
+    %   - consists of the free space loss (exponent = 2) up to 10 m and typical urban loss (exponent = 3.5) onwards
+    %   - set reference path loss at 1 m as -30 dB
+    %
+    % Reference:
+    %   - V. Erceg et al., "TGn channel models," in Version 4. IEEE 802.11–03/940r4, May 2004.
     %
     % Author & Date: Yang (i@snowztail.com) - 30 Mar 20
 
 
-    switch linkMode
-    case 'direct'
-        pathloss = db2pow(-30) * distance ^ (-3.2);
-    case 'incident'
-        pathloss = db2pow(-30) * distance ^ (-2.2) * db2pow(3);
-    case 'reflective'
-        pathloss = db2pow(-30) * distance ^ (-2.4) * db2pow(3);
+    if distance <= 10
+        pathloss = db2pow(-30) * distance ^ (-2);
+    else
+        pathloss = db2pow(-30) * 10 ^ (-2) * (distance / 10) ^ (-3.5);
     end
 
 end

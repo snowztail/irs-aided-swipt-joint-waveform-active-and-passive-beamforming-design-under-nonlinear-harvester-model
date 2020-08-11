@@ -1,4 +1,4 @@
-function [channel] = frequency_response(tapGain, tapDelay, distance, nReflectors, subbandFrequency, fadingMode, linkMode)
+function [channel] = frequency_response(tapGain, tapDelay, distance, subbandFrequency, fadingMode)
     % Function:
     %   - get frequency response of direct, incident and reflective channels
     %
@@ -6,10 +6,8 @@ function [channel] = frequency_response(tapGain, tapDelay, distance, nReflectors
     %   - tapGain [nTaps * nTxs * nRxs]: complex tap gain
     %   - tapDelay [nTaps * 1]: tap delays
     %   - distance (d): distance between the transmitter and the receiver
-    %   - nReflectors (L): number of reflecting elements in IRS
     %   - subbandFrequency (f_n) [1 * nSubbands]: the center frequency of subbands
     %   - fadingMode: fading mode ('flat', 'selective')
-    %   - linkMode: link mode ('direct', 'incident', 'reflective')
     %
     % Output:
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
@@ -20,19 +18,8 @@ function [channel] = frequency_response(tapGain, tapDelay, distance, nReflectors
     % Author & Date: Yang (i@snowztail.com) - 16 Jun 20
 
 
-    % * Remove data of unused elements
-    switch linkMode
-    case 'incident'
-        tapGain = tapGain(:, :, 1 : nReflectors);
-    case 'reflective'
-        tapGain = tapGain(:, 1 : nReflectors, :);
-    end
-
-    % * Get pathloss and fading
-    [pathloss] = path_loss(distance, linkMode);
+    [pathloss] = path_loss(distance);
     [fading] = fading_tgn(tapGain, tapDelay, subbandFrequency, fadingMode);
-
-    % * Construct frequency response
     channel = sqrt(pathloss) * fading;
 
 end

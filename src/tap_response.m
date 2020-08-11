@@ -8,7 +8,7 @@ nRxs = 1;
 % max number of reflecting elements in IRS
 nReflectors = 100;
 % number of clusters in channel model
-nClusters = 4;
+nClusters = 3;
 % number of taps in channel model
 nTaps = 18;
 
