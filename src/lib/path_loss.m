@@ -19,9 +19,9 @@ function [pathloss] = path_loss(distance)
 
 
     if distance <= 10
-        pathloss = db2pow(-30) * distance ^ (-2);
+        pathloss = db2pow(-35) * distance ^ (-2);
     else
-        pathloss = db2pow(-30) * 10 ^ (-2) * (distance / 10) ^ (-3.5);
+        pathloss = db2pow(-35) * 10 ^ (-2) * (distance / 10) ^ (-3.5);
     end
 
 end
