@@ -32,7 +32,7 @@ function [compositeChannel, concatChannel, concatSubchannel] = composite_channel
     concatSubchannel = cell(nSubbands, 1);
     for iSubband = 1 : nSubbands
         concatSubchannel{iSubband} = diag(reflectiveChannel(iSubband, :)) * permute(incidentChannel(iSubband, :, :), [2 3 1])';
-        extraChannel(iSubband, :) = db2pow(3) * irs' * concatSubchannel{iSubband};
+        extraChannel(iSubband, :) = irs' * concatSubchannel{iSubband};
     end
     concatChannel = cat(2, concatSubchannel{:});
 
