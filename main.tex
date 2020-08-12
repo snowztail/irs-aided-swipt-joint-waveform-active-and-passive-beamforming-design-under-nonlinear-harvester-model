@@ -3,6 +3,8 @@
 \input{info.tex}
 \input{packages.tex}
 
+\graphicspath{{assets/}}
+
 \begin{document}
 
 % \input{cover.tex}
@@ -36,14 +38,22 @@
 \end{section}
 
 \begin{section}{System Model}
-	Consider an IRS-aided SWIPT system where a $M$-antenna transmitter delivers information and power simultaneously, through a $L$-reflector IRS, to a single-antenna user over $N$ orthogonal subbands. We assume a total bandwidth $B$ with evenly-spaced subbands centered at frequency $f_n$ ($n=1,\dots,N$). Perfect Channel State Information (CSI) with negligible training overhead is assumed to explore the analytical upper-bound of the proposed design. A quasi-static block fading channel model is considered for all links, and we focus on one particular block where the channels are approximately unchanged. Two practical co-located receiver architectures are compared in terms of R-E region. Specifically, TS divides each time slot into orthogonal data and energy slots and performs a time sharing between WPT and Wireless Information Transfer (WIT). In comparison, PS splits the received signal into individual ID and EH streams such that the splitting ratio $\rho$ is coupled with waveform and IRS design. Perfect synchronization is assumed among the three parties in both scenarios, and signals reflected by IRS for two and more times are omitted.
+	As shown in Figure \ref{fi:system}, we consider an IRS-aided SWIPT system where a $M$-antenna transmitter delivers information and power simultaneously, through a $L$-reflector IRS, to a single-antenna user over $N$ orthogonal subbands. Suppose a total bandwidth $B$ with evenly-spaced subbands centered at frequency $f_n$ ($n=1,\dots,N$). Perfect Channel State Information (CSI) with negligible training overhead is assumed to explore the analytical upper-bound of the proposed design. A quasi-static block fading channel model is considered for all links, and we focus on one particular block where the channels are approximately unchanged. Two practical co-located receiver architectures are compared in terms of R-E region. Specifically, TS divides each time slot into orthogonal data and energy slots and performs a time sharing between WPT and Wireless Information Transfer (WIT). In comparison, PS splits the received signal into individual ID and EH streams such that the splitting ratio $\rho$ is coupled with waveform and IRS design. Perfect synchronization is assumed among the three parties in both scenarios, and signals reflected by IRS for two and more times are omitted.
+
+	\begin{figure}
+		\centering
+		\def\svgwidth{\columnwidth}
+		\input{assets/system.pdf_tex}
+		\caption{An IRS-aided OFDM SWIPT system}
+		\label{fi:system}
+	\end{figure}
+
 	\begin{subsection}{Transmit Signal}
 		Denote $\tilde{x}_{I,n}(t)$ as the information symbol transmitted over subband $n$, which follows a capacity-achieving i.i.d. Circular Symmetric Complex Gaussian (CSCG) distribution with zero mean and unit variance $\tilde{x}_{I,n}\sim\mathcal{CN}(0,1)$. The superposed transmit signal on antenna $m$ ($m=1,\dots,M$) at time $t$ is
 		\begin{equation}\label{eq:x_m}
 			x_m(t)=\Re\left\{\sum_{n=1}^N\left({w_{I,n,m}\tilde{x}_{I,n}(t)}+w_{P,n,m}\right){e^{j2{\pi}{f_n}{t}}}\right\}
 		\end{equation}
 		where $w_{I/P,n,m}$ denotes the weight on the information and power signal transmitted by antenna $m$ at subband $n$. Define $\boldsymbol{w}_{I/P,n}=[w_{I/P,n,1},\dots,w_{I/P,n,M}]^T \in \mathbb{C}^{M \times 1}$ by stacking up weights across all antennas. Therefore, the transmit information and power signals write as
-		% , and let $\boldsymbol{w}_{I/P,n}=\boldsymbol{s}_{I/P,n} e^{j \boldsymbol{\psi}_{I/P,n}}$ such that $\boldsymbol{s}_{I/P,n}$, $\boldsymbol{\psi}_{I/P,n} \in \mathbb{C}^{M \times 1}$ denote the magnitude and phase of the waveform at subband $n$
 		\begin{align}
 			\boldsymbol{x}_{I}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{I,n}\tilde{x}_{I,n}(t){e^{j2{\pi}{f_n}{t}}}\right\}}\label{eq:x_I}\\
 			\boldsymbol{x}_{P}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{P,n}{e^{j2{\pi}{f_n}{t}}}\right\}}\label{eq:x_P}
@@ -55,7 +65,7 @@
 		\begin{equation}\label{eq:h_n}
 			\boldsymbol{h}_{n}^H = \boldsymbol{h}_{D,n}^H + \boldsymbol{h}_{R,n}^H \boldsymbol{\Theta} \boldsymbol{H}_{I,n} = \boldsymbol{h}_{D,n}^H + \boldsymbol{\phi}^H \boldsymbol{V}_{n}
 		\end{equation}
-		where $\boldsymbol{\phi}=[\gamma_1 e^{j \theta_1}, \dots, \gamma_L e^{j \theta_L}]^H \in \mathbb{C}^{L \times 1}$ and $\boldsymbol{V}_{n}=\mathrm{diag}(\boldsymbol{h}_{R,n}^H)\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times M}$. Note that the Hermitian transpose in the definition of $\boldsymbol{\phi}$ makes its entries complex conjugate of the diagonal entries of $\boldsymbol{\Theta}$.% Let $\boldsymbol{h}_n=\boldsymbol{a}_n e^{j \boldsymbol{\varsigma}_n}$ such that $\boldsymbol{a}_n$, $\boldsymbol{\varsigma}_n \in \mathbb{C}^{M \times 1}$ denote the magnitude and phase of the composite channel at subband $n$.
+		where $\boldsymbol{\phi}=[\gamma_1 e^{j \theta_1}, \dots, \gamma_L e^{j \theta_L}]^H \in \mathbb{C}^{L \times 1}$ and $\boldsymbol{V}_{n}=\mathrm{diag}(\boldsymbol{h}_{R,n}^H)\boldsymbol{H}_{I,n} \in \mathbb{C}^{L \times M}$. Note that the Hermitian transpose in the definition of $\boldsymbol{\phi}$ makes its entries complex conjugate of the diagonal entries of $\boldsymbol{\Theta}$.
 	\end{subsection}
 
 	\begin{subsection}{Receive Signal}
@@ -79,27 +89,45 @@
 	\end{subsection}
 
 	\begin{subsection}{Energy Harvester}
-		In this section, we briefly revisit a tractable nonlinear rectenna model that relates the harvester output DC current to the received waveform \cite{Clerckx2016a,Clerckx2018b}. Fig. \ref{fi:antenna_equivalent_circuit} illustrates the equivalent circuit of a lossless antenna, where the incoming signal creates an voltage source $v_s(t)$ and the antenna has an impedance $R_{\text{ant}}$. Let $R_{\text{in}}$ be the total input impedance of the rectifier and matching network. Assume the voltage across matching network is negligible and the RF-band noise is too small to harvest. When perfectly matched ($R_{\text{in}}=R_{\text{ant}}$) with power splitting ratio $\rho$, the rectifier input voltage is $v_{\text{in}}(t)=y(t)\sqrt{\rho R_{\text{ant}}}$.
+		In this section, we briefly revisit a tractable nonlinear rectenna model that relates the harvester output DC current to the received waveform \cite{Clerckx2016a,Clerckx2018b}. Fig. \ref{ci:antenna_equivalent_circuit} illustrates the equivalent circuit of a lossless antenna, where the incoming signal creates an voltage source $v_s(t)$ and the antenna has an impedance $R_{\text{ant}}$. Let $R_{\text{in}}$ be the total input impedance of the rectifier and matching network. Assume the voltage across matching network is negligible and the RF-band noise is too small to harvest. When perfectly matched ($R_{\text{in}}=R_{\text{ant}}$) with power splitting ratio $\rho$, the rectifier input voltage is $v_{\text{in}}(t)=y(t)\sqrt{\rho R_{\text{ant}}}$.
 
-		\begin{figure}
+		\begin{figure}[h]
 			\centering
 			\begin{subfigure}[t]{0.45\linewidth}
 				\centering
-				\includegraphics[width=\linewidth]{assets/antenna_equivalent_circuit.eps}
+				\begin{circuitikz}[scale=0.7, transform shape]
+					\draw (0,0) to [sV=$v_s$] (0,2);
+					\draw (0,2) to [short] (1,2);
+					\draw (1,2) to [R=$R_\text{ant}$] (3,2);
+					\draw (3,2) to [short] (4,2);
+					\draw (4,2) to [R=$R_\text{in}$, v<=$v_{\text{in}}$] (4,0);
+					\draw (4,0) to [short] (2,0) node[ground](GND){};
+					\draw (2,0) to [short] (0,0);
+				\end{circuitikz}
 				\caption{Antenna equivalent circuit}
-				\label{fi:antenna_equivalent_circuit}
+				\label{ci:antenna_equivalent_circuit}
 			\end{subfigure}%
 			~
 			\begin{subfigure}[t]{0.45\linewidth}
 				\centering
-				\includegraphics[width=\linewidth]{assets/single_diode_rectifier.eps}
+				\begin{circuitikz}[scale=0.7, transform shape]
+					\draw (0,0) to [sV=$v_\text{in}$] (0,2);
+					\draw (0,2) to [short] (0.5,2);
+					\draw (0.5,2) to [D, v<=$v_d$, i=$i_d$] (2.5,2);
+					\draw (2.5,2) to [short, -*] (3,2);
+					\draw (3,2) to [C, l_=$C$, -*] (3,0);
+					\draw (3,2) to [short] (4.5,2);
+					\draw (4.5,2) to [R=$R_L$, v<=$v_{\text{out}}$, i=$i_{\text{out}}$] (4.5,0);
+					\draw (4.5,0) to [short] (2.25,0) node[ground](GND){};
+					\draw (2.25,0) to [short] (0,0);
+				\end{circuitikz}
 				\caption{A single diode rectifier}
-				\label{fi:single_diode_rectifier}
+				\label{ci:single_diode_rectifier}
 			\end{subfigure}
-			\caption{Rectenna circuit}
+			\caption{Rectenna circuits}
 		\end{figure}
 
-		Rectifiers consist of nonlinear components as diode and capacitor to produce DC and store energy \cite{Hagerty2004,Pinuela2013}. Consider a simplified rectifier in Fig. \ref{fi:single_diode_rectifier} where a single series diode is followed by a low-pass filter with load. Denote $v_d(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the output voltage across the load. A Taylor expansion of the diode characteristic equation $i_d(t)=i_s(e^{v_d(t)/n' v_t}-1)$ (with $i_s$ the reverse bias saturation current, $n'$ the diode ideality factor, $v_t$ the thermal voltage) around a quiescent operating point $v_d=a$ writes as $i_d(t)=\sum_{i=0}^{\infty}k_i'(v_d(t)-a)^i$, where $k_0'=i_s(e^{a/n' v_t}-1)$ and $k_i'=i_se^{a/n'v_t}/i!(n'v_t)^i,i=1,\dots,\infty$. Note that this small signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_d(t)\}=-v_{\text{out}}$ such that
+		Rectifiers consist of nonlinear components as diode and capacitor to produce DC and store energy \cite{Hagerty2004,Pinuela2013}. Consider a simplified rectifier in Fig. \ref{ci:single_diode_rectifier} where a single series diode is followed by a low-pass filter with load. Denote $v_d(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the output voltage across the load. A Taylor expansion of the diode characteristic equation $i_d(t)=i_s(e^{v_d(t)/n' v_t}-1)$ (with $i_s$ the reverse bias saturation current, $n'$ the diode ideality factor, $v_t$ the thermal voltage) around a quiescent operating point $v_d=a$ writes as $i_d(t)=\sum_{i=0}^{\infty}k_i'(v_d(t)-a)^i$, where $k_0'=i_s(e^{a/n' v_t}-1)$ and $k_i'=i_se^{a/n'v_t}/i!(n'v_t)^i,i=1,\dots,\infty$. Note that this small signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_d(t)\}=-v_{\text{out}}$ such that
 		\begin{equation}\label{eq:i_d}
 			i_d(t)=\sum_{i=0}^{\infty}k_i'\rho^{i/2}R_{\text{ant}}^{i/2}y(t)^i
 		\end{equation}
@@ -367,11 +395,15 @@
 \end{section}
 
 \begin{section}{Performance Evaluations}
-	To evaluate the performance of the proposed IRS-aided SWIPT system, we characterize and compare typical R-E regions under different setups through simulations. Consider a large open space WiFi-like environment at a center frequency of 5.18 \si{GHz} with bandwidth $B=1$ \si{MHz}. The power delay profile of the frequency-selective fading channels are obtained from IEEE TGn NLOS channel model E \cite{Erceg2004}. Taps are modelled as i.i.d. CSCG random variables with normalized total power, and we assume no spatial correlation across all channels. The path loss model is given by
-	\begin{equation}
-		L(d)=L_0\left(\frac{d}{d_0}\right)^{-\alpha}
-	\end{equation}
-	where $L_0$ is the path loss at a reference distance $d_0$, $d$ is the distance between transmitter and receiver, $\alpha$ is the path loss exponent. We set $d_0=1$ \si{\metre}, $L_0=-30$ \si{\decibel}, and let $\alpha_D=3.8$, $\alpha_I=2.2$, $\alpha_R=2.2$ be the path loss exponents of direct, incident and reflective links, respectively. Rectenna parameters are taken as $k_2=0.0034$, $k_4=0.3829$, $R_{\text{ant}}=50$ \si{\ohm}. The average transmit power is fixed to $P=4$ \si{\W} while the average noise power is $\sigma_n=-60$ \si{\dBm} at all subbands. Each transmit/receive antenna and IRS element is assumed to have a $0$ \si{\dBi} antenna gain. Also, we choose a tolerance $\epsilon=10^{-8}$ and set $Q=10^{3}$ for the Gaussian randomization method.
+	To evaluate the performance of the proposed IRS-aided SWIPT system, we characterize and compare typical R-E regions under different setups through simulations. Consider a large open space WiFi-like environment at a center frequency of 5.18 \si{GHz} with bandwidth $B=1$ \si{MHz}. As shown in Figure \ref{fi:layout}, we assume the IRS moves along a horizontal line that is parallel to the AP-user path. Define the projection of the AP-IRS path onto the AP-user path as $d_H$, and let the distance from the IRS to the AP-user path be $d_V$. Denote $d_D$, $d_I$, $d_R$ as the length of direct, incident, reflective paths. We set $d_D=15$ \si{\meter}, $d_V=2$ \si{\meter} and choose a reference $d_H=2$ \si{\meter}. For all channels, the path loss and power delay profile of the frequency-selective fading are obtained from IEEE TGn channel model D \cite{Erceg2004}. Reference path loss is set to $L_0=-35$ \si{\dB} at a distance of 1 \si{\meter}. Taps are modelled as i.i.d. CSCG random variables with normalized total power, and we assume no spatial correlation across all arrays. Rectenna parameters are taken as $k_2=0.0034$, $k_4=0.3829$, $R_{\text{ant}}=50$ \si{\ohm}. The average transmit power is fixed to $P=-36$ \si{\dBm} while the average noise power is $\sigma_n=-60$ \si{\dBm} at all subbands. Each IRS element is assumed to have a $3$ \si{\dBi} antenna gain. We also choose a tolerance $\epsilon=10^{-8}$ and set $Q=10^{3}$ for the Gaussian randomization method.
+
+	\begin{figure}
+		\centering
+		\def\svgwidth{\columnwidth}
+		\input{assets/layout.pdf_tex}
+		\caption{System layout}
+		\label{fi:layout}
+	\end{figure}
 \end{section}
 
 \bibliographystyle{IEEEtran}
