@@ -64,7 +64,8 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
             for iSubband = 1 : nSubbands
                 snr(iSubband) = trace(rateMatrix{iSubband} * irsMatrix) / noisePower;
             end
-            maximize geo_mean(1 + snr)
+            rate = sum(log(1 + snr) / log(2));
+            maximize rate
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
         cvx_end

@@ -106,10 +106,12 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
             for iSubband = 1 : nSubbands
                 snr(iSubband) = infoRatio * trace(rateMatrix{iSubband} * irsMatrix) / noisePower;
             end
+            % R
+            rate = sum(log(1 + snr) / log(2));
             maximize currentSca;
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
-                geo_mean(1 + snr) >= 2 ^ (rateConstraint / nSubbands);
+                rate >= rateConstraint;
         cvx_end
 
         % * Update output current
