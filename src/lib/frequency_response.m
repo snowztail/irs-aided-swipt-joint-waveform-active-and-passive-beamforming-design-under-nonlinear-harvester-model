@@ -14,12 +14,13 @@ function [channel] = frequency_response(tapGain, tapDelay, distance, subbandFreq
     %
     % Comment:
     %   - based on generated tap data
+    %   - assume 2 dBi receive antenna gain
     %
     % Author & Date: Yang (i@snowztail.com) - 16 Jun 20
 
 
     [pathloss] = path_loss(distance);
     [fading] = fading_tgn(tapGain, tapDelay, subbandFrequency, fadingMode);
-    channel = sqrt(pathloss) * fading;
+    channel = sqrt(pathloss * db2pow(2)) * fading;
 
 end
