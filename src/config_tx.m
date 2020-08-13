@@ -48,7 +48,7 @@ nSamples = 40;
 
 %% * Variable
 % number of transmit antennas
-Variable.nTxs = 1 : 5;
+Variable.nTxs = [1 2 4 6 8];
 % tap gains and delays
 Variable.directTapGain = cell(length(Variable.nTxs), 1);
 Variable.incidentTapGain = cell(length(Variable.nTxs), 1);
