@@ -1,12 +1,10 @@
-function [tapGain, tapDelay] = tap_tgn(corTx, corRx, losMatrix, variable, propagationMode)
+function [tapGain, tapDelay] = tap_tgn(corTx, corRx, propagationMode)
     % Function:
     %   - simulate tapped delay line based on IEEE TGn channel model D
     %
     % Input:
     %   - corTx (R_t) [nTxs * nTxs]: transmit correlation matrix
     %   - corRx (R_r) [nRxs * nRxs]: receive correlation matrix
-    %   - losMatrix [nRxs * nTxs]: fixed LOS response matrix (entries with unit modulus)
-    %   - variable {nClusters * nTaps}: i.i.d. CSCG variables as uncorrelated tap response
     %   - propagationMode: propagration mode ('los', 'nlos')
     %
     % Output:
@@ -15,10 +13,10 @@ function [tapGain, tapDelay] = tap_tgn(corTx, corRx, losMatrix, variable, propag
     %
     % Comment:
     %   - for single-user MIMO, consider spatial correlation
-    %   - use power delay profile of clusters in the reference
+    %   - use power delay profile and path loss of IEEE TGn channel model D
     %   - for each tap, the LOS component is fixed while the NLOS component consists of spatially correlated variables
     %   - LOS Ricean factor only apply to the first LOS tap, the remaining taps use NLOS Ricean factor
-    %   - LOS matrix depends on geometry position
+    %   - LOS matrix entries are unit-modulus
     %
     % Reference:
     %   - V. Erceg et al., "TGn channel models," in Version 4. IEEE 802.11–03/940r4, May 2004.
@@ -39,6 +37,9 @@ function [tapGain, tapDelay] = tap_tgn(corTx, corRx, losMatrix, variable, propag
     losRiceanFactor = db2pow(3);
     nlosRiceanFactor = db2pow(-inf);
 
+    % * Generate LOS matrix
+    losMatrix = exp(1i * 2 * pi * rand(nRxs, nTxs));
+
     % * Generate tap gains and sum over clusters
     losGain = zeros(nClusters, nTaps, nRxs, nTxs);
     nlosGain = zeros(nClusters, nTaps, nRxs, nTxs);
@@ -50,7 +51,7 @@ function [tapGain, tapDelay] = tap_tgn(corTx, corRx, losMatrix, variable, propag
             else
                 losGain(iCluster, iTap, :, :) = sqrt(nlosRiceanFactor / (nlosRiceanFactor + 1)) * losMatrix;
             end
-            nlosGain(iCluster, iTap, :, :) = sqrt(1 / (nlosRiceanFactor + 1)) * (corRx ^ (1 / 2) * permute(variable(iCluster, iTap, 1 : nRxs, 1 : nTxs), [3 4 1 2]) * corTx ^ (1 / 2));
+            nlosGain(iCluster, iTap, :, :) = sqrt(1 / (nlosRiceanFactor + 1)) * (corRx ^ (1 / 2) * sqrt(1 / 2) * (randn(nRxs, nTxs) + 1i * randn(nRxs, nTxs)) * corTx ^ (1 / 2));
             tapGain(iCluster, iTap, :, :) = sqrt(tapPower(iCluster, iTap)) * (losGain(iCluster, iTap, :, :) + nlosGain(iCluster, iTap, :, :));
         end
     end
