@@ -37,6 +37,9 @@ fadingMode = 'selective';
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % number of reflecting elements in IRS
 nReflectors = 20;
+% spatial correlation
+corRx = eye(nRxs);
+corIrs = eye(nReflectors);
 
 %% * Algorithm
 % minimum gain per iteration
@@ -45,26 +48,9 @@ tolerance = 1e-8;
 nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 40;
+% number of channel realizations
+nChannels = 1e2;
 
 %% * Variable
 % number of transmit antennas
 Variable.nTxs = [1 2 4 6 8];
-% tap gains and delays
-Variable.directTapGain = cell(length(Variable.nTxs), 1);
-Variable.incidentTapGain = cell(length(Variable.nTxs), 1);
-Variable.reflectiveTapGain = cell(length(Variable.nTxs), 1);
-
-%% * Taps
-load('data/variable.mat');
-for iTx = 1 : length(Variable.nTxs)
-    nTxs = Variable.nTxs(iTx);
-    % no spatial correlation
-    corTx = eye(nTxs);
-    corRx = eye(nRxs);
-    corIrs = eye(nReflectors);
-    % tap gains and delays
-    [Variable.directTapGain{iTx}, directTapDelay] = tap_tgn(corTx, corRx, directLosMatrix(1 : nRxs, 1 : nTxs), directVariable(:, :, 1 : nRxs, 1 : nTxs), 'nlos');
-    [Variable.incidentTapGain{iTx}, incidentTapDelay] = tap_tgn(corTx, corIrs, incidentLosMatrix(1 : nReflectors, 1 : nTxs), incidentVariable(:, :, 1 : nReflectors, 1 : nTxs), 'nlos');
-    [Variable.reflectiveTapGain{iTx}, reflectiveTapDelay] = tap_tgn(corIrs, corRx, reflectiveLosMatrix(1 : nRxs, 1 : nReflectors), reflectiveVariable(:, :, 1 : nRxs, 1 : nReflectors), 'nlos');
-end
-clearvars directVariable incidentVariable reflectiveVariable directLosMatrix incidentLosMatrix reflectiveLosMatrix;

@@ -38,28 +38,10 @@ fadingMode = 'selective';
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % number of reflecting elements in IRS
 nReflectors = 20;
-
-%% * Taps
-load('data/variable.mat');
-% extract uncorrelated tap gains
-directVariable = directVariable(:, :, 1 : nRxs, 1 : nTxs);
-incidentVariable = incidentVariable(:, :, 1 : nReflectors, 1 : nTxs);
-reflectiveVariable = reflectiveVariable(:, :, 1 : nRxs, 1 : nReflectors);
-% extract LOS matrices
-directLosMatrix = directLosMatrix(1 : nRxs, 1 : nTxs);
-incidentLosMatrix = incidentLosMatrix(1 : nReflectors, 1 : nTxs);
-reflectiveLosMatrix = reflectiveLosMatrix(1 : nRxs, 1 : nReflectors);
-% no spatial correlation
+% spatial correlation
 corTx = eye(nTxs);
 corRx = eye(nRxs);
 corIrs = eye(nReflectors);
-% all links NLOS
-[directNlosTapGain, directTapDelay] = tap_tgn(corTx, corRx, directLosMatrix, directVariable, 'nlos');
-[incidentNlosTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, incidentLosMatrix, incidentVariable, 'nlos');
-[reflectiveNlosTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, reflectiveLosMatrix, reflectiveVariable, 'nlos');
-% IRS-aided links LOS
-[incidentLosTapGain, ~] = tap_tgn(corTx, corIrs, incidentLosMatrix, incidentVariable, 'los');
-[reflectiveLosTapGain, ~] = tap_tgn(corIrs, corRx, reflectiveLosMatrix, reflectiveVariable, 'los');
 
 %% * Algorithm
 % minimum gain per iteration
@@ -68,3 +50,7 @@ tolerance = 1e-8;
 nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 40;
+% number of channel realizations
+nChannels = 1e2;
+% number of cases to investigate
+nCases = 2;

@@ -1,36 +1,48 @@
 clear; clc; setup; config_irs;
 
 %% ! R-E region for fixed and adaptive IRS
-% * Generate channels
-[directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, subbandFrequency, fadingMode);
-[incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
-[reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
+reSample = cell(nChannels, nCases);
+reSolution = cell(nChannels, nCases);
 
-% * Adaptive IRS and waveform design
-[reSample{1}, reSolution{1}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
-compositeChannelWit = reSolution{1}{1}.compositeChannel;
-compositeChannelWpt = reSolution{1}{end}.compositeChannel;
+for iChannel = 1 : nChannels
+    % * Generate tap gains and delays
+    [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
+    [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
+    [reflectiveTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, 'nlos');
 
-% * Waveform optimization with fixed WIT-optimized IRS
-[reSample{2}, reSolution{2}] = re_sample_reference(beta2, beta4, compositeChannelWit, txPower, noisePower, nSamples, tolerance);
+    % * Construct channels
+    [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, subbandFrequency, fadingMode);
+    [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
+    [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
 
-% * Waveform optimization with fixed WPT-optimized IRS
-[reSample{3}, reSolution{3}] = re_sample_reference(beta2, beta4, compositeChannelWpt, txPower, noisePower, nSamples, tolerance);
+    % * Adaptive IRS and waveform design
+    [reSample{iChannel, 1}, reSolution{iChannel, 1}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+    compositeChannelWit = reSolution{iChannel, 1}{1}.compositeChannel;
+    compositeChannelWpt = reSolution{iChannel, 1}{end}.compositeChannel;
 
-% * Waveform optimization without IRS
-[reSample{4}, reSolution{4}] = re_sample_reference(beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
+    % * Waveform optimization with fixed WIT-optimized IRS
+    [reSample{iChannel, 2}, reSolution{iChannel, 2}] = re_sample_reference(beta2, beta4, compositeChannelWit, txPower, noisePower, nSamples, tolerance);
 
+    % * Waveform optimization with fixed WPT-optimized IRS
+    [reSample{iChannel, 3}, reSolution{iChannel, 3}] = re_sample_reference(beta2, beta4, compositeChannelWpt, txPower, noisePower, nSamples, tolerance);
+
+    % * Waveform optimization without IRS
+    [reSample{iChannel, 4}, reSolution{iChannel, 4}] = re_sample_reference(beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
+end
+
+% * Average over channel realizations
+reSampleAvg = cell(1, nCases);
+for iCase = 1 : nCases
+    reSampleAvg{iCase} = mean(cat(3, reSample{:, iCase}), 3);
+end
 save('data/re_irs.mat');
 
 %% * R-E plots
 figure('name', 'R-E region for adaptive, fixed and no IRS');
-plot(reSample{1}(1, :) / nSubbands, 1e6 * reSample{1}(2, :));
-hold on;
-plot(reSample{2}(1, :) / nSubbands, 1e6 * reSample{2}(2, :));
-hold on;
-plot(reSample{3}(1, :) / nSubbands, 1e6 * reSample{3}(2, :));
-hold on;
-plot(reSample{4}(1, :) / nSubbands, 1e6 * reSample{4}(2, :));
+for iCase = 1 : nCases
+    plot(reSampleAvg{iCase}(1, :) / nSubbands, 1e6 * reSampleAvg{iCase}(2, :));
+    hold on;
+end
 hold off;
 grid minor;
 legend('Adaptive IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');

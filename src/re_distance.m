@@ -1,21 +1,36 @@
 clear; clc; setup; config_distance;
 
 %% ! R-E region vs AP-IRS distance
-reSample = cell(length(Variable.horizontalDistance), 1);
-reSolution = cell(length(Variable.horizontalDistance), 1);
+reSample = cell(nChannels, length(Variable.horizontalDistance));
+reSolution = cell(nChannels, length(Variable.horizontalDistance));
 
-% * Generate direct channel
-[directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, subbandFrequency, fadingMode);
+for iChannel = 1 : nChannels
+    % * Generate tap gains and delays
+    [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
+    [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
+    [reflectiveTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, 'nlos');
 
+    % * Construct direct channel
+    [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, subbandFrequency, fadingMode);
+
+    for iDistance = 1 : length(Variable.horizontalDistance)
+        % * Get distances
+        horizontalDistance = Variable.horizontalDistance(iDistance);
+        [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
+
+        % * Construct extra channels
+        [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
+        [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
+
+        % * Alternating optimization
+        [reSample{iChannel, iDistance}, reSolution{iChannel, iDistance}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+    end
+end
+
+% * Average over channel realizations
+reSampleAvg = cell(1, length(Variable.horizontalDistance));
 for iDistance = 1 : length(Variable.horizontalDistance)
-    % * Generate extra channels
-    horizontalDistance = Variable.horizontalDistance(iDistance);
-    [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
-    [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
-    [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
-
-    % * Alternating optimization
-    [reSample{iDistance}, reSolution{iDistance}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+    reSampleAvg{iDistance} = mean(cat(3, reSample{:, iDistance}), 3);
 end
 save('data/re_distance.mat');
 
@@ -23,7 +38,7 @@ save('data/re_distance.mat');
 figure('name', 'R-E region vs AP-IRS horizontal distance');
 legendString = cell(length(Variable.horizontalDistance), 1);
 for iDistance = 1 : length(Variable.horizontalDistance)
-    plot(reSample{iDistance}(1, :) / nSubbands, 1e6 * reSample{iDistance}(2, :));
+    plot(reSampleAvg{iDistance}(1, :) / nSubbands, 1e6 * reSampleAvg{iDistance}(2, :));
     legendString{iDistance} = sprintf('d_H = %d', Variable.horizontalDistance(iDistance));
     hold on;
 end
