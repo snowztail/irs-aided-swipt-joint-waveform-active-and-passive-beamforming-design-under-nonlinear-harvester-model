@@ -16,6 +16,8 @@ nUsers = 1;
 txPower = db2pow(6);
 % average noise power
 noisePower = db2pow(-70);
+% receive antenna gain
+rxGain = db2pow(2);
 
 %% * Channel
 % AP-user distance
@@ -52,3 +54,10 @@ nChannels = 1e2;
 %% * Variable
 % projection of AP-IRS distance to the AP-user path
 Variable.horizontalDistance = 2 : 2 : 8;
+% large-scale signal-to-noise ratio
+Variable.snr = zeros(1, length(Variable.horizontalDistance));
+for iDistance = 1 : length(Variable.horizontalDistance)
+    [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, Variable.horizontalDistance(iDistance));
+    [sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
+    Variable.snr(iDistance) = txPower * sumPathloss * rxGain / noisePower;
+end
