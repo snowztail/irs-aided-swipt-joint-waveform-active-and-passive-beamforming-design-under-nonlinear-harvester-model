@@ -11,7 +11,7 @@ for iChannel = 1 : nChannels
     [reflectiveTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, 'nlos');
 
     % * Construct direct channel
-    [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, subbandFrequency, fadingMode);
+    [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
 
     for iDistance = 1 : length(Variable.horizontalDistance)
         % * Get distances
@@ -19,8 +19,8 @@ for iChannel = 1 : nChannels
         [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
 
         % * Construct extra channels
-        [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, subbandFrequency, fadingMode);
-        [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, subbandFrequency, fadingMode);
+        [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, rxGain, subbandFrequency, fadingMode);
+        [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
         % * Alternating optimization
         [reSample{iChannel, iDistance}, reSolution{iChannel, iDistance}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);

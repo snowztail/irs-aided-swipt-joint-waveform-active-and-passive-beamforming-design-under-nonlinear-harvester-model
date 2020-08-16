@@ -1,4 +1,4 @@
-function [channel] = frequency_response(tapGain, tapDelay, distance, subbandFrequency, fadingMode)
+function [channel] = frequency_response(tapGain, tapDelay, distance, rxGain, subbandFrequency, fadingMode)
     % Function:
     %   - get frequency response of direct, incident and reflective channels
     %
@@ -6,6 +6,7 @@ function [channel] = frequency_response(tapGain, tapDelay, distance, subbandFreq
     %   - tapGain [nTaps * nTxs * nRxs]: complex tap gain
     %   - tapDelay [nTaps * 1]: tap delays
     %   - distance (d): distance between the transmitter and the receiver
+    %   - rxGain: receive antenna gain
     %   - subbandFrequency (f_n) [1 * nSubbands]: the center frequency of subbands
     %   - fadingMode: fading mode ('flat', 'selective')
     %
@@ -21,6 +22,6 @@ function [channel] = frequency_response(tapGain, tapDelay, distance, subbandFreq
 
     [pathloss] = path_loss(distance);
     [fading] = fading_tgn(tapGain, tapDelay, subbandFrequency, fadingMode);
-    channel = sqrt(pathloss * db2pow(2)) * fading;
+    channel = sqrt(pathloss * rxGain) * fading;
 
 end
