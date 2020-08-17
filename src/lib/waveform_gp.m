@@ -48,6 +48,7 @@ function [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] =
         cvx_begin gp quiet
             cvx_solver mosek
             cvx_precision high
+            cvx_expert true
             variable auxiliary
             variable infoAmplitude(1, nSubbands) nonnegative
             variable powerAmplitude(1, nSubbands) nonnegative

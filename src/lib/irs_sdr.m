@@ -87,6 +87,7 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
         cvx_begin quiet
             cvx_solver mosek
             cvx_precision high
+            cvx_expert true
             variable irsMatrix(nReflectors + 1, nReflectors + 1) hermitian semidefinite;
             expression infoAuxiliary(2 * nSubbands - 1, 1);
             expression powerAuxiliary(2 * nSubbands - 1, 1);
