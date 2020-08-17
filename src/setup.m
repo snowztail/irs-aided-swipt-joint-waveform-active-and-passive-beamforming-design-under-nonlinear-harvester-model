@@ -1,6 +1,5 @@
 addpath(genpath(pwd));
-% addpath('$HOME/code/cvx');
-% cvx_setup $HOME/code/cvx/cvx_license.dat
-% LASTN = maxNumCompThreads(1);
-% array_index = getenv('PBS_ARRAY_INDEX');
-% rng(str2num(array_index));
+addpath('/rdsgpfs/general/user/yz16718/home/code/cvx');
+cvx_setup /rdsgpfs/general/user/yz16718/home/code/cvx/cvx_license.dat
+LASTN = maxNumCompThreads('automatic');
+% rng(str2num(getenv('PBS_ARRAY_INDEX')));
