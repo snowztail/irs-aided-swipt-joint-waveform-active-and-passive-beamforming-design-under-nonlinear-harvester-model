@@ -4,7 +4,7 @@ clear; clc; setup; config_irs;
 reSample = cell(nChannels, nCases);
 reSolution = cell(nChannels, nCases);
 
-for iChannel = 1 : nChannels
+parfor iChannel = 1 : nChannels
     % * Generate tap gains and delays
     [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
     [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
@@ -37,16 +37,16 @@ for iCase = 1 : nCases
 end
 save('data/re_irs.mat');
 
-%% * R-E plots
-figure('name', 'R-E region for adaptive, fixed and no IRS');
-for iCase = 1 : nCases
-    plot(reSampleAvg{iCase}(1, :) / nSubbands, 1e6 * reSampleAvg{iCase}(2, :));
-    hold on;
-end
-hold off;
-grid minor;
-legend('Adaptive IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');
-xlabel('Per-subband rate [bps/Hz]');
-ylabel('Average output DC current [\muA]');
-ylim([0 inf]);
-savefig('plots/re_irs.fig');
+% %% * R-E plots
+% figure('name', 'R-E region for adaptive, fixed and no IRS');
+% for iCase = 1 : nCases
+%     plot(reSampleAvg{iCase}(1, :) / nSubbands, 1e6 * reSampleAvg{iCase}(2, :));
+%     hold on;
+% end
+% hold off;
+% grid minor;
+% legend('Adaptive IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');
+% xlabel('Per-subband rate [bps/Hz]');
+% ylabel('Average output DC current [\muA]');
+% ylim([0 inf]);
+% savefig('plots/re_irs.fig');

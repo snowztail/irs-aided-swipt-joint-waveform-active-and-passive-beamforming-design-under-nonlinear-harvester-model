@@ -58,3 +58,5 @@ nChannels = 1e2;
 %% * Variable
 % number of frequency bands
 Variable.nSubbands = 2 .^ (0 : 4);
+% number of cases to investigate
+nCases = length(Variable.nSubbands);

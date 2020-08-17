@@ -61,3 +61,5 @@ for iDistance = 1 : length(Variable.horizontalDistance)
     [sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
     Variable.snr(iDistance) = txPower * sumPathloss * rxGain / noisePower;
 end
+% number of cases to investigate
+nCases = length(Variable.horizontalDistance);

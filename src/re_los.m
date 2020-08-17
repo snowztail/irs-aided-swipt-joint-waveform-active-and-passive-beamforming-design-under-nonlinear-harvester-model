@@ -4,7 +4,7 @@ clear; clc; setup; config_los;
 reSample = cell(nChannels, nCases);
 reSolution = cell(nChannels, nCases);
 
-for iChannel = 1 : nChannels
+parfor iChannel = 1 : nChannels
     % * Generate tap gains and delays
     [directNlosTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
     [incidentNlosTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
@@ -35,16 +35,16 @@ for iCase = 1 : nCases
 end
 save('data/re_los.mat');
 
-%% * R-E plots
-figure('name', 'R-E region for IRS-aided NLOS and LOS channels');
-for iCase = 1 : nCases
-    plot(reSampleAvg{iCase}(1, :) / nSubbands, 1e6 * reSampleAvg{iCase}(2, :));
-    hold on;
-end
-hold off;
-grid minor;
-legend('NLOS', 'LOS');
-xlabel('Per-subband rate [bps/Hz]');
-ylabel('Average output DC current [\muA]');
-ylim([0 inf]);
-savefig('plots/re_los.fig');
+% %% * R-E plots
+% figure('name', 'R-E region for IRS-aided NLOS and LOS channels');
+% for iCase = 1 : nCases
+%     plot(reSampleAvg{iCase}(1, :) / nSubbands, 1e6 * reSampleAvg{iCase}(2, :));
+%     hold on;
+% end
+% hold off;
+% grid minor;
+% legend('NLOS', 'LOS');
+% xlabel('Per-subband rate [bps/Hz]');
+% ylabel('Average output DC current [\muA]');
+% ylim([0 inf]);
+% savefig('plots/re_los.fig');

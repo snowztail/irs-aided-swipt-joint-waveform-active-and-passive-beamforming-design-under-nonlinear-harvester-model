@@ -60,3 +60,5 @@ nChannels = 1e2;
 %% * Variable
 % number of transmit antennas
 Variable.nTxs = [1 2 4 6 8];
+% number of cases to investigate
+nCases = length(Variable.nTxs);

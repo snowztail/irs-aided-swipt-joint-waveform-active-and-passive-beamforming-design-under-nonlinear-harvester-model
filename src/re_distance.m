@@ -1,10 +1,10 @@
 clear; clc; setup; config_distance;
 
 %% ! R-E region vs AP-IRS distance
-reSample = cell(nChannels, length(Variable.horizontalDistance));
-reSolution = cell(nChannels, length(Variable.horizontalDistance));
+reSample = cell(nChannels, nCases);
+reSolution = cell(nChannels, nCases);
 
-for iChannel = 1 : nChannels
+parfor iChannel = 1 : nChannels
     % * Generate tap gains and delays
     [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
     [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
@@ -13,7 +13,7 @@ for iChannel = 1 : nChannels
     % * Construct direct channel
     [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
 
-    for iDistance = 1 : length(Variable.horizontalDistance)
+    for iDistance = 1 : nCases
         % * Get distances
         horizontalDistance = Variable.horizontalDistance(iDistance);
         [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
@@ -28,24 +28,24 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, length(Variable.horizontalDistance));
-for iDistance = 1 : length(Variable.horizontalDistance)
+reSampleAvg = cell(1, nCases);
+for iDistance = 1 : nCases
     reSampleAvg{iDistance} = mean(cat(3, reSample{:, iDistance}), 3);
 end
 save('data/re_distance.mat');
 
-%% * R-E plots
-figure('name', 'R-E region vs AP-IRS horizontal distance');
-legendString = cell(length(Variable.horizontalDistance), 1);
-for iDistance = 1 : length(Variable.horizontalDistance)
-    plot(reSampleAvg{iDistance}(1, :) / nSubbands, 1e6 * reSampleAvg{iDistance}(2, :));
-    legendString{iDistance} = sprintf('d_H = %d', Variable.horizontalDistance(iDistance));
-    hold on;
-end
-hold off;
-grid minor;
-legend(legendString);
-xlabel('Per-subband rate [bps/Hz]');
-ylabel('Average output DC current [\muA]');
-ylim([0 inf]);
-savefig('plots/re_distance.fig');
+% %% * R-E plots
+% figure('name', 'R-E region vs AP-IRS horizontal distance');
+% legendString = cell(1, nCases);
+% for iDistance = 1 : nCases
+%     plot(reSampleAvg{iDistance}(1, :) / nSubbands, 1e6 * reSampleAvg{iDistance}(2, :));
+%     legendString{iDistance} = sprintf('d_H = %d', Variable.horizontalDistance(iDistance));
+%     hold on;
+% end
+% hold off;
+% grid minor;
+% legend(legendString);
+% xlabel('Per-subband rate [bps/Hz]');
+% ylabel('Average output DC current [\muA]');
+% ylim([0 inf]);
+% savefig('plots/re_distance.fig');

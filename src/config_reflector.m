@@ -59,3 +59,5 @@ nChannels = 1e2;
 %% * Variable
 % number of reflecting elements in IRS
 Variable.nReflectors = 0 : 10 : 50;
+% number of cases to investigate
+nCases = length(Variable.nReflectors);

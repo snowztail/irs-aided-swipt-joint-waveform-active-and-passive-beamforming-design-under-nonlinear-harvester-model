@@ -1,10 +1,10 @@
 clear; clc; setup; config_snr;
 
 %% ! R-E region for different large-scale SNR
-reSample = cell(nChannels, length(Variable.snr));
-reSolution = cell(nChannels, length(Variable.snr));
+reSample = cell(nChannels, nCases);
+reSolution = cell(nChannels, nCases);
 
-for iChannel = 1 : nChannels
+parfor iChannel = 1 : nChannels
     % * Generate tap gains and delays
     [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
     [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
@@ -18,7 +18,7 @@ for iChannel = 1 : nChannels
     % * Calculate sum pathloss
     [sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
 
-    for iSnr = 1 : length(Variable.snr)
+    for iSnr = 1 : nCases
         % * Calculate noise power based on SNR
         noisePower = txPower * sumPathloss * rxGain / Variable.snr(iSnr);
 
@@ -28,24 +28,24 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, length(Variable.snr));
-for iSnr = 1 : length(Variable.snr)
+reSampleAvg = cell(1, nCases);
+for iSnr = 1 : nCases
     reSampleAvg{iSnr} = mean(cat(3, reSample{:, iSnr}), 3);
 end
 save('data/re_snr.mat');
 
-%% * R-E plots
-figure('name', 'R-E region vs large-scale SNR');
-legendString = cell(length(Variable.snr), 1);
-for iSnr = 1 : length(Variable.snr)
-    plot(reSampleAvg{iSnr}(1, :) / nSubbands, 1e6 * reSampleAvg{iSnr}(2, :));
-    legendString{iSnr} = sprintf('SNR = %d dB', pow2db(Variable.snr(iSnr)));
-    hold on;
-end
-hold off;
-grid minor;
-legend(legendString);
-xlabel('Per-subband rate [bps/Hz]');
-ylabel('Average output DC current [\muA]');
-ylim([0 inf]);
-savefig('plots/re_snr.fig');
+% %% * R-E plots
+% figure('name', 'R-E region vs large-scale SNR');
+% legendString = cell(1, nCases);
+% for iSnr = 1 : nCases
+%     plot(reSampleAvg{iSnr}(1, :) / nSubbands, 1e6 * reSampleAvg{iSnr}(2, :));
+%     legendString{iSnr} = sprintf('SNR = %d dB', pow2db(Variable.snr(iSnr)));
+%     hold on;
+% end
+% hold off;
+% grid minor;
+% legend(legendString);
+% xlabel('Per-subband rate [bps/Hz]');
+% ylabel('Average output DC current [\muA]');
+% ylim([0 inf]);
+% savefig('plots/re_snr.fig');

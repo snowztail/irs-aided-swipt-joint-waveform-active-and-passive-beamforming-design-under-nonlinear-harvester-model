@@ -52,9 +52,9 @@ nCandidates = 1e3;
 nSamples = 40;
 % number of channel realizations
 nChannels = 1e2;
-% number of cases to investigate
-nCases = 2;
 
 %% * Variable
 % large-scale signal-to-noise ratio
 Variable.snr = db2pow(10 : 10 : 40);
+% number of cases to investigate
+nCases = length(Variable.snr);

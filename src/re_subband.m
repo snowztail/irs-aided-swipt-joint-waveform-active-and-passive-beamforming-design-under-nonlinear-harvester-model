@@ -1,11 +1,11 @@
 clear; clc; setup; config_subband;
 
 %% ! R-E region vs number of subbands
-reSample = cell(nChannels, length(Variable.nSubbands));
-reSolution = cell(nChannels, length(Variable.nSubbands));
+reSample = cell(nChannels, nCases);
+reSolution = cell(nChannels, nCases);
 
-for iChannel = 1 : nChannels
-    for iSubband = 1 : length(Variable.nSubbands)
+parfor iChannel = 1 : nChannels
+    for iSubband = 1 : nCases
         % * Get number of subbands and subband frequency
         nSubbands = Variable.nSubbands(iSubband);
         [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
@@ -26,24 +26,24 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, length(Variable.nSubbands));
-for iSubband = 1 : length(Variable.nSubbands)
+reSampleAvg = cell(1, nCases);
+for iSubband = 1 : nCases
     reSampleAvg{iSubband} = mean(cat(3, reSample{:, iSubband}), 3);
 end
 save('data/re_subband.mat');
 
-%% * R-E plots
-figure('name', 'R-E region vs number of subbands');
-legendString = cell(length(Variable.nSubbands), 1);
-for iSubband = 1 : length(Variable.nSubbands)
-    plot(reSampleAvg{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reSampleAvg{iSubband}(2, :));
-    legendString{iSubband} = sprintf('N = %d', Variable.nSubbands(iSubband));
-    hold on;
-end
-hold off;
-grid minor;
-legend(legendString);
-xlabel('Per-subband rate [bps/Hz]');
-ylabel('Average output DC current [\muA]');
-ylim([0 inf]);
-savefig('plots/re_subband.fig');
+% %% * R-E plots
+% figure('name', 'R-E region vs number of subbands');
+% legendString = cell(1, nCases);
+% for iSubband = 1 : nCases
+%     plot(reSampleAvg{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reSampleAvg{iSubband}(2, :));
+%     legendString{iSubband} = sprintf('N = %d', Variable.nSubbands(iSubband));
+%     hold on;
+% end
+% hold off;
+% grid minor;
+% legend(legendString);
+% xlabel('Per-subband rate [bps/Hz]');
+% ylabel('Average output DC current [\muA]');
+% ylim([0 inf]);
+% savefig('plots/re_subband.fig');
