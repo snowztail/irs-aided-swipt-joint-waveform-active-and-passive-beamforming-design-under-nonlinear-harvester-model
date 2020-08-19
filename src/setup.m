@@ -1,5 +1,6 @@
 addpath(genpath(pwd));
-addpath('/rdsgpfs/general/user/yz16718/home/code/cvx');
-cvx_setup /rdsgpfs/general/user/yz16718/home/code/cvx/cvx_license.dat
-LASTN = maxNumCompThreads('automatic');
-% rng(str2num(getenv('PBS_ARRAY_INDEX')));
+run('/rdsgpfs/general/user/yz16718/home/code/cvx/cvx_setup.m');
+
+nCpus = str2num(getenv('NCPUS'));
+parpool(nCpus);
+maxNumCompThreads(nCpus);
