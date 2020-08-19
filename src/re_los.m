@@ -1,8 +1,10 @@
 clear; clc; setup; config_los;
 
 %% ! R-E region for IRS-aided NLOS and LOS channels
-reSample = cell(nChannels, nCases);
-reSolution = cell(nChannels, nCases);
+reNlosSample = cell(nChannels, 1);
+reLosSample = cell(nChannels, 1);
+reNlosSolution = cell(nChannels, 1);
+reLosSolution = cell(nChannels, 1);
 
 parfor iChannel = 1 : nChannels
     % * Generate tap gains and delays
@@ -22,25 +24,22 @@ parfor iChannel = 1 : nChannels
     [reflectiveLosChannel] = frequency_response(reflectiveLosTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
     % * Optimization based on NLOS channels
-    [reSample{iChannel, 1}, reSolution{iChannel, 1}] = re_sample(beta2, beta4, directNlosChannel, incidentNlosChannel, reflectiveNlosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+    [reNlosSample{iChannel}, reNlosSolution{iChannel}] = re_sample(beta2, beta4, directNlosChannel, incidentNlosChannel, reflectiveNlosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 
     % * Optimization based on NLOS direct channel and LOS incident and reflective channels
-    [reSample{iChannel, 2}, reSolution{iChannel, 2}] = re_sample(beta2, beta4, directNlosChannel, incidentLosChannel, reflectiveLosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+    [reLosSample{iChannel}, reLosSolution{iChannel}] = re_sample(beta2, beta4, directNlosChannel, incidentLosChannel, reflectiveLosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, nCases);
-for iCase = 1 : nCases
-    reSampleAvg{iCase} = mean(cat(3, reSample{:, iCase}), 3);
-end
+reNlosSampleAvg = mean(cat(3, reNlosSample{:}), 3);
+reLosSampleAvg = mean(cat(3, reLosSample{:}), 3);
 save('data/re_los.mat');
 
 % %% * R-E plots
 % figure('name', 'R-E region for IRS-aided NLOS and LOS channels');
-% for iCase = 1 : nCases
-%     plot(reSampleAvg{iCase}(1, :) / nSubbands, 1e6 * reSampleAvg{iCase}(2, :));
-%     hold on;
-% end
+% plot(reNlosSampleAvg(1, :) / nSubbands, 1e6 * reNlosSampleAvg(2, :));
+% hold on;
+% plot(reLosSampleAvg(1, :) / nSubbands, 1e6 * reLosSampleAvg(2, :));
 % hold off;
 % grid minor;
 % legend('NLOS', 'LOS');
