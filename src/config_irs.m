@@ -55,8 +55,6 @@ tolerance = 1e-8;
 % number of CSCG random vectors to generate
 nCandidates = 1e3;
 % number of samples in R-E curves
-nSamples = 40;
+nSamples = 30;
 % number of channel realizations
 nChannels = 1e2;
-% number of cases to investigate
-nCases = 4;
