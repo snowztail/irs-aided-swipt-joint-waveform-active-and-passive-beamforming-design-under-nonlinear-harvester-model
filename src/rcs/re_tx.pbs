@@ -5,4 +5,4 @@
 
 module load matlab/R2020a
 cd $PBS_O_WORKDIR/..
-matlab -nodesktop –nodisplay –nosplash < re_tx.m
+matlab -nodesktop –nodisplay -nosplash < re_tx.m

@@ -5,4 +5,4 @@
 
 module load matlab/R2020a
 cd $PBS_O_WORKDIR/..
-matlab –nodisplay -singleCompThread < re_distance.m
+matlab -nodesktop –nodisplay -nosplash < re_distance.m

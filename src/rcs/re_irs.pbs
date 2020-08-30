@@ -5,4 +5,4 @@
 
 module load matlab/R2020a
 cd $PBS_O_WORKDIR/..
-matlab –nodisplay < re_irs.m
+matlab -nodesktop –nodisplay -nosplash < re_irs.m
