@@ -63,3 +63,5 @@ for iDistance = 1 : length(Variable.horizontalDistance)
 end
 % number of cases to investigate
 nCases = length(Variable.horizontalDistance);
+
+save('data/re_distance_parallel.mat');

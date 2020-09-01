@@ -54,10 +54,12 @@ nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 30;
 % number of channel realizations
-nChannels = 2;
+nChannels = 1;
 
 %% * Variable
 % number of reflecting elements in IRS
 Variable.nReflectors = 0 : 10 : 50;
 % number of cases to investigate
 nCases = length(Variable.nReflectors);
+
+save('data/re_reflector.mat');

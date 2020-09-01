@@ -36,7 +36,7 @@ end
 % * Save data
 load('data/re_distance.mat');
 reSet(:, pbsIndex) = reSampleAvg;
-save('data/re_distance.mat', 'reSet');
+save('data/re_distance.mat', 'reSet', '-append');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs AP-IRS horizontal distance');

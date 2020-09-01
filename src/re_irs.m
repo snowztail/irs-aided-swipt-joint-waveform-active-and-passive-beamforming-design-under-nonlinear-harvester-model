@@ -46,7 +46,7 @@ reSampleAvg = [reAdaptiveSampleAvg; reWitSampleAvg; reWptSampleAvg; reNoIrsSampl
 % * Save data
 load('data/re_irs.mat');
 reSet(:, pbsIndex) = reSampleAvg;
-save('data/re_irs.mat', 'reSet');
+save('data/re_irs.mat', 'reSet', '-append');
 
 % %% * R-E plots
 % figure('name', 'R-E region for adaptive, fixed and no IRS');

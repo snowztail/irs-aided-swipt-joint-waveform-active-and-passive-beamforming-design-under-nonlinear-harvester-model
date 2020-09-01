@@ -55,10 +55,12 @@ nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 30;
 % number of channel realizations
-nChannels = 2;
+nChannels = 1;
 
 %% * Variable
 % number of transmit antennas
 Variable.nTxs = [1 2 4 6 8];
 % number of cases to investigate
 nCases = length(Variable.nTxs);
+
+save('data/re_tx.mat');

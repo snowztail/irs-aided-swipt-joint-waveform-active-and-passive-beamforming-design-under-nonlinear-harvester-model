@@ -38,7 +38,7 @@ reSampleAvg = cell(1, nCases);
 for iDistance = 1 : nCases
     reSampleAvg{iDistance} = mean(cat(3, reSample{:, iDistance}), 3);
 end
-save('data/re_distance_parallel.mat');
+save('data/re_distance_parallel.mat', 'reSet', '-append');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs AP-IRS horizontal distance');

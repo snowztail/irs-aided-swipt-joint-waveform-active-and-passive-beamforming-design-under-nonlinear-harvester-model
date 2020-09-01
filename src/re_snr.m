@@ -36,7 +36,7 @@ end
 % * Save data
 load('data/re_snr.mat');
 reSet(:, pbsIndex) = reSampleAvg;
-save('data/re_snr.mat', 'reSet');
+save('data/re_snr.mat', 'reSet', '-append');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs large-scale SNR');

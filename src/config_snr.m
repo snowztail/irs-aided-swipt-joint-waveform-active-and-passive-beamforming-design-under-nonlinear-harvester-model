@@ -51,10 +51,12 @@ nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 30;
 % number of channel realizations
-nChannels = 2;
+nChannels = 1;
 
 %% * Variable
 % large-scale signal-to-noise ratio
 Variable.snr = db2pow(10 : 10 : 40);
 % number of cases to investigate
 nCases = length(Variable.snr);
+
+save('data/re_snr.mat');

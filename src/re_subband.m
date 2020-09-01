@@ -34,7 +34,7 @@ end
 % * Save data
 load('data/re_subband.mat');
 reSet(:, pbsIndex) = reSampleAvg;
-save('data/re_subband.mat', 'reSet');
+save('data/re_subband.mat', 'reSet', '-append');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs number of subbands');

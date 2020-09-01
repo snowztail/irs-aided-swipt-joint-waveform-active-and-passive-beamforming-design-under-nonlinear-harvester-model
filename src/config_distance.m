@@ -49,7 +49,7 @@ nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 30;
 % number of channel realizations
-nChannels = 2;
+nChannels = 1;
 
 %% * Variable
 % projection of AP-IRS distance to the AP-user path
@@ -63,3 +63,5 @@ for iDistance = 1 : length(Variable.horizontalDistance)
 end
 % number of cases to investigate
 nCases = length(Variable.horizontalDistance);
+
+save('data/re_distance.mat');

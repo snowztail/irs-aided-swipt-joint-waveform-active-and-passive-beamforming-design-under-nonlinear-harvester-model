@@ -53,10 +53,12 @@ nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 30;
 % number of channel realizations
-nChannels = 2;
+nChannels = 1;
 
 %% * Variable
 % number of frequency bands
 Variable.nSubbands = 2 .^ (0 : 4);
 % number of cases to investigate
 nCases = length(Variable.nSubbands);
+
+save('data/re_subband.mat');

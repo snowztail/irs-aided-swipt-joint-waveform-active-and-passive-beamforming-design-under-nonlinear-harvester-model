@@ -38,7 +38,7 @@ reSampleAvg = [reNlosSampleAvg; reLosSampleAvg];
 % * Save data
 load('data/re_los.mat');
 reSet(:, pbsIndex) = reSampleAvg;
-save('data/re_los.mat', 'reSet');
+save('data/re_los.mat', 'reSet', '-append');
 
 % %% * R-E plots
 % figure('name', 'R-E region for IRS-aided NLOS and LOS channels');

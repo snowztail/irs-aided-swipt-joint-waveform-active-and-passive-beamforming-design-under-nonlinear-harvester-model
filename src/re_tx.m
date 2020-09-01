@@ -34,7 +34,7 @@ end
 % * Save data
 load('data/re_tx.mat');
 reSet(:, pbsIndex) = reSampleAvg;
-save('data/re_tx.mat', 'reSet');
+save('data/re_tx.mat', 'reSet', '-append');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs number of transmit antennas');
