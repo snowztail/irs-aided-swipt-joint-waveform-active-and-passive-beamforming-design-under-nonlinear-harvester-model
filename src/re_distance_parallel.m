@@ -1,10 +1,10 @@
-clear; clc; setup; config_distance;
+clear; clc; setup_parallel; config_distance;
 
 %% ! R-E region vs AP-IRS distance
 reSample = cell(nChannels, nCases);
 reSolution = cell(nChannels, nCases);
 
-for iChannel = 1 : nChannels
+parfor iChannel = 1 : nChannels
     % * Generate tap gains and delays
     [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
     [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
@@ -32,11 +32,7 @@ reSampleAvg = cell(1, nCases);
 for iDistance = 1 : nCases
     reSampleAvg{iDistance} = mean(cat(3, reSample{:, iDistance}), 3);
 end
-
-% * Save data
-load('data/re_distance.mat');
-reSet(:, pbsIndex) = reSampleAvg;
-save('data/re_distance.mat', 'reSet');
+save('data/re_distance_parallel.mat');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs AP-IRS horizontal distance');

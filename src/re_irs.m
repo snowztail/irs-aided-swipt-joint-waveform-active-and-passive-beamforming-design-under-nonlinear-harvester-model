@@ -10,7 +10,7 @@ reWitSolution = cell(nChannels, 1);
 reWptSolution = cell(nChannels, 1);
 reNoIrsSolution = cell(nChannels, 1);
 
-parfor iChannel = 1 : nChannels
+for iChannel = 1 : nChannels
     % * Generate tap gains and delays
     [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
     [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
@@ -41,7 +41,12 @@ reAdaptiveSampleAvg = mean(cat(3, reAdaptiveSample{:}), 3);
 reWitSampleAvg = mean(cat(3, reWitSample{:}), 3);
 reWptSampleAvg = mean(cat(3, reWptSample{:}), 3);
 reNoIrsSampleAvg = mean(cat(3, reNoIrsSample{:}), 3);
-save('data/re_irs.mat');
+reSampleAvg = [reAdaptiveSampleAvg; reWitSampleAvg; reWptSampleAvg; reNoIrsSampleAvg];
+
+% * Save data
+load('data/re_irs.mat');
+reSet(:, pbsIndex) = reSampleAvg;
+save('data/re_irs.mat', 'reSet');
 
 % %% * R-E plots
 % figure('name', 'R-E region for adaptive, fixed and no IRS');

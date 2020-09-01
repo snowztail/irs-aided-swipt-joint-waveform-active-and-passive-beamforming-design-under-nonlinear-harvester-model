@@ -49,7 +49,7 @@ nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 30;
 % number of channel realizations
-nChannels = 1e2;
+nChannels = 2;
 
 %% * Variable
 % projection of AP-IRS distance to the AP-user path

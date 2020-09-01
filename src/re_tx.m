@@ -4,7 +4,7 @@ clear; clc; setup; config_tx;
 reSample = cell(nChannels, nCases);
 reSolution = cell(nChannels, nCases);
 
-parfor iChannel = 1 : nChannels
+for iChannel = 1 : nChannels
     for iTx = 1 : nCases
         % * Get number of transmit antennas and define spatial correlation
         nTxs = Variable.nTxs(iTx);
@@ -30,7 +30,11 @@ reSampleAvg = cell(1, nCases);
 for iTx = 1 : nCases
     reSampleAvg{iTx} = mean(cat(3, reSample{:, iTx}), 3);
 end
-save('data/re_tx.mat');
+
+% * Save data
+load('data/re_tx.mat');
+reSet(:, pbsIndex) = reSampleAvg;
+save('data/re_tx.mat', 'reSet');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs number of transmit antennas');

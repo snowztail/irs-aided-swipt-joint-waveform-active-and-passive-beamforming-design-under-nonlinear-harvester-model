@@ -4,7 +4,7 @@ clear; clc; setup; config_snr;
 reSample = cell(nChannels, nCases);
 reSolution = cell(nChannels, nCases);
 
-parfor iChannel = 1 : nChannels
+for iChannel = 1 : nChannels
     % * Generate tap gains and delays
     [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
     [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
@@ -32,7 +32,11 @@ reSampleAvg = cell(1, nCases);
 for iSnr = 1 : nCases
     reSampleAvg{iSnr} = mean(cat(3, reSample{:, iSnr}), 3);
 end
-save('data/re_snr.mat');
+
+% * Save data
+load('data/re_snr.mat');
+reSet(:, pbsIndex) = reSampleAvg;
+save('data/re_snr.mat', 'reSet');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs large-scale SNR');

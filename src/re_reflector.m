@@ -4,7 +4,7 @@ clear; clc; setup; config_reflector;
 reSample = cell(nChannels, nCases);
 reSolution = cell(nChannels, nCases);
 
-parfor iChannel = 1 : nChannels
+for iChannel = 1 : nChannels
     for iReflector = 1 : nCases
         % * Get number of reflectors and define spatial correlation
         nReflectors = Variable.nReflectors(iReflector);
@@ -30,7 +30,11 @@ reSampleAvg = cell(1, nCases);
 for iReflector = 1 : nCases
     reSampleAvg{iReflector} = mean(cat(3, reSample{:, iReflector}), 3);
 end
-save('data/re_reflector.mat');
+
+% * Save data
+load('data/re_reflector.mat');
+reSet(:, pbsIndex) = reSampleAvg;
+save('data/re_reflector.mat', 'reSet');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs number of reflectors');

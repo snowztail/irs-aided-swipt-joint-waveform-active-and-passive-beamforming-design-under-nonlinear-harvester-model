@@ -6,7 +6,7 @@ reLosSample = cell(nChannels, 1);
 reNlosSolution = cell(nChannels, 1);
 reLosSolution = cell(nChannels, 1);
 
-parfor iChannel = 1 : nChannels
+for iChannel = 1 : nChannels
     % * Generate tap gains and delays
     [directNlosTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
     [incidentNlosTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
@@ -33,7 +33,12 @@ end
 % * Average over channel realizations
 reNlosSampleAvg = mean(cat(3, reNlosSample{:}), 3);
 reLosSampleAvg = mean(cat(3, reLosSample{:}), 3);
-save('data/re_los.mat');
+reSampleAvg = [reNlosSampleAvg; reLosSampleAvg];
+
+% * Save data
+load('data/re_los.mat');
+reSet(:, pbsIndex) = reSampleAvg;
+save('data/re_los.mat', 'reSet');
 
 % %% * R-E plots
 % figure('name', 'R-E region for IRS-aided NLOS and LOS channels');

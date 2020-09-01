@@ -4,7 +4,7 @@ clear; clc; setup; config_subband;
 reSample = cell(nChannels, nCases);
 reSolution = cell(nChannels, nCases);
 
-parfor iChannel = 1 : nChannels
+for iChannel = 1 : nChannels
     for iSubband = 1 : nCases
         % * Get number of subbands and subband frequency
         nSubbands = Variable.nSubbands(iSubband);
@@ -30,7 +30,11 @@ reSampleAvg = cell(1, nCases);
 for iSubband = 1 : nCases
     reSampleAvg{iSubband} = mean(cat(3, reSample{:, iSubband}), 3);
 end
-save('data/re_subband.mat');
+
+% * Save data
+load('data/re_subband.mat');
+reSet(:, pbsIndex) = reSampleAvg;
+save('data/re_subband.mat', 'reSet');
 
 % %% * R-E plots
 % figure('name', 'R-E region vs number of subbands');
