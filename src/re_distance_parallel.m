@@ -1,10 +1,16 @@
-clear; clc; setup_parallel; config_distance;
+clear; clc; setup_parallel; config_distance_parallel;
 
 %% ! R-E region vs AP-IRS distance
 reSample = cell(nChannels, nCases);
 reSolution = cell(nChannels, nCases);
 
-parfor iChannel = 1 : nChannels
+maxNumCompThreads(24);
+tempdir = getenv('TMPDIR');
+clust = parcluster;
+clust.JobStorageLocation = tempdir;
+clust.NumWorkers=24;
+
+parfor (iChannel = 1 : nChannels,clust)
     % * Generate tap gains and delays
     [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
     [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
