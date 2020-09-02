@@ -14,6 +14,8 @@ nRxs = 1;
 nUsers = 1;
 % average transmit power
 txPower = db2pow(6);
+% average noise power
+noisePower = db2pow(-70);
 % receive antenna gain
 rxGain = db2pow(2);
 
@@ -26,6 +28,10 @@ verticalDistance = 2;
 horizontalDistance = 2;
 % AP-IRS and IRS-user distance
 [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
+% equivalent pathloss
+[sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
+% large-scale signal-to-noise ratio
+snr = txPower * sumPathloss * rxGain / noisePower;
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -36,12 +42,9 @@ nSubbands = 4;
 fadingMode = 'selective';
 % carrier frequency
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
-% number of reflecting elements in IRS
-nReflectors = 20;
 % spatial correlation
 corTx = eye(nTxs);
 corRx = eye(nRxs);
-corIrs = eye(nReflectors);
 
 %% * Algorithm
 % minimum gain per iteration
@@ -54,9 +57,7 @@ nSamples = 30;
 nChannels = 1;
 
 %% * Variable
-% large-scale signal-to-noise ratio
-Variable.snr = db2pow(10 : 10 : 40);
-% number of cases to investigate
-nCases = length(Variable.snr);
+% number of reflecting elements in IRS
+Variable.nReflectors = 0 : 10 : 50;
 
-save('data/re_snr.mat', '-append');
+save('data/re_reflector.mat', '-append');

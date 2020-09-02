@@ -1,6 +1,6 @@
 clear; clc; setup; config_los;
 
-%% ! R-E region for IRS-aided NLOS and LOS channels
+%% ! R-E region for IRS-aided NLoS and LoS channels
 reNlosSample = cell(nChannels, 1);
 reLosSample = cell(nChannels, 1);
 reNlosSolution = cell(nChannels, 1);
@@ -23,32 +23,18 @@ for iChannel = 1 : nChannels
     [incidentLosChannel] = frequency_response(incidentLosTapGain, incidentTapDelay, incidentDistance, rxGain, subbandFrequency, fadingMode);
     [reflectiveLosChannel] = frequency_response(reflectiveLosTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
-    % * Optimization based on NLOS channels
+    % * Optimization based on NLoS channels
     [reNlosSample{iChannel}, reNlosSolution{iChannel}] = re_sample(beta2, beta4, directNlosChannel, incidentNlosChannel, reflectiveNlosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 
-    % * Optimization based on NLOS direct channel and LOS incident and reflective channels
+    % * Optimization based on NLoS direct channel and LoS incident and reflective channels
     [reLosSample{iChannel}, reLosSolution{iChannel}] = re_sample(beta2, beta4, directNlosChannel, incidentLosChannel, reflectiveLosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 end
 
 % * Average over channel realizations
-reNlosSampleAvg = mean(cat(3, reNlosSample{:}), 3);
-reLosSampleAvg = mean(cat(3, reLosSample{:}), 3);
-reSampleAvg = [reNlosSampleAvg; reLosSampleAvg];
+reSampleAvg{1} = mean(cat(3, reNlosSample{:}), 3);
+reSampleAvg{2} = mean(cat(3, reLosSample{:}), 3);
 
 % * Save data
 load('data/re_los.mat');
-reSet(:, pbsIndex) = reSampleAvg;
+reSet(iBatch, :) = reSampleAvg;
 save('data/re_los.mat', 'reSet', '-append');
-
-% %% * R-E plots
-% figure('name', 'R-E region for IRS-aided NLOS and LOS channels');
-% plot(reNlosSampleAvg(1, :) / nSubbands, 1e6 * reNlosSampleAvg(2, :));
-% hold on;
-% plot(reLosSampleAvg(1, :) / nSubbands, 1e6 * reLosSampleAvg(2, :));
-% hold off;
-% grid minor;
-% legend('NLOS', 'LOS');
-% xlabel('Per-subband rate [bps/Hz]');
-% ylabel('Average output DC current [\muA]');
-% ylim([0 inf]);
-% savefig('plots/re_los.fig');

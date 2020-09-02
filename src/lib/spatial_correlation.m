@@ -1,7 +1,7 @@
 function [corTx, corRx] = spatial_correlation(wavelength, nTxs, nRxs, azimuthAngle, txType, rxType)
     % Function:
     %   - obtain spatial correlation matrices of transmitter, receiver and IRS
-    %   - obtain LOS matrices of direct, incident and reflective links
+    %   - obtain LoS matrices of direct, incident and reflective links
     %
     % Input:
     %   - wavelength: wavelength

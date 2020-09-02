@@ -37,30 +37,12 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reAdaptiveSampleAvg = mean(cat(3, reAdaptiveSample{:}), 3);
-reWitSampleAvg = mean(cat(3, reWitSample{:}), 3);
-reWptSampleAvg = mean(cat(3, reWptSample{:}), 3);
-reNoIrsSampleAvg = mean(cat(3, reNoIrsSample{:}), 3);
-reSampleAvg = [reAdaptiveSampleAvg; reWitSampleAvg; reWptSampleAvg; reNoIrsSampleAvg];
+reSampleAvg{1} = mean(cat(3, reAdaptiveSample{:}), 3);
+reSampleAvg{2} = mean(cat(3, reWitSample{:}), 3);
+reSampleAvg{3} = mean(cat(3, reWptSample{:}), 3);
+reSampleAvg{4} = mean(cat(3, reNoIrsSample{:}), 3);
 
 % * Save data
 load('data/re_irs.mat');
-reSet(:, pbsIndex) = reSampleAvg;
+reSet(iBatch, :) = reSampleAvg;
 save('data/re_irs.mat', 'reSet', '-append');
-
-% %% * R-E plots
-% figure('name', 'R-E region for adaptive, fixed and no IRS');
-% plot(reAdaptiveSampleAvg(1, :) / nSubbands, 1e6 * reAdaptiveSampleAvg(2, :));
-% hold on;
-% plot(reWitSampleAvg(1, :) / nSubbands, 1e6 * reWitSampleAvg(2, :));
-% hold on;
-% plot(reWptSampleAvg(1, :) / nSubbands, 1e6 * reWptSampleAvg(2, :));
-% hold on;
-% plot(reNoIrsSampleAvg(1, :) / nSubbands, 1e6 * reNoIrsSampleAvg(2, :));
-% hold off;
-% grid minor;
-% legend('Adaptive IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');
-% xlabel('Per-subband rate [bps/Hz]');
-% ylabel('Average output DC current [\muA]');
-% ylim([0 inf]);
-% savefig('plots/re_irs.fig');

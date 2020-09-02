@@ -1,11 +1,11 @@
 clear; clc; setup; config_tx;
 
 %% ! R-E region vs number of transmit antennas
-reSample = cell(nChannels, nCases);
-reSolution = cell(nChannels, nCases);
+reSample = cell(nChannels, length(Variable.nTxs));
+reSolution = cell(nChannels, length(Variable.nTxs));
 
 for iChannel = 1 : nChannels
-    for iTx = 1 : nCases
+    for iTx = 1 : length(Variable.nTxs)
         % * Get number of transmit antennas and define spatial correlation
         nTxs = Variable.nTxs(iTx);
         corTx = eye(nTxs);
@@ -26,28 +26,12 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, nCases);
-for iTx = 1 : nCases
+reSampleAvg = cell(1, length(Variable.nTxs));
+for iTx = 1 : length(Variable.nTxs)
     reSampleAvg{iTx} = mean(cat(3, reSample{:, iTx}), 3);
 end
 
 % * Save data
 load('data/re_tx.mat');
-reSet(:, pbsIndex) = reSampleAvg;
+reSet(iBatch, :) = reSampleAvg;
 save('data/re_tx.mat', 'reSet', '-append');
-
-% %% * R-E plots
-% figure('name', 'R-E region vs number of transmit antennas');
-% legendString = cell(1, nCases);
-% for iTx = 1 : nCases
-%     plot(reSampleAvg{iTx}(1, :) / nSubbands, 1e6 * reSampleAvg{iTx}(2, :));
-%     legendString{iTx} = sprintf('M = %d', Variable.nTxs(iTx));
-%     hold on;
-% end
-% hold off;
-% grid minor;
-% legend(legendString);
-% xlabel('Per-subband rate [bps/Hz]');
-% ylabel('Average output DC current [\muA]');
-% ylim([0 inf]);
-% savefig('plots/re_tx.fig');

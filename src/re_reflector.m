@@ -1,11 +1,11 @@
 clear; clc; setup; config_reflector;
 
 %% ! R-E region vs number of IRS elements
-reSample = cell(nChannels, nCases);
-reSolution = cell(nChannels, nCases);
+reSample = cell(nChannels, length(Variable.nReflectors));
+reSolution = cell(nChannels, length(Variable.nReflectors));
 
 for iChannel = 1 : nChannels
-    for iReflector = 1 : nCases
+    for iReflector = 1 : length(Variable.nReflectors)
         % * Get number of reflectors and define spatial correlation
         nReflectors = Variable.nReflectors(iReflector);
         corIrs = eye(nReflectors);
@@ -26,28 +26,12 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, nCases);
-for iReflector = 1 : nCases
+reSampleAvg = cell(1, length(Variable.nReflectors));
+for iReflector = 1 : length(Variable.nReflectors)
     reSampleAvg{iReflector} = mean(cat(3, reSample{:, iReflector}), 3);
 end
 
 % * Save data
 load('data/re_reflector.mat');
-reSet(:, pbsIndex) = reSampleAvg;
+reSet(iBatch, :) = reSampleAvg;
 save('data/re_reflector.mat', 'reSet', '-append');
-
-% %% * R-E plots
-% figure('name', 'R-E region vs number of reflectors');
-% legendString = cell(1, nCases);
-% for iReflector = 1 : nCases
-%     plot(reSampleAvg{iReflector}(1, :) / nSubbands, 1e6 * reSampleAvg{iReflector}(2, :));
-%     legendString{iReflector} = sprintf('L = %d', Variable.nReflectors(iReflector));
-%     hold on;
-% end
-% hold off;
-% grid minor;
-% legend(legendString);
-% xlabel('Per-subband rate [bps/Hz]');
-% ylabel('Average output DC current [\muA]');
-% ylim([0 inf]);
-% savefig('plots/re_reflector.fig');

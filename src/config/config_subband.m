@@ -7,7 +7,8 @@ resistance = 50;
 % coefficients on current terms
 beta2 = k2 * resistance;
 beta4 = k4 * resistance ^ 2;
-% number of receive antennas
+% number of transmit and receive antennas
+nTxs = 1;
 nRxs = 1;
 % number of users
 nUsers = 1;
@@ -35,15 +36,12 @@ snr = txPower * sumPathloss * rxGain / noisePower;
 centerFrequency = 5.18e9;
 % bandwidth
 bandwidth = 1e6;
-% number of frequency bands
-nSubbands = 4;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
-% carrier frequency
-[subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % number of reflecting elements in IRS
 nReflectors = 20;
 % spatial correlation
+corTx = eye(nTxs);
 corRx = eye(nRxs);
 corIrs = eye(nReflectors);
 
@@ -58,9 +56,7 @@ nSamples = 30;
 nChannels = 1;
 
 %% * Variable
-% number of transmit antennas
-Variable.nTxs = [1 2 4 6 8];
-% number of cases to investigate
-nCases = length(Variable.nTxs);
+% number of frequency bands
+Variable.nSubbands = 2 .^ (0 : 4);
 
-save('data/re_tx.mat', '-append');
+save('data/re_subband.mat', '-append');

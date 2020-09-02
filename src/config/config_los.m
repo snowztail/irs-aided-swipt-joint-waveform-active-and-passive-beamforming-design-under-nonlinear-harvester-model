@@ -24,6 +24,14 @@ rxGain = db2pow(2);
 directDistance = 15;
 % vertical distance from the IRS to the AP-user path
 verticalDistance = 2;
+% projection of AP-IRS distance to the AP-user path
+horizontalDistance = 2;
+% AP-IRS and IRS-user distance
+[incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
+% equivalent pathloss
+[sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
+% large-scale signal-to-noise ratio
+snr = txPower * sumPathloss * rxGain / noisePower;
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -50,18 +58,7 @@ nCandidates = 1e3;
 nSamples = 30;
 % number of channel realizations
 nChannels = 1;
+% number of cases to investigate (LoS, NLoS)
+nCases = 2;
 
-%% * Variable
-% projection of AP-IRS distance to the AP-user path
-Variable.horizontalDistance = 2 : 2 : 8;
-% large-scale signal-to-noise ratio
-Variable.snr = zeros(1, length(Variable.horizontalDistance));
-for iDistance = 1 : length(Variable.horizontalDistance)
-    [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, Variable.horizontalDistance(iDistance));
-    [sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
-    Variable.snr(iDistance) = txPower * sumPathloss * rxGain / noisePower;
-end
-% number of cases to investigate
-nCases = length(Variable.horizontalDistance);
-
-save('data/re_distance.mat', '-append');
+save('data/re_los.mat', '-append');

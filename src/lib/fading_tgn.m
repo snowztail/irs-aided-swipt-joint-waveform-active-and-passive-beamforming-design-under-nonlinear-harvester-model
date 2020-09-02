@@ -1,6 +1,6 @@
 function [fading] = fading_tgn(tapGain, tapDelay, subbandFrequency, fadingMode)
     % Function:
-    %   - simulate channel using the power delay profile of the IEEE TGn NLOS channel model E
+    %   - simulate channel using the power delay profile of the IEEE TGn NLoS channel model E
     %
     % Input:
     %   - tapGain [nTaps * nTxs * nRxs]: complex tap gain
