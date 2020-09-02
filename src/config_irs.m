@@ -59,4 +59,4 @@ nSamples = 30;
 % number of channel realizations
 nChannels = 1;
 
-save('data/re_irs.mat');
+save('data/re_irs.mat', '-append');

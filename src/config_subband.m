@@ -61,4 +61,4 @@ Variable.nSubbands = 2 .^ (0 : 4);
 % number of cases to investigate
 nCases = length(Variable.nSubbands);
 
-save('data/re_subband.mat');
+save('data/re_subband.mat', '-append');

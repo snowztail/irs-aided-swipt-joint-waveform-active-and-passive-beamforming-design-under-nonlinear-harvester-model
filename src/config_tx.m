@@ -63,4 +63,4 @@ Variable.nTxs = [1 2 4 6 8];
 % number of cases to investigate
 nCases = length(Variable.nTxs);
 
-save('data/re_tx.mat');
+save('data/re_tx.mat', '-append');

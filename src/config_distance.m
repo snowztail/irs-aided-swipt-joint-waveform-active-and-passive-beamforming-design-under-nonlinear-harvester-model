@@ -64,4 +64,4 @@ end
 % number of cases to investigate
 nCases = length(Variable.horizontalDistance);
 
-save('data/re_distance.mat');
+save('data/re_distance.mat', '-append');

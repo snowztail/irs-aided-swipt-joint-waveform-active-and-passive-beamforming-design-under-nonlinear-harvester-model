@@ -62,4 +62,4 @@ Variable.nReflectors = 0 : 10 : 50;
 % number of cases to investigate
 nCases = length(Variable.nReflectors);
 
-save('data/re_reflector.mat');
+save('data/re_reflector.mat', '-append');

@@ -59,4 +59,4 @@ Variable.snr = db2pow(10 : 10 : 40);
 % number of cases to investigate
 nCases = length(Variable.snr);
 
-save('data/re_snr.mat');
+save('data/re_snr.mat', '-append');

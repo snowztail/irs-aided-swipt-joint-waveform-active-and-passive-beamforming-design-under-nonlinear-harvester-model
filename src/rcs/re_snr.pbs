@@ -1,4 +1,4 @@
-#PBS -l walltime=72:00:00,select=1:ncpus=1:mem=2gb
+#PBS -l walltime=72:00:00,select=1:ncpus=1:ompthreads=1:mem=2gb
 #PBS -S /usr/bin/bash
 #PBS -N re_snr
 #PBS -j oe
