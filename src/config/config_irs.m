@@ -61,4 +61,6 @@ nChannels = 1;
 % number of cases to investigate (adaptive, WIT, WPT, no IRS)
 nCases = 4;
 
-save('data/re_irs.mat', '-append');
+%% * PBS
+% number of individual jobs
+nBatches = 2e2;

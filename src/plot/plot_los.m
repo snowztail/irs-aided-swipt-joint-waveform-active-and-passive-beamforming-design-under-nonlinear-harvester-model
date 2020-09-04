@@ -1,11 +1,18 @@
-clear; clc; load('../data/re_los.mat');
+clear; clc; config_los;
+
+%% * Load batch data
+reSet = cell(nBatches, nCases);
+for iBatch = 1 : nBatches
+    load(sprintf('../data/re_los_%d.mat', iBatch), 'reInstance');
+    reSet(iBatch, :) = reInstance;
+end
 
 %% * Average over batches
 reLos = cell(1, nCases);
 for iCase = 1 : nCases
     reLos{iCase} = mean(cat(3, reSet{:, iCase}), 3);
 end
-save('../data/re_los.mat', 'reLos', '-append');
+save('../data/re_los.mat');
 
 %% * R-E plots
 figure('name', 'R-E region for IRS-aided NLoS and LoS channels');

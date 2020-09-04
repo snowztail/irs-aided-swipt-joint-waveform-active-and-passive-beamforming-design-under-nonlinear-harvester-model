@@ -57,4 +57,6 @@ nChannels = 1;
 % large-scale signal-to-noise ratio
 Variable.snr = db2pow(10 : 10 : 40);
 
-save('data/re_snr.mat', '-append');
+%% * PBS
+% number of individual jobs
+nBatches = 2e2;

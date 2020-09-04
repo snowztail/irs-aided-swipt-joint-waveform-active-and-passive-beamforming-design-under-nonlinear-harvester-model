@@ -1,11 +1,18 @@
-clear; clc; load('../data/re_irs.mat');
+clear; clc; config_irs;
+
+%% * Load batch data
+reSet = cell(nBatches, nCases);
+for iBatch = 1 : nBatches
+    load(sprintf('../data/re_irs_%d.mat', iBatch), 'reInstance');
+    reSet(iBatch, :) = reInstance;
+end
 
 %% * Average over batches
 reIrs = cell(1, nCases);
 for iCase = 1 : nCases
     reIrs{iCase} = mean(cat(3, reSet{:, iCase}), 3);
 end
-save('../data/re_irs.mat', 'reIrs', '-append');
+save('../data/re_irs.mat');
 
 %% * R-E plots
 figure('name', 'R-E region for adaptive, fixed and no IRS');

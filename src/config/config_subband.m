@@ -59,4 +59,6 @@ nChannels = 1;
 % number of frequency bands
 Variable.nSubbands = 2 .^ (0 : 4);
 
-save('data/re_subband.mat', '-append');
+%% * PBS
+% number of individual jobs
+nBatches = 2e2;

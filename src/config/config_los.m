@@ -61,4 +61,6 @@ nChannels = 1;
 % number of cases to investigate (LoS, NLoS)
 nCases = 2;
 
-save('data/re_los.mat', '-append');
+%% * PBS
+% number of individual jobs
+nBatches = 2e2;

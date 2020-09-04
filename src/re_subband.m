@@ -26,12 +26,10 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, length(Variable.nSubbands));
+reInstance = cell(1, length(Variable.nSubbands));
 for iSubband = 1 : length(Variable.nSubbands)
-    reSampleAvg{iSubband} = mean(cat(3, reSample{:, iSubband}), 3);
+    reInstance{iSubband} = mean(cat(3, reSample{:, iSubband}), 3);
 end
 
-% * Save data
-load('data/re_subband.mat');
-reSet(iBatch, :) = reSampleAvg;
-save('data/re_subband.mat', 'reSet', '-append');
+% * Save batch data
+save(sprintf('data/re_subband_%d.mat', iBatch), 'reInstance');

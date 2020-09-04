@@ -61,4 +61,6 @@ nChannels = 1;
 % number of transmit antennas
 Variable.nTxs = [1 2 4 6 8];
 
-save('data/re_tx.mat', '-append');
+%% * PBS
+% number of individual jobs
+nBatches = 2e2;

@@ -60,4 +60,6 @@ nChannels = 1;
 % number of reflecting elements in IRS
 Variable.nReflectors = 0 : 10 : 50;
 
-save('data/re_reflector.mat', '-append');
+%% * PBS
+% number of individual jobs
+nBatches = 2e2;

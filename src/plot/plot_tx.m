@@ -1,11 +1,18 @@
-clear; clc; load('../data/re_tx.mat');
+clear; clc; config_tx;
+
+%% * Load batch data
+reSet = cell(nBatches, length(Variable.nTxs));
+for iBatch = 1 : nBatches
+    load(sprintf('../data/re_tx_%d.mat', iBatch), 'reInstance');
+    reSet(iBatch, :) = reInstance;
+end
 
 %% * Average over batches
 reTx = cell(1, length(Variable.nTxs));
 for iSubband = 1 : length(Variable.nTxs)
     reTx{iSubband} = mean(cat(3, reSet{:, iSubband}), 3);
 end
-save('../data/re_tx.mat', 'reTx', '-append');
+save('../data/re_tx.mat');
 
 %% * R-E plots
 figure('name', 'R-E region vs number of transmit antennas');

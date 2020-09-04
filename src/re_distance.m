@@ -28,12 +28,10 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, length(Variable.horizontalDistance));
+reInstance = cell(1, length(Variable.horizontalDistance));
 for iDistance = 1 : length(Variable.horizontalDistance)
-    reSampleAvg{iDistance} = mean(cat(3, reSample{:, iDistance}), 3);
+    reInstance{iDistance} = mean(cat(3, reSample{:, iDistance}), 3);
 end
 
-% * Save data
-load('data/re_distance.mat');
-reSet(iBatch, :) = reSampleAvg;
-save('data/re_distance.mat', 'reSet', '-append');
+% * Save batch data
+save(sprintf('data/re_distance_%d.mat', iBatch), 'reInstance');

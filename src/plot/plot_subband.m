@@ -1,11 +1,18 @@
-clear; clc; load('../data/re_subband.mat');
+clear; clc; config_subband;
+
+%% * Load batch data
+reSet = cell(nBatches, length(Variable.nSubbands));
+for iBatch = 1 : nBatches
+    load(sprintf('../data/re_subband_%d.mat', iBatch), 'reInstance');
+    reSet(iBatch, :) = reInstance;
+end
 
 %% * Average over batches
 reSubband = cell(1, length(Variable.nSubbands));
 for iSubband = 1 : length(Variable.nSubbands)
     reSubband{iSubband} = mean(cat(3, reSet{:, iSubband}), 3);
 end
-save('../data/re_subband.mat', 'reSubband', '-append');
+save('../data/re_subband.mat');
 
 %% * R-E plots
 figure('name', 'R-E region vs number of subbands');

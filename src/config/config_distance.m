@@ -62,4 +62,6 @@ for iDistance = 1 : length(Variable.horizontalDistance)
     Variable.snr(iDistance) = txPower * sumPathloss * rxGain / noisePower;
 end
 
-save('data/re_distance.mat', '-append');
+%% * PBS
+% number of individual jobs
+nBatches = 2e2;

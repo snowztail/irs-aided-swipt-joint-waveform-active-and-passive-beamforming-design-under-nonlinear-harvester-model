@@ -1,11 +1,18 @@
-clear; clc; load('../data/re_reflector.mat');
+clear; clc; config_reflector;
+
+%% * Load batch data
+reSet = cell(nBatches, length(Variable.nReflectors));
+for iBatch = 1 : nBatches
+    load(sprintf('../data/re_reflector_%d.mat', iBatch), 'reInstance');
+    reSet(iBatch, :) = reInstance;
+end
 
 %% * Average over batches
 reReflector = cell(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
     reReflector{iReflector} = mean(cat(3, reSet{:, iReflector}), 3);
 end
-save('../data/re_reflector.mat', 'reReflector', '-append');
+save('../data/re_reflector.mat');
 
 %% * R-E plots
 figure('name', 'R-E region vs number of reflectors');

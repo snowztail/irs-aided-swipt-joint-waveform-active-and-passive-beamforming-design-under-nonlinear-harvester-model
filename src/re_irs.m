@@ -37,12 +37,10 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg{1} = mean(cat(3, reAdaptiveSample{:}), 3);
-reSampleAvg{2} = mean(cat(3, reWitSample{:}), 3);
-reSampleAvg{3} = mean(cat(3, reWptSample{:}), 3);
-reSampleAvg{4} = mean(cat(3, reNoIrsSample{:}), 3);
+reInstance{1} = mean(cat(3, reAdaptiveSample{:}), 3);
+reInstance{2} = mean(cat(3, reWitSample{:}), 3);
+reInstance{3} = mean(cat(3, reWptSample{:}), 3);
+reInstance{4} = mean(cat(3, reNoIrsSample{:}), 3);
 
-% * Save data
-load('data/re_irs.mat');
-reSet(iBatch, :) = reSampleAvg;
-save('data/re_irs.mat', 'reSet', '-append');
+% * Save batch data
+save(sprintf('data/re_irs_%d.mat', iBatch), 'reInstance');

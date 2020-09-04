@@ -26,12 +26,10 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, length(Variable.nReflectors));
+reInstance = cell(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
-    reSampleAvg{iReflector} = mean(cat(3, reSample{:, iReflector}), 3);
+    reInstance{iReflector} = mean(cat(3, reSample{:, iReflector}), 3);
 end
 
-% * Save data
-load('data/re_reflector.mat');
-reSet(iBatch, :) = reSampleAvg;
-save('data/re_reflector.mat', 'reSet', '-append');
+% * Save batch data
+save(sprintf('data/re_reflector_%d.mat', iBatch), 'reInstance');

@@ -28,12 +28,10 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reSampleAvg = cell(1, length(Variable.snr));
+reInstance = cell(1, length(Variable.snr));
 for iSnr = 1 : length(Variable.snr)
-    reSampleAvg{iSnr} = mean(cat(3, reSample{:, iSnr}), 3);
+    reInstance{iSnr} = mean(cat(3, reSample{:, iSnr}), 3);
 end
 
-% * Save data
-load('data/re_snr.mat');
-reSet(iBatch, :) = reSampleAvg;
-save('data/re_snr.mat', 'reSet', '-append');
+% * Save batch data
+save(sprintf('data/re_snr_%d.mat', iBatch), 'reInstance');
