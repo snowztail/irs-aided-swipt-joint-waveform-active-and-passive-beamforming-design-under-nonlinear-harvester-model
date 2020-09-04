@@ -1,5 +1,4 @@
 #PBS -l walltime=24:00:00,select=1:ncpus=8:ompthreads=1:mem=8gb
-#PBS -S /usr/bin/bash
 #PBS -N re_noise
 #PBS -j oe
 #PBS -J 1-200

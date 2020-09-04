@@ -29,7 +29,7 @@ centerFrequency = 5.18e9;
 % bandwidth
 bandwidth = 1e6;
 % number of frequency bands
-nSubbands = 4;
+nSubbands = 16;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
 % carrier frequency
