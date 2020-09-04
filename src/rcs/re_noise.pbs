@@ -1,14 +1,14 @@
 #PBS -l walltime=24:00:00,select=1:ncpus=8:ompthreads=1:mem=8gb
 #PBS -S /usr/bin/bash
-#PBS -N re_snr
+#PBS -N re_noise
 #PBS -j oe
 #PBS -J 1-200
-#PBS -o re_snr.out
+#PBS -o re_noise.out
 
 module load matlab/R2020a
 
 cd $PBS_O_WORKDIR/..
 sleep $PBS_ARRAY_INDEX
-matlab -nodesktop –nodisplay -nosplash -singleCompThread < re_snr.m
+matlab -nodesktop –nodisplay -nosplash -singleCompThread < re_noise.m
 
 exit

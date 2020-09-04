@@ -1,8 +1,8 @@
-clear; clc; setup; config_snr;
+clear; clc; setup; config_noise;
 
 %% ! R-E region for different large-scale SNR
-reSample = cell(nChannels, length(Variable.snr));
-reSolution = cell(nChannels, length(Variable.snr));
+reSample = cell(nChannels, length(Variable.noisePower));
+reSolution = cell(nChannels, length(Variable.noisePower));
 
 for iChannel = 1 : nChannels
     % * Generate tap gains and delays
@@ -15,23 +15,20 @@ for iChannel = 1 : nChannels
     [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, rxGain, subbandFrequency, fadingMode);
     [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
-    % * Calculate sum pathloss
-    [sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
-
-    for iSnr = 1 : length(Variable.snr)
-        % * Calculate noise power based on SNR
-        noisePower = txPower * sumPathloss * rxGain / Variable.snr(iSnr);
+    for iNoise = 1 : length(Variable.noisePower)
+        % * Get average noise power
+        noisePower = Variable.noisePower(iNoise);
 
         % * Alternating optimization
-        [reSample{iChannel, iSnr}, reSolution{iChannel, iSnr}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reSample{iChannel, iNoise}, reSolution{iChannel, iNoise}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
     end
 end
 
 % * Average over channel realizations
-reInstance = cell(1, length(Variable.snr));
-for iSnr = 1 : length(Variable.snr)
-    reInstance{iSnr} = mean(cat(3, reSample{:, iSnr}), 3);
+reInstance = cell(1, length(Variable.noisePower));
+for iNoise = 1 : length(Variable.noisePower)
+    reInstance{iNoise} = mean(cat(3, reSample{:, iNoise}), 3);
 end
 
 % * Save batch data
-save(sprintf('data/re_snr_%d.mat', iBatch), 'reInstance');
+save(sprintf('data/re_noise_%d.mat', iBatch), 'reInstance');

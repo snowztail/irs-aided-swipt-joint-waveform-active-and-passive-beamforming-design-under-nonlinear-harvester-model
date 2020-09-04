@@ -55,11 +55,11 @@ nChannels = 1;
 % projection of AP-IRS distance to the AP-user path
 Variable.horizontalDistance = 2 : 2 : 8;
 % large-scale signal-to-noise ratio
-Variable.snr = zeros(1, length(Variable.horizontalDistance));
+snr = zeros(1, length(Variable.horizontalDistance));
 for iDistance = 1 : length(Variable.horizontalDistance)
     [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, Variable.horizontalDistance(iDistance));
     [sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
-    Variable.snr(iDistance) = txPower * sumPathloss * rxGain / noisePower;
+    snr(iDistance) = txPower * sumPathloss * rxGain / noisePower;
 end
 
 %% * PBS

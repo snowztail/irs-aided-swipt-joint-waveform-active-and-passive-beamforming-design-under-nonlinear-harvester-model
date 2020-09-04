@@ -26,6 +26,8 @@ verticalDistance = 2;
 horizontalDistance = 2;
 % AP-IRS and IRS-user distance
 [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
+% equivalent pathloss
+[sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
@@ -54,8 +56,13 @@ nSamples = 30;
 nChannels = 1;
 
 %% * Variable
+% average noise power
+Variable.noisePower = db2pow(-50 : -10 : -90);
 % large-scale signal-to-noise ratio
-Variable.snr = db2pow(10 : 10 : 40);
+snr = zeros(1, length(Variable.noisePower));
+for iNoise = 1 : length(Variable.noisePower)
+    snr(iNoise) = txPower * sumPathloss * rxGain / Variable.noisePower(iNoise);
+end
 
 %% * PBS
 % number of individual jobs
