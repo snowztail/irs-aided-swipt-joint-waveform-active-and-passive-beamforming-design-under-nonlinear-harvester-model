@@ -5,15 +5,15 @@ reSample = cell(nChannels, length(Variable.nSubbands));
 reSolution = cell(nChannels, length(Variable.nSubbands));
 
 for iChannel = 1 : nChannels
+    % * Generate tap gains and delays
+    [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
+    [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
+    [reflectiveTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, 'nlos');
+
     for iSubband = 1 : length(Variable.nSubbands)
         % * Get number of subbands and subband frequency
         nSubbands = Variable.nSubbands(iSubband);
         [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
-
-        % * Generate tap gains and delays
-        [directTapGain, directTapDelay] = tap_tgn(corTx, corRx, 'nlos');
-        [incidentTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
-        [reflectiveTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, 'nlos');
 
         % * Construct channels
         [directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
@@ -32,4 +32,4 @@ for iSubband = 1 : length(Variable.nSubbands)
 end
 
 % * Save batch data
-save(sprintf('data/re_subband_%d.mat', iBatch), 'reInstance');
+save(sprintf('data/re_subband_%d.mat', iBatch));

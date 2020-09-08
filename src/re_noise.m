@@ -31,4 +31,4 @@ for iNoise = 1 : length(Variable.noisePower)
 end
 
 % * Save batch data
-save(sprintf('data/re_noise_%d.mat', iBatch), 'reInstance');
+save(sprintf('data/re_noise_%d.mat', iBatch));
