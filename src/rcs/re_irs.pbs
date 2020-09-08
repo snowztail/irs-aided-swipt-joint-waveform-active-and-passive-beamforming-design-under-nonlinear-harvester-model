@@ -1,13 +1,11 @@
-#PBS -l walltime=24:00:00,select=1:ncpus=8:ompthreads=1:mem=8gb
+#PBS -l walltime=72:00:00,select=1:ncpus=8:ompthreads=1:mem=8gb
 #PBS -N re_irs
 #PBS -j oe
 #PBS -J 1-200
-#PBS -o re_irs.out
 
 module load matlab/R2020a
 
 cd $PBS_O_WORKDIR/..
-sleep $PBS_ARRAY_INDEX
 matlab -nodesktop –nodisplay -nosplash -singleCompThread < re_irs.m
 
 exit
