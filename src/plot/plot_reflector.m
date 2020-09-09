@@ -18,14 +18,16 @@ save('../data/re_reflector.mat');
 figure('name', 'R-E region vs number of reflectors');
 legendString = cell(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
-    plot(reReflector{iReflector}(1, :) / nSubbands, 1e6 * reReflector{iReflector}(2, :));
+    plot(reReflector{iReflector}(1, :) / nSubbands, 1e6 * reReflector{iReflector}(2, :), 'linewidth', 2);
     legendString{iReflector} = sprintf('L = %d', Variable.nReflectors(iReflector));
     hold on;
 end
 hold off;
-grid minor;
+grid on;
 legend(legendString);
 xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [\muA]');
+xlim([0 inf]);
 ylim([0 inf]);
 savefig('../figures/re_reflector.fig');
+matlab2tikz('../figures/re_reflector.tex');

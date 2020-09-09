@@ -18,14 +18,16 @@ save('../data/re_distance.mat');
 figure('name', 'R-E region vs AP-IRS horizontal distance');
 legendString = cell(1, length(Variable.horizontalDistance));
 for iDistance = 1 : length(Variable.horizontalDistance)
-    plot(reDistance{iDistance}(1, :) / nSubbands, 1e6 * reDistance{iDistance}(2, :));
+    plot(reDistance{iDistance}(1, :) / nSubbands, 1e6 * reDistance{iDistance}(2, :), 'linewidth', 2);
     legendString{iDistance} = sprintf('d_H = %d', Variable.horizontalDistance(iDistance));
     hold on;
 end
 hold off;
-grid minor;
+grid on;
 legend(legendString);
 xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [\muA]');
+xlim([0 inf]);
 ylim([0 inf]);
 savefig('../figures/re_distance.fig');
+matlab2tikz('../figures/re_distance.tex');

@@ -17,13 +17,15 @@ save('../data/re_los.mat');
 %% * R-E plots
 figure('name', 'R-E region for IRS-aided NLoS and LoS channels');
 for iCase = 1 : nCases
-    plot(reLos{iCase}(1, :) / nSubbands, 1e6 * reLos{iCase}(2, :));
+    plot(reLos{iCase}(1, :) / nSubbands, 1e6 * reLos{iCase}(2, :), 'linewidth', 2);
     hold on;
 end
 hold off;
-grid minor;
+grid on;
 legend('NLoS', 'LoS');
 xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [\muA]');
+xlim([0 inf]);
 ylim([0 inf]);
 savefig('../figures/re_los.fig');
+matlab2tikz('../figures/re_irs.tex');

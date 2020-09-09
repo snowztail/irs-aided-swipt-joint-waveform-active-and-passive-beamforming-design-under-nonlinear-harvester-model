@@ -18,14 +18,16 @@ save('../data/re_subband.mat');
 figure('name', 'R-E region vs number of subbands');
 legendString = cell(1, length(Variable.nSubbands));
 for iSubband = 1 : length(Variable.nSubbands)
-    plot(reSubband{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reSubband{iSubband}(2, :));
+    plot(reSubband{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reSubband{iSubband}(2, :), 'linewidth', 2);
     legendString{iSubband} = sprintf('N = %d', Variable.nSubbands(iSubband));
     hold on;
 end
 hold off;
-grid minor;
+grid on;
 legend(legendString);
 xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [\muA]');
+xlim([0 inf]);
 ylim([0 inf]);
 savefig('../figures/re_subband.fig');
+matlab2tikz('../figures/re_subband.tex');
