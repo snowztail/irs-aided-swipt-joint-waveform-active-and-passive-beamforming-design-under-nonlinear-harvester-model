@@ -1,3 +1,5 @@
+\usepackage[short]{optidef}
+\usepackage{adjustbox}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{amsfonts}
@@ -6,12 +8,15 @@
 \usepackage{amsthm}
 \usepackage{circuitikz}
 \usepackage{cuted}
+\usepackage{environ}
+\usepackage{grffile}
 \usepackage{hyperref}
+\usepackage{import}
 \usepackage{mathtools}
+\usepackage{pgfplots}
 \usepackage{siunitx}
 \usepackage{stfloats}
 \usepackage{subcaption}
-\usepackage[short]{optidef}
 \usepackage{xcolor}
 
 \newtheorem{proposition}{Proposition}
@@ -20,3 +25,8 @@
 \DeclareSIUnit{\dBm}{\deci\belm}
 \DeclareSIUnit{\beli}{Bi}
 \DeclareSIUnit{\dBi}{\deci\beli}
+
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows.meta}
+\usepgfplotslibrary{patchplots}
