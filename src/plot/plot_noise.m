@@ -3,8 +3,12 @@ clear; clc; config_noise;
 %% * Load batch data
 reSet = cell(nBatches, length(Variable.noisePower));
 for iBatch = 1 : nBatches
-    load(sprintf('../data/re_noise_%d.mat', iBatch), 'reInstance');
-    reSet(iBatch, :) = reInstance;
+    try
+        load(sprintf('../data/re_noise_%d.mat', iBatch), 'reInstance');
+        reSet(iBatch, :) = reInstance;
+    catch
+        disp(iBatch);
+    end
 end
 
 %% * Average over batches
@@ -19,7 +23,7 @@ figure('name', 'R-E region vs average noise power');
 legendString = cell(1, length(Variable.noisePower));
 for iNoise = 1 : length(Variable.noisePower)
     plot(reNoise{iNoise}(1, :) / nSubbands, 1e6 * reNoise{iNoise}(2, :), 'linewidth', 2);
-    legendString{iNoise} = sprintf('\sigma_n = %d dB', pow2db(Variable.noisePower(iNoise)));
+    legendString{iNoise} = sprintf('\\sigma_n = %d dB', pow2db(Variable.noisePower(iNoise)));
     hold on;
 end
 hold off;

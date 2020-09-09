@@ -43,4 +43,4 @@ reInstance{3} = mean(cat(3, reWptSample{:}), 3);
 reInstance{4} = mean(cat(3, reNoIrsSample{:}), 3);
 
 % * Save batch data
-save(sprintf('data/re_irs_%d.mat', iBatch), 'reInstance');
+save(sprintf('data/re_irs_%d.mat', iBatch));

@@ -34,4 +34,4 @@ for iDistance = 1 : length(Variable.horizontalDistance)
 end
 
 % * Save batch data
-save(sprintf('data/re_distance_%d.mat', iBatch), 'reInstance');
+save(sprintf('data/re_distance_%d.mat', iBatch));

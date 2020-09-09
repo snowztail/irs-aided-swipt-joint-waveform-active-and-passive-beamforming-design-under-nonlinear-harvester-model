@@ -3,8 +3,12 @@ clear; clc; config_los;
 %% * Load batch data
 reSet = cell(nBatches, nCases);
 for iBatch = 1 : nBatches
-    load(sprintf('../data/re_los_%d.mat', iBatch), 'reInstance');
-    reSet(iBatch, :) = reInstance;
+    try
+        load(sprintf('../data/re_los_%d.mat', iBatch), 'reInstance');
+        reSet(iBatch, :) = reInstance;
+    catch
+        disp(iBatch);
+    end
 end
 
 %% * Average over batches
