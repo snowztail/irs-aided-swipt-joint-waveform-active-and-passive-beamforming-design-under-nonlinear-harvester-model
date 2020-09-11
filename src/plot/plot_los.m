@@ -32,4 +32,4 @@ ylabel('Average output DC current [\muA]');
 xlim([0 inf]);
 ylim([0 inf]);
 savefig('../figures/re_los.fig');
-matlab2tikz('../figures/re_irs.tex');
+matlab2tikz('../figures/re_los.tex');
