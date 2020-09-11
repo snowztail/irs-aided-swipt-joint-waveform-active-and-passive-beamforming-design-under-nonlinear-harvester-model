@@ -26,7 +26,7 @@ for iCase = 1 : nCases
 end
 hold off;
 grid on;
-legend('Adaptive IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');
+legend('Adaptive IRS', 'Ideal FS IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');
 xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [\muA]');
 xlim([0 inf]);

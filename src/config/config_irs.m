@@ -58,8 +58,8 @@ nCandidates = 1e3;
 nSamples = 30;
 % number of channel realizations
 nChannels = 1;
-% number of cases to investigate (adaptive, WIT, WPT, no IRS)
-nCases = 4;
+% number of cases to investigate (adaptive, ideal FS, WIT, WPT, no IRS)
+nCases = 5;
 
 %% * PBS
 % number of individual jobs

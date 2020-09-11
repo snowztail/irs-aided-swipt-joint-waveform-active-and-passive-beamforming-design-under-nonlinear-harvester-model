@@ -3,6 +3,7 @@ clear; clc; setup; config_los;
 %% ! R-E region for IRS-aided NLoS and LoS channels
 reNlosSample = cell(nChannels, 1);
 reLosSample = cell(nChannels, 1);
+
 reNlosSolution = cell(nChannels, 1);
 reLosSolution = cell(nChannels, 1);
 
