@@ -61,7 +61,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.326513968968278	16.0555691460589\\
 0.000300638177805991	16.0619797346475\\
 };
-\addlegendentry{$N = 1$}
+\addlegendentry{PS: $N = 1$}
 
 \addplot [color=mycolor2, line width=2.0pt]
   table[row sep=crcr]{%
@@ -96,7 +96,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.291939038599665	17.5036816157706\\
 7.71447095493525e-05	17.5161439271368\\
 };
-\addlegendentry{$N = 2$}
+\addlegendentry{PS: $N = 2$}
 
 \addplot [color=mycolor3, line width=2.0pt]
   table[row sep=crcr]{%
@@ -131,7 +131,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.257337355367512	19.8392852366835\\
 0.000107333323007389	20.3225736728487\\
 };
-\addlegendentry{$N = 4$}
+\addlegendentry{PS: $N = 4$}
 
 \addplot [color=mycolor4, line width=2.0pt]
   table[row sep=crcr]{%
@@ -166,7 +166,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.223106665476803	29.1106766925676\\
 1.74471222037354e-05	31.5527795452716\\
 };
-\addlegendentry{$N = 8$}
+\addlegendentry{PS: $N = 8$}
 
 \addplot [color=mycolor5, line width=2.0pt]
   table[row sep=crcr]{%
@@ -201,7 +201,27 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.189564891479746	47.9711958997324\\
 1.22728679936587e-06	54.9910262571505\\
 };
-\addlegendentry{$N = 16$}
+\addlegendentry{PS: $N = 16$}
+
+\addplot [color=red, dashdotted, line width=2.0pt]
+  table[row sep=crcr]{%
+6.468480282759	0\\
+5.79932715022391	4.58707183755718\\
+5.57627610709771	6.09364469377994\\
+5.3532250681748	7.4858611001229\\
+5.1301740354772	8.74671302393403\\
+4.9071230262896	9.87357631966346\\
+4.68407203725829	10.8725748719672\\
+1.74471222037354e-05	31.5527795452716\\
+};
+\addlegendentry{TS + PS: $N = 8$}
+
+\addplot [color=black, dashed, line width=2.0pt]
+  table[row sep=crcr]{%
+1.22728679936587e-06	54.9910262571505\\
+5.49562646641633	0\\
+};
+\addlegendentry{TS: $N = 16$}
 
 \end{axis}
 \end{tikzpicture}%

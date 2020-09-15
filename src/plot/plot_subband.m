@@ -30,12 +30,26 @@ save('../data/re_subband.mat');
 
 %% * R-E plots
 figure('name', 'R-E region vs number of subbands');
-legendString = cell(1, length(Variable.nSubbands));
+legendString = cell(1, length(Variable.nSubbands) + 2);
 for iSubband = 1 : length(Variable.nSubbands)
     plot(reSubband{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reSubband{iSubband}(2, :));
-    legendString{iSubband} = sprintf('$N = %d$', Variable.nSubbands(iSubband));
-    hold on;
+    legendString{iSubband} = sprintf('PS: $N = %d$', Variable.nSubbands(iSubband));
+	hold on;
 end
+
+% * Optimal strategy for medium number of subbands (TS + PS)
+subbandIndex = 4;
+optIndex = convhull(transpose([0, reSubband{subbandIndex}(1, :) / Variable.nSubbands(subbandIndex); 0, 1e6 * reSubband{subbandIndex}(2, :)])) - 1;
+optIndex = optIndex(2 : end - 1);
+plot(reSubband{subbandIndex}(1, optIndex) / Variable.nSubbands(subbandIndex), 1e6 * reSubband{subbandIndex}(2, optIndex), 'r-.');
+legendString{iSubband + 1} = sprintf('TS + PS: $N = %d$', Variable.nSubbands(subbandIndex));
+hold on;
+
+% * Optimal strategy for large number of subbands (TS)
+subbandIndex = 5;
+plot([reSubband{subbandIndex}(1, end) / Variable.nSubbands(subbandIndex), reSubband{subbandIndex}(1, 1) / Variable.nSubbands(subbandIndex)], [1e6 * reSubband{iSubband}(2, end), 1e6 * reSubband{iSubband}(2, 1)], 'k--');
+legendString{iSubband + 2} = sprintf('TS: $N = %d$', Variable.nSubbands(subbandIndex));
+
 hold off;
 grid on;
 legend(legendString);
