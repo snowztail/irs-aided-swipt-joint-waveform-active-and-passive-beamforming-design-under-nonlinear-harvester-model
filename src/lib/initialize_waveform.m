@@ -30,7 +30,14 @@ function [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_wav
     % * Initialize algorithm
     infoRatio = 1;
     powerRatio = 1;
-    [~, infoAmplitude] = channel_capacity(channel, txPower, noisePower);
-    powerAmplitude = sqrt(2 * txPower) * channelAmplitude' ./ norm(channelAmplitude);
+	[~, infoAmplitude] = channel_capacity(channel, txPower, noisePower);
+
+	% * If number of subbands is too small, it is unnecessary to use power waveform
+	nSubbands = size(channel, 1);
+	if nSubbands <= 2
+		powerAmplitude = zeros(1, nSubbands) + eps;
+	else
+		powerAmplitude = sqrt(2 * txPower) * channelAmplitude' ./ norm(channelAmplitude);
+	end
 
 end
