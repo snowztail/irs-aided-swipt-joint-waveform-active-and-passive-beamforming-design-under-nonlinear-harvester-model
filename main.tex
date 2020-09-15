@@ -122,7 +122,7 @@
 			\caption{Rectenna circuits}
 		\end{figure}
 
-		Rectifiers consist of nonlinear components as diode and capacitor to produce DC and store energy \cite{Hagerty2004,Pinuela2013}. Consider a simplified rectifier in Fig. \ref{ci:single_diode_rectifier} where a single series diode is followed by a low-pass filter with load. Denote $v_d(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the output voltage across the load. A Taylor expansion of the diode characteristic equation $i_d(t)=i_s(e^{v_d(t)/n' v_t}-1)$ (with $i_s$ the reverse bias saturation current, $n'$ the diode ideality factor, $v_t$ the thermal voltage) around a quiescent operating point $v_d=a$ writes as $i_d(t)=\sum_{i=0}^{\infty}k_i'(v_d(t)-a)^i$, where $k_0'=i_s(e^{a/n' v_t}-1)$ and $k_i'=i_se^{a/n'v_t}/i!(n'v_t)^i,i=1,\dots,\infty$. Note that this small signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_d(t)\}=-v_{\text{out}}$ such that
+		Rectifiers consist of nonlinear components as diode and capacitor to produce DC and store energy \cite{Hagerty2004,Pinuela2013}. Consider a simplified rectifier in Fig. \ref{ci:single_diode_rectifier} where a single series diode is followed by a low-pass filter with load. Denote $v_d(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the output voltage across the load. A Taylor expansion of the diode characteristic equation $i_d(t)=i_s(e^{v_d(t)/n' v_t}-1)$ (with $i_s$ the reverse bias saturation current, $n'$ the diode ideality factor, $v_t$ the thermal voltage) around a quiescent operating point $v_d=a$ writes as $i_d(t)=\sum_{i=0}^{\infty}k_i'(v_d(t)-a)^i$, where $k_0'=i_s(e^{a/n' v_t}-1)$ and $k_i'=i_se^{a/n'v_t}/i!(n'v_t)^i,i=1,\dots,\infty$. Note that this small-signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_d(t)\}=-v_{\text{out}}$ such that
 		\begin{equation}\label{eq:i_d}
 			i_d(t)=\sum_{i=0}^{\infty}k_i'\rho^{i/2}R_{\text{ant}}^{i/2}y(t)^i
 		\end{equation}
@@ -147,9 +147,9 @@
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^2(t)\right\}\right\}
 				& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h}\label{eq:y_I2}\\
 				\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}
-				& = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})^2\\
+				& = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n})^H}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{I,0}\boldsymbol{h})^2\label{eq:y_I4}\\
 				\mathcal{A}\left\{y_{P}^2(t)\right\}
-				& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h}\\
+				& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h}\label{eq:y_P2}\\
 				\mathcal{A}\left\{y_{P}^4(t)\right\}
 				& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H} = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})^H\label{eq:y_P4}
 			\end{align}
@@ -295,7 +295,7 @@
 				\begin{split}
 					z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)
 					& = \frac{1}{2}{\beta_2}{\rho} \sum_{n=1}^N \lVert{\boldsymbol{h}_n}\rVert^2(s_{I,n}^2+s_{P,n}^2)\\
-					& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left( 2\sum_{n_1,n_2} \prod_{j=1}^2 \lVert{\boldsymbol{h}_{n_j}}\rVert^2 s_{I,{n_j}}^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}} \prod_{j=1}^4 \lVert{\boldsymbol{h}_{n_j}}\rVert s_{I,{n_j}} \right)\\
+					& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left( 2\sum_{n_1,n_2} \prod_{j=1}^2 \lVert{\boldsymbol{h}_{n_j}}\rVert^2 s_{I,{n_j}}^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}} \prod_{j=1}^4 \lVert{\boldsymbol{h}_{n_j}}\rVert s_{P,{n_j}} \right)\\
 					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left( \sum_{n_1,n_2} \lVert{\boldsymbol{h}_{n_1}}\rVert^2 s_{I,{n_1}}^2 \lVert{\boldsymbol{h}_{n_2}}\rVert^2 s_{P,{n_2}}^2 \right)
 				\end{split}
 			\end{equation}
@@ -409,7 +409,7 @@
 		\caption{System layout}
 		\label{fi:layout}
 	\end{figure}
-	To evaluate the performance of the proposed IRS-aided SWIPT system, we characterize and compare average R-E regions under typical setups. Consider a large open space WiFi-like environment at a center frequency of 5.18 \si{\GHz} with reference bandwidth $B=1$ \si{\MHz}. As shown in Figure \ref{fi:layout}, we assume the IRS moves along a horizontal line parallel to the AP-user path. Define the projection of the AP-IRS path onto the AP-user path as $d_H$ and let the distance from the IRS to the AP-user path be $d_V$. Denote $d_D$, $d_I$, $d_R$ as the length of direct, incident, reflective paths. We fix $d_D=15$ \si{\meter}, $d_V=2$ \si{\meter} and choose a reference $d_H=2$ \si{\meter}. For all channels, the path loss and fading parameters are obtained from IEEE TGn channel model D \cite{Erceg2004}. Reference path loss is set to $L_0=-35$ \si{\dB} at $d_0=1$ \si{\meter}, and taps are modelled as i.i.d. CSCG random variables with normalized total power. We choose number of subbands $N=16$ as reference and assume no spatial correlation across all arrays. Rectenna parameters are taken as $k_2=0.0034$, $k_4=0.3829$, $R_{\text{ant}}=50$ \si{\ohm}. The average Effective Isotropic Radiated Power (EIRP) is fixed to $-36$ \si{\dBi} while the reference average noise power is $\sigma_n=-40$ \si{\dBm} at all subbands. We also assume 0 \si{\dBi} IRS element gain and 2 \si{\dBi} receive antenna gain. For the algorithm, the tolerance is $\epsilon=10^{-8}$, the number of candidates in the Gaussian randomization method is $Q=10^{3}$, and the R-E region is averaged over 200 channel realizations. In the R-E boundary curve, the leftmost point corresponds to WPT ($\rho=1$) where power can be allocated simultaneously to modulated and unmodulated waveform to maximize $z$. On the other hand, the rightmost point corresponds to WIT ($\rho=0$) where the solution coincides with water-filling algorithm allocating all power to modulated waveform only.
+	To evaluate the performance of the proposed IRS-aided SWIPT system, we characterize and compare the average R-E regions under typical setups. Consider a large open space WiFi-like environment at a center frequency of 5.18 \si{\GHz} with reference bandwidth $B=1$ \si{\MHz}. As shown in Figure \ref{fi:layout}, we assume the IRS moves along a horizontal line parallel to the AP-user path. Define the projection of the AP-IRS path onto the AP-user path as $d_H$ and let the distance from the IRS to the AP-user path be $d_V$. Denote $d_D$, $d_I$, $d_R$ as the length of direct, incident, reflective paths. We fix $d_D=15$ \si{\meter}, $d_V=2$ \si{\meter} and choose a reference $d_H=2$ \si{\meter}. For all channels, the path loss and fading parameters are obtained from IEEE TGn channel model D \cite{Erceg2004}. Reference path loss is set to $L_0=-35$ \si{\dB} at $d_0=1$ \si{\meter}, and taps are modelled as i.i.d. random variables with normalized total power. We choose number of subbands $N=16$ as reference and assume no spatial correlation across all arrays. Rectenna parameters are taken as $k_2=0.0034$, $k_4=0.3829$, $R_{\text{ant}}=50$ \si{\ohm}. The average Effective Isotropic Radiated Power (EIRP) is fixed to $-36$ \si{\dBi} while the reference average noise power is $\sigma_n=-40$ \si{\dBm} at all subbands. We also assume 0 \si{\dBi} IRS element gain and 2 \si{\dBi} receive antenna gain. For the algorithm, the tolerance is $\epsilon=10^{-8}$, the number of candidates in the Gaussian randomization method is $Q=10^{3}$, and the R-E region is averaged over 200 channel realizations. In the R-E boundary, the leftmost point corresponds to WPT ($\rho=1$) where power can be allocated simultaneously to modulated and unmodulated waveform to maximize the average output DC current. On the other hand, the rightmost point corresponds to WIT ($\rho=0$) where the solution coincides with water-filling algorithm allocating all power to modulated waveform only. For a fair comparison, the $x$-axis of the plots has been normalized to per-subband rate.
 
 	\begin{figure}
 		\centering
@@ -417,8 +417,19 @@
 			\input{assets/re_subband.tex}
 		\end{adjustbox}
 		\caption{Average R-E region versus the number of subbands}
-		\label{fi:subband}
+		\label{fi:re_subband}
 	\end{figure}
+
+	\begin{figure}
+		\centering
+		\begin{adjustbox}{width=\linewidth}
+			\input{assets/waveform_subband.tex}
+		\end{adjustbox}
+		\caption{Sorted waveform amplitude versus the number of subbands}
+		\label{fi:waveform_subband}
+	\end{figure}
+
+	Figure \ref{fi:re_subband} illustrates the average R-E region versus the number of subband $N$. First, it is observed that increasing $N$ reduces the per-subband rate but boosts the harvested energy. The reason is that although each subband receives a smaller proportion of the total power, it introduces more balanced terms contributing to the output DC current. The result also confirmed that from the perspective of WPT, dedicated multisine waveform is unnecessary for a small $N$ but is required for a large $N$. As shown in \ref{eq:y_I4} and \ref{eq:y_P4}, the only difference of modulated and unmodulated waveform on $z$ exists in the fourth-order terms, where $\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}$ has $N^2$ monomials with a modulation gain of 2 and $\mathcal{A}\left\{y_{P}^4(t)\right\}$ has $(2N^3+N)/3$ monomials without modulation gain. Therefore, superposed waveform enlarges the R-E region for a sufficiently large $N$ (typically no smaller than 4). However, an excessively large $N$ not only requires high computation complexity but also operates out of the small-signal harvester model, thus become prohibitive.
 \end{section}
 
 \bibliographystyle{IEEEtran}
