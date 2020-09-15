@@ -14,22 +14,21 @@
 
 \begin{axis}[%
 width=4.521in,
-height=3.559in,
-at={(0.758in,0.488in)},
+height=3.566in,
+at={(0.758in,0.481in)},
 scale only axis,
 xmin=0,
-xmax=10,
 xlabel style={font=\color{white!15!black}},
 xlabel={Per-subband rate [bps/Hz]},
 ymin=0,
 ylabel style={font=\color{white!15!black}},
-ylabel={$\text{Average output DC current [}\mu\text{A]}$},
+ylabel={Average output DC current [$\mu$A]},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
 legend style={legend cell align=left, align=left, draw=white!15!black}
 ]
-\addplot [color=mycolor1]
+\addplot [color=mycolor1, line width=2.0pt]
   table[row sep=crcr]{%
 9.46890267721896	0\\
 9.14238879177698	2.06058892429301\\
@@ -62,9 +61,9 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.326513968968278	16.0555691460589\\
 0.000300638177805991	16.0619797346475\\
 };
-\addlegendentry{N = 1}
+\addlegendentry{$N = 1$}
 
-\addplot [color=mycolor2]
+\addplot [color=mycolor2, line width=2.0pt]
   table[row sep=crcr]{%
 8.46556304247255	0\\
 8.17364707541111	1.82385107040865\\
@@ -97,9 +96,9 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.291939038599665	17.5036816157706\\
 7.71447095493525e-05	17.5161439271368\\
 };
-\addlegendentry{N = 2}
+\addlegendentry{$N = 2$}
 
-\addplot [color=mycolor3]
+\addplot [color=mycolor3, line width=2.0pt]
   table[row sep=crcr]{%
 7.46195803733478	0\\
 7.20464913931057	1.64439023154687\\
@@ -132,9 +131,9 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.257337355367512	19.8392852366835\\
 0.000107333323007389	20.3225736728487\\
 };
-\addlegendentry{N = 4}
+\addlegendentry{$N = 4$}
 
-\addplot [color=mycolor4]
+\addplot [color=mycolor4, line width=2.0pt]
   table[row sep=crcr]{%
 6.468480282759	0\\
 6.24542923828008	1.43193464061974\\
@@ -167,9 +166,9 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.223106665476803	29.1106766925676\\
 1.74471222037354e-05	31.5527795452716\\
 };
-\addlegendentry{N = 8}
+\addlegendentry{$N = 8$}
 
-\addplot [color=mycolor5]
+\addplot [color=mycolor5, line width=2.0pt]
   table[row sep=crcr]{%
 5.49562646641633	0\\
 5.30612210476729	1.23746041784662\\
@@ -202,7 +201,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.189564891479746	47.9711958997324\\
 1.22728679936587e-06	54.9910262571505\\
 };
-\addlegendentry{N = 16}
+\addlegendentry{$N = 16$}
 
 \end{axis}
 \end{tikzpicture}%
