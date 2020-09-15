@@ -1,4 +1,4 @@
-clear; clc; config_irs;
+clear; clc; close all; config_irs;
 
 %% * Load batch data
 reSet = cell(nBatches, nCases);
@@ -21,15 +21,15 @@ save('../data/re_irs.mat');
 %% * R-E plots
 figure('name', 'R-E region for adaptive, fixed and no IRS');
 for iCase = 1 : nCases
-    plot(reIrs{iCase}(1, :) / nSubbands, 1e6 * reIrs{iCase}(2, :), 'linewidth', 2);
+    plot(reIrs{iCase}(1, :) / nSubbands, 1e6 * reIrs{iCase}(2, :));
     hold on;
 end
 hold off;
 grid on;
 legend('Adaptive IRS', 'Ideal FS IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');
 xlabel('Per-subband rate [bps/Hz]');
-ylabel('Average output DC current [\muA]');
+ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
 savefig('../figures/re_irs.fig');
-matlab2tikz('../figures/re_irs.tex');
+matlab2tikz('../../assets/re_irs.tex');
