@@ -23,7 +23,7 @@ figure('name', 'R-E region vs number of reflectors');
 legendString = cell(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
     plot(reReflector{iReflector}(1, :) / nSubbands, 1e6 * reReflector{iReflector}(2, :));
-    legendString{iReflector} = sprintf('$L = %d$', Variable.nReflectors(iReflector));
+    legendString{iReflector} = sprintf('$M = %d, L = %d$', nTxs, Variable.nReflectors(iReflector));
     hold on;
 end
 hold off;
