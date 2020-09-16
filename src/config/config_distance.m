@@ -53,7 +53,7 @@ nChannels = 1;
 
 %% * Variable
 % projection of AP-IRS distance to the AP-user path
-Variable.horizontalDistance = 2 : 2 : 8;
+Variable.horizontalDistance = [2 4 6 7.5];
 % large-scale signal-to-noise ratio
 snr = zeros(1, length(Variable.horizontalDistance));
 for iDistance = 1 : length(Variable.horizontalDistance)
