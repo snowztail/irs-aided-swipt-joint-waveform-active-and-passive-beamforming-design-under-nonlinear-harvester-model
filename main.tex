@@ -434,6 +434,17 @@
 	\begin{figure}
 		\centering
 		\begin{adjustbox}{width=\linewidth}
+			\input{assets/re_noise.tex}
+		\end{adjustbox}
+		\caption{Average R-E region versus the average noise power}
+		\label{fi:re_noise}
+	\end{figure}
+
+	The influence of the average noise power on the average R-E region is investigated in Fig. \ref{fi:re_noise}. For a sufficiently large $N$, the R-E region is approximately concave for a high noise level and approximately convex for a low noise level. As a result, TS is preferred at low SNR while PS is preferred at high SNR.
+
+	\begin{figure}
+		\centering
+		\begin{adjustbox}{width=\linewidth}
 			\input{assets/re_distance.tex}
 		\end{adjustbox}
 		\caption{Average R-E region versus AP-IRS horizontal distance}
@@ -449,7 +460,7 @@
 		\label{fi:path_loss}
 	\end{figure}
 
-	In Fig. \ref{fi:re_distance}, we compare the average R-E region achieved by different AP-IRS horizontal distance $d_H$. A \textit{first} observation is that placing the IRS closer to either the AP or the user would improve the R-E tradeoff. This origins from the exponential path loss model, where the signal attenuation increases fast at a short range and experiences marginal effect when transmission distance is long. As shown in Fig. \ref{fi:path_loss}, although the piecewise TGn path loss model further penalizes large $d$ (greater than 10 \si{\meter} for model D), it is still beneficial to have a short-long or long-short transmission setup. On the other hand, the result suggests that developing an IRS near the AP can effectively extend the operation range of SWIPT systems. Considering the passive characteristic of IRS, opportunities are that it can be directly controlled and powered by the SWIPT network.
+	In Fig. \ref{fi:re_distance}, we compare the average R-E region achieved by different AP-IRS horizontal distance $d_H$. A \textit{first} observation is that placing the IRS closer to either the AP or the user would improve the R-E tradeoff. This origins from the exponential path loss model, where the signal attenuation increases fast at a short range and experiences marginal effect when transmission distance is long. As shown in Fig. \ref{fi:path_loss}, although the piecewise TGn path loss model further penalizes large distance (greater than 10 \si{\meter} for model D), it is still beneficial to have a short-long or long-short transmission setup. On the other hand, the result suggests that developing an IRS near the AP can effectively extend the operation range of SWIPT systems. Considering the passive characteristic of IRS, opportunities are that it can be directly supported by the SWIPT network. A \textit{second} observation is that there exists two optimal IRS development locations that maximizes the path loss production $\Lambda_I\Lambda_R$. It implies that more than one IRS may be implemented to further enlarge the R-E region, one attached to the AP and one attached to the IRS.
 
 	\begin{figure}
 		\centering
@@ -460,7 +471,19 @@
 		\label{fi:re_reflector}
 	\end{figure}
 
-	The impact of number of reflectors $L$ on the average R-E region is revealed in Fig. \ref{fi:re_reflector}.
+	\begin{figure}
+		\centering
+		\begin{adjustbox}{width=\linewidth}
+			\input{assets/re_tx.tex}
+		\end{adjustbox}
+		\caption{Average R-E region versus the number of transmit antennas}
+		\label{fi:re_tx}
+	\end{figure}
+
+	The impact of the number of transmit antennas $M$ and IRS reflectors $L$ on the average R-E tradeoff is revealed in Fig. \ref{fi:re_reflector} and \ref{fi:re_tx}. A \textit{first} contrast indicates that adding either active or passive elements benefits both information and power transmission while preserving the concavity-convexity of the R-E region. This is because increasing $M$ or $L$ indeed enhances the equivalent composite channel strength such that the magnitude of the components in \ref{eq:z_expand} is amplified while the amount remains unchanged. Therefore, we conclude that number of transmit antennas and reflectors has negligible influence on the waveform preference and transmission strategy. A \textit{second} contrast suggests that the system performance is more sensitive to the variation of $M$ than $L$. Interestingly, the active MRT beamformer only has a transmit array gain of $M$, while the IRS collects $L$ signal copies with a receive array gain $L$ then performs an equal gain reflection with a reflect array gain $L$, achieving a total array gain of $L^2$. However, the system in our setup is dominated by the direct link. As shown in Fig. \ref{fi:path_loss}, the direct path loss $\Lambda_D$ is in the scope of $10^{-7}$ while the extra path loss product $\Lambda_I\Lambda_R$ is below $10^{-10}$. This has the consequence that despite increasing $L$ can effectively enhance the AP-IRS-user extra channel, its amplitude is still too small compared with the AP-user channel such that increasing $M$ is more effective to improve the system performance.
+
+
+	% TODO: FF channels in IRS plot
 \end{section}
 
 \bibliographystyle{IEEEtran}
