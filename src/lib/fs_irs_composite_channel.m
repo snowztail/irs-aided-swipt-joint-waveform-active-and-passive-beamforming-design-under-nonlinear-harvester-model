@@ -1,6 +1,6 @@
-function [compositeChannelIdeal] = composite_channel_ideal(directChannel, incidentChannel, reflectiveChannel)
+function [fsIrsCompositeChannel] = fs_irs_composite_channel(directChannel, incidentChannel, reflectiveChannel)
     % Function:
-	%	- obtain the optimal composite SISO channel to maximize the R-E region
+	%	- obtain the optimal composite SISO channel by frequency-selective IRS to maximize the R-E region
     %
     % Input:
     %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
@@ -8,7 +8,7 @@ function [compositeChannelIdeal] = composite_channel_ideal(directChannel, incide
     %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
     %
     % Output:
-    %   - compositeChannelIdeal (h) [nSubbands * nTxs * nRxs]: superposition of direct and extra channels
+    %   - fsIrsCompositeChannel (h) [nSubbands * nTxs * nRxs]: superposition of direct and extra channels
     %
 	% Comment:
 	%	- the closed form IRS reflection coefficients is obtained for SISO
@@ -39,6 +39,6 @@ function [compositeChannelIdeal] = composite_channel_ideal(directChannel, incide
 	end
 
     % * Combine for composite channel
-    compositeChannelIdeal = directChannel + extraChannel;
+    fsIrsCompositeChannel = directChannel + extraChannel;
 
 end
