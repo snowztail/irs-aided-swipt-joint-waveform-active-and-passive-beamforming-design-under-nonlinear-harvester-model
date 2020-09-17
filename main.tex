@@ -431,6 +431,8 @@
 
 	Fig. \ref{fi:re_subband} illustrates the average R-E region versus the number of subband $N$. \textit{First}, it is observed that increasing $N$ reduces the per-subband rate but boosts the harvested energy. The reason is that although each subband receives a smaller proportion of the total power, more balanced terms are introduced to further amplify the output DC current, as demonstrated by the scaling laws in \cite{Clerckx2018b}. Waveform amplitude in Fig. \ref{fi:waveform_subband} also confirmed that from the perspective of WPT, dedicated multisine waveform is unnecessary for a small $N$ but is required for a large $N$. As shown in \ref{eq:y_I4} and \ref{eq:y_P4}, the only difference of modulated and unmodulated waveform on $z$ exists in the fourth-order terms, where $\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}$ has $N^2$ monomials with a modulation gain of 2 and $\mathcal{A}\left\{y_{P}^4(t)\right\}$ has $(2N^3+N)/3$ monomials without modulation gain. Therefore, superposed waveform enlarges the R-E region for a sufficiently large $N$ (typically no smaller than 4). However, an excessively large $N$ not only requires high computation complexity but also operates out of the small-signal harvester model, thus become prohibitive. \textit{Second}, the R-E region is convex for $N = 2, 4$ and concave-convex for $N = 8, 16$. This has the consequence that PS outperforms TS for a small $N$ and is outperformed for a large $N$. When $N$ is in between, the optimal strategy is a combination of both, i.e. a time sharing between the WPT point and the tangent WIPT point obtained by power splitting. Compared with the linear harvester model that requires no dedicated power waveform and always prefer PS, the rectifier nonlinearity enlarges the R-E region by favouring a different waveform and transmission strategy, both heavily depends on $N$.
 
+	% N increase -> more to balance, tradeoff between subbands
+
 	\begin{figure}
 		\centering
 		\begin{adjustbox}{width=\linewidth}
@@ -441,6 +443,8 @@
 	\end{figure}
 
 	The influence of the average noise power on the average R-E region is investigated in Fig. \ref{fi:re_noise}. For a sufficiently large $N$, the R-E region is approximately concave for a high noise level and approximately convex for a low noise level. As a result, TS is preferred at low SNR while PS is preferred at high SNR.
+
+	% irs, low noise power, high received power  L+->high snr, rho vs other L, M: snr and nonlinearity
 
 	\begin{figure}
 		\centering
@@ -482,6 +486,23 @@
 
 	The impact of the number of transmit antennas $M$ and IRS reflectors $L$ on the average R-E tradeoff is revealed in Fig. \ref{fi:re_reflector} and \ref{fi:re_tx}. A \textit{first} contrast indicates that adding either active or passive elements benefits both information and power transmission while preserving the concavity-convexity of the R-E region. This is because increasing $M$ or $L$ indeed enhances the equivalent composite channel strength such that the magnitude of the components in \ref{eq:z_expand} is amplified while the amount remains unchanged. Therefore, we conclude that number of transmit antennas and reflectors has negligible influence on the waveform preference and transmission strategy. A \textit{second} contrast suggests that the system performance is more sensitive to the variation of $M$ than $L$. Interestingly, the active MRT beamformer only has a transmit array gain of $M$, while the IRS collects $L$ signal copies with a receive array gain $L$ then performs an equal gain reflection with a reflect array gain $L$, achieving a total array gain of $L^2$. However, the system in our setup is dominated by the direct link. As shown in Fig. \ref{fi:path_loss}, the direct path loss $\Lambda_D$ is in the scope of $10^{-7}$ while the extra path loss product $\Lambda_I\Lambda_R$ is below $10^{-10}$. This has the consequence that despite increasing $L$ can effectively enhance the AP-IRS-user extra channel, its amplitude is still too small compared with the AP-user channel such that increasing $M$ is more effective to improve the system performance.
 
+	\begin{figure}
+		\centering
+		\begin{adjustbox}{width=\linewidth}
+			\input{assets/re_los.tex}
+		\end{adjustbox}
+		\caption{Average R-E region for IRS-aided NLoS and LoS channels}
+		\label{fi:re_los}
+	\end{figure}
+
+	\begin{figure}
+		\centering
+		\begin{adjustbox}{width=\linewidth}
+			\input{assets/re_irs.tex}
+		\end{adjustbox}
+		\caption{Average R-E region for adaptive, fixed and no IRS over $B = 10$ \si{\MHz}}
+		\label{fi:re_irs}
+	\end{figure}
 
 	% TODO: FF channels in IRS plot
 \end{section}
