@@ -4,7 +4,7 @@ clear; clc; close all; config_tx;
 reSet = cell(nBatches, length(Variable.nTxs));
 for iBatch = 1 : nBatches
     try
-        load(sprintf('../data/re_tx_%d.mat', iBatch), 'reInstance');
+        load(sprintf('../data/re_tx/re_tx_%d.mat', iBatch), 'reInstance');
         reSet(iBatch, :) = reInstance;
     catch
         disp(iBatch);
@@ -21,8 +21,9 @@ save('../data/re_tx.mat');
 %% * R-E plots
 figure('name', 'R-E region vs number of transmit antennas');
 legendString = cell(1, length(Variable.nTxs));
+plotHandle = gobjects(1, length(Variable.nTxs));
 for iTx = 1 : length(Variable.nTxs)
-    plot(reTx{iTx}(1, :) / nSubbands, 1e6 * reTx{iTx}(2, :));
+    plotHandle(iTx) = plot(reTx{iTx}(1, :) / nSubbands, 1e6 * reTx{iTx}(2, :));
     legendString{iTx} = sprintf('$M = %d, L = %d$', Variable.nTxs(iTx), nReflectors);
     hold on;
 end
@@ -33,5 +34,7 @@ xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
+
+apply_style(plotHandle);
 savefig('../figures/re_tx.fig');
 matlab2tikz('../../assets/re_tx.tex');

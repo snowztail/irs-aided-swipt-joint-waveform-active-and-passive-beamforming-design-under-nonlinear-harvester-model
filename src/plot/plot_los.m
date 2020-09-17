@@ -4,7 +4,7 @@ clear; clc; close all; config_los;
 reSet = cell(nBatches, nCases);
 for iBatch = 1 : nBatches
     try
-        load(sprintf('../data/re_los_%d.mat', iBatch), 'reInstance');
+        load(sprintf('../data/re_los/re_los_%d.mat', iBatch), 'reInstance');
         reSet(iBatch, :) = reInstance;
     catch
         disp(iBatch);
@@ -20,8 +20,9 @@ save('../data/re_los.mat');
 
 %% * R-E plots
 figure('name', 'R-E region for IRS-aided NLoS and LoS channels');
+plotHandle = gobjects(1, nCases);
 for iCase = 1 : nCases
-    plot(reLos{iCase}(1, :) / nSubbands, 1e6 * reLos{iCase}(2, :));
+    plotHandle(iCase) = plot(reLos{iCase}(1, :) / nSubbands, 1e6 * reLos{iCase}(2, :));
     hold on;
 end
 hold off;
@@ -31,5 +32,7 @@ xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
+
+apply_style(plotHandle);
 savefig('../figures/re_los.fig');
 matlab2tikz('../../assets/re_los.tex');

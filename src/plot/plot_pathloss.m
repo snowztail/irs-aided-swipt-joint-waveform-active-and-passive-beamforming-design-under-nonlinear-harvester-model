@@ -8,6 +8,8 @@ directDistance = 15;
 verticalDistance = 2;
 % projection of AP-IRS distance to the AP-user path
 horizontalDistance = linspace(0, directDistance, nSamples);
+% number of cases to plot (path loss, path loss product)
+nCases = 2;
 
 % AP-IRS pathloss
 incidentPathloss = zeros(nSamples, 1);
@@ -22,11 +24,12 @@ end
 
 %% * Waveform amplitude
 figure('name', 'Path loss vs AP-IRS horizontal distance');
-pathlossPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
+pathlossPlot = tiledlayout(nCases, 1, 'tilespacing', 'compact');
+plotHandle = gobjects(1, nCases);
 
 % * Incident pathloss
 nexttile;
-semilogy(horizontalDistance, incidentPathloss);
+plotHandle(1) = semilogy(horizontalDistance, incidentPathloss);
 grid on;
 legend('IEEE TGn D')
 xlabel('Distance [m]');
@@ -34,7 +37,7 @@ ylabel('Path loss');
 
 % * Extra pathloss
 nexttile;
-semilogy(horizontalDistance, extraPathloss);
+plotHandle(2) = semilogy(horizontalDistance, extraPathloss);
 grid on;
 legend('$\Lambda_I\Lambda_R$', 'location', 'se')
 xlabel('AP-IRS horizontal distance [m]');

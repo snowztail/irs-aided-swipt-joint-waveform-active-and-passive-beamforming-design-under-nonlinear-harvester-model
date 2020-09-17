@@ -6,7 +6,7 @@ infoAmplitudeSet = cell(nBatches, length(Variable.nSubbands));
 powerAmplitudeSet = cell(nBatches, length(Variable.nSubbands));
 for iBatch = 1 : nBatches
     try
-        load(sprintf('../data/re_subband_%d.mat', iBatch), 'reInstance', 'reSolution');
+        load(sprintf('../data/re_subband/re_subband_%d.mat', iBatch), 'reInstance', 'reSolution');
 		reSet(iBatch, :) = reInstance;
 		for iSubband = 1 : length(Variable.nSubbands)
 			infoAmplitudeSet{iBatch, iSubband} = sort(reSolution{iSubband}{end}.infoAmplitude);
@@ -31,8 +31,9 @@ save('../data/re_subband.mat');
 %% * R-E plots
 figure('name', 'R-E region vs number of subbands');
 legendString = cell(1, length(Variable.nSubbands) + 2);
+plotHandle = gobjects(1, length(Variable.nSubbands) + 2);
 for iSubband = 1 : length(Variable.nSubbands)
-    plot(reSubband{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reSubband{iSubband}(2, :));
+    plotHandle(iSubband) = plot(reSubband{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reSubband{iSubband}(2, :));
     legendString{iSubband} = sprintf('PS: $N = %d$', Variable.nSubbands(iSubband));
 	hold on;
 end
@@ -41,13 +42,13 @@ end
 subbandIndex = 4;
 optIndex = convhull(transpose([0, reSubband{subbandIndex}(1, :) / Variable.nSubbands(subbandIndex); 0, 1e6 * reSubband{subbandIndex}(2, :)])) - 1;
 optIndex = optIndex(2 : end - 1);
-plot(reSubband{subbandIndex}(1, optIndex) / Variable.nSubbands(subbandIndex), 1e6 * reSubband{subbandIndex}(2, optIndex), 'r-.');
+plotHandle(iSubband + 1) = plot(reSubband{subbandIndex}(1, optIndex) / Variable.nSubbands(subbandIndex), 1e6 * reSubband{subbandIndex}(2, optIndex), 'r');
 legendString{iSubband + 1} = sprintf('TS + PS: $N = %d$', Variable.nSubbands(subbandIndex));
 hold on;
 
 % * Optimal strategy for large number of subbands (TS)
 subbandIndex = 5;
-plot([reSubband{subbandIndex}(1, end) / Variable.nSubbands(subbandIndex), reSubband{subbandIndex}(1, 1) / Variable.nSubbands(subbandIndex)], [1e6 * reSubband{iSubband}(2, end), 1e6 * reSubband{iSubband}(2, 1)], 'k--');
+plotHandle(iSubband + 2) = plot([reSubband{subbandIndex}(1, end) / Variable.nSubbands(subbandIndex), reSubband{subbandIndex}(1, 1) / Variable.nSubbands(subbandIndex)], [1e6 * reSubband{iSubband}(2, end), 1e6 * reSubband{iSubband}(2, 1)], 'k');
 legendString{iSubband + 2} = sprintf('TS: $N = %d$', Variable.nSubbands(subbandIndex));
 
 hold off;
@@ -57,13 +58,15 @@ xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
+
+apply_style(plotHandle);
 savefig('../figures/re_subband.fig');
 matlab2tikz('../../assets/re_subband.tex');
 close;
 
 %% * Waveform amplitude
 figure('name', 'Sorted waveform amplitude vs number of subbands');
-amplitudePlot = tiledlayout(length(Variable.nSubbands), 1, 'tilespacing', 'compact');
+waveformPlot = tiledlayout(length(Variable.nSubbands), 1, 'tilespacing', 'compact');
 for iSubband = 1 : length(Variable.nSubbands)
 	nexttile;
 	stem(1 : Variable.nSubbands(iSubband), infoAmplitude{iSubband}, 'marker', 'o');
@@ -76,11 +79,11 @@ for iSubband = 1 : length(Variable.nSubbands)
 	grid on;
 	if iSubband == 1
 		legend('$s_I$', '$s_P$');
-	end
-	if iSubband == 3
+	elseif iSubband == 3
 		ylabel('Waveform amplitude');
 	end
 end
 xlabel('Sorted subband index');
+
 savefig('../figures/waveform_subband.fig');
 matlab2tikz('../../assets/waveform_subband.tex');

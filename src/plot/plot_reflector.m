@@ -4,7 +4,7 @@ clear; clc; close all; config_reflector;
 reSet = cell(nBatches, length(Variable.nReflectors));
 for iBatch = 1 : nBatches
     try
-        load(sprintf('../data/re_reflector_%d.mat', iBatch), 'reInstance');
+        load(sprintf('../data/re_reflector/re_reflector_%d.mat', iBatch), 'reInstance');
         reSet(iBatch, :) = reInstance;
     catch
         disp(iBatch);
@@ -21,8 +21,9 @@ save('../data/re_reflector.mat');
 %% * R-E plots
 figure('name', 'R-E region vs number of reflectors');
 legendString = cell(1, length(Variable.nReflectors));
+plotHandle = gobjects(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
-    plot(reReflector{iReflector}(1, :) / nSubbands, 1e6 * reReflector{iReflector}(2, :));
+    plotHandle(iReflector) = plot(reReflector{iReflector}(1, :) / nSubbands, 1e6 * reReflector{iReflector}(2, :));
     legendString{iReflector} = sprintf('$M = %d, L = %d$', nTxs, Variable.nReflectors(iReflector));
     hold on;
 end
@@ -33,5 +34,7 @@ xlabel('Per-subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
+
+apply_style(plotHandle);
 savefig('../figures/re_reflector.fig');
 matlab2tikz('../../assets/re_reflector.tex');
