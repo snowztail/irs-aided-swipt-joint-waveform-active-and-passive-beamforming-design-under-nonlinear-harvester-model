@@ -27,7 +27,7 @@ xmajorgrids,
 ymajorgrids,
 legend style={legend cell align=left, align=left, draw=white!15!black}
 ]
-\addplot [color=mycolor1, line width=2.0pt]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
 5.49292547008313	0\\
 5.30351424656718	1.22860642710915\\
@@ -62,7 +62,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$d_H = 2$}
 
-\addplot [color=mycolor2, line width=2.0pt]
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
 5.33789505741759	0\\
 5.15382971020342	1.09941596335751\\
@@ -97,7 +97,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$d_H = 4$}
 
-\addplot [color=mycolor3, line width=2.0pt]
+\addplot [color=mycolor3, dotted, line width=2.0pt, mark=square, mark options={solid, mycolor3}]
   table[row sep=crcr]{%
 5.28039296574179	0\\
 5.09831044954266	1.05592969342657\\
@@ -132,7 +132,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$d_H = 6$}
 
-\addplot [color=mycolor4, line width=2.0pt]
+\addplot [color=mycolor4, dashdotted, line width=2.0pt, mark=x, mark options={solid, mycolor4}]
   table[row sep=crcr]{%
 5.25729943457622	0\\
 5.07601324733798	1.03908816950273\\
@@ -165,7 +165,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 0.181353474703628	38.3647275801675\\
 2.29536213695632e-06	44.1096574359739\\
 };
-\addlegendentry{$d_H = 8$}
+\addlegendentry{$d_H = 7.5$}
 
 \end{axis}
 \end{tikzpicture}%

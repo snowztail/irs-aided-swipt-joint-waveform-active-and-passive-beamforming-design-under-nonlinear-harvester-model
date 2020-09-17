@@ -28,7 +28,7 @@ xmajorgrids,
 ymajorgrids,
 legend style={legend cell align=left, align=left, draw=white!15!black}
 ]
-\addplot [color=mycolor1, line width=2.0pt]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
 0.620040515793311	0\\
 0.598686705376754	0.453554323489347\\
@@ -63,7 +63,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$\sigma_n = -50$ dB}
 
-\addplot [color=mycolor2, line width=2.0pt]
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
 2.5515855751122	0\\
 2.4635998899325	0.699886055464333\\
@@ -98,7 +98,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$\sigma_n = -60$ dB}
 
-\addplot [color=mycolor3, line width=2.0pt]
+\addplot [color=mycolor3, dotted, line width=2.0pt, mark=square, mark options={solid, mycolor3}]
   table[row sep=crcr]{%
 5.58543035433419	0\\
 5.39282930719833	1.28323783056631\\
@@ -133,7 +133,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$\sigma_n = -70$ dB}
 
-\addplot [color=mycolor4, line width=2.0pt]
+\addplot [color=mycolor4, dashdotted, line width=2.0pt, mark=x, mark options={solid, mycolor4}]
   table[row sep=crcr]{%
 8.87366077302299	0\\
 8.5676724703329	1.98405806599971\\
@@ -168,7 +168,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$\sigma_n = -80$ dB}
 
-\addplot [color=mycolor5, line width=2.0pt]
+\addplot [color=mycolor5, line width=2.0pt, mark=triangle, mark options={solid, mycolor5}]
   table[row sep=crcr]{%
 12.1921548000756	0\\
 11.7717356689694	2.71631754838488\\

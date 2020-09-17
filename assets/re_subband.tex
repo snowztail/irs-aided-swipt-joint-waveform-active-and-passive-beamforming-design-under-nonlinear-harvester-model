@@ -28,7 +28,7 @@ xmajorgrids,
 ymajorgrids,
 legend style={legend cell align=left, align=left, draw=white!15!black}
 ]
-\addplot [color=mycolor1, line width=2.0pt]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
 9.46890267721896	0\\
 9.14238879177698	2.06058892429301\\
@@ -63,7 +63,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{PS: $N = 1$}
 
-\addplot [color=mycolor2, line width=2.0pt]
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
 8.46556304247255	0\\
 8.17364707541111	1.82385107040865\\
@@ -98,7 +98,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{PS: $N = 2$}
 
-\addplot [color=mycolor3, line width=2.0pt]
+\addplot [color=mycolor3, dotted, line width=2.0pt, mark=square, mark options={solid, mycolor3}]
   table[row sep=crcr]{%
 7.46195803733478	0\\
 7.20464913931057	1.64439023154687\\
@@ -133,7 +133,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{PS: $N = 4$}
 
-\addplot [color=mycolor4, line width=2.0pt]
+\addplot [color=mycolor4, dashdotted, line width=2.0pt, mark=x, mark options={solid, mycolor4}]
   table[row sep=crcr]{%
 6.468480282759	0\\
 6.24542923828008	1.43193464061974\\
@@ -168,7 +168,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{PS: $N = 8$}
 
-\addplot [color=mycolor5, line width=2.0pt]
+\addplot [color=mycolor5, line width=2.0pt, mark=triangle, mark options={solid, mycolor5}]
   table[row sep=crcr]{%
 5.49562646641633	0\\
 5.30612210476729	1.23746041784662\\
@@ -203,7 +203,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{PS: $N = 16$}
 
-\addplot [color=red, dashdotted, line width=2.0pt]
+\addplot [color=red, dashed, line width=2.0pt, mark=triangle, mark options={solid, rotate=180, red}]
   table[row sep=crcr]{%
 6.468480282759	0\\
 5.79932715022391	4.58707183755718\\
@@ -216,7 +216,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{TS + PS: $N = 8$}
 
-\addplot [color=black, dashed, line width=2.0pt]
+\addplot [color=black, dotted, line width=2.0pt, mark=o, mark options={solid, black}]
   table[row sep=crcr]{%
 1.22728679936587e-06	54.9910262571505\\
 5.49562646641633	0\\

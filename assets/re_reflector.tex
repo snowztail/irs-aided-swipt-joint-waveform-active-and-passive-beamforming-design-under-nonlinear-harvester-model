@@ -29,7 +29,7 @@ xmajorgrids,
 ymajorgrids,
 legend style={legend cell align=left, align=left, draw=white!15!black}
 ]
-\addplot [color=mycolor1, line width=2.0pt]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
 4.37948666645929	0\\
 4.2284759142574	0.586488945445566\\
@@ -64,7 +64,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$M = 1, L = 0$}
 
-\addplot [color=mycolor2, line width=2.0pt]
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
 5.1709521127237	0\\
 4.99264367295214	1.08675696656903\\
@@ -99,7 +99,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$M = 1, L = 10$}
 
-\addplot [color=mycolor3, line width=2.0pt]
+\addplot [color=mycolor3, dotted, line width=2.0pt, mark=square, mark options={solid, mycolor3}]
   table[row sep=crcr]{%
 5.51387906532099	0\\
 5.32374530407776	1.34614398588506\\
@@ -134,7 +134,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$M = 1, L = 20$}
 
-\addplot [color=mycolor4, line width=2.0pt]
+\addplot [color=mycolor4, dashdotted, line width=2.0pt, mark=x, mark options={solid, mycolor4}]
   table[row sep=crcr]{%
 5.93354745228141	0\\
 5.7289423672881	1.91031586726957\\
@@ -169,7 +169,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$M = 1, L = 30$}
 
-\addplot [color=mycolor5, line width=2.0pt]
+\addplot [color=mycolor5, line width=2.0pt, mark=triangle, mark options={solid, mycolor5}]
   table[row sep=crcr]{%
 6.40290931237829	0\\
 6.18211933569901	2.55434358912481\\
@@ -204,7 +204,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$M = 1, L = 40$}
 
-\addplot [color=mycolor6, line width=2.0pt]
+\addplot [color=mycolor6, dashed, line width=2.0pt, mark=triangle, mark options={solid, rotate=180, mycolor6}]
   table[row sep=crcr]{%
 6.58266909710969	0\\
 6.35568050723091	3.06643483671944\\

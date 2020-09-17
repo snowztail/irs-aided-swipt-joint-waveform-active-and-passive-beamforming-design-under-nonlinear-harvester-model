@@ -25,7 +25,7 @@ xmajorgrids,
 ymajorgrids,
 legend style={legend cell align=left, align=left, draw=white!15!black}
 ]
-\addplot [color=mycolor1, line width=2.0pt]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
 5.49292547009182	0\\
 5.30351424654687	1.22860652860819\\
@@ -60,7 +60,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{NLoS}
 
-\addplot [color=mycolor2, line width=2.0pt]
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
 5.46229617753271	0\\
 5.27394113645373	1.21553328548938\\

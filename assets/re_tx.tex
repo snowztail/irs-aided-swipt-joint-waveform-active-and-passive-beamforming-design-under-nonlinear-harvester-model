@@ -28,7 +28,7 @@ xmajorgrids,
 ymajorgrids,
 legend style={legend cell align=left, align=left, draw=white!15!black}
 ]
-\addplot [color=mycolor1, line width=2.0pt]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
   table[row sep=crcr]{%
 5.49292547008752	0\\
 5.30351424655603	1.22860643349768\\
@@ -63,7 +63,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$M = 1, L = 20$}
 
-\addplot [color=mycolor2, line width=2.0pt]
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
 6.4699383607083	0\\
 6.24683703756517	2.74151509949544\\
@@ -98,7 +98,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$M = 2, L = 20$}
 
-\addplot [color=mycolor3, line width=2.0pt]
+\addplot [color=mycolor3, dotted, line width=2.0pt, mark=square, mark options={solid, mycolor3}]
   table[row sep=crcr]{%
 7.38094514999327	0\\
 7.12642979963657	6.25317900904233\\
@@ -133,7 +133,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$M = 4, L = 20$}
 
-\addplot [color=mycolor4, line width=2.0pt]
+\addplot [color=mycolor4, dashdotted, line width=2.0pt, mark=x, mark options={solid, mycolor4}]
   table[row sep=crcr]{%
 7.89236588429116	0\\
 7.62021533620214	10.2370703395069\\
@@ -168,7 +168,7 @@ legend style={legend cell align=left, align=left, draw=white!15!black}
 };
 \addlegendentry{$M = 6, L = 20$}
 
-\addplot [color=mycolor5, line width=2.0pt]
+\addplot [color=mycolor5, line width=2.0pt, mark=triangle, mark options={solid, mycolor5}]
   table[row sep=crcr]{%
 8.32506418241207	0\\
 8.03799300333462	16.3634982860996\\
