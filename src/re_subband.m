@@ -32,4 +32,4 @@ for iSubband = 1 : length(Variable.nSubbands)
 end
 
 % * Save batch data
-save(sprintf('data/re_subband_%d.mat', iBatch));
+save(sprintf('data/re_subband/re_subband_%d.mat', iBatch));

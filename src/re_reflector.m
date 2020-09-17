@@ -32,4 +32,4 @@ for iReflector = 1 : length(Variable.nReflectors)
 end
 
 % * Save batch data
-save(sprintf('data/re_reflector_%d.mat', iBatch));
+save(sprintf('data/re_reflector/re_reflector_%d.mat', iBatch));

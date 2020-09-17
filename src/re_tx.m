@@ -32,4 +32,4 @@ for iTx = 1 : length(Variable.nTxs)
 end
 
 % * Save batch data
-save(sprintf('data/re_tx_%d.mat', iBatch));
+save(sprintf('data/re_tx/re_tx_%d.mat', iBatch));
