@@ -34,14 +34,10 @@ horizontalDistance = 2;
 snr = txPower * sumPathloss * rxGain / noisePower;
 % center frequency
 centerFrequency = 5.18e9;
-% bandwidth
-bandwidth = 1e6;
 % number of frequency bands
 nSubbands = 16;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
-% carrier frequency
-[subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % number of reflecting elements in IRS
 nReflectors = 20;
 % spatial correlation
@@ -60,6 +56,10 @@ nSamples = 30;
 nChannels = 1;
 % number of cases to investigate (adaptive, ideal FS, WIT, WPT, no IRS)
 nCases = 5;
+
+%% * Variable
+% bandwidth
+Variable.bandwidth = [1e6, 5e6, 1e7];
 
 %% * PBS
 % number of individual jobs
