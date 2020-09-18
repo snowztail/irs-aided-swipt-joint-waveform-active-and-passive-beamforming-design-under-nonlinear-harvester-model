@@ -24,7 +24,7 @@ legendString = cell(1, length(Variable.noisePower));
 plotHandle = gobjects(1, length(Variable.noisePower));
 for iNoise = 1 : length(Variable.noisePower)
     plotHandle(iNoise) = plot(reNoise{iNoise}(1, :) / nSubbands, 1e6 * reNoise{iNoise}(2, :));
-    legendString{iNoise} = sprintf('$\\sigma_n = %d$ dB', pow2db(Variable.noisePower(iNoise)));
+    legendString{iNoise} = sprintf('$\\sigma_n = %d$ dBm', pow2db(Variable.noisePower(iNoise)) + 30);
     hold on;
 end
 hold off;
