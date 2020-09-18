@@ -59,7 +59,7 @@ nCases = 5;
 
 %% * Variable
 % bandwidth
-Variable.bandwidth = [1e6, 5e6, 1e7];
+Variable.bandwidth = [1e6 1e7];
 
 %% * PBS
 % number of individual jobs
