@@ -242,14 +242,14 @@
 		\end{figure*}
 		Hence, problem \ref{op:original} is transformed to
 		\begin{maxi!}
-			{\boldsymbol{\boldsymbol{\Phi}}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{ob:irs}}
+			{\boldsymbol{\Phi}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{ob:irs}}
 			\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_rate}
 			\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}\label{co:irs_modulus}
 			\addConstraint{\boldsymbol{\Phi}\succeq{0}}
 			\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
 		\end{maxi!}
 
-		Problem \ref{op:irs} is not a standard Semidefinite Programming (SDP) due to the rate constraint \ref{co:irs_rate}. Therefore, even if we relax the rank constraint \ref{co:irs_rank} to formulate a convex problem, there is no guarantee that the optimal rank-1 solution $\bar{\boldsymbol{\phi}}^{\star}$ extracted from $\boldsymbol{\Phi}^{\star}$ is a stationary point of the original problem \ref{op:original}. In Section [TODO], we numerically show that $\boldsymbol{\Phi}^{\star}$ is rank-1 for all tested channel realizations so that the performance loss is insignificant.
+		Problem \ref{op:irs} is not a standard Semidefinite Programming (SDP) due to the rate constraint \ref{co:irs_rate}. Therefore, even if we relax the rank constraint \ref{co:irs_rank} to formulate a convex problem, there is no guarantee that the optimal rank-1 solution $\bar{\boldsymbol{\phi}}^{\star}$ extracted from $\boldsymbol{\Phi}^{\star}$ is a stationary point of the original problem \ref{op:original}. In Section \ref{se:performance_evaluation}, we numerically show that $\boldsymbol{\Phi}^{\star}$ is rank-1 for all tested channel realizations so that the performance loss is insignificant.
 
 		When $\boldsymbol{\Phi}^{\star}$ is rank-1, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ is obtained by Eigenvalue Decomposition (EVD). Otherwise, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$, construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the one that maximizes the objective function \ref{ob:irs}. Finally, the phase shift is retrieved by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for the phase shift optimization is summarized in Algorithm \ref{al:irs}.
 		\begin{algorithm}
@@ -401,7 +401,7 @@
 	\end{subsection}
 \end{section}
 
-\begin{section}{Performance Evaluations}
+\begin{section}{Performance Evaluations}\label{se:performance_evaluation}
 	\begin{figure}
 		\centering
 		\def\svgwidth{\columnwidth}
@@ -410,6 +410,8 @@
 		\label{fi:layout}
 	\end{figure}
 	To evaluate the performance of the proposed IRS-aided SWIPT system, we characterize and compare the average R-E regions under typical setups. Consider a large open space WiFi-like environment at a center frequency of 5.18 \si{\GHz} with reference bandwidth $B=1$ \si{\MHz}. As shown in Fig. \ref{fi:layout}, we assume the IRS moves along a horizontal line parallel to the AP-user path. Define the projection of the AP-IRS path onto the AP-user path as $d_H$ and let the distance from the IRS to the AP-user path be $d_V$. Denote $d_D$, $d_I$, $d_R$ as the length of direct, incident, reflective paths, such that $d_I=\sqrt{d_H^2+d_V^2}$, $d_R=\sqrt{(d_D-d_H)^2+d_V^2}$. We fix $d_D=15$ \si{\meter}, $d_V=2$ \si{\meter} and choose a reference $d_H=2$ \si{\meter}. For all channels, the path loss and fading parameters are obtained from IEEE TGn channel model D \cite{Erceg2004}, and we regard all channels as NLoS unless otherwise mentioned. Reference path loss is set to $L_0=-35$ \si{\dB} at $d_0=1$ \si{\meter}, and taps are modelled as i.i.d. random variables with normalized total power. We choose number of subbands $N=16$ as reference and assume no spatial correlation across all arrays. Rectenna parameters are taken as $k_2=0.0034$, $k_4=0.3829$, $R_{\text{ant}}=50$ \si{\ohm}. The average Effective Isotropic Radiated Power (EIRP) is fixed to $-36$ \si{\dBm} while the reference average noise power is $\sigma_n=-40$ \si{\dBm} at all subbands. We also assume 0 \si{\dBi} IRS element gain and 2 \si{\dBi} receive antenna gain. For the algorithm, the tolerance is $\epsilon=10^{-8}$, the number of candidates in the Gaussian randomization method is $Q=10^{3}$, and the R-E region is averaged over 200 channel realizations. In the R-E boundary, the leftmost point corresponds to WPT ($\rho=1$) where power can be allocated simultaneously to modulated and unmodulated waveform to maximize the average output DC current. On the other hand, the rightmost point corresponds to WIT ($\rho=0$) where the solution coincides with water-filling algorithm allocating all power to modulated waveform only. For a fair comparison, the $x$-axis of the plots has been normalized to per-subband rate.
+
+	We first evaluate the performance of Algorithm \ref{al:irs} under SDR. It is demonstrated that $\boldsymbol{\Theta}^{\star}$ is rank-1 for all tested channel realizations with different $M$, $N$ and $L$. Therefore, $\boldsymbol{\theta}^{\star}$ can be directly obtained through eigenvalue decomposition and we claim Algorithm \ref{al:irs} converges to stationary points of problem \ref{op:irs} without performance loss.
 
 	\begin{figure}
 		\centering
@@ -431,29 +433,16 @@
 
 	Fig. \ref{fi:re_subband} illustrates the average R-E region versus the number of subband $N$. \textit{First}, it is observed that increasing $N$ reduces the per-subband rate but boosts the harvested energy. The reason is that although each subband receives a smaller proportion of the total power, more balanced terms are introduced to further amplify the output DC current, as demonstrated by the scaling laws in \cite{Clerckx2018b}. Waveform amplitude in Fig. \ref{fi:waveform_subband} also confirmed that from the perspective of WPT, dedicated multisine waveform is unnecessary for a small $N$ but is required for a large $N$. As shown in \ref{eq:y_I4} and \ref{eq:y_P4}, the only difference of modulated and unmodulated waveform on $z$ exists in the fourth-order terms, where $\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}$ has $N^2$ monomials with a modulation gain of 2 and $\mathcal{A}\left\{y_{P}^4(t)\right\}$ has $(2N^3+N)/3$ monomials without modulation gain. Therefore, superposed waveform enlarges the R-E region for a sufficiently large $N$ (typically no smaller than 4). However, an excessively large $N$ not only requires high computation complexity but also operates out of the small-signal harvester model, thus become prohibitive. \textit{Second}, the R-E region is convex for $N = 2, 4$ and concave-convex for $N = 8, 16$. This has the consequence that PS outperforms TS for a small $N$ and is outperformed for a large $N$. When $N$ is in between, the optimal strategy is a combination of both, i.e. a time sharing between the WPT point and the tangent WIPT point obtained by power splitting. Compared with the linear harvester model that requires no dedicated power waveform and always prefer PS, the rectifier nonlinearity enlarges the R-E region by favouring a different waveform and transmission strategy, both heavily depends on $N$.
 
-	% N increase -> more to balance, tradeoff between subbands
-	% FF channel -> closed form optimal IRS; FS channel -> tradeoff between subbands
-
 	\begin{figure}
 		\centering
 		\begin{adjustbox}{width=\linewidth}
 			\input{assets/re_noise.tex}
 		\end{adjustbox}
-		\caption{Average R-E region versus the average noise power}
+		\caption{Average R-E region and splitting ratio versus the average noise power}
 		\label{fi:re_noise}
 	\end{figure}
 
-	The influence of the average noise power on the average R-E region is investigated in Fig. \ref{fi:re_noise}. It is noted that for a large number of subbands ($N=16$ in this case), the R-E region is approximately concave for a high noise level and approximately convex for a low noise level. Moreover, there exists a
-
-	% This is because
-
-	As a result, TS is preferred at low SNR while PS is preferred at high SNR.
-
-	% sections -> waterfilling: \rho only vs joint
-
-	% irs, low noise power, high received power  L+->high snr, rho vs other L, M: snr and nonlinearity
-	% frequency selective less multipath loss less with FF IRS
-	% Fix subband rate
+	The influence of the average noise power on the average R-E region is investigated in Fig. \ref{fi:re_noise}. We \textit{first} note that for a large number of subbands ($N=16$), the R-E region is approximately concave for a high noise level and approximately convex for a low noise level. Hence, TS is preferred at low SNR while PS is preferred at high SNR. This is because at a low SNR, the capacity-achieving Water-Filling (WF) algorithm tends to allocate more power to few strongest subbands. As the rate constraint $\bar{R}$ decreases, more subbands are activated such that the rectifier nonlinearity further boosts the harvested energy by introducing more balanced terms to the output DC current. \textit{Second}, there exists a turning point in the R-E region especially for a small noise ($\sigma_n \le -40$ \si{\dBm}). The reason is that when $\bar{R}$ decreases slightly from the capacity, the algorithm mainly adjusts the splitting ratio $\rho$ rather than put more weight on the multisine waveform, since a small amplitude could be inefficient for energy maximization. On the other hand, as $\bar{R}$ further reduces, a modulated waveform with a very large $\rho$ could be outperformed by a composed waveform with a smaller $\rho$, due to advantage the of multisine. The result highlights the necessity of joint optimization of waveform and splitting ratio.
 
 	\begin{figure}
 		\centering
@@ -498,22 +487,17 @@
 	\begin{figure}
 		\centering
 		\begin{adjustbox}{width=\linewidth}
-			\input{assets/re_los.tex}
-		\end{adjustbox}
-		\caption{Average R-E region for IRS-aided NLoS and LoS channels}
-		\label{fi:re_los}
-	\end{figure}
-
-	\begin{figure}
-		\centering
-		\begin{adjustbox}{width=\linewidth}
 			\input{assets/re_irs.tex}
 		\end{adjustbox}
 		\caption{Average R-E region for adaptive, fixed and no IRS over $B = 10$ \si{\MHz}}
 		\label{fi:re_irs}
 	\end{figure}
 
-	% TODO: FF channels in IRS plot
+	% Same reflection coefficient, When b small, even if n large, behaves as if ff
+	% FF channel -> closed form optimal IRS; FS channel -> tradeoff between subbands
+	% \textit{Third}, although each IRS element has the same reflection coefficient for $N$ subbands, increasing $N$ does not necessarily mean
+	% frequency selective less multipath loss less with FF IRS
+
 \end{section}
 
 \bibliographystyle{IEEEtran}
