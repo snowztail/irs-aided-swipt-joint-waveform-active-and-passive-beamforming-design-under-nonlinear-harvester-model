@@ -1,12 +1,14 @@
 clear; clc; close all; config_tx;
 
 %% * Load batch data
+indexSet = 1 : nSamples;
 reSet = cell(nBatches, length(Variable.nTxs));
 for iBatch = 1 : nBatches
     try
         load(sprintf('../data/re_tx/re_tx_%d.mat', iBatch), 'reInstance');
         reSet(iBatch, :) = reInstance;
     catch
+		indexSet(indexSet == iBatch) = [];
         disp(iBatch);
     end
 end
@@ -14,7 +16,7 @@ end
 %% * Average over batches
 reTx = cell(1, length(Variable.nTxs));
 for iSubband = 1 : length(Variable.nTxs)
-    reTx{iSubband} = mean(cat(3, reSet{:, iSubband}), 3);
+    reTx{iSubband} = mean(cat(3, reSet{indexSet, iSubband}), 3);
 end
 save('../data/re_tx.mat');
 

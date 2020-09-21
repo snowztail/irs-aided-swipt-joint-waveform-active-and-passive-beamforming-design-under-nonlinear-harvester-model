@@ -1,12 +1,14 @@
 clear; clc; close all; config_reflector;
 
 %% * Load batch data
+indexSet = 1 : nSamples;
 reSet = cell(nBatches, length(Variable.nReflectors));
 for iBatch = 1 : nBatches
     try
         load(sprintf('../data/re_reflector/re_reflector_%d.mat', iBatch), 'reInstance');
         reSet(iBatch, :) = reInstance;
     catch
+		indexSet(indexSet == iBatch) = [];
         disp(iBatch);
     end
 end
@@ -14,7 +16,7 @@ end
 %% * Average over batches
 reReflector = cell(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
-    reReflector{iReflector} = mean(cat(3, reSet{:, iReflector}), 3);
+    reReflector{iReflector} = mean(cat(3, reSet{indexSet, iReflector}), 3);
 end
 save('../data/re_reflector.mat');
 

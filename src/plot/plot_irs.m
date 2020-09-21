@@ -1,6 +1,7 @@
 clear; clc; close all; config_irs;
 
 %% * Load batch data
+indexSet = 1 : nSamples;
 reAdaptiveIrsSet = cell(nBatches, length(Variable.bandwidth));
 reFsIrsSet = cell(nBatches, length(Variable.bandwidth));
 reWitIrsSet = cell(nBatches, length(Variable.bandwidth));
@@ -15,6 +16,7 @@ for iBatch = 1 : nBatches
         reWptIrsSet(iBatch, :) = reWptIrsInstance;
         reNoIrsSet(iBatch, :) = reNoIrsInstance;
     catch
+		indexSet(indexSet == iBatch) = [];
         disp(iBatch);
     end
 end
@@ -26,11 +28,11 @@ reWitIrs = cell(1, length(Variable.bandwidth));
 reWptIrs = cell(1, length(Variable.bandwidth));
 reNoIrs = cell(1, length(Variable.bandwidth));
 for iBandwidth = 1 : length(Variable.bandwidth)
-	reAdaptiveIrs{iBandwidth} = mean(cat(3, reAdaptiveIrsSet{:, iBandwidth}), 3);
-	reFsIrs{iBandwidth} = mean(cat(3, reFsIrsSet{:, iBandwidth}), 3);
-	reWitIrs{iBandwidth} = mean(cat(3, reWitIrsSet{:, iBandwidth}), 3);
-	reWptIrs{iBandwidth} = mean(cat(3, reWptIrsSet{:, iBandwidth}), 3);
-	reNoIrs{iBandwidth} = mean(cat(3, reNoIrsSet{:, iBandwidth}), 3);
+	reAdaptiveIrs{iBandwidth} = mean(cat(3, reAdaptiveIrsSet{indexSet, iBandwidth}), 3);
+	reFsIrs{iBandwidth} = mean(cat(3, reFsIrsSet{indexSet, iBandwidth}), 3);
+	reWitIrs{iBandwidth} = mean(cat(3, reWitIrsSet{indexSet, iBandwidth}), 3);
+	reWptIrs{iBandwidth} = mean(cat(3, reWptIrsSet{indexSet, iBandwidth}), 3);
+	reNoIrs{iBandwidth} = mean(cat(3, reNoIrsSet{indexSet, iBandwidth}), 3);
 end
 save('../data/re_irs.mat');
 

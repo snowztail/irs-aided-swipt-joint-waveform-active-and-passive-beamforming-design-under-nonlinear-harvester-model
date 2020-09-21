@@ -1,12 +1,14 @@
 clear; clc; close all; config_distance;
 
 %% * Load batch data
+indexSet = 1 : nSamples;
 reSet = cell(nBatches, length(Variable.horizontalDistance));
 for iBatch = 1 : nBatches
     try
         load(sprintf('../data/re_distance/re_distance_%d.mat', iBatch), 'reInstance');
         reSet(iBatch, :) = reInstance;
     catch
+		indexSet(indexSet == iBatch) = [];
         disp(iBatch);
     end
 end
@@ -14,7 +16,7 @@ end
 %% * Average over batches
 reDistance = cell(1, length(Variable.horizontalDistance));
 for iDistance = 1 : length(Variable.horizontalDistance)
-    reDistance{iDistance} = mean(cat(3, reSet{:, iDistance}), 3);
+    reDistance{iDistance} = mean(cat(3, reSet{indexSet, iDistance}), 3);
 end
 save('../data/re_distance.mat');
 

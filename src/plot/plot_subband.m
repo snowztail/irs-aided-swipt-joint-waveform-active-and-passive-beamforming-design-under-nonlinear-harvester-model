@@ -1,6 +1,7 @@
 clear; clc; close all; config_subband;
 
 %% * Load batch data
+indexSet = 1 : nSamples;
 reAdaptiveIrsSet = cell(nBatches, length(Variable.nSubbands));
 reFsIrsSet = cell(nBatches, length(Variable.nSubbands));
 infoAmplitudeSet = cell(nBatches, length(Variable.nSubbands));
@@ -15,6 +16,7 @@ for iBatch = 1 : nBatches
 			powerAmplitudeSet{iBatch, iSubband} = sort(reAdaptiveIrsSolution{iSubband}{end}.powerAmplitude);
 		end
     catch
+		indexSet(indexSet == iBatch) = [];
         disp(iBatch);
     end
 end
@@ -25,10 +27,10 @@ reFsIrs = cell(1, length(Variable.nSubbands));
 infoAmplitude = cell(1, length(Variable.nSubbands));
 powerAmplitude = cell(1, length(Variable.nSubbands));
 for iSubband = 1 : length(Variable.nSubbands)
-	reAdaptiveIrs{iSubband} = mean(cat(3, reAdaptiveIrsSet{:, iSubband}), 3);
-	reFsIrs{iSubband} = mean(cat(3, reFsIrsSet{:, iSubband}), 3);
-	infoAmplitude{iSubband} = mean(cat(3, infoAmplitudeSet{:, iSubband}), 3);
-	powerAmplitude{iSubband} = mean(cat(3, powerAmplitudeSet{:, iSubband}), 3);
+	reAdaptiveIrs{iSubband} = mean(cat(3, reAdaptiveIrsSet{indexSet, iSubband}), 3);
+	reFsIrs{iSubband} = mean(cat(3, reFsIrsSet{indexSet, iSubband}), 3);
+	infoAmplitude{iSubband} = mean(cat(3, infoAmplitudeSet{indexSet, iSubband}), 3);
+	powerAmplitude{iSubband} = mean(cat(3, powerAmplitudeSet{indexSet, iSubband}), 3);
 end
 save('../data/re_subband.mat');
 

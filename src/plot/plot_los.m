@@ -1,12 +1,14 @@
 clear; clc; close all; config_los;
 
 %% * Load batch data
+indexSet = 1 : nSamples;
 reSet = cell(nBatches, nCases);
 for iBatch = 1 : nBatches
     try
         load(sprintf('../data/re_los/re_los_%d.mat', iBatch), 'reInstance');
         reSet(iBatch, :) = reInstance;
     catch
+		indexSet(indexSet == iBatch) = [];
         disp(iBatch);
     end
 end
@@ -14,7 +16,7 @@ end
 %% * Average over batches
 reLos = cell(1, nCases);
 for iCase = 1 : nCases
-    reLos{iCase} = mean(cat(3, reSet{:, iCase}), 3);
+    reLos{iCase} = mean(cat(3, reSet{indexSet, iCase}), 3);
 end
 save('../data/re_los.mat');
 

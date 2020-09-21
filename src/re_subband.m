@@ -41,6 +41,5 @@ for iSubband = 1 : length(Variable.nSubbands)
 	reFsIrsInstance{iSubband} = mean(cat(3, reFsIrsSample{:, iSubband}), 3);
 end
 
-
 % * Save batch data
 save(sprintf('data/re_subband/re_subband_%d.mat', iBatch));
