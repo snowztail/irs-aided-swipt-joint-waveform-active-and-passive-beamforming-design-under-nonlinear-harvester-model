@@ -489,15 +489,11 @@
 		\begin{adjustbox}{width=\linewidth}
 			\input{assets/re_irs.tex}
 		\end{adjustbox}
-		\caption{Average R-E region for adaptive, fixed and no IRS over $B = 10$ \si{\MHz}}
+		\caption{Average R-E region for adaptive, ideal, fixed and no IRS over $B = 10$ \si{\MHz}}
 		\label{fi:re_irs}
 	\end{figure}
 
-	% Same reflection coefficient, When b small, even if n large, behaves as if ff
-	% FF channel -> closed form optimal IRS; FS channel -> tradeoff between subbands
-	% \textit{Third}, although each IRS element has the same reflection coefficient for $N$ subbands, increasing $N$ does not necessarily mean
-	% frequency selective less multipath loss less with FF IRS
-
+	Fig. \ref{fi:re_irs} and \ref{fi:re_irs} explore the average R-E region under different IRS configuration for narrowband ($B=1$ \si{\MHz}) and broadband transmission ($B=10$ \si{\MHz}). The adaptive scheme optimizes the IRS and waveform alternatively for each points in the R-E boundary. In comparison, the WIT/WPT-based schemes only perform alternating optimization for the right-most/left-most points, then fix the IRS and update the waveform to obtain the R-E curve. To gain some insight into the IRS behavior, we compare the results to that of no IRS and the ideal frequency-selective IRS, where the reflection coefficients of each element are assumed independent and adjustable over all subbands such that the IRS has a total DoF of $NL$. Since the IRS only adapts the phase of the extra channel, the optimal strategy for each FS IRS element in the SISO case would be aligning the AP-IRS-user and AP-user channel over all subbands, namely $\theta_{l,n}=e^{j2\pi\angle{(h_{D,n}/(h_{I,n,l}h_{R,n,l}))}}$. \textit{First}, it is observed that deploying an IRS around the AP effectively enlarges the achievable R-E region in both cases. This is because the IRS tweaks the weak extra channels such that they add constructively to enhance the composite channel. \textit{Second}, the performance gap among the adaptive, ideal and fixed IRS is negligible for narrowband transmission but obvious for broadband transmission. The reason is that when $B=1$ \si{\MHz}, all channels are approximately flat and the reflection coefficients of FS IRS would be the same for all subbands. In such cases, the IRS boils down to maximize a single term denoting the channel response at all subbands such that the adaptive, WIT-optimized and WPT-optimized IRS coincide with each other. On the other hand, the channel frequency selectivity becomes significant for $B=10$ \si{\MHz}, and the ideal FS IRS outperforms the others as it requires no tradeoff among subchannels. Note that the tradeoff for practical IRS indeed origins from frequency selectivity rather than number of subbands. Therefore, for narrowband SWIPT, the optimal IRS can be approximated by any candidate that roughly align the AP-IRS-user with the AP-user channels simultaneously over all subbands. Moreover, the WIT-optimized IRS tends to balance the channel strength for all subbands due to the preference of WF strategy at high SNR. In comparison, the WPT-optimized IRS is less likely to enhance few weakest subchannels when their amplitude is too small due to its inefficiency for energy harvesting. Hence, the adaptive IRS outperforms both fixed IRS.
 \end{section}
 
 \bibliographystyle{IEEEtran}
