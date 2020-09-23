@@ -1,12 +1,21 @@
-\documentclass{IEEEtran}
+\documentclass[journal]{IEEEtran}
 
 \input{packages.tex}
 
 \begin{document}
 
+\title{IRS-aided SWIPT: Joint waveform, active and passive beamforming design}
+\author{Yang Zhao, Bruno Clerckx}
+
+\maketitle
+
 \begin{abstract}
-	Simultaneous Wireless Information and Power Transfer (SWIPT) is severely restricted by the low power level of the receive Radio-Frequency (RF) signal. To tackle this problem, we introduce Intelligent Reflecting Surface (IRS) that brings a high passive beamforming gain to compensate the propagation loss and boost the energy efficiency with a low power consumption. This paper investigates an IRS-aided Orthogonal Frequency Division Multiplexing (OFDM) SWIPT system based on practical nonlinear harvester model, where a multi-antenna Access Point (AP) transmits information and energy simultaneously to a single-antenna user under the assist of IRS. We aim to maximize the Rate-Energy (R-E) region via jointly optimizing the transmit waveform at the AP, the phase shifts at the IRS, and the splitting ratio at the user. The problem is formulated as current maximization problem subject to rate constraint, and we propose an low-complexity alternating algorithm to obtain suboptimal solutions iteratively. Numerical results demonstrated that dedicated power signal is beneficial to multicarrier SWIPT, while IRS brings significant R-E region enlargement over benchmark schemes when properly configured.
+	Simultaneous Wireless Information and Power Transfer (SWIPT) is mainly restricted by the low power level of the received Radio-Frequency (RF) signal. To tackle this problem, we introduce a low-power Intelligent Reflecting Surface (IRS) that compensates the propagation loss and boosts the energy efficiency with a passive beamforming gain. This paper investigates an IRS-aided Orthogonal Frequency Division Multiplexing (OFDM) SWIPT system based on a practical nonlinear harvester model, where a multi-antenna Access Point (AP) transmits information and energy simultaneously to a single-antenna user under the assist of IRS. We aim to maximize the Rate-Energy (R-E) region via jointly optimizing the transmit waveform at the AP, the reflection coefficients at the IRS, and the power splitting ratio at the user. The proposed adaptive waveform and beamforming design is compared with the cases of no IRS, fixed and ideal frequency-selective (FS) IRS. We confirm that due to rectifier nonlinearity, a dedicated power signal can be beneficial to energy harvesting (EH) while the optimal transceiving strategy depends on the system configuration. Simulation results also demonstrate that IRS brings significant R-E enhancement over benchmark schemes when properly configured, and the optimal IRS for narrowband transmission can be approximated in the closed form with negligible performance loss.
 \end{abstract}
+
+\begin{IEEEkeywords}
+	Wireless information and power transfer, intelligent reflecting surface, waveform design, active and passive beamforming.
+\end{IEEEkeywords}
 
 \begin{section}{Introduction}
 	\begin{subsection}{Simultaneous Wireless Information and Power Transfer}
@@ -86,39 +95,41 @@
 	\begin{subsection}{Energy Harvester}
 		In this section, we briefly revisit a tractable nonlinear rectenna model that relates the harvester output DC current to the received waveform \cite{Clerckx2016a,Clerckx2018b}. Fig. \ref{ci:antenna_equivalent_circuit} illustrates the equivalent circuit of a lossless antenna, where the incoming signal creates an voltage source $v_s(t)$ and the antenna has an impedance $R_{\text{ant}}$. Let $R_{\text{in}}$ be the total input impedance of the rectifier and matching network. Assume the voltage across matching network is negligible and the RF-band noise is too small to harvest. When perfectly matched ($R_{\text{in}}=R_{\text{ant}}$) with power splitting ratio $\rho$, the rectifier input voltage is $v_{\text{in}}(t)=y(t)\sqrt{\rho R_{\text{ant}}}$.
 
-		\begin{figure}[h]
-			\centering
-			\begin{subfigure}[t]{0.45\linewidth}
+		\begin{figure}
+			\begin{minipage}[b]{0.5\linewidth}
 				\centering
-				\begin{circuitikz}[scale=0.7, transform shape]
-					\draw (0,0) to [sV=$v_s$] (0,2);
-					\draw (0,2) to [short] (1,2);
-					\draw (1,2) to [R=$R_\text{ant}$] (3,2);
-					\draw (3,2) to [short] (4,2);
-					\draw (4,2) to [R=$R_\text{in}$, v<=$v_{\text{in}}$] (4,0);
-					\draw (4,0) to [short] (2,0) node[ground](GND){};
-					\draw (2,0) to [short] (0,0);
-				\end{circuitikz}
-				\caption{Antenna equivalent circuit}
-				\label{ci:antenna_equivalent_circuit}
-			\end{subfigure}%
-			~
-			\begin{subfigure}[t]{0.45\linewidth}
+				\subfloat[Antenna equivalent circuit\label{ci:antenna_equivalent_circuit}]{
+					\resizebox{\linewidth}{!}{
+						\begin{circuitikz}[transform shape]
+							\draw (0,0) to [sV=$v_s$] (0,2);
+							\draw (0,2) to [short] (1,2);
+							\draw (1,2) to [R=$R_\text{ant}$] (3,2);
+							\draw (3,2) to [short] (4,2);
+							\draw (4,2) to [R=$R_\text{in}$, v<=$v_{\text{in}}$] (4,0);
+							\draw (4,0) to [short] (2,0) node[ground](GND){};
+							\draw (2,0) to [short] (0,0);
+						\end{circuitikz}
+					}
+				}
+			\end{minipage}%
+			\begin{minipage}[b]{0.5\linewidth}
 				\centering
-				\begin{circuitikz}[scale=0.7, transform shape]
-					\draw (0,0) to [sV=$v_\text{in}$] (0,2);
-					\draw (0,2) to [short] (0.5,2);
-					\draw (0.5,2) to [D, v<=$v_d$, i=$i_d$] (2.5,2);
-					\draw (2.5,2) to [short, -*] (3,2);
-					\draw (3,2) to [C, l_=$C$, -*] (3,0);
-					\draw (3,2) to [short] (4.5,2);
-					\draw (4.5,2) to [R=$R_L$, v<=$v_{\text{out}}$, i=$i_{\text{out}}$] (4.5,0);
-					\draw (4.5,0) to [short] (2.25,0) node[ground](GND){};
-					\draw (2.25,0) to [short] (0,0);
-				\end{circuitikz}
-				\caption{A single diode rectifier}
-				\label{ci:single_diode_rectifier}
-			\end{subfigure}
+				\subfloat[A single diode rectifier\label{ci:single_diode_rectifier}]{
+					\resizebox{\linewidth}{!}{
+						\begin{circuitikz}[transform shape]
+							\draw (0,0) to [sV=$v_\text{in}$] (0,2);
+							\draw (0,2) to [short] (0.25,2);
+							\draw (0.25,2) to [D, v<=$v_d$, i=$i_d$] (2.25,2);
+							\draw (2.25,2) to [short, -*] (2.5,2);
+							\draw (2.5,2) to [C, l_=$C$, -*] (2.5,0);
+							\draw (2.5,2) to [short] (4,2);
+							\draw (4,2) to [R=$R_L$, v<=$v_{\text{out}}$, i=$i_{\text{out}}$] (4,0);
+							\draw (4,0) to [short] (2,0) node[ground](GND){};
+							\draw (2,0) to [short] (0,0);
+						\end{circuitikz}
+					}
+				}
+			\end{minipage}
 			\caption{Rectenna circuits}
 		\end{figure}
 
@@ -493,7 +504,7 @@
 		\label{fi:re_irs}
 	\end{figure}
 
-	Fig. \ref{fi:re_irs} and \ref{fi:re_irs} explore the average R-E region under different IRS configuration for narrowband ($B=1$ \si{\MHz}) and broadband transmission ($B=10$ \si{\MHz}). The adaptive scheme optimizes the IRS and waveform alternatively for each points in the R-E boundary. In comparison, the WIT/WPT-based schemes only perform alternating optimization for the right-most/left-most points, then fix the IRS and update the waveform to obtain the R-E curve. To gain some insight into the IRS behavior, we compare the results to that of no IRS and the ideal frequency-selective IRS, where the reflection coefficients of each element are assumed independent and adjustable over all subbands such that the IRS has a total DoF of $NL$. Since the IRS only adapts the phase of the extra channel, the optimal strategy for each FS IRS element in the SISO case would be aligning the AP-IRS-user and AP-user channel over all subbands, namely $\theta_{l,n}=e^{j2\pi\angle{(h_{D,n}/(h_{I,n,l}h_{R,n,l}))}}$. \textit{First}, it is observed that deploying an IRS around the AP effectively enlarges the achievable R-E region in both cases. This is because the IRS tweaks the weak extra channels such that they add constructively to enhance the composite channel. \textit{Second}, the performance gap among the adaptive, ideal and fixed IRS is negligible for narrowband transmission but obvious for broadband transmission. The reason is that when $B=1$ \si{\MHz}, all channels are approximately flat and the reflection coefficients of FS IRS would be the same for all subbands. In such cases, the IRS boils down to maximize a single term denoting the channel response at all subbands such that the adaptive, WIT-optimized and WPT-optimized IRS coincide with each other. On the other hand, the channel frequency selectivity becomes significant for $B=10$ \si{\MHz}, and the ideal FS IRS outperforms the others as it requires no tradeoff among subchannels. Note that the tradeoff for practical IRS indeed origins from frequency selectivity rather than number of subbands. Therefore, for narrowband SWIPT, the optimal IRS can be approximated by any candidate that roughly align the AP-IRS-user with the AP-user channels simultaneously over all subbands. Moreover, the WIT-optimized IRS tends to balance the channel strength for all subbands due to the preference of WF strategy at high SNR. In comparison, the WPT-optimized IRS is less likely to enhance few weakest subchannels when their amplitude is too small due to its inefficiency for energy harvesting. Hence, the adaptive IRS outperforms both fixed IRS.
+	Fig. \ref{fi:re_irs} and \ref{fi:re_irs} explore the average R-E region under different IRS configuration for narrowband ($B=1$ \si{\MHz}) and broadband transmission ($B=10$ \si{\MHz}). The adaptive scheme optimizes the IRS and waveform alternatively for each points in the R-E boundary. In comparison, the WIT/WPT-based schemes only perform alternating optimization for the right-most/left-most points, then fix the IRS and update the waveform to obtain the R-E curve. To gain some insight into the IRS behavior, we compare the results to that of no IRS and the ideal frequency-selective IRS, where the reflection coefficients of each element are assumed independent and adjustable over all subbands such that the IRS has a total DoF of $NL$. Since the IRS only adapts the phase of the extra channel, the optimal strategy for each FS IRS element in the SISO case would be aligning the AP-IRS-user and AP-user channel over all subbands, namely $\theta_{l,n}^{\star}=e^{j2\pi\angle{(h_{D,n}/(h_{I,n,l}h_{R,n,l}))}}$. \textit{First}, it is observed that deploying an IRS around the AP effectively enlarges the achievable R-E region in both cases. This is because the IRS tweaks the weak extra channels such that they add constructively to enhance the composite channel. \textit{Second}, the performance gap among the adaptive, ideal and fixed IRS is negligible for narrowband transmission but obvious for broadband transmission. The reason is that when $B=1$ \si{\MHz}, all channels are approximately flat and the reflection coefficients of FS IRS would be the same for all subbands. In such cases, the IRS boils down to maximize a single term denoting the channel response at all subbands such that the adaptive, WIT-optimized and WPT-optimized IRS coincide with each other. On the other hand, the channel frequency selectivity becomes significant for $B=10$ \si{\MHz}, and the ideal FS IRS outperforms the others as it requires no tradeoff among subchannels. Note that the tradeoff for practical IRS indeed origins from frequency selectivity rather than number of subbands. Therefore, for narrowband SWIPT, the optimal IRS can be approximated by any candidate that roughly align the AP-IRS-user with the AP-user channels simultaneously over all subbands. Moreover, the WIT-optimized IRS tends to balance the channel strength for all subbands due to the preference of WF strategy at high SNR. In comparison, the WPT-optimized IRS is less likely to enhance few weakest subchannels when their amplitude is too small due to its inefficiency for energy harvesting. Hence, the adaptive IRS outperforms both fixed IRS.
 \end{section}
 
 \bibliographystyle{IEEEtran}

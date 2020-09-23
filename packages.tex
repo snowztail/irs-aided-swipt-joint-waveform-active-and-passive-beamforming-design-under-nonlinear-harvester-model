@@ -1,4 +1,3 @@
-\usepackage[short]{optidef}
 \usepackage{adjustbox}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -6,8 +5,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
-\usepackage{circuitikz}
-\usepackage{cuted}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{cite}
 \usepackage{environ}
 \usepackage{grffile}
 \usepackage{hyperref}
@@ -16,8 +16,21 @@
 \usepackage{pgfplots}
 \usepackage{siunitx}
 \usepackage{stfloats}
-\usepackage{subcaption}
+\usepackage{url}
 \usepackage{xcolor}
+
+\usepackage[RPvoltages]{circuitikz}
+\usepackage[T1]{fontenc}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage[short]{optidef}
+
+
+\interdisplaylinepenalty=2500
+
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows.meta}
+\usepgfplotslibrary{patchplots}
 
 \newtheorem{proposition}{Proposition}
 
@@ -25,8 +38,3 @@
 \DeclareSIUnit{\dBm}{\deci\belm}
 \DeclareSIUnit{\beli}{Bi}
 \DeclareSIUnit{\dBi}{\deci\beli}
-
-\pgfplotsset{compat=newest}
-\usetikzlibrary{plotmarks}
-\usetikzlibrary{arrows.meta}
-\usepgfplotslibrary{patchplots}
