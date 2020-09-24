@@ -38,3 +38,8 @@
 \DeclareSIUnit{\dBm}{\deci\belm}
 \DeclareSIUnit{\beli}{Bi}
 \DeclareSIUnit{\dBi}{\deci\beli}
+
+% force algorithm environment within figure
+\makeatletter
+\newcommand{\forcealgorithm}{\let\@latex@error\@gobble}
+\makeatother
