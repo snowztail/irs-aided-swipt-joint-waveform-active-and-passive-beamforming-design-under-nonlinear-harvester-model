@@ -32,8 +32,8 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
-reInstance{1} = mean(cat(3, reNlosSample{:}), 3);
-reInstance{2} = mean(cat(3, reLosSample{:}), 3);
+reNlosInstance = mean(cat(3, reNlosSample{:}), 3);
+reLosInstance = mean(cat(3, reLosSample{:}), 3);
 
 % * Save batch data
 save(sprintf('data/re_los/re_los_%d.mat', iBatch));

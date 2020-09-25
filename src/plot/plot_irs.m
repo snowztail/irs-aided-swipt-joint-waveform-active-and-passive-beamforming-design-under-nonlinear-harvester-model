@@ -9,7 +9,7 @@ reWptIrsSet = cell(nBatches, length(Variable.bandwidth));
 reNoIrsSet = cell(nBatches, length(Variable.bandwidth));
 for iBatch = 1 : nBatches
     try
-		load(sprintf('../data/re_irs/re_irs_%d.mat', bandwidth / 1e6, iBatch), 'reAdaptiveIrsInstance', 'reFsIrsInstance', 'reWitIrsInstance', 'reWptIrsInstance', 'reNoIrsInstance');
+		load(sprintf('../data/re_irs/re_irs_%d.mat', iBatch), 'reAdaptiveIrsInstance', 'reFsIrsInstance', 'reWitIrsInstance', 'reWptIrsInstance', 'reNoIrsInstance');
         reAdaptiveIrsSet(iBatch, :) = reAdaptiveIrsInstance;
         reFsIrsSet(iBatch, :) = reFsIrsInstance;
         reWitIrsSet(iBatch, :) = reWitIrsInstance;
@@ -37,10 +37,8 @@ end
 save('../data/re_irs.mat');
 
 %% * R-E plots
-figure('name', 'R-E region for adaptive, fixed and no IRS');
-rePlot = tiledlayout(length(Variable.bandwidth), 1, 'tilespacing', 'compact');
 for iBandwidth = 1 : length(Variable.bandwidth)
-	nexttile;
+	figure('name', sprintf('R-E region for adaptive, fixed and no IRS for $B = %d$ MHz', Variable.bandwidth(iBandwidth) / 1e6));
 	plotHandle = gobjects(1, length(Variable.bandwidth));
 	hold all;
 	plotHandle(1) = plot(reAdaptiveIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reAdaptiveIrs{iBandwidth}(2, :));
@@ -50,17 +48,13 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	plotHandle(5) = plot(reNoIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reNoIrs{iBandwidth}(2, :));
 	hold off;
 	grid on;
+	legend('Adaptive IRS', 'Ideal FS IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');
+	xlabel('Per-subband rate [bps/Hz]');
+	ylabel('Average output DC current [$\mu$A]');
 	xlim([0 inf]);
 	ylim([0 inf]);
-	if iBandwidth == 1
-		legend('Adaptive IRS', 'Ideal FS IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');
-	elseif iBandwidth == 2
-		ylabel('Average output DC current [$\mu$A]');
-	end
-	title(sprintf('$B = %d$ MHz', Variable.bandwidth(iBandwidth) / 1e6));
 	apply_style(plotHandle);
+	savefig(sprintf('../figures/re_irs_%dmhz.fig', Variable.bandwidth(iBandwidth) / 1e6));
+	matlab2tikz('../../assets/re_irs.tex');
+	close;
 end
-xlabel('Per-subband rate [bps/Hz]');
-
-savefig('../figures/re_irs.fig');
-matlab2tikz('../../assets/re_irs.tex');
