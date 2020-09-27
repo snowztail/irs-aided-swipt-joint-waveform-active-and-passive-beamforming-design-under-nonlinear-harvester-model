@@ -1,16 +1,66 @@
 \documentclass[journal]{IEEEtran}
 
-\input{packages.tex}
+\usepackage{adjustbox}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{array}
+% \usepackage{caption}
+\usepackage{cite}
+\usepackage{environ}
+\usepackage{grffile}
+\usepackage{hyperref}
+\usepackage{import}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{pgfplots}
+\usepackage{siunitx}
+\usepackage{stfloats}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage[RPvoltages]{circuitikz}
+\usepackage[T1]{fontenc}
+\usepackage[caption=false,font=footnotesize]{subfig}
+% \usepackage[cmintegrals]{newtxmath}
+\usepackage[short]{optidef}
+
+
+\interdisplaylinepenalty=2500
+\pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows.meta}
+\usepgfplotslibrary{patchplots}
+\newtheorem{proposition}{Proposition}
+\DeclareSIUnit{\belm}{Bm}
+\DeclareSIUnit{\dBm}{\deci\belm}
+\DeclareSIUnit{\beli}{Bi}
+\DeclareSIUnit{\dBi}{\deci\beli}
+
+\makeatletter
+\newcommand{\forcealgorithm}{\let\@latex@error\@gobble}
+\makeatother
+
 
 \begin{document}
-
 	\title{IRS-aided SWIPT: Joint waveform, active and passive beamforming design}
-	\author{Yang Zhao, Bruno Clerckx}
-
+	\author{
+		\IEEEauthorblockN{
+			Yang~Zhao,~\IEEEmembership{Student~Member,~IEEE,}
+			Bruno~Clerckx,~\IEEEmembership{Fellow,~IEEE,}
+			and~Zhenyuan~Feng,~\IEEEmembership{Student~Member,~IEEE}
+		}
+		\thanks{
+			The authors are with the Department of Electrical and Electronic Engineering, Imperial College London, London SW7 2AZ, U.K. (e-mail: yang.zhao18@imperial.ac.uk; b.clerckx@imperial.ac.uk).
+		}
+	}
 	\maketitle
 
+
 	\begin{abstract}
-		The performance of Simultaneous Wireless Information and Power Transfer (SWIPT) is mainly restricted by the strength of the received Radio-Frequency (RF) signal. To tackle this problem, we introduce a low-power Intelligent Reflecting Surface (IRS) that compensates the propagation loss and boosts the energy efficiency with a passive beamforming gain. This paper investigates an IRS-aided Orthogonal Frequency Division Multiplexing (OFDM) SWIPT system based on a practical nonlinear energy harvester model, where a multi-antenna Access Point (AP) transmits information and energy simultaneously to a single-antenna user under the assist of IRS. We aim to maximize the Rate-Energy (R-E) region via jointly optimizing the transmit waveform at the AP, the reflection coefficients at the IRS, and the power splitting ratio at the user. The performance of the proposed waveform and beamforming design is compared with those of no IRS, fixed IRS and ideal frequency-selective (FS) IRS, and we confirm that due to rectifier nonlinearity, a dedicated power signal can be beneficial to energy harvesting (EH) while the optimal transceiving strategy depends on the system configuration. Simulation results also demonstrate that the proposed adaptive IRS design brings significant R-E enhancement over benchmark schemes for wideband transmission, and the optimal IRS can be approximated in closed form with negligible performance loss for narrowband transmission.
+		The performance of Simultaneous Wireless Information and Power Transfer (SWIPT) is mainly restricted by the strength of the received Radio-Frequency (RF) signal. To tackle this problem, we introduce a low-power Intelligent Reflecting Surface (IRS) that compensates the propagation loss and boosts the energy efficiency with a passive beamforming gain. This paper investigates an IRS-aided Orthogonal Frequency Division Multiplexing (OFDM) SWIPT system based on a practical nonlinear energy harvester model, where a multi-antenna Access Point (AP) transmits information and energy simultaneously to a single-antenna user under the assist of IRS. We aim to maximize the Rate-Energy (R-E) region via jointly optimizing the transmit waveform at the AP, the reflection coefficients at the IRS, and the power splitting ratio at the user. The performance of the proposed waveform and beamforming design is compared with those of no IRS, fixed IRS and ideal frequency-selective (FS) IRS, and we confirm that due to rectifier nonlinearity, a dedicated power signal can be beneficial to energy harvesting (EH) while the optimal transceiving strategy depends on the system configuration. Simulation results also demonstrate that the proposed adaptive IRS design brings significant R-E enhancement over benchmark schemes for broadband transmission, and the optimal IRS can be approximated in closed form with negligible performance loss for SISO narrowband transmission.
 	\end{abstract}
 
 
@@ -23,7 +73,7 @@
 		\begin{subsection}{Simultaneous Wireless Information and Power Transfer}
 			\IEEEPARstart{W}{ith} the great advance in communication performance, the main challenge of wireless network has come to energy supply. Most existing mobile devices are powered by batteries that require frequent charging or replacement, which leads to high maintenance cost thus restricts the scale of networks. Although solar energy and inductive coupling has become popular alternatives, the former depends on the environment while the latter has a very short operation range. Simultaneous Wireless Information and Power Transfer (SWIPT) is a promising solution to connect and power mobile devices via electromagnetic (EM) waves in the Radio-Frequency (RF) band. It provides low power in \si{\uW} level but broad coverage up to hundreds of meters in a sustainable and controllable manner \cite{Ng2018}. The decreasing trend of electronic power consumption also boosts the paradigm shift from dedicated power source to Wireless Power Transfer (WPT) and SWIPT.
 
-			The concept of SWIPT were first cast in \cite{Varshney2008}, where the authors investigated the Rate-Energy (R-E) tradeoff for a flat Gaussian channel and typical discrete channels. Two practical receiver structures were then proposed in \cite{Zhou2013}, namely Time Switching (TS) that switches between Energy Harvesting (EH) and Information Decoding (ID) modes, and Power Splitting (PS) that splits the received signal into individual components. On top of this, \cite{Zhang2013} characterized the R-E region for a Multiple-Input Multiple-Output (MIMO) broadcast system under TS and PS setup. Information and power beamforming was then considered in multiuser Multi-Input Single-Output (MISO) systems to maximize the Weighted Sum-Power (WSP) subjective to Signal-to-Interference-plus-Noise Ratio (SINR) constraints \cite{Xu2014}. Motivated by this, \cite{Krikidis2014} investigated fundamental transceiver modules, scheduling schemes, and interference management for SWIPT systems. However, \cite{Boshkovska2015} pointed out that the Radio Frequency-to-Direct Current (RF-to-DC) conversion efficiency depends on the harvester input power level. The authors also suggested a curve-fitting based parametric harvester model and proposed an iterative resource allocation algorithm. From another perspective, \cite{Trotter2009,Boaventura2011} demonstrated that multisine waveform is more suitable for WPT as it outperforms single tone in both operation range and RF-to-DC efficiency. \cite{Clerckx2016a} derived a tractable nonlinear harvester model based on the Taylor expansion of diode I-V characteristics, then implemented waveform design for WPT. Simulation and experiments demonstrated the benefit of modelling rectifier nonlinearity in system design \cite{Kim2019,Kim2019a}. The work was extended to SWIPT in \cite{Clerckx2018} where a superposition of modulated information waveform and multisine power waveform was employed to enlarge the R-E region. In contrast, \cite{Park2018} suggested an adaptive dual-mode SWIPT, which alternates between single-tone transmission that exploits conventional modulation for high-rate applications and multisine transmission that encodes the information in the Peak-to-Average Ratio (PAPR) for power-demanding applications. Modulation and coding schemes for SWIPT also receive much attention. By assuming On-Off-Keying (OOK) where bit 1 carries energy, \cite{Hu2019} compared unary and Run-Length-Limited (RLL) code in terms of rate versus battery overflow/underflow probability. It suggested that WPT should be activated only at constellation points with a large offset. Also, a learning approach \cite{Varasteh2019c} demonstrated that the offset of the power symbol is positively correlated to the harvester energy constraint, while the optimal information symbols are symmetrically distributed around the origin. It confirmed that the superposed waveform is effective to enlarge R-E region when considering rectifier nonlinearity. As for the network design, \cite{Liu2016} proposed a cooperative SWIPT Non-Orthogonal Multiple Access (NOMA) protocol with three user selection schemes such that the strong user assists the EH of the weak user. SWIPT based on Rate Splitting (RS) technique was also explored in \cite{Mao2019}.
+			The concept of SWIPT were first cast in \cite{Varshney2008}, where the authors investigated the Rate-Energy (R-E) tradeoff for a flat Gaussian channel and typical discrete channels. Two practical receiver structures were then proposed in \cite{Zhou2013}, namely Time Switching (TS) that switches between Energy Harvesting (EH) and Information Decoding (ID) modes, and Power Splitting (PS) that splits the received signal into individual components. On top of this, \cite{Zhang2013} characterized the R-E region for a Multiple-Input Multiple-Output (MIMO) broadcast system under TS and PS setup. Information and power beamforming was then considered in multiuser Multi-Input Single-Output (MISO) systems to maximize the Weighted Sum-Power (WSP) subjective to Signal-to-Interference-plus-Noise Ratio (SINR) constraints \cite{Xu2014}. Motivated by this, \cite{Krikidis2014} investigated fundamental transceiver modules, scheduling schemes, and interference management for SWIPT systems. However, \cite{Boshkovska2015} pointed out that the Radio Frequency-to-Direct Current (RF-to-DC) conversion efficiency depends on the harvester input power level. The authors also suggested a curve-fitting based parametric harvester model and proposed an iterative resource allocation algorithm. From another perspective, \cite{Trotter2009,Boaventura2011} demonstrated that multisine waveform is more suitable for WPT as it outperforms single tone in both operation range and RF-to-DC efficiency. \cite{Clerckx2016a} derived a tractable nonlinear harvester model based on the Taylor expansion of diode I-V characteristics, then implemented waveform design for WPT. Simulation and experiments demonstrated the benefit of modelling rectifier nonlinearity in system design \cite{Kim2019,Kim2019a}. The work was extended to SWIPT in \cite{Clerckx2018} where a superposition of modulated information waveform and multisine power waveform was employed to enlarge the R-E region. In contrast, \cite{Park2018} suggested an adaptive dual-mode SWIPT, which alternates between single-tone transmission that exploits conventional modulation for high-rate applications and multisine transmission that encodes the information in the Peak-to-Average Ratio (PAPR) for power-demanding applications. Modulation and coding schemes for SWIPT also receive much attention. By assuming On-Off-Keying (OOK) where bit \num{1} carries energy, \cite{Hu2019} compared unary and Run-Length-Limited (RLL) code in terms of rate versus battery overflow/underflow probability. It suggested that WPT should be activated only at constellation points with a large offset. Also, a learning approach \cite{Varasteh2019c} demonstrated that the offset of the power symbol is positively correlated to the harvester energy constraint, while the optimal information symbols are symmetrically distributed around the origin. It confirmed that the superposed waveform is effective to enlarge R-E region when considering rectifier nonlinearity. As for the network design, \cite{Liu2016} proposed a cooperative SWIPT Non-Orthogonal Multiple Access (NOMA) protocol with three user selection schemes such that the strong user assists the EH of the weak user. SWIPT based on Rate Splitting (RS) technique was also explored in \cite{Mao2019}.
 		\end{subsection}
 
 
@@ -40,9 +90,9 @@
 
 
 		\begin{subsection}{Objective and Methodology}
-			In this paper, we study an IRS-aided downlink MISO SWIPT system where the IRS assists the information and energy transmission of a single user. A multicarrier unmodulated power waveform (deterministic multisine) is superposed to a multicarrier modulated information waveform (e.g. OFDM) to boost the energy transfer efficiency without creating additional interference. The transmit waveform, IRS phase shift and receive splitting ratio are jointly optimized to maximize the R-E tradeoff. Different from previous research, this paper focus on multicarrier IRS-SWIPT and investigates the fundamental impact of harvester nonlinearity on passive beamforming design. The R-E region characterization problem is transformed into multiple current maximization problems subject to different rate constraints. To reduce the design complexity, we propose an Alternating Optimization (AO) algorithm that updates the channel and transceiver iteratively based on Semidefinite Relaxation (SDR) and Geometric Programming (GP) techniques. Numerical results showed that SDR is tight and the proposed algorithm can find a stationary point for all tested channel realizations. We demonstrate that dedicated power waveform can boost the energy transmission efficiency such that TS and PS are preferred at low SNR and high SNR, respectively. Also, IRS brings a significant channel amplification and R-E enhancement especially when deployed next to the transmitter or the receiver. Finally, the proposed adaptive IRS design outperformed the benchmark schemes for wideband transmission, and the optimal IRS can be approximated in closed form for narrowband transmission.
+			In this paper, we study an IRS-aided downlink MISO SWIPT system where the IRS assists the information and energy transmission of a single user. A multicarrier unmodulated power waveform (deterministic multisine) is superposed to a multicarrier modulated information waveform (e.g. OFDM) to boost the energy transfer efficiency without creating additional interference. The transmit waveform, IRS phase shift and receive splitting ratio are jointly optimized to maximize the R-E tradeoff. Different from previous research, this paper focus on multicarrier IRS-SWIPT and investigates the fundamental impact of harvester nonlinearity on passive beamforming design. The R-E region characterization problem is transformed into multiple current maximization problems subject to different rate constraints. To reduce the design complexity, we propose an Alternating Optimization (AO) algorithm that updates the channel and transceiver iteratively based on Semidefinite Relaxation (SDR) and Geometric Programming (GP) techniques. Numerical results showed that SDR is tight and the proposed algorithm can find a stationary point for all tested channel realizations. We demonstrate that dedicated power waveform can boost the energy transmission efficiency such that TS and PS are preferred at low SNR and high SNR, respectively. Also, IRS brings a significant channel amplification and R-E enhancement especially when deployed next to the transmitter or the receiver. Finally, the proposed adaptive IRS design outperformed the benchmark schemes for broadband transmission, and the optimal IRS can be approximated in closed form for narrowband SISO transmission.
 
-			\textit{Organization:} The rest of this paper is organized as follows. Section \ref{se:system_model} introduces the signal, channel, decoder, harvester, and R-E tradeoff models of the IRS-aided SWIPT system. Section \ref{se:problem_formulation} tackles the waveform, active and passive beamforming optimization. Section \ref{se:performance_evaluation} presents simulation results to evaluate the proposed design. Section [TODO] concludes the paper.
+			\textit{Organization:} The rest of this paper is organized as follows. Section~\ref{se:system_model} introduces the signal, channel, decoder, harvester, and R-E tradeoff models of the IRS-aided SWIPT system. Section~\ref{se:problem_formulation} tackles the waveform, active and passive beamforming optimization. Section~\ref{se:performance_evaluation} presents simulation results to evaluate the proposed design. Section~[TODO] concludes the paper.
 
 			\textit{Notations:} Scalars are denoted by italic letters, vectors are denoted by bold lower-case letters, and matrices are denoted by bold upper-case letters. $\mathbb{C}^{x \times y}$ denotes the subspace spanned by complex $x \times y$ matrices. $\Re\{\cdot\}$ and $\Im\{\cdot\}$ stand for the real and imaginary part of a complex number or variable, respectively. $(\cdot)^*$, $(\cdot)^T$ and $(\cdot)^H$ represent the conjugate, transpose, and conjugate transpose operators, respectively. $\mathcal{A}\{\cdot\}$ extracts the DC component of a signal, and $\mathcal{E}_X\{\cdot\}$ takes the expectation over the distribution of the random variable $X$ ($X$ may be omitted for simplicity). For a scalar $x$, $\lvert{x}\rvert$ denotes its absolute value. For a vector $\boldsymbol{x}$, $\lVert{\boldsymbol{x}}\rVert$ refers to its Euclidean norm, $\arg(\boldsymbol{x})$ refers to its argument vector, and $\mathrm{diag}(\boldsymbol{x})$ refers to a square diagonal matrix with the elements of $\boldsymbol{x}$ on the main diagonal. For a general matrix $\boldsymbol{M}$, $\mathrm{rank}(\boldsymbol{M})$ denotes it rank. For a square matrix $S$, $\mathrm{Tr}(\boldsymbol{S})$ denotes its trace, and $\boldsymbol{S} \succeq 0$ means that $\boldsymbol{S}$ is positive semi-definite. The distribution of a Circularly Symmetric Complex Gaussian (CSCG) random vector with mean $\boldsymbol{\mu}$ and covariance matrix $\boldsymbol{\Sigma}$ is denoted by $\mathcal{CN}(\boldsymbol{\mu},\boldsymbol{\Sigma})$ where $\sim$ stands for "distributed as". We also denote $(\cdot)^{\star}$ and $(\cdot)^{(i)}$ as stationary solution and variable value at iteration $i$, respectively.
 		\end{subsection}
@@ -58,7 +108,7 @@
 			\label{fi:system}
 		\end{figure}
 
-		As shown in Fig. \ref{fi:system}, we consider an IRS-aided SWIPT system where a $M$-antenna AP delivers information and power simultaneously, through a $L$-reflector IRS, to a single-antenna user over $N$ orthogonal evenly-spaced subbands with center frequency $f_n$ ($n=1,\dots,N$). Perfect Channel State Information (CSI) with negligible training overhead is assumed to explore the upper bound of the proposed design. A quasi-static block fading channel model is considered for all links, and we focus on one particular block where the channels are approximately unchanged. Two practical co-located receiver architectures are compared in terms of R-E region. Specifically, TS divides each time slot into orthogonal data and energy slots and performs a time sharing between WPT and Wireless Information Transfer (WIT). In comparison, PS splits the received signal into individual ID and EH streams such that the splitting ratio $\rho$ is coupled with waveform and IRS design. Perfect synchronization is assumed among the three parties in both scenarios, and signals reflected by IRS for two and more times are omitted. We also assume the noise is too small to harvest.
+		As shown in Fig.~\ref{fi:system}, we consider an IRS-aided SWIPT system where a $M$-antenna AP delivers information and power simultaneously, through a $L$-reflector IRS, to a single-antenna user over $N$ orthogonal evenly-spaced subbands with center frequency $f_n$ ($n=1,\dots,N$). Perfect Channel State Information (CSI) with negligible training overhead is assumed to explore the upper bound of the proposed design. A quasi-static block fading channel model is considered for all links, and we focus on one particular block where the channels are approximately unchanged. Two practical co-located receiver architectures are compared in terms of R-E region. Specifically, TS divides each time slot into orthogonal data and energy slots and performs a time sharing between WPT and Wireless Information Transfer (WIT). In comparison, PS splits the received signal into individual ID and EH streams such that the splitting ratio $\rho$ is coupled with waveform and IRS design. Perfect synchronization is assumed among the three parties in both scenarios, and signals reflected by IRS for two and more times are omitted. We also assume the noise is too small to harvest.
 
 
 		\begin{subsection}{Transmit Signal}
@@ -142,9 +192,9 @@
 				\caption{Rectenna circuits}
 			\end{figure}
 
-			In this section, we briefly revisit a tractable nonlinear rectenna model that relates the harvester output DC current to the received waveform \cite{Clerckx2016a,Clerckx2018b}. Fig. \ref{ci:antenna_equivalent_circuit} illustrates the equivalent circuit of a lossless antenna, where the incoming signal creates an voltage source $v_s(t)$ and the antenna has an impedance $R_{\text{ant}}$. Let $R_{\text{in}}$ be the total input impedance of the rectifier and matching network, and we assume the voltage across matching network is negligible. When perfectly matched ($R_{\text{in}}=R_{\text{ant}}$), the rectifier input voltage is $v_{\text{in}}(t)=y(t)\sqrt{\rho R_{\text{ant}}}$.
+			In this section, we briefly revisit a tractable nonlinear rectenna model that relates the harvester output DC current to the received waveform \cite{Clerckx2016a,Clerckx2018b}. Fig.~\ref{ci:antenna_equivalent_circuit} illustrates the equivalent circuit of a lossless antenna, where the incoming signal creates an voltage source $v_s(t)$ and the antenna has an impedance $R_{\text{ant}}$. Let $R_{\text{in}}$ be the total input impedance of the rectifier and matching network, and we assume the voltage across matching network is negligible. When perfectly matched ($R_{\text{in}}=R_{\text{ant}}$), the rectifier input voltage is $v_{\text{in}}(t)=y(t)\sqrt{\rho R_{\text{ant}}}$.
 
-			Rectifiers consist of nonlinear components as diode and capacitor to produce DC output and store energy \cite{Hagerty2004,Pinuela2013}. Consider a simplified rectifier in Fig. \ref{ci:single_diode_rectifier} where a single series diode is followed by a low-pass filter with a parallel load. Denote $i_s$ as the reverse bias saturation current, $n'$ as the diode ideality factor, $v_t$ as the thermal voltage, $v_d(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the output voltage across the load. A Taylor expansion of the diode characteristic equation $i_d(t)=i_s(e^{v_d(t)/n' v_t}-1)$ around a quiescent operating point $a$ writes as $i_d(t)=\sum_{i=0}^{\infty}k_i'(v_d(t)-a)^i$, where $k_0'=i_s(e^{a/n' v_t}-1)$ and $k_i'=i_se^{a/n'v_t}/i!(n'v_t)^i$ for $i=1,\dots,\infty$. Note that this small-signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_d(t)\}=-v_{\text{out}}$ such that
+			Rectifiers consist of nonlinear components as diode and capacitor to produce DC output and store energy \cite{Hagerty2004,Pinuela2013}. Consider a simplified rectifier in Fig.~\ref{ci:single_diode_rectifier} where a single series diode is followed by a low-pass filter with a parallel load. Denote $i_s$ as the reverse bias saturation current, $n'$ as the diode ideality factor, $v_t$ as the thermal voltage, $v_d(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the output voltage across the load. A Taylor expansion of the diode characteristic equation $i_d(t)=i_s(e^{v_d(t)/n' v_t}-1)$ around a quiescent operating point $a$ writes as $i_d(t)=\sum_{i=0}^{\infty}k_i'(v_d(t)-a)^i$, where $k_0'=i_s(e^{a/n' v_t}-1)$ and $k_i'=i_se^{a/n'v_t}/i!(n'v_t)^i$ for $i=1,\dots,\infty$. Note that this small-signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_d(t)\}=-v_{\text{out}}$ such that
 			\begin{equation}\label{eq:i_d}
 				i_d(t)=\sum_{i=0}^{\infty}k_i'\rho^{i/2}R_{\text{ant}}^{i/2}y(t)^i
 			\end{equation}
@@ -187,7 +237,7 @@
 				&\triangleq \biggl\{(R_{\text{ID}}, I_{\text{EH}}): R_{\text{ID}} \le R, I_{\text{EH}} \le z,\nonumber\\
 				&\quad \frac{1}{2}\left(\lVert{\boldsymbol{w}_I}\rVert^2+\lVert{\boldsymbol{w}_P}\rVert^2\right) \le P\biggr\}
 			\end{align}
-			where $P$ is the average transmit power budget and the coefficient $1/2$ converts the peak power of sine waves to the average power.
+			where $P$ is the average transmit power budget and the coefficient \num{1/2} converts the peak power of sine waves to the average power.
 		\end{subsection}
 	\end{section}
 
@@ -201,7 +251,7 @@
 			\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}\label{co:original_modulus}
 			\addConstraint{0 \le \rho \le 1}
 		\end{maxi!}
-		Problem \ref{op:original} is intricate due to coupled variables involved in non-convex objective function \ref{ob:original} and rate constraint \ref{co:original_rate}. To reduce the design complexity, we propose an suboptimal AO algorithm that iteratively updates the IRS phase shift and transmit waveform plus the receive splitting ratio until convergence.
+		Problem~\ref{op:original} is intricate due to coupled variables involved in non-convex objective function \ref{ob:original} and rate constraint \ref{co:original_rate}. To reduce the design complexity, we propose an suboptimal AO algorithm that iteratively updates the IRS phase shift and transmit waveform plus the receive splitting ratio until convergence.
 
 
 		\begin{subsection}{IRS Phase Shift}
@@ -230,7 +280,7 @@
 				& = \sum_{n}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)}\label{eq:R_irs}\\
 				z(\boldsymbol{\Phi})
 				& = \frac{1}{2}{\beta_2}{\rho}(t_{I,0}+t_{P,0})\nonumber\\
-				& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{I,0}^2 + \sum_{n=-N+1}^{N-1}{t_{P,n}t_{P,n}^*}\right)\nonumber\\'
+				& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{I,0}^2 + \sum_{n=-N+1}^{N-1}{t_{P,n}t_{P,n}^*}\right)\nonumber\\
 				& \quad + \frac{3}{2}{\beta_4}{\rho^2}t_{I,0}t_{P,0}\label{eq:z_irs}
 			\end{align}
 
@@ -257,47 +307,44 @@
 					\end{split}
 				\end{equation}
 			\end{figure*}
-			Hence, problem \ref{op:original} is transformed to
+			Hence, problem~\ref{op:original} is transformed to
 			\begin{maxi!}
-			{\boldsymbol{\Phi}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{ob:irs}}
-			\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_rate}
-			\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}\label{co:irs_modulus}
-			\addConstraint{\boldsymbol{\Phi}\succeq{0}}
-			\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
-		\end{maxi!}
+				{\boldsymbol{\Phi}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{ob:irs}}
+				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_rate}
+				\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}\label{co:irs_modulus}
+				\addConstraint{\boldsymbol{\Phi}\succeq{0}}
+				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
+			\end{maxi!}
 
-			Problem \ref{op:irs} is not a standard Semidefinite Programming (SDP) due to the rate constraint \ref{co:irs_rate}. If we relax the rank constraint \ref{co:irs_rank} to formulate a convex problem, there is no guarantee that the optimal rank-1 solution $\bar{\boldsymbol{\phi}}^{\star}$ extracted from $\boldsymbol{\Phi}^{\star}$ is a stationary point of the original problem \ref{op:original}. Luckily, in Section \ref{se:performance_evaluation}, we numerically show that $\boldsymbol{\Phi}^{\star}$ is rank-1 for all tested channel realizations so that the performance loss is insignificant. A related version of problem \ref{op:irs} can be solved using existing optimization tools such as CVX \cite{Grant2013}.
+			Problem~\ref{op:irs} is not a standard Semidefinite Programming (SDP) due to the rate constraint \ref{co:irs_rate}. If we relax the rank constraint \ref{co:irs_rank} to formulate a convex problem, there is no guarantee that the optimal rank-\num{1} solution $\bar{\boldsymbol{\phi}}^{\star}$ extracted from $\boldsymbol{\Phi}^{\star}$ is a stationary point of the original problem~\ref{op:original}. In Section~\ref{se:performance_evaluation}, we numerically show that $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} for all tested channel realizations so that the performance loss is insignificant. A related version of problem~\ref{op:irs} can be solved using existing optimization tools such as CVX \cite{Grant2013}.
 
-			When $\boldsymbol{\Phi}^{\star}$ is rank-1, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ can be obtained by Eigenvalue Decomposition (EVD). Otherwise, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$, construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the one that maximizes the objective function \ref{ob:irs}. Finally, the phase shift is retrieved by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for phase shift optimization is summarized in Algorithm \ref{al:irs}.
-			\begin{figure}[!t]
-				\forcealgorithm
-				\begin{algorithm}[H]
-					\caption{SCA: IRS Phase Shift}
-					\label{al:irs}
-					\begin{algorithmic}[1]
-						\State \textbf{input} $\beta_2,\beta_4,\boldsymbol{h}_{D,n},\boldsymbol{H}_{I,n},\boldsymbol{h}_{R,n},\boldsymbol{w}_I,\boldsymbol{w}_P,\rho,\sigma_n,\bar{R},Q,\epsilon$
-						\State Construct $\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n}$ for $n=1,\dots,N$, $\boldsymbol{C}_{I/P,n}$ for $n=-N+1,\dots,N-1$
-						\State \textbf{initialize} $i \gets 0,\boldsymbol{\Phi}^{(0)},t_{I/P,n}^{(0)}$ for $n=-N+1,\dots,N-1$
-						\Repeat
-							\State $i \gets i + 1$
-							\State Obtain $\boldsymbol{\Phi}^{(i)}, t_{I/P,n}^{(i)}$ by solving problem \ref{op:irs}
-							\State Compute $z^{(i)}$ by \ref{eq:z_irs}
-						\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
-						\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
-						\If{$\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$}
-							\State Obtain $\bar{\boldsymbol{\phi}}^\star$ by EVD, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
-						\Else
-							\State Obtain $\boldsymbol{U},\boldsymbol{\Sigma}$ by EVD, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$
+			When $\boldsymbol{\Phi}^{\star}$ is rank-\num{1}, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ can be obtained by Eigenvalue Decomposition (EVD). Otherwise, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$, construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the one that maximizes the objective function \ref{ob:irs}. Finally, the phase shift is retrieved by $\theta_l=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The algorithm for phase shift optimization is summarized in Algorithm~\ref{al:irs}.
+			\begin{algorithm}[!t]
+				\caption{SCA: IRS Phase Shift}
+				\label{al:irs}
+				\begin{algorithmic}[1]
+					\State \textbf{input} $\beta_2,\beta_4,\boldsymbol{h}_{D,n},\boldsymbol{H}_{I,n},\boldsymbol{h}_{R,n},\boldsymbol{w}_I,\boldsymbol{w}_P,\rho,\sigma_n,\bar{R},Q,\epsilon$
+					\State Construct $\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n}$ for $n=1,\dots,N$, $\boldsymbol{C}_{I/P,n}$ for $n=-N+1,\dots,N-1$
+					\State \textbf{initialize} $i \gets 0,\boldsymbol{\Phi}^{(0)},t_{I/P,n}^{(0)}$ for $n=-N+1,\dots,N-1$
+					\Repeat
+						\State $i \gets i + 1$
+						\State Obtain $\boldsymbol{\Phi}^{(i)}, t_{I/P,n}^{(i)}$ by solving problem~\ref{op:irs}
+						\State Compute $z^{(i)}$ by \ref{eq:z_irs}
+					\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
+					\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
+					\If{$\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$}
+						\State Obtain $\bar{\boldsymbol{\phi}}^\star$ by EVD, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
+					\Else
+						\State Obtain $\boldsymbol{U},\boldsymbol{\Sigma}$ by EVD, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$
 
-							\State Generate $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $q=1,\dots,Q$
-							\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$
-							\State Set $q^{\star}=\arg\max_q{z(\boldsymbol{\Phi}_q)}$, $\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
-						\EndIf
-						\State Set $\theta_l^\star=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$
-						\State \textbf{output} $\boldsymbol{\phi}^{\star}$
-					\end{algorithmic}
-				\end{algorithm}
-			\end{figure}
+						\State Generate $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $q=1,\dots,Q$
+						\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, $\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$
+						\State Set $q^{\star}=\arg\max_q{z(\boldsymbol{\Phi}_q)}$, $\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
+					\EndIf
+					\State Set $\theta_l^\star=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$, construct $\boldsymbol{\phi}^{\star}$
+					\State \textbf{output} $\boldsymbol{\phi}^{\star}$
+				\end{algorithmic}
+			\end{algorithm}
 		\end{subsection}
 
 
@@ -321,26 +368,26 @@
 					\end{split}
 				\end{equation}
 			\end{figure*}
-			Therefore, problem \ref{op:original} is reduced to an amplitude optimization issue
+			Therefore, problem~\ref{op:original} is reduced to an amplitude optimization issue
 			\begin{maxi!}
-			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\label{op:waveform}}{}
-			\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_I}\rVert^2+\lVert{\boldsymbol{s}_P}\rVert^2\right)\le{P}}
-			\addConstraint{R(\boldsymbol{s}_I,\rho) \ge \bar{R}}
-		\end{maxi!}
-			Since problem \ref{op:waveform} involves the production of nonnegative real variables, we introduce auxiliary variables $t',\bar{\rho}$ and transform it into a reversed GP
+				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}{\label{op:waveform}}{}
+				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_I}\rVert^2+\lVert{\boldsymbol{s}_P}\rVert^2\right)\le{P}}
+				\addConstraint{R(\boldsymbol{s}_I,\rho) \ge \bar{R}}
+			\end{maxi!}
+			Since problem~\ref{op:waveform} involves the production of nonnegative real variables, we introduce auxiliary variables $t',\bar{\rho}$ and transform it into a reversed GP
 			\begin{mini!}
-			{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,\bar{\rho},t'}{\frac{1}{t'}}{\label{op:waveform_rgp}}{}
-			\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_I}\rVert^2+\lVert{\boldsymbol{s}_P}\rVert^2\right) \le P}\label{co:waveform_power}
-			\addConstraint{\frac{t'}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)} \le 1}\label{co:waveform_objective}
-			\addConstraint{\frac{2^{\bar{R}}}{\prod_{n=1}^N \left(1+{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{I,n}^2}/{\sigma_n^2}\right)} \le 1}\label{co:waveform_rate}
-			\addConstraint{\rho + \bar{\rho} \le 1}
-		\end{mini!}
+				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,\bar{\rho},t'}{\frac{1}{t'}}{\label{op:waveform_rgp}}{}
+				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_I}\rVert^2+\lVert{\boldsymbol{s}_P}\rVert^2\right) \le P}\label{co:waveform_power}
+				\addConstraint{\frac{t'}{z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)} \le 1}\label{co:waveform_objective}
+				\addConstraint{\frac{2^{\bar{R}}}{\prod_{n=1}^N \left(1+{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{I,n}^2}/{\sigma_n^2}\right)} \le 1}\label{co:waveform_rate}
+				\addConstraint{\rho + \bar{\rho} \le 1}
+			\end{mini!}
 			The denominators of \ref{co:waveform_objective}, \ref{co:waveform_rate} are posynomials \cite{Boyd2007}, and we further rewrite them as
 			\begin{align}
 				z(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)&=\sum_{m_P}{g_{m_P}(\boldsymbol{s}_I,\boldsymbol{s}_P,\rho)}\label{eq:posynomial_objective}\\
 				1+\frac{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{I,n}^2}{\sigma_n^2}&=\sum_{m_{I,n}}g_{m_{I,n}}(s_{I,n},\bar{\rho})\label{eq:posynomial_rate}
 			\end{align}
-			where $m_P,m_{I,n}$ are the number of monomials in the corresponding posynomials (obviously $m_{I,n}=2$). Following \cite{Clerckx2018b,Chiang2005}, we upper bound posynomials \ref{eq:posynomial_objective} and \ref{eq:posynomial_rate} by Arithmetic Mean-Geometric Mean (AM-GM) inequality such that problem \ref{op:waveform_rgp} reduces to
+			where $m_P,m_{I,n}$ are the number of monomials in the corresponding posynomials (obviously $m_{I,n}=2$). Following \cite{Clerckx2018b,Chiang2005}, we upper bound posynomials \ref{eq:posynomial_objective} and \ref{eq:posynomial_rate} by Arithmetic Mean-Geometric Mean (AM-GM) inequality such that problem~\ref{op:waveform_rgp} reduces to
 			\begin{mini}
 				{\boldsymbol{s}_I,\boldsymbol{s}_P,\rho,\bar{\rho},t'}{\frac{1}{t'}}{\label{op:waveform_gp}}{}
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_I}\rVert^2+\lVert{\boldsymbol{s}_P}\rVert^2\right)\le{P}}
@@ -354,65 +401,59 @@
 				\gamma_{m_{I,n}}^{(i)} & = \frac{g_{m_{I,n}}(s_{I,n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{I,n}^{(i-1)})^2}/{\sigma_n^2}}\label{eq:gamma_I}
 			\end{align}
 
-			Problem \ref{op:waveform_gp} can be solved using existing optimization tools such as CVX \cite{Grant2013}. $\boldsymbol{s}_I,\boldsymbol{s}_P,\rho$ are updated iteratively until convergence. The GP algorithm is summarized in Algorithm \ref{al:waveform}.
-			\begin{figure}[!t]
-				\begin{algorithm}[H]
-					\forcealgorithm
-					\caption{GP: Waveform and Splitting Ratio}
-					\label{al:waveform}
-					\begin{algorithmic}[1]
-						\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h},P,\sigma_n,\bar{R},\epsilon$
-						\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{s}_{I/P}^{(0)}$, $\rho^{(0)}$
-						\Repeat
-							\State $i \gets i + 1$
-							\State Update $\{\gamma_{m_P}^{(i)},\gamma_{m_{I,n}}^{(i)}\}$ by \ref{eq:gamma_P}, \ref{eq:gamma_I}
-							\State Obtain $\boldsymbol{s}_{I/P}^{(i)},\rho^{(i)}$ by solving problem \ref{op:waveform_gp}
-							\State Compute $z^{(i)}$ by \ref{eq:z_waveform}
-						\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
-						\State Set $\boldsymbol{s}_{I/P}^{\star}=\boldsymbol{s}_{I/P}^{(i)}$, $\rho^{\star}=\rho^{(i)}$, retrieve $\boldsymbol{w}_{I/P}^{\star}$ by \ref{eq:w_IP}
-						\State \textbf{Output} $\boldsymbol{w}_{I/P}^{\star}, \rho^{\star}$
-					\end{algorithmic}
-				\end{algorithm}
-			\end{figure}
+			Problem~\ref{op:waveform_gp} can be solved using existing optimization tools such as CVX \cite{Grant2013}. $\boldsymbol{s}_I,\boldsymbol{s}_P,\rho$ are updated iteratively until convergence. The GP algorithm is summarized in Algorithm~\ref{al:waveform}.
+			\begin{algorithm}[!t]
+				\caption{GP: Waveform and Splitting Ratio}
+				\label{al:waveform}
+				\begin{algorithmic}[1]
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h},P,\sigma_n,\bar{R},\epsilon$
+					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{s}_{I/P}^{(0)}$, $\rho^{(0)}$
+					\Repeat
+						\State $i \gets i + 1$
+						\State Update $\{\gamma_{m_P}^{(i)},\gamma_{m_{I,n}}^{(i)}\}$ by \ref{eq:gamma_P}, \ref{eq:gamma_I}
+						\State Obtain $\boldsymbol{s}_{I/P}^{(i)},\rho^{(i)}$ by solving problem~\ref{op:waveform_gp}
+						\State Compute $z^{(i)}$ by \ref{eq:z_waveform}
+					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
+					\State Set $\boldsymbol{s}_{I/P}^{\star}=\boldsymbol{s}_{I/P}^{(i)}$, $\rho^{\star}=\rho^{(i)}$, retrieve $\boldsymbol{w}_{I/P}^{\star}$ by \ref{eq:w_IP}
+					\State \textbf{Output} $\boldsymbol{w}_{I/P}^{\star}, \rho^{\star}$
+				\end{algorithmic}
+			\end{algorithm}
 		\end{subsection}
 
 
 		\begin{subsection}{Alternating Optimization}
-			For any direct, incident and reflective channels, we iteratively update the IRS phase shift by Algorithm \ref{al:irs} and update the transmit waveform with receive splitting ratio by Algorithm \ref{al:waveform} until convergence. The alternating algorithm is summarized in Algorithm \ref{al:alternating}.
-			\begin{figure}[!t]
-				\begin{algorithm}[H]
-					\forcealgorithm
-					\caption{AO: waveform, active and passive beamforming}
-					\label{al:alternating}
-					\begin{algorithmic}[1]
-						\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{D,n},\boldsymbol{H}_{I,n},\boldsymbol{h}_{R,n},P,\sigma_n,\bar{R},Q,\epsilon$
-						\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{w}_{I/P}^{(0)},\rho^{(0)}$
-						\Repeat
-							\State $i \gets i + 1$
-							\State Fix $\boldsymbol{w}_{I/P}^{(i-1)},\rho^{(i-1)}$ and obtain $\boldsymbol{\phi}^{(i)}$ by Algorithm \ref{al:irs}
-							\State Fix $\boldsymbol{\phi}^{(i)}$, update $\boldsymbol{h}_n^{(i)}$ by \ref{eq:h_n}, and obtain $\boldsymbol{w}_{I/P}^{(i)}, \rho^{(i)}$ by Algorithm \ref{al:waveform}
-							\State Compute $z^{(i)}$ by \ref{eq:z_irs}
-						\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
-						\State \textbf{Output} $\boldsymbol{\phi}^{\star}, \boldsymbol{w}_{I/P}^{\star}, \rho^{\star}$
-					\end{algorithmic}
-				\end{algorithm}
-			\end{figure}
+			For any direct, incident and reflective channels, we iteratively update the IRS phase shift by Algorithm~\ref{al:irs} and update the transmit waveform with receive splitting ratio by Algorithm~\ref{al:waveform} until convergence. The alternating algorithm is summarized in Algorithm~\ref{al:alternating}.
+			\begin{algorithm}[!t]
+				\caption{AO: Waveform, Active and Passive Beamforming}
+				\label{al:alternating}
+				\begin{algorithmic}[1]
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{D,n},\boldsymbol{H}_{I,n},\boldsymbol{h}_{R,n},P,\sigma_n,\bar{R},Q,\epsilon$
+					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{w}_{I/P}^{(0)},\rho^{(0)}$
+					\Repeat
+						\State $i \gets i + 1$
+						\State Fix $\boldsymbol{w}_{I/P}^{(i-1)},\rho^{(i-1)}$ and obtain $\boldsymbol{\phi}^{(i)}$ by Algorithm~\ref{al:irs}
+						\State Fix $\boldsymbol{\phi}^{(i)}$, update $\boldsymbol{h}_n^{(i)}$ by \ref{eq:h_n}, and obtain $\boldsymbol{w}_{I/P}^{(i)}, \rho^{(i)}$ by Algorithm~\ref{al:waveform}
+						\State Compute $z^{(i)}$ by \ref{eq:z_irs}
+					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
+					\State \textbf{Output} $\boldsymbol{\phi}^{\star}, \boldsymbol{w}_{I/P}^{\star}, \rho^{\star}$
+				\end{algorithmic}
+			\end{algorithm}
 		\end{subsection}
 
 
 		\begin{subsection}{Convergence}
-			The proposed alternating algorithm iteratively employs SCA-based IRS phase shift Algorithm \ref{al:irs} and GP-based waveform and splitting ratio Algorithm \ref{al:waveform} until convergence.
+			The proposed alternating algorithm iteratively employs SCA-based IRS phase shift Algorithm~\ref{al:irs} and GP-based waveform and splitting ratio Algorithm~\ref{al:waveform} until convergence.
 
 			\begin{proposition}\label{pr:irs}
-				For any feasible initial point, the proposed SCA-based Algorithm \ref{al:irs} is guaranteed to converge to a stationary point of the IRS phase shift subproblem.
+				For any feasible initial point, the proposed SCA-based Algorithm~\ref{al:irs} is guaranteed to converge to a stationary point of the IRS phase shift subproblem.
 			\end{proposition}
 
 			\begin{proof}\label{pf:irs}
-				The objective function \ref{ob:irs} is non-decreasing over iterations because the solution of problem \ref{op:irs} at iteration $i-1$ is still a feasible point at iteration $i$. Moreover, the sequence $\{\tilde{z}(\boldsymbol{\Phi}^{(i)})\}_{i=1}^{\infty}$ is bounded above due to the unit-modulus constraint \ref{co:irs_modulus}. Thus, Algorithm \ref{al:irs} is guaranteed to converge. To prove $\boldsymbol{\Phi}^{(i)}$ converge to the set of stationary points of IRS subproblem, we notice that the SCA-based Algorithm \ref{al:irs} is indeed an inner approximation algorithm \cite{Marks1978}, since $\tilde{z}(\boldsymbol{\Phi}) \le z(\boldsymbol{\Phi})$, $\partial\tilde{z}(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}=\partial z(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}$ and the approximation \ref{eq:taylor_1} -- \ref{eq:taylor_3} are asymptotically tight as $i \to \infty$ \cite{Adali2010,Li2013}. Therefore, Algorithm \ref{al:irs} converges to a stationary point.
+				The objective function \ref{ob:irs} is non-decreasing over iterations because the solution of problem~\ref{op:irs} at iteration $i-1$ is still a feasible point at iteration $i$. Moreover, the sequence $\{\tilde{z}(\boldsymbol{\Phi}^{(i)})\}_{i=1}^{\infty}$ is bounded above due to the unit-modulus constraint \ref{co:irs_modulus}. Thus, Algorithm~\ref{al:irs} is guaranteed to converge. To prove $\boldsymbol{\Phi}^{(i)}$ converge to the set of stationary points of IRS subproblem, we notice that the SCA-based Algorithm~\ref{al:irs} is indeed an inner approximation algorithm \cite{Marks1978}, since $\tilde{z}(\boldsymbol{\Phi}) \le z(\boldsymbol{\Phi})$, $\partial\tilde{z}(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}=\partial z(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}$ and the approximation \ref{eq:taylor_1} -- \ref{eq:taylor_3} are asymptotically tight as $i \to \infty$ \cite{Adali2010,Li2013}. Therefore, Algorithm~\ref{al:irs} converges to a stationary point.
 			\end{proof}
 
 			\begin{proposition}\label{pr:waveform}
-				For any feasible initial point, the GP-based Algorithm \ref{al:waveform} is guaranteed to converge to a stationary point of the waveform and splitting ratio subproblem.
+				For any feasible initial point, the GP-based Algorithm~\ref{al:waveform} is guaranteed to converge to a stationary point of the waveform and splitting ratio subproblem.
 			\end{proposition}
 
 			\begin{proof}\label{pf:waveform}
@@ -420,11 +461,11 @@
 			\end{proof}
 
 			\begin{proposition}\label{pr:ao}
-				Every limit point $(\boldsymbol{\phi}^{\star},\boldsymbol{w}_I^{\star},\boldsymbol{w}_P^{\star},\rho^{\star})$ of the proposed alternating algorithm is a stationary point of the original problem \ref{op:original}.
+				Every limit point $(\boldsymbol{\phi}^{\star},\boldsymbol{w}_I^{\star},\boldsymbol{w}_P^{\star},\rho^{\star})$ of the proposed alternating algorithm is a stationary point of the original problem~\ref{op:original}.
 			\end{proposition}
 
 			\begin{proof}\label{pf:ao}
-				The objective function \ref{ob:original} is non-decreasing over iterations of Algorithm \ref{al:alternating}, which is also upper-bounded due to the unit-modulus constraint \ref{co:original_modulus} and the average transmit power constraint \ref{co:original_power}. Thus, Algorithm \ref{al:alternating} is guaranteed to converge, namely the sequence $\{\boldsymbol{\phi}^{(i)},\boldsymbol{w}_I^{(i)},\boldsymbol{w}_P^{(i)},\rho^{(i)}\}$ generated by optimizing $\boldsymbol{\phi}$ and $\boldsymbol{w}_I,\boldsymbol{w}_P,\rho$ alternatively has limit points. As demonstrated in \cite{Grippo2000,Hong2016,Li2013a}, the solution is a stationary point of problem \ref{op:original}.
+				The objective function \ref{ob:original} is non-decreasing over iterations of Algorithm~\ref{al:alternating}, which is also upper-bounded due to the unit-modulus constraint \ref{co:original_modulus} and the average transmit power constraint \ref{co:original_power}. Thus, Algorithm~\ref{al:alternating} is guaranteed to converge, namely the sequence $\{\boldsymbol{\phi}^{(i)},\boldsymbol{w}_I^{(i)},\boldsymbol{w}_P^{(i)},\rho^{(i)}\}$ generated by optimizing $\boldsymbol{\phi}$ and $\boldsymbol{w}_I,\boldsymbol{w}_P,\rho$ alternatively has limit points. As demonstrated in \cite{Grippo2000,Hong2016,Li2013a}, the solution is a stationary point of problem~\ref{op:original}.
 			\end{proof}
 		\end{subsection}
 	\end{section}
@@ -438,9 +479,9 @@
 			\caption{System layout}
 			\label{fi:layout}
 		\end{figure}
-		To evaluate the performance of the proposed IRS-aided SWIPT system, we characterize the average R-E regions under typical setups. Consider a large open space WiFi-like environment at a center frequency of 5.18 \si{\GHz} with reference bandwidth $B=1$ \si{\MHz}. As shown in Fig. \ref{fi:layout}, we assume the IRS moves along a horizontal line parallel to the AP-user path. Define the projection of the AP-IRS path onto the AP-user path as $d_H$ and let the distance from the IRS to the AP-user path be $d_V$. Denote $d_D$, $d_I$, $d_R$ as the length of direct, incident, reflective paths, such that $d_I=\sqrt{d_H^2+d_V^2}$, $d_R=\sqrt{(d_D-d_H)^2+d_V^2}$. We fix $d_D=15$ \si{\meter}, $d_V=2$ \si{\meter} and choose a reference $d_H=2$ \si{\meter}. For all channels, the path loss and fading parameters are obtained from IEEE TGn channel model D \cite{Erceg2004}, and we regard all channels as NLoS unless otherwise mentioned. Reference path loss is set to $L_0=-35$ \si{\dB} at $d_0=1$ \si{\meter}, and taps are modelled as i.i.d. random variables with normalized total power. We choose number of subbands $N=16$ as reference and assume no spatial correlation across all arrays. Rectenna parameters are taken as $k_2=0.0034$, $k_4=0.3829$, $R_{\text{ant}}=50$ \si{\ohm}. The average Effective Isotropic Radiated Power (EIRP) is fixed to $-36$ \si{\dBm} while the reference average noise power is $\sigma_n=-40$ \si{\dBm} at all subbands. We also assume 0 \si{\dBi} IRS element gain and 2 \si{\dBi} receive antenna gain. For the algorithm, the tolerance is $\epsilon=10^{-8}$, the number of candidates in the Gaussian randomization method is $Q=10^{3}$, and the R-E region is averaged over 200 channel realizations. In the R-E boundary, the leftmost point corresponds to WPT ($\rho=1$) where power can be allocated simultaneously to modulated and unmodulated waveform to maximize the average output DC current. On the other hand, the rightmost point corresponds to WIT ($\rho=0$) where the solution coincides with water-filling algorithm allocating all power to modulated waveform only. For a fair comparison, the $x$-axis of the plots has been normalized to per-subband rate.
+		To evaluate the performance of the proposed IRS-aided SWIPT system, we characterize the average R-E regions under typical setups. Consider a large open space WiFi-like environment at a center frequency of \SI{5.18}{\GHz} with reference bandwidth $B=1\,\si{\MHz}$. As shown in Fig.~\ref{fi:layout}, we assume the IRS moves along a horizontal line parallel to the AP-user path and let $d_H$, $d_V$ be the horizontal and vertical distances from the AP to the IRS, respectively. We also denote $d_D$, $d_I$, $d_R$ as the length of direct, incident, reflective paths such that $d_I=\sqrt{d_H^2+d_V^2}$, $d_R=\sqrt{(d_D-d_H)^2+d_V^2}$, and choose $d_D=15\,\si{\meter}$, $d_V=2\,\si{\meter}$ and reference $d_H=2\,\si{\meter}$. The path loss and fading parameters are obtained from IEEE TGn channel model D \cite{Erceg2004}. Reference path loss is set to $L_0=-35\,\si{\dB}$ at $d_0=1\,\si{\meter}$. For NLoS channels, all taps are modelled as i.i.d. CSCG random variables. For LoS channels, the first tap, whose power is significantly larger, is in circular uniform distribution while the remaining taps are in i.i.d. CSCG distribution. The average sum-power of all taps is unit such that the multipath response is normalized. All channels are regarded as NLoS unless otherwise mentioned. We choose number of subbands $N=16$ as reference and assume no spatial correlation across all elements. Rectenna parameters are taken as $k_2=0.0034$, $k_4=0.3829$, $R_{\text{ant}}=50\,\si{\ohm}$. With \SI{0}{\dBi} transmit antenna gain, the average Effective Isotropic Radiated Power (EIRP) is fixed to $MP=-36\,\si{\dBm}$ while the reference average noise power is $\sigma_n=-40\,\si{\dBm}$ at all subbands. We also assume \SI{0}{\dBi} IRS element gain and \SI{0}{\dBi} receive antenna gain. For the algorithm, the tolerance is $\epsilon=10^{-8}$, the number of candidates in the Gaussian randomization method is $Q=10^{3}$, and the R-E region is averaged over \num{200} channel realizations. In the R-E boundary, the leftmost point corresponds to WPT ($\rho=1$) where power can be allocated simultaneously to modulated and unmodulated waveform to maximize the average output DC current. On the other hand, the rightmost point corresponds to WIT ($\rho=0$) where the solution coincides with the Water-Filling (WF) algorithm that allocates all power to modulated waveform only. For a fair comparison, the $x$-axis of the plots has been normalized to per-subband rate.
 
-		We first evaluate the performance of Algorithm \ref{al:irs} under SDR. It is demonstrated that $\boldsymbol{\Theta}^{\star}$ is rank-1 for all tested channel realizations with different $M$, $N$ and $L$. Therefore, $\boldsymbol{\theta}^{\star}$ can be directly obtained through eigenvalue decomposition and we claim Algorithm \ref{al:irs} converges to stationary points of problem \ref{op:irs} without performance loss.
+		We first evaluate the performance of Algorithm~\ref{al:irs} under SDR. It is demonstrated that $\boldsymbol{\Theta}^{\star}$ is rank-\num{1} for all tested channel realizations with different $M$, $N$ and $L$. Therefore, $\boldsymbol{\theta}^{\star}$ can be directly obtained through EVD and we claim Algorithm~\ref{al:irs} converges to stationary points of problem~\ref{op:irs} without performance loss.
 
 		\begin{figure}[!t]
 			\centering
@@ -460,7 +501,7 @@
 			\label{fi:waveform_subband}
 		\end{figure}
 
-		Fig. \ref{fi:re_subband} illustrates the average R-E region versus the number of subband $N$. \textit{First}, it is observed that increasing $N$ reduces the per-subband rate but boosts the harvested energy. The reason is that although each subband receives a smaller proportion of the total power, more balanced terms are introduced to further amplify the output DC current, as demonstrated by the scaling laws in \cite{Clerckx2018b}. Waveform amplitude in Fig. \ref{fi:waveform_subband} also confirmed that from the perspective of WPT, dedicated multisine waveform is unnecessary for a small $N$ but is required for a large $N$. As shown in \ref{eq:y_I4} and \ref{eq:y_P4}, the only difference of modulated and unmodulated waveform on $z$ exists in the fourth-order terms, where $\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}$ has $N^2$ monomials with a modulation gain of 2 and $\mathcal{A}\left\{y_{P}^4(t)\right\}$ has $(2N^3+N)/3$ monomials without modulation gain. Therefore, superposed waveform enlarges the R-E region for a sufficiently large $N$ (typically no smaller than 4). However, an excessively large $N$ not only requires high computation complexity but also operates out of the small-signal harvester model, thus become prohibitive. \textit{Second}, the R-E region is convex for $N = 2, 4$ and concave-convex for $N = 8, 16$. This has the consequence that PS outperforms TS for a small $N$ and is outperformed for a large $N$. When $N$ is in between, the optimal strategy is a combination of both, i.e. a time sharing between the WPT point and the tangent WIPT point obtained by power splitting. Compared with the linear harvester model that requires no dedicated power waveform and always prefer PS, the rectifier nonlinearity enlarges the R-E region by favouring a different waveform and transmission strategy, both heavily depends on $N$.
+		Fig.~\ref{fi:re_subband} illustrates the average R-E region versus the number of subband $N$. \textit{First}, it is observed that increasing $N$ reduces the per-subband rate but boosts the harvested energy. The reason is that although each subband receives a smaller proportion of the total power, more balanced terms are introduced to further amplify the output DC current, as suggested by the scaling laws in \cite{Clerckx2018b}. Waveform amplitude in Fig.~\ref{fi:waveform_subband} also confirmed that from the perspective of WPT, dedicated multisine waveform is unnecessary for a small $N$ but is required for a large $N$. As shown in \ref{eq:y_I4} and \ref{eq:y_P4}, the only difference of modulated and unmodulated waveform on $z$ exists in the fourth-order terms, where $\mathcal{E}\left\{\mathcal{A}\left\{y_{I}^4(t)\right\}\right\}$ has $N^2$ monomials with a modulation gain of \num{2} and $\mathcal{A}\left\{y_{P}^4(t)\right\}$ has $(2N^3+N)/3$ monomials without modulation gain. Therefore, superposed waveform enlarges the R-E region for a sufficiently large $N$ (typically no smaller than 4). However, an excessively large $N$ not only increases computation complexity but also operates out of the small-signal harvester model, thus become prohibitive. \textit{Second}, the R-E region is convex for $N = 2, 4$ and concave-convex for $N = 8, 16$. This has the consequence that PS outperforms TS for a small $N$ and is outperformed for a large $N$. When $N$ is in between, the optimal strategy is a combination of both, i.e. a time sharing between the WPT point and the tangent WIPT point obtained by PS. Compared with the linear harvester model that requires no dedicated power waveform and always prefer PS, the rectifier nonlinearity enlarges the R-E region by favouring a different waveform and transceiving strategy, both heavily depends on $N$.
 
 		\begin{figure}[!t]
 			\centering
@@ -471,7 +512,7 @@
 			\label{fi:re_noise}
 		\end{figure}
 
-		The influence of the average noise power on the average R-E region is investigated in Fig. \ref{fi:re_noise}. We \textit{first} note that for a large number of subbands ($N=16$), the R-E region is approximately concave for a high noise level and approximately convex for a low noise level. Hence, TS is preferred at low SNR while PS is preferred at high SNR. This is because at a low SNR, the capacity-achieving Water-Filling (WF) algorithm tends to allocate more power to few strongest subbands. As the rate constraint $\bar{R}$ decreases, more subbands are activated such that the rectifier nonlinearity further boosts the harvested energy by introducing more balanced terms to the output DC current. \textit{Second}, there exists a turning point in the R-E region especially for a small noise ($\sigma_n \le -40$ \si{\dBm}). The reason is that when $\bar{R}$ decreases slightly from the capacity, the algorithm mainly adjusts the splitting ratio $\rho$ rather than put more weight on the multisine waveform, since a small amplitude could be inefficient for energy maximization. On the other hand, as $\bar{R}$ further reduces, a modulated waveform with a very large $\rho$ could be outperformed by a composed waveform with a smaller $\rho$, due to advantage the of multisine. The result highlights the necessity of joint optimization of waveform and splitting ratio.
+		The influence of the average noise power on the average R-E region is investigated in Fig.~\ref{fi:re_noise}. We \textit{first} note that for a large number of subbands ($N=16$), the R-E region is approximately concave for a high noise level and approximately convex for a low noise level. Hence, TS is preferred at low SNR while PS is preferred at high SNR. This is because at a low SNR, the capacity-achieving WF algorithm tends to allocate more power to few strongest subbands. As the rate constraint $\bar{R}$ decreases, more subbands are activated to further boost the harvested energy via the coupling effect by rectifier nonlinearity. \textit{Second}, there exists a turning point in the R-E region especially for a small noise ($\sigma_n \le -40\,\si{\dBm}$). The reason is that when $\bar{R}$ departs slightly from the capacity, the algorithm mainly adjusts the splitting ratio $\rho$ rather than put more weight on the multisine waveform, since a small amplitude could be inefficient for energy maximization. On the other hand, as $\bar{R}$ further reduces, a modulated waveform with a very large $\rho$ could be outperformed by a superposed waveform with a smaller $\rho$, due to advantage the of multisine. The result highlights the necessity of joint optimization of waveform and splitting ratio.
 
 		\begin{figure}[!t]
 			\centering
@@ -491,7 +532,7 @@
 			\label{fi:path_loss}
 		\end{figure}
 
-		In Fig. \ref{fi:re_distance}, we compare the average R-E region achieved by different AP-IRS horizontal distance $d_H$. A \textit{first} observation is that placing the IRS closer to either the AP or the user would improve the R-E tradeoff. This origins from the exponential path loss model, where the signal attenuation increases fast at a short range and experiences marginal effect when transmission distance is long. As shown in Fig. \ref{fi:path_loss}, although the piecewise TGn path loss model further penalizes large distance (greater than 10 \si{\meter} for model D), it is still beneficial to have a short-long or long-short transmission setup. On the other hand, the result suggests that developing an IRS near the AP can effectively extend the operation range of SWIPT systems. Considering the passive characteristic of IRS, opportunities are that it can be directly supported by the SWIPT network. A \textit{second} observation is that there exists two optimal IRS development locations that maximizes the path loss production $\Lambda_I\Lambda_R$. It implies that more than one IRS may be implemented to further enlarge the R-E region, one attached to the AP and one attached to the IRS.
+		In Fig.~\ref{fi:re_distance}, we compare the average R-E region achieved by different AP-IRS horizontal distance $d_H$. A \textit{first} observation is that placing the IRS closer to either the AP or the user would improve the R-E tradeoff. This origins from the product-distance path loss model that applies to finite-size element reflection. As shown in Fig.~\ref{fi:path_loss}, although the piecewise TGn path loss model further penalizes large distance (greater than \SI{10}{\meter} for model D), it is still beneficial to have a short-long or long-short transmission setup, since signal attenuation increases fast at a short distance and experiences marginal effect at a long distance. On the other hand, it also suggests that developing an IRS next to the AP can effectively extend the operation range of SWIPT systems. Considering the passive characteristic of IRS, opportunities are that it can be directly supported by the SWIPT network. A \textit{second} observation is that there exists two optimal IRS development locations that maximizes the path loss production $\Lambda_I\Lambda_R$. It implies that more than one IRS may be implemented to further enlarge the R-E region, one attached to the AP and one attached to the IRS.
 
 		\begin{figure}[!t]
 			\centering
@@ -511,20 +552,25 @@
 			\label{fi:re_tx}
 		\end{figure}
 
-		The impact of the number of transmit antennas $M$ and IRS reflectors $L$ on the average R-E tradeoff is revealed in Fig. \ref{fi:re_reflector} and \ref{fi:re_tx}. A \textit{first} contrast indicates that adding either active or passive elements benefits both information and power transmission while preserving the concavity-convexity of the R-E region. This is because increasing $M$ or $L$ indeed enhances the equivalent composite channel strength such that the magnitude of the components in \ref{eq:z_expand} is amplified while the amount remains unchanged. Therefore, we conclude that number of transmit antennas and reflectors has negligible influence on the waveform preference and transmission strategy. A \textit{second} contrast suggests that the system performance is more sensitive to the variation of $M$ than $L$. Interestingly, the active MRT beamformer only has a transmit array gain of $M$, while the IRS collects $L$ signal copies with a receive array gain $L$ then performs an equal gain reflection with a reflect array gain $L$, achieving a total array gain of $L^2$. However, the system in our setup is dominated by the direct link. As shown in Fig. \ref{fi:path_loss}, the direct path loss $\Lambda_D$ is in the scope of $10^{-7}$ while the extra path loss product $\Lambda_I\Lambda_R$ is below $10^{-10}$. This has the consequence that despite increasing $L$ can effectively enhance the AP-IRS-user extra channel, its amplitude is still too small compared with the AP-user channel such that increasing $M$ is more effective to improve the system performance.
+		The impact of the number of transmit antennas $M$ and IRS reflectors $L$ on the average R-E tradeoff is revealed in Fig.~\ref{fi:re_reflector} and \ref{fi:re_tx}. A \textit{first} contrast indicates that adding either active or passive elements benefits both information and power transmission while preserving the concavity-convexity of the R-E region. This is because increasing $M$ or $L$ indeed enhances the equivalent composite channel strength such that the magnitude of the components in \ref{eq:z_expand} is amplified while the amount remains unchanged. Therefore, we conclude that number of transmit antennas and reflectors have basically no influence on the waveform preference and transceiving strategy. A \textit{second} contrast suggests that the system performance is more sensitive to the variation of $M$, compared with $L$. Interestingly, the active MRT beamformer only has a transmit array gain of $M$. In contrast, the IRS collects $L$ signal copies with a receive array gain $L$, then performs an equal gain reflection with a reflect array gain $L$, achieving a total array gain of $L^2$. However, the system performance in our setup is dominated by the direct link. As shown in Fig.~\ref{fi:path_loss}, the direct path loss $\Lambda_D$ is in the scope of \num{e-7} while the extra path loss product $\Lambda_I\Lambda_R$ is below \num{e-10}. This has the consequence that despite increasing $L$ can effectively enhance the AP-IRS-user extra channel, its amplitude is still too small compared with the AP-user channel such that increasing $M$ is more effective to improve the system performance.
 
 		\begin{figure}[!t]
 			\centering
 			\begin{adjustbox}{width=\linewidth}
 				\input{assets/re_irs.tex}
 			\end{adjustbox}
-			\caption{Average R-E region for adaptive, ideal, fixed and no IRS over $B = 10$ \si{\MHz}}
+			\caption{Average R-E region for adaptive, ideal, fixed and no IRS over $B=10\,\si{\MHz}$}
 			\label{fi:re_irs}
 		\end{figure}
 
-		Fig. \ref{fi:re_irs} and \ref{fi:re_irs} explore the average R-E region under different IRS configuration for narrowband ($B=1$ \si{\MHz}) and broadband transmission ($B=10$ \si{\MHz}). The adaptive scheme optimizes the IRS and waveform alternatively for each points in the R-E boundary. In comparison, the WIT/WPT-based schemes only perform alternating optimization for the right-most/left-most points, then fix the IRS and update the waveform to obtain the R-E curve. To gain some insight into the IRS behavior, we compare the results to that of no IRS and the ideal frequency-selective IRS, where the reflection coefficients of each element are assumed independent and adjustable over all subbands such that the IRS has a total DoF of $NL$. Since the IRS only adapts the phase of the extra channel, the optimal strategy for each FS IRS element in the SISO case would be aligning the AP-IRS-user and AP-user channel over all subbands, namely $\theta_{l,n}^{\star}=e^{j2\pi\angle{(h_{D,n}/(h_{I,n,l}h_{R,n,l}))}}$. \textit{First}, it is observed that deploying an IRS around the AP effectively enlarges the achievable R-E region in both cases. This is because the IRS tweaks the weak extra channels such that they add constructively to enhance the composite channel. \textit{Second}, the performance gap among the adaptive, ideal and fixed IRS is negligible for narrowband transmission but obvious for broadband transmission. The reason is that when $B=1$ \si{\MHz}, all channels are approximately flat and the reflection coefficients of FS IRS would be the same for all subbands. In such cases, the IRS boils down to maximize a single term denoting the channel response at all subbands such that the adaptive, WIT-optimized and WPT-optimized IRS coincide with each other. On the other hand, the channel frequency selectivity becomes significant for $B=10$ \si{\MHz}, and the ideal FS IRS outperforms the others as it requires no tradeoff among subchannels. Note that the tradeoff for practical IRS indeed origins from frequency selectivity rather than number of subbands. Therefore, for narrowband SWIPT, the optimal IRS can be approximated by any candidate that roughly align the AP-IRS-user with the AP-user channels simultaneously over all subbands. Moreover, the WIT-optimized IRS tends to balance the channel strength for all subbands due to the preference of WF strategy at high SNR. In comparison, the WPT-optimized IRS is less likely to enhance few weakest subchannels when their amplitude is too small due to its inefficiency for energy harvesting. Hence, the adaptive IRS outperforms both fixed IRS.
+		Fig.~\ref{fi:re_irs} and [TODO] explore the average R-E region under different IRS configuration for narrowband transmission ($B=1\,\si{\MHz}$) and broadband transmission ($B=10\,\si{\MHz}$). The adaptive scheme optimizes the IRS and waveform alternatively for each points in the R-E boundary. In comparison, the WIT/WPT-based schemes only perform alternating optimization for the right-most/left-most points, then fix the IRS and update the waveform to obtain the R-E curve. To gain some insight into the IRS behavior, we compare the results above to that of no IRS and the ideal FS IRS, where we assume each element has independent and adjustable reflection coefficients over all subbands such that the ideal IRS has a total DoF of $NL$. Since the IRS only adapts the phase of the extra channel, the optimal strategy for each FS reflector in the SISO case would be aligning the AP-IRS-user and AP-user channel over all subbands, namely
+		\begin{equation}
+			\theta_{l,n}^{\star}=e^{j\arg{\left(h_{D,n}/(h_{I,n,l}h_{R,n,l})\right)}}
+		\end{equation}
+		\textit{First}, it is observed that the presence of IRS effectively enlarges the achievable R-E region in both cases. This is because the IRS tweaks the weak extra channels such that they add constructively to enhance the composite channel. \textit{Second}, the performance gaps of the adaptive, ideal and fixed IRS are negligible for narrowband transmission but noticeable for broadband transmission. The reason is that when $B=1\,\si{\MHz}$, all channels are approximately flat and the response of all subbands are roughly the same. In such cases, the additional DoF provided by the frequency selectivity of the ideal IRS would be unnecessary as the the optimal reflection coefficients of each element would almost align at all subbands. Similarly, WIT-optimized and WPT-optimized IRS boil down to optimizing a single term representing the composite channel response at all subbands. Therefore, all IRS strategies coincide with each other, and the optimal IRS for narrowband SISO SWIPT can be approximated by any candidate that roughly align the AP-IRS-user channel with the AP-user channel simultaneously over all subbands. On the other hand, the channel frequency selectivity becomes significant for $B=10\,\si{\MHz}$, and the ideal FS IRS outperforms the others as it requires no tradeoff among subchannels. Moreover, the WIT-optimized IRS tends to equalize the channel strength for all subbands as possible, due to the preference of WF strategy at high SNR. In comparison, the WPT-optimized IRS beams less towards few weakest subchannels, due to the inefficiency of small-amplitude tones in energy harvesting. Therefore, the adaptive IRS design is more suitable for broadband SWIPT. Note that the tradeoff for practical IRS indeed origins from frequency selectivity rather than number of subbands.
 	\end{section}
 
+
 	\bibliographystyle{IEEEtran}
-	\bibliography{library.bib}
+	\bibliography{IEEEabrv,library.bib}
 \end{document}
