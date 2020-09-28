@@ -1,7 +1,7 @@
 clear; clc; close all; config_irs;
 
 %% * Load batch data
-indexSet = 1 : nSamples;
+indexSet = 1 : nBatches;
 reAdaptiveIrsSet = cell(nBatches, length(Variable.bandwidth));
 reFsIrsSet = cell(nBatches, length(Variable.bandwidth));
 reWitIrsSet = cell(nBatches, length(Variable.bandwidth));

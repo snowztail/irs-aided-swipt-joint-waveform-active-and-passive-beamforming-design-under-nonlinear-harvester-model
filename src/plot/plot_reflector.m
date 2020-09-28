@@ -1,7 +1,7 @@
 clear; clc; close all; config_reflector;
 
 %% * Load batch data
-indexSet = 1 : nSamples;
+indexSet = 1 : nBatches;
 reSet = cell(nBatches, length(Variable.nReflectors));
 for iBatch = 1 : nBatches
     try

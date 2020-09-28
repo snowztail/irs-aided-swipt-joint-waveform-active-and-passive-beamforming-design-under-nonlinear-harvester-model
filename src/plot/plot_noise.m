@@ -1,7 +1,7 @@
 clear; clc; close all; config_noise;
 
 %% * Load batch data
-indexSet = 1 : nSamples;
+indexSet = 1 : nBatches;
 reSet = cell(nBatches, length(Variable.noisePower));
 powerRatio = zeros(nBatches, length(Variable.noisePower), nSamples);
 for iBatch = 1 : nBatches

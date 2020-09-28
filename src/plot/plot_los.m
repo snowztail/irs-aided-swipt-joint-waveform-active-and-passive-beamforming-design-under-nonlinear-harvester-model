@@ -1,7 +1,7 @@
 clear; clc; close all; config_los;
 
 %% * Load batch data
-indexSet = 1 : nSamples;
+indexSet = 1 : nBatches;
 reNlosSet = cell(nBatches, 1);
 reLosSet = cell(nBatches, 1);
 rateNlosSet = zeros(nBatches, 1);
@@ -52,32 +52,28 @@ figure('name', 'WIT and WPT CDF for IRS-aided NLoS and LoS channels');
 cdfPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
 
 nexttile;
-plotHandle = gobjects(1, nCases);
 hold all;
-plotHandle(1) = cdfplot(rateNlosSet(indexSet));
-plotHandle(2) = cdfplot(rateLosSet(indexSet));
+cdfplot(rateNlosSet(indexSet));
+cdfplot(rateLosSet(indexSet));
 hold off;
 grid on;
-legend('NLoS', 'LoS');
-xlabel('Per-subband rate [bps/Hz]');
+legend('NLoS', 'LoS', 'location', 'se');
+xlabel('WIT-only: Achievable per-subband rate [bps/Hz]');
 ylabel('Cumulative probability');
 xlim([0 inf]);
 ylim([0 inf]);
-apply_style(plotHandle);
 
 nexttile;
-plotHandle = gobjects(1, nCases);
 hold all;
-plotHandle(1) = cdfplot(currentNlosSet(indexSet));
-plotHandle(2) = cdfplot(currentLosSet(indexSet));
+cdfplot(currentNlosSet(indexSet));
+cdfplot(currentLosSet(indexSet));
 hold off;
 grid on;
-legend('NLoS', 'LoS');
-xlabel('Average output DC current [$\mu$A]');
+legend('NLoS', 'LoS', 'location', 'se');
+xlabel('WPT-only: Achievable average output DC current [$\mu$A]');
 ylabel('Cumulative probability');
 xlim([0 inf]);
 ylim([0 inf]);
-apply_style(plotHandle);
 
 savefig('../figures/cdf_los.fig');
 matlab2tikz('../../assets/cdf_los.tex');
