@@ -13,8 +13,8 @@ for iChannel = 1 : nChannels
     [incidentNlosTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
     [reflectiveNlosTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, 'nlos');
 
-    [incidentLosTapGain, ~] = tap_tgn(corTx, corIrs, 'nlos');
-    [reflectiveLosTapGain, ~] = tap_tgn(corIrs, corRx, 'nlos');
+    [incidentLosTapGain, ~] = tap_tgn(corTx, corIrs, 'los');
+    [reflectiveLosTapGain, ~] = tap_tgn(corIrs, corRx, 'los');
 
     % * Construct channels
     [directNlosChannel] = frequency_response(directNlosTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
