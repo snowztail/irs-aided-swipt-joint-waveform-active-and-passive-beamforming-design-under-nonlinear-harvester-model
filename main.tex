@@ -45,7 +45,7 @@
 
 
 \begin{document}
-	\title{IRS-aided SWIPT: Joint waveform, active and passive beamforming design}
+	\title{IRS-Aided SWIPT: Joint Waveform, Active and Passive Beamforming Design}
 	\author{
 		\IEEEauthorblockN{
 			Yang~Zhao,~\IEEEmembership{Student~Member,~IEEE,}
@@ -201,7 +201,7 @@
 
 			By discarding the non-DC components, taking expectation over symbol distribution, and truncating \ref{eq:i_d} to the $n_0$-th order, we approximate the average output DC current for a given channel as
 			\begin{equation}\label{eq:i_out}
-				i_{\text{out}}(t)=\mathcal{A}\{i_d(t)\}\approx\sum_{i=0}^{\infty}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y(t)^i\right\}}\right\}
+				i_{\text{out}}(t)=\mathcal{A}\{i_d(t)\}\approx\sum_{i=0}^{n_0}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y(t)^i\right\}}\right\}
 			\end{equation}
 
 			With the assumption of evenly spaced frequencies, it holds that $\mathcal{A}\left\{y(t)^i\right\}=0$ for odd $i$ thus the related terms has no contribution to DC output. However, $k_i'$ is still a function of $i_{\text{out}}$, and \cite{Clerckx2016a} proved that maximizing a truncated $i_{\text{out}}$ is equivalent to maximizing a monotonic function
@@ -556,13 +556,22 @@
 		\begin{figure}[!t]
 			\centering
 			\begin{adjustbox}{width=\linewidth}
-				\input{assets/re_irs.tex}
+				\input{assets/re_irs_1mhz.tex}
 			\end{adjustbox}
-			\caption{Average R-E region for adaptive, ideal, fixed and no IRS over $B=10\,\si{\MHz}$}
-			\label{fi:re_irs}
+			\caption{Average R-E region for adaptive, ideal, fixed and no IRS over $B=1\,\si{\MHz}$}
+			\label{fi:re_irs_1mhz}
 		\end{figure}
 
-		Fig.~\ref{fi:re_irs} and [TODO] explore the average R-E region under different IRS configuration for narrowband transmission ($B=1\,\si{\MHz}$) and broadband transmission ($B=10\,\si{\MHz}$). The adaptive scheme optimizes the IRS and waveform alternatively for each points in the R-E boundary. In comparison, the WIT/WPT-based schemes only perform alternating optimization for the right-most/left-most points, then fix the IRS and update the waveform to obtain the R-E curve. To gain some insight into the IRS behavior, we compare the results above to that of no IRS and the ideal FS IRS, where we assume each element has independent and adjustable reflection coefficients over all subbands such that the ideal IRS has a total DoF of $NL$. Since the IRS only adapts the phase of the extra channel, the optimal strategy for each FS reflector in the SISO case would be aligning the AP-IRS-user and AP-user channel over all subbands, namely
+		\begin{figure}[!t]
+			\centering
+			\begin{adjustbox}{width=\linewidth}
+				\input{assets/re_irs_10mhz.tex}
+			\end{adjustbox}
+			\caption{Average R-E region for adaptive, ideal, fixed and no IRS over $B=10\,\si{\MHz}$}
+			\label{fi:re_irs_10mhz}
+		\end{figure}
+
+		Fig.~\ref{fi:re_irs_1mhz} and \ref{fi:re_irs_10mhz} explore the average R-E region under different IRS configuration for narrowband transmission ($B=1\,\si{\MHz}$) and broadband transmission ($B=10\,\si{\MHz}$). The adaptive scheme optimizes the IRS and waveform alternatively for each points in the R-E boundary. In comparison, the WIT/WPT-based schemes only perform alternating optimization for the right-most/left-most points, then fix the IRS and update the waveform to obtain the R-E curve. To gain some insight into the IRS behavior, we compare the results above to that of no IRS and the ideal FS IRS, where we assume each element has independent and adjustable reflection coefficients over all subbands such that the ideal IRS has a total DoF of $NL$. Since the IRS only adapts the phase of the extra channel, the optimal strategy for each FS reflector in the SISO case would be aligning the AP-IRS-user and AP-user channel over all subbands, namely
 		\begin{equation}
 			\theta_{l,n}^{\star}=e^{j\arg{\left(h_{D,n}/(h_{I,n,l}h_{R,n,l})\right)}}
 		\end{equation}
