@@ -55,6 +55,6 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	ylim([0 inf]);
 	apply_style(plotHandle);
 	savefig(sprintf('../figures/re_irs_%dmhz.fig', Variable.bandwidth(iBandwidth) / 1e6));
-	matlab2tikz('../../assets/re_irs.tex');
+	matlab2tikz(sprintf('../../assets/re_irs_%dmhz.tex', Variable.bandwidth(iBandwidth) / 1e6));
 	close;
 end
