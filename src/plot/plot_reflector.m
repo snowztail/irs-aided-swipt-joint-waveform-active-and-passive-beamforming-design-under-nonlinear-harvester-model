@@ -26,7 +26,7 @@ legendString = cell(1, length(Variable.nReflectors));
 plotHandle = gobjects(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
     plotHandle(iReflector) = plot(reReflector{iReflector}(1, :) / nSubbands, 1e6 * reReflector{iReflector}(2, :));
-    legendString{iReflector} = sprintf('$M = %d, L = %d$', nTxs, Variable.nReflectors(iReflector));
+    legendString{iReflector} = sprintf('$L = %d$', Variable.nReflectors(iReflector));
     hold on;
 end
 hold off;
