@@ -58,7 +58,7 @@ nChannels = 1;
 
 %% * Variable
 % number of reflecting elements in IRS
-Variable.nReflectors = 0 : 10 : 50;
+Variable.nReflectors = [0 10 20 40 80 120 160];
 
 %% * PBS
 % number of individual jobs
