@@ -1,4 +1,4 @@
-clear; clc; setup; config_los;
+clear; clc; setup; config_re_los;
 
 %% ! R-E region for IRS-aided NLoS and LoS channels
 reNlosSample = cell(nChannels, 1);

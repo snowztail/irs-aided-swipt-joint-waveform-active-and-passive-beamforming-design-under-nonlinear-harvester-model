@@ -1,4 +1,4 @@
-clear; clc; close all; config_noise;
+clear; clc; close all; config_re_noise;
 
 %% * Load batch data
 indexSet = 1 : nBatches;

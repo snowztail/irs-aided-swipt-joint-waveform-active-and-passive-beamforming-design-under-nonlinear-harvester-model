@@ -1,4 +1,4 @@
-clear; clc; setup; config_subband;
+clear; clc; setup; config_re_subband;
 
 %% ! R-E region vs number of subbands
 reAdaptiveIrsSample = cell(nChannels, length(Variable.nSubbands));

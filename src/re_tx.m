@@ -1,4 +1,4 @@
-clear; clc; setup; config_tx;
+clear; clc; setup; config_re_tx;
 
 %% ! R-E region vs number of transmit antennas
 reSample = cell(nChannels, length(Variable.nTxs));

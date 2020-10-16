@@ -1,4 +1,4 @@
-clear; clc; setup; config_noise;
+clear; clc; setup; config_re_noise;
 
 %% ! R-E region for different large-scale SNR
 reSample = cell(nChannels, length(Variable.noisePower));

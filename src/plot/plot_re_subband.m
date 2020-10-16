@@ -1,4 +1,4 @@
-clear; clc; close all; config_subband;
+clear; clc; close all; config_re_subband;
 
 %% * Load batch data
 indexSet = 1 : nBatches;

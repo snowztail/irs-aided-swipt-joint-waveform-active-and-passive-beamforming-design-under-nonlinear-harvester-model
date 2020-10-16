@@ -1,4 +1,4 @@
-clear; clc; setup; config_distance;
+clear; clc; setup; config_re_distance;
 
 %% ! R-E region vs AP-IRS distance
 reSample = cell(nChannels, length(Variable.horizontalDistance));

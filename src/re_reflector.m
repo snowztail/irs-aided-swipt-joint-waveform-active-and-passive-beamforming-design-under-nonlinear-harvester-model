@@ -1,4 +1,4 @@
-clear; clc; setup; config_reflector;
+clear; clc; setup; config_re_reflector;
 
 %% ! R-E region vs number of IRS elements
 reSample = cell(nChannels, length(Variable.nReflectors));

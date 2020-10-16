@@ -1,4 +1,4 @@
-clear; clc; close all; config_tx;
+clear; clc; close all; config_re_tx;
 
 %% * Load batch data
 indexSet = 1 : nBatches;

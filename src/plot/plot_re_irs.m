@@ -1,4 +1,4 @@
-clear; clc; close all; config_irs;
+clear; clc; close all; config_re_irs;
 
 %% * Load batch data
 indexSet = 1 : nBatches;

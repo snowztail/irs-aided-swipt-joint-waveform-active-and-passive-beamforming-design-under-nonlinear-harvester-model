@@ -1,4 +1,4 @@
-clear; clc; close all; config_distance;
+clear; clc; close all; config_re_distance;
 
 %% * Load batch data
 indexSet = 1 : nBatches;

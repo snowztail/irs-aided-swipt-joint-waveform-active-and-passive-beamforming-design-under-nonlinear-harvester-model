@@ -1,4 +1,4 @@
-clear; clc; setup; config_irs;
+clear; clc; setup; config_re_irs;
 
 %% ! R-E region for fixed and adaptive IRS
 reAdaptiveIrsSample = cell(nChannels, length(Variable.bandwidth));
