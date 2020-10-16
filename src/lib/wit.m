@@ -71,6 +71,7 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
             subject to
                 diag(irsMatrix) == ones(nReflectors + 1, 1);
         cvx_end
+        irsMatrix = full(irsMatrix);
 
         % * Recover rank-1 solution by randomization method
         [u, sigma] = eig(irsMatrix);
