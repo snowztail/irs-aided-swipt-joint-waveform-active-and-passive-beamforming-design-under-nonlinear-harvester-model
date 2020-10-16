@@ -63,4 +63,4 @@ nCases = 2;
 
 %% * PBS
 % number of individual jobs
-nBatches = 2e2;
+nBatches = 3e2;

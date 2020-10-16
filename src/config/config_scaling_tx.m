@@ -61,4 +61,4 @@ Variable.nTxs = [1, 5 : 5 : 1e2];
 
 %% * PBS
 % number of individual jobs
-nBatches = 2e2;
+nBatches = 3e2;

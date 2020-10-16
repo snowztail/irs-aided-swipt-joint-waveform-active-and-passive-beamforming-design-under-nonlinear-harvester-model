@@ -63,4 +63,4 @@ Variable.bandwidth = [1e6 1e7];
 
 %% * PBS
 % number of individual jobs
-nBatches = 2e2;
+nBatches = 3e2;
