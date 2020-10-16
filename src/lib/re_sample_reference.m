@@ -11,7 +11,7 @@ function [sample, solution] = re_sample_reference(beta2, beta4, channel, txPower
     %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %   - nSamples (S): number of samples in R-E region
-    %   - tolerance (\epsilon): minimum gain ratio per iteration
+    %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
     %   - sample [2 * nSamples]: rate-energy sample

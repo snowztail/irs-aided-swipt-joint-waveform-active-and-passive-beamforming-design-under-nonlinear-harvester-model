@@ -12,7 +12,7 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     %   - powerRatio (\rho): power splitting ratio
     %
     % Output:
-    %   - current (z): posynomial proportional to current
+    %	- current (z): objective posynomial to maximize output DC current
     %   - currentMonomial (g_P): GM monomials
     %   - currentExponent (\gamma_P): GM exponents
     %

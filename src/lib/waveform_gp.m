@@ -1,6 +1,6 @@
 function [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, channel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance)
     % Function:
-    %   - jointly optimize waveform and splitting ratio to maximize the R-E region
+    %   - jointly optimize waveform amplitude and splitting ratio to maximize the R-E region
     %
     % Input:
     %   - beta2: coefficients on second-order current terms
@@ -13,13 +13,15 @@ function [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] =
     %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %   - rateConstraint (\bar{R}): user rate constraint
-    %   - tolerance (\epsilon): minimum gain ratio per iteration
+    %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
     %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
     %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
     %   - infoRatio (\bar{\rho}): information splitting ratio
-    %   - powerRatio (\rho): power splitting ratio
+	%   - powerRatio (\rho): power splitting ratio
+	%	- rate (R): achievable sum rate of all subbands
+	%	- current (z): objective function to maximize output DC current
     %
     % Comment:
     %   - obtain waveform amplitude in frequency domain

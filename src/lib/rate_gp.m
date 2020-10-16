@@ -10,7 +10,7 @@ function [rate, rateMonomial, rateExponent] = rate_gp(channelAmplitude, infoAmpl
     %   - noisePower (\sigma_n^2): average noise power
     %
     % Output:
-    %   - rate (R): maximum achievable rate
+    %	- rate (R): achievable sum rate of all subbands
     %   - rateMonomial (g_I): GM monomials
     %   - rateExponent (\gamma_I): GM exponents
     %

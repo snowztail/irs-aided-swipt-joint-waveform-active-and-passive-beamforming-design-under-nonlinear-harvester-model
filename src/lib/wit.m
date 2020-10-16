@@ -9,10 +9,10 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
     %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %   - nCandidates (Q): number of CSCG random vectors to generate
-    %   - tolerance (\epsilon): minimum gain ratio per iteration
+    %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
-    %   - capacity (R): channel capacity
+    %	- rate (R): achievable sum rate of all subbands
     %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
     %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
     %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain

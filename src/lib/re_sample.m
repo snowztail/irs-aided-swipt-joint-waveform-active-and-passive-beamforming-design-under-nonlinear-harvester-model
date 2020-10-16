@@ -12,7 +12,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     %   - noisePower (\sigma_n^2): average noise power
     %   - nCandidates (Q): number of CSCG random vectors to generate
     %   - nSamples (S): number of samples in R-E region
-    %   - tolerance (\epsilon): minimum gain ratio per iteration
+    %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
     %   - sample [2 * nSamples]: rate-energy sample

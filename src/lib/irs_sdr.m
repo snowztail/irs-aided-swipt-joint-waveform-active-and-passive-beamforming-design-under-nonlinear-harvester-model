@@ -16,7 +16,7 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
     %   - noisePower (\sigma_n^2): average noise power
     %   - rateConstraint (\bar{R}): user rate constraint
     %   - nCandidates (Q): number of CSCG random vectors to generate
-    %   - tolerance (\epsilon): minimum gain ratio per iteration
+    %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
     %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
