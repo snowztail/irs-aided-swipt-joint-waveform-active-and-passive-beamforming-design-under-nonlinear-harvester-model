@@ -8,7 +8,7 @@ resistance = 50;
 beta2 = k2 * resistance;
 beta4 = k4 * resistance ^ 2;
 % number of transmit and receive antennas
-nTxs = 1;
+nTxs = 4;
 nRxs = 1;
 % number of users
 nUsers = 1;
@@ -58,7 +58,7 @@ nChannels = 1;
 
 %% * Variable
 % number of reflecting elements in IRS
-Variable.nReflectors = [0 10 20 40 80 120 160];
+Variable.nReflectors = 2 .^ (0 : 3);
 
 %% * PBS
 % number of individual jobs
