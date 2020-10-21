@@ -1,0 +1,131 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=4.521in,
+height=1.537in,
+at={(0.758in,2.51in)},
+scale only axis,
+xmin=1,
+xtick={  1,  10,  20,  30,  40,  50,  60,  70,  80,  90, 100},
+xlabel style={font=\color{white!15!black}},
+xlabel={Number of reflectors},
+ymin=4,
+ymax=8,
+ylabel style={font=\color{white!15!black}},
+ylabel={Per-subband rate [bps/Hz]},
+axis background/.style={fill=white},
+xminorgrids,
+yminorgrids,
+legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	4.51276101029892\\
+5	4.71865802404177\\
+10	5.05085214754541\\
+15	5.25058186384132\\
+20	5.62187727306585\\
+25	5.74592436514378\\
+30	5.95391146113239\\
+35	6.14421745381125\\
+40	6.2781468359989\\
+45	6.39710794216289\\
+50	6.62005815547169\\
+55	6.89516705465623\\
+60	6.9038771938073\\
+65	7.07506619060094\\
+70	7.24476128105311\\
+75	7.3088878990395\\
+80	7.45428690355036\\
+85	7.61125028936806\\
+90	7.69668956694316\\
+95	7.82932287499184\\
+100	7.83934404742251\\
+};
+\addlegendentry{WIT}
+
+\end{axis}
+
+\begin{axis}[%
+width=4.521in,
+height=1.537in,
+at={(0.758in,0.481in)},
+scale only axis,
+xmin=1,
+xtick={  1,  10,  20,  30,  40,  50,  60,  70,  80,  90, 100},
+xlabel style={font=\color{white!15!black}},
+xlabel={Number of reflectors},
+ymin=0,
+ymax=800,
+ylabel style={font=\color{white!15!black}},
+ylabel={Average output DC current [$\mu$A]},
+axis background/.style={fill=white},
+axis x line*=bottom,
+axis y line*=left,
+xminorgrids,
+yminorgrids,
+legend style={at={(0.03,0.97)}, anchor=north west, legend cell align=left, align=left, draw=white!15!black}
+]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	7.22351463173469\\
+5	8.96583779428181\\
+10	11.2502713240422\\
+15	12.6259367326315\\
+20	15.9506371448943\\
+25	16.6627297361396\\
+30	19.3868914081851\\
+35	23.4665354015546\\
+40	26.8436939191394\\
+45	28.7632202111949\\
+50	32.721371523264\\
+55	42.4654439392415\\
+60	45.1979559740949\\
+65	49.6633324752468\\
+70	58.896369859137\\
+75	63.4988469030891\\
+80	74.417006600575\\
+85	84.8729014707107\\
+90	90.8067137862125\\
+95	104.05763228228\\
+100	109.532321840527\\
+};
+\addlegendentry{Linear WPT}
+
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	22.4590480204802\\
+5	31.3081186302156\\
+10	43.8022455029649\\
+15	49.9423047352416\\
+20	66.5987726375416\\
+25	71.7710354572475\\
+30	84.9902280590391\\
+35	112.471585867397\\
+40	131.947160167431\\
+45	145.024402884717\\
+50	168.293111641409\\
+55	238.400058732905\\
+60	252.416728821341\\
+65	285.104141151112\\
+70	354.338785926511\\
+75	394.335541361809\\
+80	468.574108799192\\
+85	556.724916886718\\
+90	601.244928097358\\
+95	704.294842024979\\
+100	747.868322168623\\
+};
+\addlegendentry{Nonlinear WPT}
+
+\end{axis}
+\end{tikzpicture}%
