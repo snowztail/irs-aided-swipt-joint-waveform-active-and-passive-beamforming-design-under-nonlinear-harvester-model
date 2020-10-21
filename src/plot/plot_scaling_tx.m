@@ -30,10 +30,12 @@ pathlossPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
 % * Rate plot
 nexttile;
 plotHandle = plot(Variable.nTxs, rate / nSubbands);
-grid on;
+grid minor;
 legend('WIT', 'location', 'nw');
 xlabel('Number of transmit antennas');
 ylabel('Per-subband rate [bps/Hz]');
+xlim([1 inf]);
+xticks(Variable.nTxs(1 : 2 : end));
 
 apply_style(plotHandle);
 
@@ -44,10 +46,12 @@ hold all;
 plotHandle(1) = plot(Variable.nTxs, 1e6 * currentLinear);
 plotHandle(2) = plot(Variable.nTxs, 1e6 * currentNonlinear);
 hold off;
-grid on;
+grid minor;
 legend('Linear WPT', 'Nonlinear WPT', 'location', 'nw');
 xlabel('Number of transmit antennas');
 ylabel('Average output DC current [$\mu$A]');
+xlim([1 inf]);
+xticks(Variable.nTxs(1 : 2 : end));
 
 apply_style(plotHandle);
 savefig('../figures/scaling_tx.fig');
