@@ -21,15 +21,29 @@ end
 rate = mean(rateSet(indexSet, :), 1);
 currentLinear = mean(currentLinearSet(indexSet, :), 1);
 currentNonlinear = mean(currentNonlinearSet(indexSet, :), 1);
+snrDb = pow2db(2 .^ (rate / nSubbands));
 save('../data/scaling_reflector.mat');
 
 %% * Rate and current plots
 figure('name', 'Per-subband rate and average output DC current vs number of reflectors');
-pathlossPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
+pathlossPlot = tiledlayout(3, 1, 'tilespacing', 'compact');
+
+% * SNR plot
+nexttile;
+plotHandle = plot(Variable.nReflectors, snrDb);
+grid minor;
+legend('WIT', 'location', 'nw');
+xlabel('Number of reflectors');
+ylabel('SNR [dB]');
+xlim([1 inf]);
+xticks(Variable.nReflectors(1 : 2 : end));
+
+apply_style(plotHandle);
 
 % * Rate plot
 nexttile;
-plotHandle = plot(Variable.nReflectors, rate / nSubbands);
+% plotHandle = plot(Variable.nReflectors, rate / nSubbands);
+plotHandle = plot(Variable.nReflectors, snrDb);
 grid minor;
 legend('WIT', 'location', 'nw');
 xlabel('Number of reflectors');
