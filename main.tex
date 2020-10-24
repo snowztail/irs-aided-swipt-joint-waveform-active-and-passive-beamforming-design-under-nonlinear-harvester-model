@@ -534,6 +534,15 @@
 		\begin{figure}[!t]
 			\centering
 			\begin{adjustbox}{width=\linewidth}
+				\input{assets/re_tx.tex}
+			\end{adjustbox}
+			\caption{Average R-E region versus $M$ for $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_H=2\,\si{\meter}$.}
+			\label{fi:re_tx}
+		\end{figure}
+
+		\begin{figure}[!t]
+			\centering
+			\begin{adjustbox}{width=\linewidth}
 				\input{assets/re_reflector.tex}
 			\end{adjustbox}
 			\caption{Average R-E region versus $L$ for $M=1$, $N=16$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_H=2\,\si{\meter}$.}
@@ -543,13 +552,22 @@
 		\begin{figure}[!t]
 			\centering
 			\begin{adjustbox}{width=\linewidth}
-				\input{assets/re_tx.tex}
+				\input{assets/scaling_tx.tex}
 			\end{adjustbox}
-			\caption{Average R-E region versus $M$ for $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_H=2\,\si{\meter}$.}
-			\label{fi:re_tx}
+			\caption{Average WIT SNR and WPT DC current versus $M$ for $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_H=\text{[TODO]}\,\si{\meter}$.}
+			\label{fi:scaling_tx}
 		\end{figure}
 
-		The impact of the number of transmit antennas $M$ and IRS reflectors $L$ on the average R-E tradeoff is revealed in Fig.~\ref{fi:re_reflector} and \ref{fi:re_tx}. A \textit{first} contrast indicates that adding either active or passive elements benefits both information and power transmission while preserving the concavity-convexity of the R-E region. This is because increasing $M$ or $L$ indeed enhances the equivalent composite channel strength such that the magnitude of the terms in \ref{eq:z_expand} is amplified while the number remains unchanged. Therefore, we conclude that the number of transmit antennas and reflectors have no impact on the waveform preference and transceiving strategy. A \textit{second} contrast is that the system performance is more sensitive to the variation of $M$ than $L$. Interestingly, the active MRT beamformer only has a transmit array gain of $M$. In comparison, the IRS collects $L$ signal copies with a receive array gain $L$, then performs an equal gain reflection with a reflect array gain $L$, achieving a total array gain of $L^2$. However, the system performance in our setup is dominated by the direct link. As shown in Fig.~\ref{fi:path_loss}, the direct path loss $\Lambda_D$ is in the scope of \num{e-7} while the extra path loss product $\Lambda_I\Lambda_R$ is below \num{e-10}. Therefore, despite increasing $L$ can effectively enhance the AP-IRS-user extra channel, its amplitude is still too small compared with the AP-user channel such that increasing $M$ is more effective to improve the system performance. Another explanation is that passive IRS has no design flexibility in the frequency domain and the reflection coefficients are the same for all subbands, while transmit antenna with RF-chains enables weight control over different subbands. Therefore, doubling the transmit antenna provides a bigger R-E region than doubling the IRS elements, and we conclude that active beamforming is more effective than passive beamforming.
+		\begin{figure}[!t]
+			\centering
+			\begin{adjustbox}{width=\linewidth}
+				\input{assets/scaling_reflector.tex}
+			\end{adjustbox}
+			\caption{Average WIT SNR and WPT DC current versus $L$ for $M=1$, $N=16$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_H=\text{[TODO]}\,\si{\meter}$.}
+			\label{fi:scaling_reflector}
+		\end{figure}
+
+		The number of transmit antennas $M$ and IRS reflectors $L$ influence the average R-E tradeoff as revealed in \ref{fi:re_tx} and Fig.~\ref{fi:re_reflector}. \textit{First,} it is observed that adding either active or passive elements benefits both information and power transmission while preserving the concavity-convexity of the R-E region. This is because increasing $M$ or $L$ indeed enhances the equivalent composite channel strength such that the magnitude of the terms in \ref{eq:z_expand} is amplified while the number remains unchanged. Therefore, it is concluded that the number of active and passive elements have no impact on the waveform preference and transceiving strategy. \textit{Second,} the R-E benefit of passive beamforming scales faster than that of active beamforming. This behavior is more obvious in Fig.~\ref{fi:scaling_tx} and \ref{fi:scaling_reflector} that illustrate the performance of WIT and WPT versus $M$ and $L$. For the active MRT beamforming, doubling $M$ brings a \SI{3}{\dB} gain at the average output SNR, corresponding to a transmit array gain of $M$ and a doubled harvester input power. Due to the rectifier nonlinearity, the output DC power ends up with a nearly four-time increase, and the design based on nonlinear model notably outperforms the linear one. On the other hand, when the IRS is very closed to the transmitter or the receiver, doubling $L$ can bring an array gain up to \SI{6}{\dB}. An interpretation is that the IRS collects $L$ signal copies with a receive array gain $L$, then performs an equal gain reflection with a reflect array gain $L$, achieving a total array gain of $L^2$. As a consequence, doubling $L$ brings a [TODO]-fold boost on the received signal power that further amplifies the harvested DC power by [TODO] times. However, the diode nonlinear model is based on a small-signal expansion and the input-output relationship would be linear in the high-power regime. These results emphasize the effectiveness of passive beamforming and the importance of modelling rectifier nonlinearity in the system design. \textit{Third,} using only few transmit antenna can achieve the performance of numerous reflectors with a much lower complexity. The reason is that the system performance in our setup is dominated by the AP-user direct link with the optimal active beamformer obtained in closed form. As shown in Fig.~\ref{fi:path_loss}, the direct path loss $\Lambda_D$ is in the scope of \num{e-7} while the extra path loss product $\Lambda_I\Lambda_R$ is below \num{e-10}. Therefore, although increasing $L$ can significantly enhance the AP-IRS-user extra channel, its amplitude is still too small compared with the direct channel such that increasing $M$ can be more efficient for a practical configuration. Another explanation is that the RF-chains of active antennas provide design flexibility in the frequency domain while the frequency-flat characteristic of IRS restricts its benefit for broadband transmission. On the contrary, a large number of active antennas suffer from channel hardening while the IRS can use adaptive reflection to potentially mitigate the effect. As a consequence, active beamforming is more effective for small-scale SWIPT where the direct channel dominates the transmission, and passive beamforming can be more effective for large-scale SWIPT where the extra channel dominates the transmission.
 
 		\begin{figure}[!t]
 			\centering
