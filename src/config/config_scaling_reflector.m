@@ -23,9 +23,9 @@ rxGain = db2pow(2);
 % AP-user distance
 directDistance = 15;
 % vertical distance from the IRS to the AP-user path
-verticalDistance = 2;
+verticalDistance = 0.5;
 % projection of AP-IRS distance to the AP-user path
-horizontalDistance = 2;
+horizontalDistance = 0;
 % AP-IRS and IRS-user distance
 [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
 % equivalent pathloss
