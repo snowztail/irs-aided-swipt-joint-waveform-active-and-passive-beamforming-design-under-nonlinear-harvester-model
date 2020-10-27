@@ -42,7 +42,7 @@ fadingMode = 'selective';
 % carrier frequency
 [subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % number of reflecting elements in IRS
-nReflectors = 4;
+nReflectors = 20;
 % spatial correlation
 corRx = eye(nRxs);
 corIrs = eye(nReflectors);
@@ -59,7 +59,7 @@ nChannels = 1;
 
 %% * Variable
 % number of transmit antennas
-Variable.nTxs = 2 .^ (0 : 3);
+Variable.nTxs = [1 2 4 6 8];
 
 %% * PBS
 % number of individual jobs
