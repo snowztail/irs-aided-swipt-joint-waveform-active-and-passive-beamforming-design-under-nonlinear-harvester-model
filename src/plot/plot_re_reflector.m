@@ -21,7 +21,7 @@ end
 save('../data/re_reflector.mat');
 
 %% * R-E plots
-figure('name', 'R-E region vs number of reflectors');
+figure('name', 'Average R-E region vs number of reflectors');
 legendString = cell(1, length(Variable.nReflectors));
 plotHandle = gobjects(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
@@ -32,7 +32,7 @@ end
 hold off;
 grid on;
 legend(legendString);
-xlabel('Per-subband rate [bps/Hz]');
+xlabel('Average subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);

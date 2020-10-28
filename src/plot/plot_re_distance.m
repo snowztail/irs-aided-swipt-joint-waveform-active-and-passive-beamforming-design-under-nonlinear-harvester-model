@@ -21,18 +21,18 @@ end
 save('../data/re_distance.mat');
 
 %% * R-E plots
-figure('name', 'R-E region vs AP-IRS horizontal distance');
+figure('name', 'Average R-E region vs AP-IRS horizontal distance');
 legendString = cell(1, length(Variable.horizontalDistance));
 plotHandle = gobjects(1, length(Variable.horizontalDistance));
 for iDistance = 1 : length(Variable.horizontalDistance)
     plotHandle(iDistance) = plot(reDistance{iDistance}(1, :) / nSubbands, 1e6 * reDistance{iDistance}(2, :));
-    legendString{iDistance} = sprintf('$d_H = %s$', num2str(Variable.horizontalDistance(iDistance)));
+    legendString{iDistance} = sprintf('$d_H = %s$ m', num2str(Variable.horizontalDistance(iDistance)));
     hold on;
 end
 hold off;
 grid on;
 legend(legendString);
-xlabel('Per-subband rate [bps/Hz]');
+xlabel('Average subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);

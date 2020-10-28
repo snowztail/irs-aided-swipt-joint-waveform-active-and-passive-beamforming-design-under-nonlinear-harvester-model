@@ -25,7 +25,7 @@ snrDb = pow2db(2 .^ (rate / nSubbands));
 save('../data/scaling_tx.mat');
 
 %% * Rate and current plots
-figure('name', 'Per-subband rate and average output DC current vs number of transmit antennas');
+figure('name', 'Average SNR and harvested DC power vs number of transmit antennas');
 pathlossPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
 
 % * SNR plot
@@ -34,9 +34,9 @@ plotHandle = plot(Variable.nTxs, snrDb);
 grid on;
 legend('WIT', 'location', 'nw');
 xlabel('Number of transmit antennas');
-ylabel('SNR [dB]');
-xlim([1 inf]);
-xticks(Variable.nTxs(1 : 2 : end));
+ylabel('Average subband SNR [dB]');
+xlim([Variable.nTxs(1), Variable.nTxs(end)]);
+xticks(Variable.nTxs([1, 2 : 2 : end]));
 
 apply_style(plotHandle);
 
@@ -51,8 +51,8 @@ grid on;
 legend('Linear WPT', 'Nonlinear WPT', 'location', 'nw');
 xlabel('Number of transmit antennas');
 ylabel('Average harvested DC power [dBW]');
-xlim([1 inf]);
-xticks(Variable.nTxs(1 : 2 : end));
+xlim([Variable.nTxs(1), Variable.nTxs(end)]);
+xticks(Variable.nTxs([1, 2 : 2 : end]));
 yticks(-100 : 20 : 0)
 
 apply_style(plotHandle);

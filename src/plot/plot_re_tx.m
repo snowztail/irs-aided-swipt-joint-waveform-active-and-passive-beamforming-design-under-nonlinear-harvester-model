@@ -21,7 +21,7 @@ end
 save('../data/re_tx.mat');
 
 %% * R-E plots
-figure('name', 'R-E region vs number of transmit antennas');
+figure('name', 'Average R-E region vs number of transmit antennas');
 legendString = cell(1, length(Variable.nTxs));
 plotHandle = gobjects(1, length(Variable.nTxs));
 for iTx = 1 : length(Variable.nTxs)
@@ -32,7 +32,7 @@ end
 hold off;
 grid on;
 legend(legendString);
-xlabel('Per-subband rate [bps/Hz]');
+xlabel('Average subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);

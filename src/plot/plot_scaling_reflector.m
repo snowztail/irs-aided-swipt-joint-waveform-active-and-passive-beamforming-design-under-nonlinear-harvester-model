@@ -24,8 +24,8 @@ currentNonlinear = mean(currentNonlinearSet(indexSet, :), 1);
 snrDb = pow2db(2 .^ (rate / nSubbands));
 save('../data/scaling_reflector.mat');
 
-%% * Rate and current plots
-figure('name', 'Per-subband rate and average output DC current vs number of reflectors');
+%% * SNR and power plots
+figure('name', 'Average SNR and harvested DC power vs number of reflectors');
 pathlossPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
 
 % * SNR plot
@@ -34,8 +34,8 @@ plotHandle = plot(Variable.nReflectors, snrDb);
 grid on;
 legend('WIT', 'location', 'nw');
 xlabel('Number of reflectors');
-ylabel('SNR [dB]');
-xlim([1 inf]);
+ylabel('Average subband SNR [dB]');
+xlim([Variable.nReflectors(1), Variable.nReflectors(end)]);
 xticks(Variable.nReflectors(1 : 2 : end));
 
 apply_style(plotHandle);
@@ -51,7 +51,7 @@ grid on;
 legend('Linear WPT', 'Nonlinear WPT', 'location', 'nw');
 xlabel('Number of reflectors');
 ylabel('Average harvested DC power [dBW]');
-xlim([1 inf]);
+xlim([Variable.nReflectors(1), Variable.nReflectors(end)]);
 xticks(Variable.nReflectors(1 : 2 : end));
 yticks(-100 : 20 : 0)
 

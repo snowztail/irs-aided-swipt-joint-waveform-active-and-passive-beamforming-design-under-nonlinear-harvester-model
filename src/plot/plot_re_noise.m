@@ -28,7 +28,7 @@ powerRatio = permute(mean(powerRatio(indexSet, :, :), 1), [2 3 1]);
 save('../data/re_noise.mat');
 
 %% * R-E and splitting ratio plots
-figure('name', 'R-E region and power splitting ratio vs average noise power');
+figure('name', 'Average R-E region and power splitting ratio vs average noise power');
 tiledlayout(2, 1, 'tilespacing', 'compact');
 
 % * R-E region
@@ -43,7 +43,7 @@ end
 hold off;
 grid on;
 legend(legendString);
-xlabel('Per-subband rate [bps/Hz]');
+xlabel('Average subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
@@ -58,8 +58,8 @@ for iNoise = 1 : length(Variable.noisePower)
 end
 hold off;
 grid on;
-xlabel('Per-subband rate [bps/Hz]');
-ylabel('Power splitting ratio');
+xlabel('Average subband rate [bps/Hz]');
+ylabel('Average power splitting ratio');
 xlim([0 inf]);
 ylim([0 inf]);
 apply_style(plotHandle);
