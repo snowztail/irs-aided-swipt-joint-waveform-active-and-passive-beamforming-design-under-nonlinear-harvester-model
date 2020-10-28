@@ -26,12 +26,12 @@ save('../data/scaling_reflector.mat');
 
 %% * Rate and current plots
 figure('name', 'Per-subband rate and average output DC current vs number of reflectors');
-pathlossPlot = tiledlayout(3, 1, 'tilespacing', 'compact');
+pathlossPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
 
 % * SNR plot
 nexttile;
 plotHandle = plot(Variable.nReflectors, snrDb);
-grid minor;
+grid on;
 legend('WIT', 'location', 'nw');
 xlabel('Number of reflectors');
 ylabel('SNR [dB]');
@@ -40,32 +40,20 @@ xticks(Variable.nReflectors(1 : 2 : end));
 
 apply_style(plotHandle);
 
-% * Rate plot
-nexttile;
-% plotHandle = plot(Variable.nReflectors, rate / nSubbands);
-plotHandle = plot(Variable.nReflectors, snrDb);
-grid minor;
-legend('WIT', 'location', 'nw');
-xlabel('Number of reflectors');
-ylabel('Per-subband rate [bps/Hz]');
-xlim([1 inf]);
-xticks(Variable.nReflectors(1 : 2 : end));
-
-apply_style(plotHandle);
-
-% * Current plot
+% * Power plot
 nexttile;
 plotHandle = gobjects(1, 2);
 hold all;
-plotHandle(1) = plot(Variable.nReflectors, 1e6 * currentLinear);
-plotHandle(2) = plot(Variable.nReflectors, 1e6 * currentNonlinear);
+plotHandle(1) = plot(Variable.nReflectors, pow2db(currentLinear .^ 2 * resistance));
+plotHandle(2) = plot(Variable.nReflectors, pow2db(currentNonlinear .^ 2 * resistance));
 hold off;
-grid minor;
+grid on;
 legend('Linear WPT', 'Nonlinear WPT', 'location', 'nw');
 xlabel('Number of reflectors');
-ylabel('Average output DC current [$\mu$A]');
+ylabel('Average harvested DC power [dBW]');
 xlim([1 inf]);
 xticks(Variable.nReflectors(1 : 2 : end));
+yticks(-100 : 20 : 0)
 
 apply_style(plotHandle);
 savefig('../figures/scaling_reflector.fig');
