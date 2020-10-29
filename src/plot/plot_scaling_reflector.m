@@ -44,13 +44,13 @@ apply_style(plotHandle);
 nexttile;
 plotHandle = gobjects(1, 2);
 hold all;
-plotHandle(1) = plot(Variable.nReflectors, pow2db(currentLinear .^ 2 * resistance));
-plotHandle(2) = plot(Variable.nReflectors, pow2db(currentNonlinear .^ 2 * resistance));
+plotHandle(1) = plot(Variable.nReflectors, mag2db(currentLinear));
+plotHandle(2) = plot(Variable.nReflectors, mag2db(currentNonlinear));
 hold off;
 grid on;
 legend('Linear WPT', 'Nonlinear WPT', 'location', 'nw');
 xlabel('Number of reflectors');
-ylabel('Average harvested DC power [dBW]');
+ylabel('Average output DC current [dBA]');
 xlim([Variable.nReflectors(1), Variable.nReflectors(end)]);
 xticks(Variable.nReflectors(1 : 2 : end));
 yticks(-100 : 20 : 0)
