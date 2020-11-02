@@ -223,25 +223,7 @@
 			\begin{equation}\label{eq:z}
 				z(\boldsymbol{\phi},\boldsymbol{w}_I,\boldsymbol{w}_P,\rho)=\sum_{i\,\text{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}{\mathcal{E}\left\{\mathcal{A}\left\{y(t)^i\right\}\right\}}
 			\end{equation}
-			where $k_i=i_s/i!(nv_t)^i$. It can be observed that the traditional linear harvester model, where the output DC power equals the sum of the power harvested on each frequency, is a special case of \eqref{eq:z} with $n_0=2$. However, due to the coupling among different frequencies, some high-order AC components compensate each other and further contribute to the output DC power. In other words, even-order terms with $i \ge 4$ account for the nonlinear behavior of the diode. For simplicity, we let $\beta_2={k_2}{R_{\text{ant}}}$, $\beta_4={k_4}{R_{\text{ant}}^2}$ and choose $n_0=4$ to investigate fundamental rectifier nonlinearity so that $z$ further reduces to \eqref{eq:z_expand}. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ but $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current. Inspired by \cite{Huang2017}, we stack up channel and waveform vectors over all subbands as $\boldsymbol{h}=[\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$ and $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^T,\dots,\boldsymbol{w}_{I/P,N}^T]^T \in \mathbb{C}^{MN \times 1}$. Let $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H$. On top of this, we introduce $\boldsymbol{W}_{I/P,n} \in \mathbb{C}^{MN \times MN}$ ($n=-N+1,\dots,N-1$) that can be viewed as $N \times N$ blocks, each of size $M \times M$. As illustrated by Fig.~\ref{fi:block_diagonal}, let $\boldsymbol{W}_{I/P,n}$ keep the $n$-th block diagonal of $\boldsymbol{W}_{I/P}$ and null all other blocks.
-
-			% \begin{figure}[!t]
-			% 	\begin{equation*}
-			% 		\resizebox{0.9\linewidth}{!}{
-			% 			$\boldsymbol{W}_{I/P}=
-			% 			\left(
-			% 				\begin{array}{cccc}
-			% 					\cellcolor[gray]{0.5}\boldsymbol{w}_{I/P,1}\boldsymbol{w}_{I/P,1}^H & \cellcolor[gray]{0.7}\boldsymbol{w}_{I/P,1}\boldsymbol{w}_{I/P,2}^H & \dots                                                                 & \cellcolor[gray]{0.9}\boldsymbol{w}_{I/P,1}\boldsymbol{w}_{I/P,N}^H   \\
-			% 					\cellcolor[gray]{0.7}\boldsymbol{w}_{I/P,2}\boldsymbol{w}_{I/P,1}^H & \cellcolor[gray]{0.5}\boldsymbol{w}_{I/P,2}\boldsymbol{w}_{I/P,2}^H & \cellcolor[gray]{0.7}\ddots                                           & \vdots                                                                \\
-			% 					\vdots                                                              & \cellcolor[gray]{0.7}\ddots                                         & \cellcolor[gray]{0.5}\ddots                                           & \cellcolor[gray]{0.7}\boldsymbol{w}_{I/P,N-1}\boldsymbol{w}_{I/P,N}^H \\
-			% 					\cellcolor[gray]{0.9}\boldsymbol{w}_{I/P,N}\boldsymbol{w}_{I/P,1}^H & \dots                                                               & \cellcolor[gray]{0.7}\boldsymbol{w}_{I/P,N}\boldsymbol{w}_{I/P,N-1}^H & \cellcolor[gray]{0.5}\boldsymbol{w}_{I/P,N}\boldsymbol{w}_{I/P,N}^H
-			% 				\end{array}
-			% 			\right)$
-			% 		}
-			% 	\end{equation*}
-			% 	\caption{$\boldsymbol{W}_{I/P,n}$ keeps the $n$-th block diagonal of $\boldsymbol{W}_{I/P}$ and nulls the remaining entries. Solid, dashed and dotted diagonals correspond to $n>,=,<0$. For $\boldsymbol{w}_{I/P,n_1}\boldsymbol{w}_{I/P,n_2}^H$, the $n$-th diagonal satisfies $n_2-n_1=n$.}
-			% 	\label{fi:block_diagonal}
-			% \end{figure}
+			where $k_i=i_s/i!(nv_t)^i$. It can be observed that the traditional linear harvester model, where the output DC power equals the sum of the power harvested on each frequency, is a special case of \eqref{eq:z} with $n_0=2$. However, due to the coupling among different frequencies, some high-order AC components compensate each other and further contribute to the output DC power. In other words, even-order terms with $i \ge 4$ account for the nonlinear behavior of the diode. For simplicity, we let $\beta_2={k_2}{R_{\text{ant}}}$, $\beta_4={k_4}{R_{\text{ant}}^2}$ and choose $n_0=4$ to investigate fundamental rectifier nonlinearity so that $z$ further reduces to \eqref{eq:z_expand}. Note that $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^2\right\}=1$ but $\mathcal{E}\left\{\lvert\tilde{x}_{I,n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current. Inspired by \cite{Huang2017}, we stack up channel and waveform vectors over all subbands as $\boldsymbol{h}=[\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$ and $\boldsymbol{w}_{I/P}=[\boldsymbol{w}_{I/P,1}^T,\dots,\boldsymbol{w}_{I/P,N}^T]^T \in \mathbb{C}^{MN \times 1}$. On top of this, let $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H \in \mathbb{C}^{MN \times MN}$. As illustrated by Fig.~\ref{fi:block_diagonal}, $\boldsymbol{W}_{I/P}$ can be divided into $N \times N$ blocks of size $M \times M$, and we let $\boldsymbol{W}_{I/P,k}$ keep its $k$-th ($k=-N+1,\dots,N-1$) block diagonal and set all other blocks to $\boldsymbol{0}^{M \times M}$. Hence, the components of the output DC current $z$ can be expressed in \eqref{eq:y_I2} -- \eqref{eq:y_P4}.
 
 			\begin{figure*}[!t]
 				\begin{equation*}
@@ -265,13 +247,10 @@
 
 						\end{tikzpicture}
 				\end{equation*}
-				\caption{$\boldsymbol{W}_{I/P}$ consists of $N \times N$ blocks of size $M \times M$. $\boldsymbol{W}_{I/P,k}$ keeps the $k$-th block diagonal of $\boldsymbol{W}_{I/P}$ and nulls all remaining blocks. Solid, dashed and dotted blocks correspond to $n>0$, $n=0$ and $n<0$, respectively. For $\boldsymbol{w}_{I/P,n_1}\boldsymbol{w}_{I/P,n_2}^H$, the $k$-th block diagonal satisfies $k=n_2-n_1$.}
+				\caption{$\boldsymbol{W}_{I/P}$ consists of $N \times N$ blocks of size $M \times M$. $\boldsymbol{W}_{I/P,k}$ keeps the $k$-th block diagonal of $\boldsymbol{W}_{I/P}$ and nulls all remaining blocks. Solid, dashed and dotted blocks correspond to $k>0$, $k=0$ and $k<0$, respectively. For $\boldsymbol{w}_{I/P,n_1}\boldsymbol{w}_{I/P,n_2}^H$, the $k$-th block diagonal satisfies $k=n_2-n_1$.}
 				\label{fi:block_diagonal}
 			\end{figure*}
 
-			On top of this, we define $\boldsymbol{W}_{I/P}=\boldsymbol{w}_{I/P}\boldsymbol{w}_{I/P}^H \in \mathbb{C}^{MN \times MN}$ and let $\boldsymbol{W}_{I/P,n} \in \mathbb{C}^{MN \times MN}$ keep their $n$-th ($n=-N+1,\dots,N-1$) block diagonal and set all other blocks to $\boldsymbol{0}^{M \times M}$.
-
-			null the remaining entries, where the blocks are of size $M \times M$. On top of this, relevant DC terms are expressed in \eqref{eq:y_I2} -- \eqref{eq:y_P4}.
 			\begin{figure*}[b]
 				\hrule
 				\begin{equation}
@@ -288,7 +267,7 @@
 					\mathcal{A}\left\{y_{P}^2(t)\right\}
 					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{P,n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{P,0}\boldsymbol{h}\,,\label{eq:y_P2}\\
 					\mathcal{A}\left\{y_{P}^4(t)\right\}
-					& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H} = \frac{3}{8}\sum_{n=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,n}\boldsymbol{h})^H\,.\label{eq:y_P4}
+					& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{P,{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{P,{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{P,{n_3}})^H(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{P,{n_4}})^H} = \frac{3}{8}\sum_{k=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{P,k}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{P,k}\boldsymbol{h})^H\,.\label{eq:y_P4}
 				\end{align}
 			\end{figure*}
 		\end{subsection}
@@ -319,7 +298,7 @@
 
 
 		\begin{subsection}{IRS Phase Shift}
-			In this section, the IRS phase shift $\boldsymbol{\phi}$ is optimized for any given waveform $\boldsymbol{w}_{I/P}$ and splitting ratio $\rho$. We observe that for $n=1,\dots,N$,
+			In this section, the IRS phase shift $\boldsymbol{\phi}$ is optimized for any given waveform $\boldsymbol{w}_{I/P}$ and splitting ratio $\rho$. We observe that
 			\begin{align}
 				\lvert \boldsymbol{h}_{n}^H\boldsymbol{w}_{I,n} \rvert^2
 				& = \boldsymbol{w}_{I,n}^H\boldsymbol{h}_n\boldsymbol{h}_n^H\boldsymbol{w}_{I,n}\nonumber\\
@@ -328,31 +307,31 @@
 				& = \mathrm{Tr}(\boldsymbol{M}_n\boldsymbol{w}_{I,n}\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H\boldsymbol{\Phi})\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})
 			\end{align}
-			where $t$ is an auxiliary variable with unit modulus, $\boldsymbol{M}_n=[\boldsymbol{V}_n^H, \boldsymbol{h}_{D,n}]^H \in \mathbb{C}^{(L+1) \times M}$, $\bar{\boldsymbol{\phi}}=[\boldsymbol{\phi}^H, t]^H \in \mathbb{C}^{(L+1) \times 1}$, $\boldsymbol{\Phi}=\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H \in \mathbb{C}^{(L+1) \times (L+1)}$, $\boldsymbol{C}_n = \boldsymbol{M}_n\boldsymbol{w}_{I,n}\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Also, for $n=-N+1,\dots,N-1$, define $t_{I/P,n}$ as
+			where $t$ is an auxiliary variable with unit modulus, $\boldsymbol{M}_n=[\boldsymbol{V}_n^H, \boldsymbol{h}_{D,n}]^H \in \mathbb{C}^{(L+1) \times M}$, $\bar{\boldsymbol{\phi}}=[\boldsymbol{\phi}^H, t]^H \in \mathbb{C}^{(L+1) \times 1}$, $\boldsymbol{\Phi}=\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H \in \mathbb{C}^{(L+1) \times (L+1)}$, $\boldsymbol{C}_n = \boldsymbol{M}_n\boldsymbol{w}_{I,n}\boldsymbol{w}_{I,n}^H\boldsymbol{M}_n^H \in \mathbb{C}^{(L+1)\times(L+1)}$. On the other hand, we define $t_{I/P,k}$ as
 			\begin{align}
-				t_{I/P,n}
-				& = \boldsymbol{h}^H\boldsymbol{W}_{I/P,n}\boldsymbol{h}\nonumber\\
-				& = \mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{W}_{I/P,n})\nonumber\\
-				& = \mathrm{Tr}\left((\boldsymbol{h}_{D}+\boldsymbol{V}^H\boldsymbol{\phi})(\boldsymbol{h}_{D}^H+\boldsymbol{\phi}^H\boldsymbol{V})\boldsymbol{W}_{I/P,n}\right)\nonumber\\
-				& = \mathrm{Tr}(\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}\boldsymbol{W}_{I/P,n})\nonumber\\
-				& = \mathrm{Tr}(\boldsymbol{M}\boldsymbol{W}_{I/P,n}\boldsymbol{M}^H\boldsymbol{\Phi})\nonumber\\
-				& = \mathrm{Tr}(\boldsymbol{C}_{I/P,n}\boldsymbol{\Phi})
+				t_{I/P,k}
+				& = \boldsymbol{h}^H\boldsymbol{W}_{I/P,k}\boldsymbol{h}\nonumber\\
+				& = \mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{W}_{I/P,k})\nonumber\\
+				& = \mathrm{Tr}\left((\boldsymbol{h}_{D}+\boldsymbol{V}^H\boldsymbol{\phi})(\boldsymbol{h}_{D}^H+\boldsymbol{\phi}^H\boldsymbol{V})\boldsymbol{W}_{I/P,k}\right)\nonumber\\
+				& = \mathrm{Tr}(\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}\boldsymbol{W}_{I/P,k})\nonumber\\
+				& = \mathrm{Tr}(\boldsymbol{M}\boldsymbol{W}_{I/P,k}\boldsymbol{M}^H\boldsymbol{\Phi})\nonumber\\
+				& = \mathrm{Tr}(\boldsymbol{C}_{I/P,k}\boldsymbol{\Phi})
 			\end{align}
-			where $\boldsymbol{V}=[\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M}=[\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{I/P,n}=\boldsymbol{M}\boldsymbol{W}_{I/P,n}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Therefore, the rate and objective expressions rewrite as
+			where $\boldsymbol{V}=[\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M}=[\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{I/P,k}=\boldsymbol{M}\boldsymbol{W}_{I/P,k}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Therefore, the rate and objective expressions rewrite as
 			\begin{align}
 				R(\boldsymbol{\Phi})
 				& = \sum_{n=1}^{N}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)}\,,\label{eq:R_irs}\\
 				z(\boldsymbol{\Phi})
 				& = \frac{1}{2}{\beta_2}{\rho}(t_{I,0}+t_{P,0})\nonumber\\
-				& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{I,0}^2 + \sum_{n=-N+1}^{N-1}{t_{P,n}t_{P,n}^*}\right)\nonumber\\
+				& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{I,0}^2 + \sum_{k=-N+1}^{N-1}{t_{P,k}t_{P,k}^*}\right)\nonumber\\
 				& \quad + \frac{3}{2}{\beta_4}{\rho^2}t_{I,0}t_{P,0}\,.\label{eq:z_irs}
 			\end{align}
 			To maximize non-concave expression \eqref{eq:z_irs}, we propose a SCA algorithm that approximate the second-order terms by first-order Taylor expansion \cite{Adali2010}. Based on the solution at iteration $i - 1$, the approximations at iteration $i$ are
 			\begin{align}
 				(t_{I,0}^{(i)})^2
 				& \ge 2 t_{I,0}^{(i)}t_{I,0}^{(i-1)} - (t_{I,0}^{(i-1)})^2\,,\label{eq:taylor_1}\\
-				t_{P,n}^{(i)} (t_{P,n}^{(i)})^*
-				& \ge 2 \Re\left\{t_{P,n}^{(i)} (t_{P,n}^{(i-1)})^*\right\} - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*\,,\label{eq:taylor_2}\\
+				t_{P,k}^{(i)} (t_{P,k}^{(i)})^*
+				& \ge 2 \Re\left\{t_{P,k}^{(i)} (t_{P,k}^{(i-1)})^*\right\} - t_{P,k}^{(i-1)} (t_{P,k}^{(i-1)})^*\,,\label{eq:taylor_2}\\
 				t_{I,0}^{(i)} t_{P,0}^{(i)}
 				& = \frac{1}{4}(t_{I,0}^{(i)} + t_{P,0}^{(i)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\nonumber\\
 				& \ge \frac{1}{2}(t_{I,0}^{(i)} + t_{P,0}^{(i)})(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})\nonumber\\
@@ -364,7 +343,7 @@
 				\begin{align}
 					\tilde{z}(\boldsymbol{\Phi}^{(i)})
 					& = \frac{1}{2}{\beta_2}{\rho}(t_{I,0}^{(i)}+t_{P,0}^{(i)})\nonumber\\
-					& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(4 (t_{I,0}^{(i)})(t_{I,0}^{(i-1)}) - 2 (t_{I,0}^{(i-1)})^2 + \sum_{n=-N+1}^{N-1}{2 \Re\left\{t_{P,n}^{(i)} (t_{P,n}^{(i-1)})^*\right\} - t_{P,n}^{(i-1)} (t_{P,n}^{(i-1)})^*}\right)\nonumber\\
+					& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(4 (t_{I,0}^{(i)})(t_{I,0}^{(i-1)}) - 2 (t_{I,0}^{(i-1)})^2 + \sum_{k=-N+1}^{N-1}{2 \Re\left\{t_{P,k}^{(i)} (t_{P,k}^{(i-1)})^*\right\} - t_{P,k}^{(i-1)} (t_{P,k}^{(i-1)})^*}\right)\nonumber\\
 					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left(\frac{1}{2}(t_{I,0}^{(i)} + t_{P,0}^{(i)})(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)}) - \frac{1}{4}(t_{I,0}^{(i-1)} + t_{P,0}^{(i-1)})^2 - \frac{1}{4}(t_{I,0}^{(i)} - t_{P,0}^{(i)})^2\right)\,.\label{eq:z_irs_approx}
 				\end{align}
 			\end{figure*}
@@ -383,11 +362,11 @@
 				\label{al:irs}
 				\begin{algorithmic}[1]
 					\State \textbf{input} $\beta_2,\beta_4,\boldsymbol{h}_{D,n},\boldsymbol{H}_{I,n},\boldsymbol{h}_{R,n},\boldsymbol{w}_I,\boldsymbol{w}_P,\rho,\sigma_n,\bar{R},Q,\epsilon$
-					\State Construct $\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n}$ for $n=1,\dots,N$, $\boldsymbol{C}_{I/P,n}$ for $n=-N+1,\dots,N-1$
-					\State \textbf{initialize} $i \gets 0,\boldsymbol{\Phi}^{(0)},t_{I/P,n}^{(0)}$ for $n=-N+1,\dots,N-1$
+					\State Construct $\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n}$, $\boldsymbol{C}_{I/P,k}$, $\forall n,k$
+					\State \textbf{initialize} $i \gets 0,\boldsymbol{\Phi}^{(0)},t_{I/P,k}^{(0)}, \forall k$
 					\Repeat
 						\State $i \gets i + 1$
-						\State Obtain $\boldsymbol{\Phi}^{(i)}, t_{I/P,n}^{(i)}$ by solving problem~\eqref{op:irs}
+						\State Obtain $\boldsymbol{\Phi}^{(i)}, t_{I/P,k}^{(i)}$ by solving problem~\eqref{op:irs}
 						\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
 					\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
 					\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
