@@ -36,7 +36,8 @@ xlabel('Average subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
-
+box on;
 apply_style(plotHandle);
+
 savefig('../figures/re_distance.fig');
 matlab2tikz('../../assets/re_distance.tex');

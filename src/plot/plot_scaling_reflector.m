@@ -37,7 +37,7 @@ xlabel('Number of reflectors');
 ylabel('Average subband SNR [dB]');
 xlim([Variable.nReflectors(1), Variable.nReflectors(end)]);
 xticks(Variable.nReflectors(1 : 2 : end));
-
+box on;
 apply_style(plotHandle);
 
 % * Power plot
@@ -53,8 +53,9 @@ xlabel('Number of reflectors');
 ylabel('Average output DC current [dBA]');
 xlim([Variable.nReflectors(1), Variable.nReflectors(end)]);
 xticks(Variable.nReflectors(1 : 2 : end));
-yticks(-100 : 20 : 0)
-
+yticks(-100 : 20 : 0);
+box on;
 apply_style(plotHandle);
+
 savefig('../figures/scaling_reflector.fig');
 matlab2tikz('../../assets/scaling_reflector.tex');

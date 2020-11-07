@@ -41,6 +41,7 @@ xlabel('Average subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
+box on;
 
 apply_style(plotHandle);
 savefig('../figures/re_los.fig');
@@ -62,6 +63,7 @@ xlabel('WIT-only: Average subband rate [bps/Hz]');
 ylabel('Cumulative probability');
 xlim([0 inf]);
 ylim([0 inf]);
+box on;
 
 nexttile;
 hold all;
@@ -74,6 +76,7 @@ xlabel('WPT-only: Average output DC current [$\mu$A]');
 ylabel('Cumulative probability');
 xlim([0 inf]);
 ylim([0 inf]);
+box on;
 
 savefig('../figures/cdf_los.fig');
 matlab2tikz('../../assets/cdf_los.tex');

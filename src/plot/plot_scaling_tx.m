@@ -37,7 +37,7 @@ xlabel('Number of transmit antennas');
 ylabel('Average subband SNR [dB]');
 xlim([Variable.nTxs(1), Variable.nTxs(end)]);
 xticks(Variable.nTxs([1, 2 : 2 : end]));
-
+box on;
 apply_style(plotHandle);
 
 % * Power plot
@@ -53,8 +53,9 @@ xlabel('Number of transmit antennas');
 ylabel('Average output DC current [dBA]');
 xlim([Variable.nTxs(1), Variable.nTxs(end)]);
 xticks(Variable.nTxs([1, 2 : 2 : end]));
-yticks(-100 : 20 : 0)
-
+yticks(-100 : 20 : 0);
+box on;
 apply_style(plotHandle);
+
 savefig('../figures/scaling_tx.fig');
 matlab2tikz('../../assets/scaling_tx.tex');

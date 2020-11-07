@@ -60,6 +60,7 @@ xlabel('Average subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
+box on;
 
 apply_style(plotHandle);
 savefig('../figures/re_subband.fig');
@@ -79,11 +80,12 @@ for iSubband = 1 : length(Variable.nSubbands)
     xticks(1 : Variable.nSubbands(iSubband));
 	hold off;
 	grid on;
-	if iSubband == 1
+    if iSubband == 1
 		legend('$s_I$', '$s_P$');
 	elseif iSubband == 3
 		ylabel('Waveform amplitude');
-	end
+    end
+    box on;
 end
 xlabel('Sorted subband index');
 

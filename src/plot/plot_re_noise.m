@@ -47,6 +47,7 @@ xlabel('Average subband rate [bps/Hz]');
 ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
+box on;
 apply_style(plotHandle);
 
 % * Power splitting ratio
@@ -62,6 +63,7 @@ xlabel('Average subband rate [bps/Hz]');
 ylabel('Average power splitting ratio');
 xlim([0 inf]);
 ylim([0 inf]);
+box on;
 apply_style(plotHandle);
 
 savefig('../figures/re_noise.fig');

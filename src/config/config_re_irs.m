@@ -54,7 +54,7 @@ nCandidates = 1e3;
 nSamples = 30;
 % number of channel realizations
 nChannels = 1;
-% number of cases to investigate (adaptive, ideal FS, WIT, WPT, no IRS)
+% number of cases to investigate (ideal, adaptive, WIT, WPT, no IRS)
 nCases = 5;
 
 %% * Variable

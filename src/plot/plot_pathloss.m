@@ -29,19 +29,21 @@ plotHandle = gobjects(1, nCases);
 
 % * Incident pathloss
 nexttile;
-plotHandle(1) = semilogy(horizontalDistance, incidentPathloss);
+plotHandle(1) = plot(horizontalDistance, pow2db(1 ./ incidentPathloss));
 grid on;
-legend('IEEE TGn D')
-xlabel('Distance [m]');
-ylabel('Path loss');
+legend('$\Lambda_D$', 'location', 'se')
+xlabel('AP-user distance [m]');
+ylabel('Path loss [dB]');
+box on;
 
 % * Extra pathloss
 nexttile;
-plotHandle(2) = semilogy(horizontalDistance, extraPathloss);
+plotHandle(2) = plot(horizontalDistance, pow2db(1 ./ extraPathloss));
 grid on;
-legend('$\Lambda_I\Lambda_R$', 'location', 'se')
+legend('$\Lambda_I\Lambda_R$', 'location', 'ne')
 xlabel('AP-IRS horizontal distance [m]');
-ylabel('Path loss product');
+ylabel('Path loss product [dB]');
+box on;
 
 savefig('../figures/path_loss.fig');
 matlab2tikz('../../assets/path_loss.tex');
