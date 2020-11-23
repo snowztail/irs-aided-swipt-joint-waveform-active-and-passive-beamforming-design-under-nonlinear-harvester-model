@@ -100,7 +100,7 @@
 
 			\textit{First}, we introduce a novel IRS-aided SWIPT architecture based on a joint waveform, active and passive beamforming design. This architecture can be seen to IRS-aided SWIPT what \cite{Clerckx2018b} is to SWIPT. Specifically, we consider a multi-carrier IRS-aided downlink MISO SWIPT system where the IRS assists the information and energy transmission of a single user. A multi-carrier unmodulated power waveform (deterministic multisine) is superposed to a multi-carrier modulated information waveform to boost the energy transfer efficiency. The power and information waveforms and active beamforming at the transmitter, the phase shifts at the IRS, and the splitting ratio at the receiver are jointly optimized to maximize the R-E tradeoff while accounting for the rectenna nonlinearity. This is the first paper to propose such a joint waveform, active and passive beamforming architecture for IRS-aided SWIPT. Note that existing IRS-aided SWIPT papers \cite{Wu2020b,Tang2019,Wu2020a,Pan2020} focus on single-carrier transmissions and ignore the rectenna nonlinearity (and therefore assume the oversimplified and inaccurate linear model \cite{Clerckx2019,Clerckx2016a}), which prevents from exploiting the waveform gain in SWIPT system design. On the contrary, this paper focuses on multi-carrier IRS-SWIPT and investigates the joint design of waveform, active and passive beamforming accounting for rectenna nonlinearity.
 
-			\textit{Second}, we formulate an optimization for this joint waveform, active and passive beamforming design to characterize the R-E region achieved by the proposed architecture. The R-E region characterization problem is transformed into multiple energy maximization problems subject to rate constraints. Each achievable R-E pair is obtained through an Alternating Optimization (AO) algorithm that iteratively updates 1) phase shift at the IRS, 2) waveform, active beamforming at the transmitter and power splitting ratio at the receiver, until convergence. On top of the SWIPT optimization by Geometric Programming (GP) \cite{Clerckx2018b}, our IRS-aided SWIPT optimization employs a low-complexity passive beamforming algorithm based on Successive Convex Approximation (SCA) and Semidefinite Relaxation (SDR), which solves the highly non-convex problem in an efficient and reliable manner. Numerical results demonstrated SDR is tight and the proposed algorithm can always find a stationary point for all tested channel realizations under different configurations.
+			\textit{Second}, we formulate an optimization for this joint waveform, active and passive beamforming design to characterize the R-E region achieved by the proposed architecture. The R-E region characterization problem is transformed into multiple energy maximization problems subject to rate constraints. Each achievable R-E pair is obtained through an Alternating Optimization (AO) algorithm that iteratively updates 1) the phase shift at the IRS, 2) the waveform, active beamforming at the transmitter and the power splitting ratio at the receiver, until convergence. On top of the SWIPT optimization by Geometric Programming (GP) \cite{Clerckx2018b}, our IRS-aided SWIPT optimization employs a low-complexity passive beamforming algorithm based on Successive Convex Approximation (SCA) and Semidefinite Relaxation (SDR), which solves the highly non-convex problem in an efficient and reliable manner. Numerical results demonstrated SDR is tight and the proposed algorithm can always find a stationary point for all tested channel realizations under different configurations.
 
 			\textit{Third}, we conduct numerical evaluations to demonstrate the advantage of the proposed IRS-aided SWIPT architecture.
 			% Note also that the joint waveform and beamforming design and optimization (and its potential performance benefits) in IRS-aided SWIPT differs from that in SWIPT (as in \cite{Clerckx2018b,Varasteh2019d}) due to the hardware constraint that the IRS elements should be frequency-flat.
@@ -134,14 +134,14 @@
 			\end{equation}
 			where $w_{\text{I/P,}n,m}$ denotes the weight of the information/power signal transmitted by antenna $m$ at subband $n$. Stacking up the entries on all transmit antennas, we further define $\boldsymbol{w}_{\text{I/P,}n} \triangleq [w_{\text{I/P,}n,1},\dots,w_{\text{I/P,}n,M}]^T \in \mathbb{C}^{M \times 1}$ and $\boldsymbol{x}(t) \triangleq \boldsymbol{x}_{\text{I}}(t)+\boldsymbol{x}_{\text{P}}(t)$, where
 			\begin{align}
-				\boldsymbol{x}_{\text{I}}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{\text{I,}n}\tilde{x}_{\text{I,}n}(t){e^{j2{\pi}{f_n}{t}}}\right\}}\,,\label{eq:x_I}\\
-				\boldsymbol{x}_{\text{P}}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{\text{P},n}{e^{j2{\pi}{f_n}{t}}}\right\}}\,.\label{eq:x_P}
+				\boldsymbol{x}_{\text{I}}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{\text{I,}n}\tilde{x}_{\text{I,}n}(t){e^{j2{\pi}{f_n}{t}}}\right\}},\label{eq:x_I}\\
+				\boldsymbol{x}_{\text{P}}(t) &= \Re{\left\{\sum_{n=1}^N\boldsymbol{w}_{\text{P},n}{e^{j2{\pi}{f_n}{t}}}\right\}}.\label{eq:x_P}
 			\end{align}
 		\end{subsection}
 
 
 		\begin{subsection}{Composite Channel}
-			At subband $n$, we denote the AP-user direct channel as $\boldsymbol{h}_{\text{D,}n}^H \in \mathbb{C}^{1 \times M}$, AP-IRS incident channel as $\boldsymbol{H}_{\text{I,}n} \in \mathbb{C}^{L \times M}$, and IRS-user reflective channel as $\boldsymbol{h}_{\text{R,}n}^H \in \mathbb{C}^{1 \times L}$. At the IRS, element $l$ ($l=1,\dots,L$) redistributes the incoming signal by adjusting the reflection coefficient $\phi_l \triangleq \alpha_l e^{j\theta_l}$ with the reflection amplitude $\alpha_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$~\footnote{To investigate the performance upper bound of IRS, we suppose the reflection coefficient is maximized $\alpha_l=1\,,\forall l$ while the phase shift is a continuous variable over $[0,2\pi)$.}. Also, define the IRS matrix as $\boldsymbol{\Theta} \triangleq \mathrm{diag}(\phi_1, \dots, \phi_L) \in \mathbb{C}^{L \times L}$ that collects the reflection coefficients onto its main diagonal entries. The auxiliary link introduced by IRS can be modeled as a concatenation of the AP-IRS incident channel, IRS reflection matrix, and IRS-user reflective channel. On top of this, the total composite channel is obtained by superposing the IRS-aided auxiliary channel to the AP-user direct channel as
+			At subband $n$, we denote the AP-user direct channel as $\boldsymbol{h}_{\text{D,}n}^H \in \mathbb{C}^{1 \times M}$, AP-IRS incident channel as $\boldsymbol{H}_{\text{I,}n} \in \mathbb{C}^{L \times M}$, and IRS-user reflective channel as $\boldsymbol{h}_{\text{R,}n}^H \in \mathbb{C}^{1 \times L}$. At the IRS, element $l$ ($l=1,\dots,L$) redistributes the incoming signal by adjusting the reflection coefficient $\phi_l \triangleq \alpha_l e^{j\theta_l}$ with the reflection amplitude $\alpha_l \in [0,1]$ and phase shift $\theta_l \in [0,2\pi)$~\footnote{To investigate the performance upper bound of IRS, we suppose the reflection coefficient is maximized $\alpha_l=1,\forall l$ while the phase shift is a continuous variable over $[0,2\pi)$.}. Also, define the IRS matrix as $\boldsymbol{\Theta} \triangleq \mathrm{diag}(\phi_1, \dots, \phi_L) \in \mathbb{C}^{L \times L}$ that collects the reflection coefficients onto its main diagonal entries. The auxiliary link introduced by IRS can be modeled as a concatenation of the AP-IRS incident channel, IRS reflection matrix, and IRS-user reflective channel. On top of this, the total composite channel is obtained by superposing the IRS-aided auxiliary channel to the AP-user direct channel as
 			\begin{equation}\label{eq:h_n}
 				\boldsymbol{h}_{n}^H = \boldsymbol{h}_{\text{D,}n}^H + \boldsymbol{h}_{\text{R,}n}^H \boldsymbol{\Theta} \boldsymbol{H}_{\text{I,}n} = \boldsymbol{h}_{\text{D,}n}^H + \boldsymbol{\phi}^H \boldsymbol{V}_{n}
 			\end{equation}
@@ -155,8 +155,8 @@
 		\begin{subsection}{Receive Signal}
 			At the single-antenna receiver, the total received signal $y(t) \triangleq y_{\text{I}}(t)+y_\text{P}(t)$ captures the contribution from information and power components over all subbands, where
 			\begin{align}
-				y_{\text{I}}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{n}^H}{\boldsymbol{w}_{\text{I,}n}\tilde{x}_{\text{I,}n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\}\,,\label{eq:y_I}\\
-				y_{\text{P}}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{n}^H}\boldsymbol{w}_{\text{P},n}{e^{j2{\pi}{f_n}{t}}}\right\}\,.\label{eq:y_P}
+				y_{\text{I}}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{n}^H}{\boldsymbol{w}_{\text{I,}n}\tilde{x}_{\text{I,}n}(t)}{e^{j2{\pi}{f_n}{t}}}\right\},\label{eq:y_I}\\
+				y_{\text{P}}(t) & = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{n}^H}\boldsymbol{w}_{\text{P},n}{e^{j2{\pi}{f_n}{t}}}\right\}.\label{eq:y_P}
 			\end{align}
 		\end{subsection}
 
@@ -221,11 +221,11 @@
 
 			% Denote $i_{\text{S}}$ as the reverse bias saturation current, $n'$ as the diode ideality factor, $v_{\text{T}}$ as the thermal voltage, $v_{\text{D}}(t)=v_{\text{in}}(t)-v_{\text{out}}(t)$ as the voltage across the diode where $v_{\text{out}}(t)$ is the output voltage across the load. A Taylor expansion of the diode characteristic equation $i_{\text{D}}(t)=i_{\text{S}}(e^{v_{\text{D}}(t)/n' v_{\text{T}}}-1)$ around a quiescent operating point $a$ writes as $i_{\text{D}}(t)=\sum_{i=0}^{\infty}k_i'(v_{\text{D}}(t)-a)^i$, where $k_0'=i_{\text{S}}(e^{a/n' v_{\text{T}}}-1)$ and $k_i'=i_{\text{S}}e^{a/n'v_{\text{T}}}/i!(n'v_{\text{T}})^i$ for $i=1,\dots,\infty$. Note that this small-signal expansion model is only valid for the non-linear operation region, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}. Also, an ideal low-pass filter with steady-state response can provide a constant $v_{\text{out}}$ that depends on the peak of $v_{\text{in}}(t)$ \cite{Curty2005}. Therefore, a proper choice of the operating voltage drop is $a=\mathcal{E}\{v_{\text{D}}(t)\}=-v_{\text{out}}$ such that
 			% \begin{equation}\label{eq:i_D}
-			% 	i_{\text{D}}(t)=\sum_{i=0}^{\infty}k_i'\rho^{i/2}R_{\text{ant}}^{i/2}y(t)^i\,.
+			% 	i_{\text{D}}(t)=\sum_{i=0}^{\infty}k_i'\rho^{i/2}R_{\text{ant}}^{i/2}y(t)^i.
 			% \end{equation}
 			% By discarding the non-DC components, taking an expectation over symbol distribution, and truncating \eqref{eq:i_D} to the $n_0$-th order, we approximate the average output DC current for a given channel as
 			% \begin{equation}\label{eq:i_out}
-			% 	i_{\text{out}}(t)=\mathcal{A}\{i_{\text{D}}(t)\}\approx\sum_{i=0}^{n_0}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y(t)^i\right\}}\right\}\,.
+			% 	i_{\text{out}}(t)=\mathcal{A}\{i_{\text{D}}(t)\}\approx\sum_{i=0}^{n_0}{k_i'}{\rho^{i/2}}{R_{\text{ant}}^{i/2}}\mathcal{E}\left\{{\mathcal{A}\left\{y(t)^i\right\}}\right\}.
 			% \end{equation}
 			% With the assumption of evenly-spaced frequencies, it holds that $\mathcal{A}\left\{y(t)^i\right\}=0$ for odd $i$ thus the related terms have no contribution to DC output. However, $k_i'$ is still a function of $i_{\text{out}}$, and \cite{Clerckx2016a} proved that maximizing a truncated $i_{\text{out}}$ is equivalent to maximizing a monotonic function
 			% \begin{equation}\label{eq:z}
@@ -264,21 +264,21 @@
 			\begin{figure*}[b]
 				\hrule
 				\begin{equation}
-					z(\boldsymbol{\phi},\boldsymbol{w}_{\text{I}},\boldsymbol{w}_\text{P},\rho) = \beta_2\rho\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{\text{I}}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{\text{P}}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{\text{I}}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{\text{P}}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{\text{I}}^2(t)\right\}\right\}\mathcal{A}\left\{y_{\text{P}}^2(t)\right\}\Bigr)\,.\label{eq:z_expand}
+					z(\boldsymbol{\phi},\boldsymbol{w}_{\text{I}},\boldsymbol{w}_\text{P},\rho) = \beta_2\rho\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{\text{I}}^2(t)\right\}\right\}+\mathcal{A}\left\{y_{\text{P}}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathcal{E}\left\{\mathcal{A}\left\{y_{\text{I}}^4(t)\right\}\right\}+\mathcal{A}\left\{y_{\text{P}}^4(t)\right\}+6\mathcal{E}\left\{\mathcal{A}\left\{y_{\text{I}}^2(t)\right\}\right\}\mathcal{A}\left\{y_{\text{P}}^2(t)\right\}\Bigr).\label{eq:z_expand}
 				\end{equation}
 				\hrule
 				\begin{flalign}
 					\mathcal{E}\left\{\mathcal{A}\left\{y_{\text{I}}^2(t)\right\}\right\}
-					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{I,}n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{I,}n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\text{I,}0}\boldsymbol{h}\,,&&\label{eq:y_I2}\\
+					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{I,}n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{I,}n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\text{I,}0}\boldsymbol{h},&&\label{eq:y_I2}\\
 					\mathcal{E}\left\{\mathcal{A}\left\{y_{\text{I}}^4(t)\right\}\right\}
-					& = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{I,}n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{I,}n})^H}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{\text{I,}0}\boldsymbol{h})^2\,,&&\label{eq:y_I4}
+					& = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{I,}n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{I,}n})^H}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{\text{I,}0}\boldsymbol{h})^2,&&\label{eq:y_I4}
 				\end{flalign}
-				\begin{align}
+				\begin{flalign}
 					\mathcal{A}\left\{y_{\text{P}}^2(t)\right\}
-					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{P},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{P},n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\text{P,}0}\boldsymbol{h}\,,\label{eq:y_P2}\\
+					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{P},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\text{P},n})^H} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\text{P,}0}\boldsymbol{h},&&\label{eq:y_P2}\\
 					\mathcal{A}\left\{y_{\text{P}}^4(t)\right\}
-					& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{\text{P,}{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{\text{P,}{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{\text{P,}{n_3}})^H(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{\text{P,}{n_4}})^H} = \frac{3}{8}\sum_{k=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{\text{P,}k}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{\text{P,}k}\boldsymbol{h})^H\,.\label{eq:y_P4}
-				\end{align}
+					& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{\text{P,}{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{\text{P,}{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{\text{P,}{n_3}})^H(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{\text{P,}{n_4}})^H} = \frac{3}{8}\sum_{k=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{\text{P,}k}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{\text{P,}k}\boldsymbol{h})^H.&&\label{eq:y_P4}
+				\end{flalign}
 			\end{figure*}
 		\end{subsection}
 
@@ -302,9 +302,9 @@
 			\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{w}_{\text{I}}}\rVert^2+\lVert{\boldsymbol{w}_\text{P}}\rVert^2\right)\le{P}}\label{co:original_power}
 			\addConstraint{R(\boldsymbol{\phi},\boldsymbol{w}_{\text{I}},\rho) \ge \bar{R}}\label{co:original_rate}
 			\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}\label{co:original_modulus}
-			\addConstraint{0 \le \rho \le 1\,.}
+			\addConstraint{0 \le \rho \le 1.}
 		\end{maxi!}
-		Problem~\eqref{op:original} is intricate as the variables are coupled and the objective function \eqref{ob:original}, the rate constraint \eqref{co:original_rate}, and the IRS magnitude constraint \eqref{co:original_modulus} are non-convex. To achieve a feasible solution, we propose an AO algorithm that iteratively updates the waveform and active beamforming at the transmitter, the phase shifts at the IRS, and the power splitting ratio at the receiver, until convergence.
+		Problem~\eqref{op:original} is intricate with coupled variables in non-convex expressions \eqref{ob:original}, \eqref{co:original_rate}, \eqref{co:original_modulus}. To obtain a feasible solution, we propose an AO algorithm that iteratively updates 1) the phase shift at the IRS, 2) the waveform, active beamforming at the transmitter and the power splitting ratio at the receiver, until convergence.
 		\begin{remark}\label{re:irs_subchannel_alignment}
 			As information and power transfer prefer different subchannel strength distribution, the frequency-flat characteristic of the IRS introduces a resource allocation problem. Following Remark \ref{re:irs_frequency_flat}, if the IRS is frequency-selective and there is only one transmit antenna, then each reflector can simultaneously align the corresponding AP-IRS-user channel with the AP-user channel at all subbands. In this case, the strengths of all subchannels are maximized so that the joint design would follow straightforwardly from existing SWIPT work \cite{Clerckx2018b}.
 		\end{remark}
@@ -320,44 +320,44 @@
 				& = \mathrm{Tr}(\boldsymbol{M}_n\boldsymbol{w}_{\text{I,}n}\boldsymbol{w}_{\text{I,}n}^H\boldsymbol{M}_n^H\boldsymbol{\Phi})\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})
 			\end{align}
-			where $t$ is an auxiliary variable with unit modulus, $\boldsymbol{M}_n=[\boldsymbol{V}_n^H, \boldsymbol{h}_{\text{D,}n}]^H \in \mathbb{C}^{(L+1) \times M}$, $\bar{\boldsymbol{\phi}}=[\boldsymbol{\phi}^H, t]^H \in \mathbb{C}^{(L+1) \times 1}$, $\boldsymbol{\Phi}=\bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H \in \mathbb{C}^{(L+1) \times (L+1)}$, $\boldsymbol{C}_n = \boldsymbol{M}_n\boldsymbol{w}_{\text{I,}n}\boldsymbol{w}_{\text{I,}n}^H\boldsymbol{M}_n^H \in \mathbb{C}^{(L+1)\times(L+1)}$. On the other hand, we define $t_{\text{I/P,}k}$ as
+			where $t$ is an auxiliary variable with unit modulus, $\boldsymbol{M}_n \triangleq [\boldsymbol{V}_n^H, \boldsymbol{h}_{\text{D,}n}]^H \in \mathbb{C}^{(L+1) \times M}$, $\bar{\boldsymbol{\phi}} \triangleq [\boldsymbol{\phi}^H, t]^H \in \mathbb{C}^{(L+1) \times 1}$, $\boldsymbol{\Phi} \triangleq \bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H \in \mathbb{C}^{(L+1) \times (L+1)}$, $\boldsymbol{C}_n \triangleq \boldsymbol{M}_n\boldsymbol{w}_{\text{I,}n}\boldsymbol{w}_{\text{I,}n}^H\boldsymbol{M}_n^H \in \mathbb{C}^{(L+1)\times(L+1)}$. On the other hand, we define $t_{\text{I/P,}k}$ as
 			\begin{align}
 				t_{\text{I/P,}k}
-				& = \boldsymbol{h}^H\boldsymbol{W}_{\text{I/P,}k}\boldsymbol{h}\nonumber\\
+				& \triangleq \boldsymbol{h}^H\boldsymbol{W}_{\text{I/P,}k}\boldsymbol{h}\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{h}\boldsymbol{h}^H\boldsymbol{W}_{\text{I/P,}k})\nonumber\\
 				& = \mathrm{Tr}\left((\boldsymbol{h}_{D}+\boldsymbol{V}^H\boldsymbol{\phi})(\boldsymbol{h}_{D}^H+\boldsymbol{\phi}^H\boldsymbol{V})\boldsymbol{W}_{\text{I/P,}k}\right)\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}\boldsymbol{W}_{\text{I/P,}k})\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{M}\boldsymbol{W}_{\text{I/P,}k}\boldsymbol{M}^H\boldsymbol{\Phi})\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{C}_{\text{I/P,}k}\boldsymbol{\Phi})
 			\end{align}
-			where $\boldsymbol{V}=[\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M}=[\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{\text{I/P,}k}=\boldsymbol{M}\boldsymbol{W}_{\text{I/P,}k}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Therefore, we rewrite the rate and objective expressions as
+			where $\boldsymbol{V} \triangleq [\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M} \triangleq [\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{\text{I/P,}k} \triangleq \boldsymbol{M}\boldsymbol{W}_{\text{I/P,}k}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Therefore, we rewrite the rate and objective expressions as
 			\begin{align}
 				R(\boldsymbol{\Phi})
-				& = \sum_{n=1}^{N}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)}\,,\label{eq:R_irs}\\
+				& = \sum_{n=1}^{N}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)},\label{eq:R_irs}\\
 				z(\boldsymbol{\Phi})
 				& = \frac{1}{2}{\beta_2}{\rho}(t_{\text{I,}0}+t_{\text{P,}0})\nonumber\\
 				& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{\text{I,}0}^2 + \sum_{k=-N+1}^{N-1}{t_{\text{P,}k}t_{\text{P,}k}^*}\right)\nonumber\\
-				& \quad + \frac{3}{2}{\beta_4}{\rho^2}t_{\text{I,}0}t_{\text{P,}0}\,.\label{eq:z_irs}
+				& \quad + \frac{3}{2}{\beta_4}{\rho^2}t_{\text{I,}0}t_{\text{P,}0}.\label{eq:z_irs}
 			\end{align}
-			To maximize non-concave expression \eqref{eq:z_irs}, we propose a SCA algorithm that approximate the second-order terms by first-order Taylor expansion \cite{Adali2010}. Based on the solution at iteration $i - 1$, the approximations at iteration $i$ are
+			To maximize non-concave expression \eqref{eq:z_irs}, we propose a SCA algorithm that approximate the second-order terms by their first-order Taylor expansion \cite{Adali2010}. Based on the solution at iteration $i - 1$, the approximations at iteration $i$ are
 			\begin{align}
 				(t_{\text{I,}0}^{(i)})^2
-				& \ge 2 t_{\text{I,}0}^{(i)}t_{\text{I,}0}^{(i-1)} - (t_{\text{I,}0}^{(i-1)})^2\,,\label{eq:taylor_1}\\
+				& \ge 2 t_{\text{I,}0}^{(i)}t_{\text{I,}0}^{(i-1)} - (t_{\text{I,}0}^{(i-1)})^2,\label{eq:taylor_1}\\
 				t_{\text{P,}k}^{(i)} (t_{\text{P,}k}^{(i)})^*
-				& \ge 2 \Re\left\{t_{\text{P,}k}^{(i)} (t_{\text{P,}k}^{(i-1)})^*\right\} - t_{\text{P,}k}^{(i-1)} (t_{\text{P,}k}^{(i-1)})^*\,,\label{eq:taylor_2}\\
+				& \ge 2 \Re\left\{t_{\text{P,}k}^{(i)} (t_{\text{P,}k}^{(i-1)})^*\right\} - t_{\text{P,}k}^{(i-1)} (t_{\text{P,}k}^{(i-1)})^*,\label{eq:taylor_2}\\
 				t_{\text{I,}0}^{(i)} t_{\text{P,}0}^{(i)}
 				& = \frac{1}{4}(t_{\text{I,}0}^{(i)} + t_{\text{P,}0}^{(i)})^2 - \frac{1}{4}(t_{\text{I,}0}^{(i)} - t_{\text{P,}0}^{(i)})^2\nonumber\\
 				& \ge \frac{1}{2}(t_{\text{I,}0}^{(i)} + t_{\text{P,}0}^{(i)})(t_{\text{I,}0}^{(i-1)} + t_{\text{P,}0}^{(i-1)})\nonumber\\
 				& \quad - \frac{1}{4}(t_{\text{I,}0}^{(i-1)} + t_{\text{P,}0}^{(i-1)})^2 - \frac{1}{4}(t_{\text{I,}0}^{(i)} - t_{\text{P,}0}^{(i)})^2\label{eq:taylor_3}
 			\end{align}
-			which provide lower bounds to the corresponding terms in \eqref{eq:z_irs}. Hence, the objection function is approximated by $\tilde{z}(\boldsymbol{\Phi}^{(i)})$ in \eqref{eq:z_irs_approx}, and problem~\eqref{op:original} is transformed to
+			which provide lower bounds to the corresponding terms in \eqref{eq:z_irs}. Hence, the objective function is approximated by $\tilde{z}(\boldsymbol{\Phi}^{(i)})$ in \eqref{eq:z_irs_approx}, and problem~\eqref{op:original} is transformed to
 			\begin{figure*}[b]
 				\hrule
 				\begin{align}
 					\tilde{z}(\boldsymbol{\Phi}^{(i)})
 					& = \frac{1}{2}{\beta_2}{\rho}(t_{\text{I,}0}^{(i)}+t_{\text{P,}0}^{(i)})\nonumber\\
-					& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(4 (t_{\text{I,}0}^{(i)})(t_{\text{I,}0}^{(i-1)}) - 2 (t_{\text{I,}0}^{(i-1)})^2 + \sum_{k=-N+1}^{N-1}{2 \Re\left\{t_{\text{P,}k}^{(i)} (t_{\text{P,}k}^{(i-1)})^*\right\} - t_{\text{P,}k}^{(i-1)} (t_{\text{P,}k}^{(i-1)})^*}\right)\nonumber\\
-					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left(\frac{1}{2}(t_{\text{I,}0}^{(i)} + t_{\text{P,}0}^{(i)})(t_{\text{I,}0}^{(i-1)} + t_{\text{P,}0}^{(i-1)}) - \frac{1}{4}(t_{\text{I,}0}^{(i-1)} + t_{\text{P,}0}^{(i-1)})^2 - \frac{1}{4}(t_{\text{I,}0}^{(i)} - t_{\text{P,}0}^{(i)})^2\right)\,.\label{eq:z_irs_approx}
+					& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(4 t_{\text{I,}0}^{(i)}t_{\text{I,}0}^{(i-1)} - 2 (t_{\text{I,}0}^{(i-1)})^2 + \sum_{k=-N+1}^{N-1}{2 \Re\left\{t_{\text{P,}k}^{(i)} (t_{\text{P,}k}^{(i-1)})^*\right\} - t_{\text{P,}k}^{(i-1)} (t_{\text{P,}k}^{(i-1)})^*}\right)\nonumber\\
+					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left(\frac{1}{2}(t_{\text{I,}0}^{(i)} + t_{\text{P,}0}^{(i)})(t_{\text{I,}0}^{(i-1)} + t_{\text{P,}0}^{(i-1)}) - \frac{1}{4}(t_{\text{I,}0}^{(i-1)} + t_{\text{P,}0}^{(i-1)})^2 - \frac{1}{4}(t_{\text{I,}0}^{(i)} - t_{\text{P,}0}^{(i)})^2\right).\label{eq:z_irs_approx}
 				\end{align}
 			\end{figure*}
 			\begin{maxi!}
@@ -365,11 +365,9 @@
 				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_rate}
 				\addConstraint{\boldsymbol{\Phi}_{l,l}=1, \quad l=1,\dots,L+1}\label{co:irs_modulus}
 				\addConstraint{\boldsymbol{\Phi}\succeq{0}}
-				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\,.\label{co:irs_rank}}
+				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_rank}}
 			\end{maxi!}
-			Problem~\eqref{op:irs} is not a standard Semidefinite Programming (SDP). If we relax the rank constraint \eqref{co:irs_rank} to formulate a convex problem, there is no guarantee $\boldsymbol{\Phi}^{\star}$ is rank-\num{1}, and the optimal rank-\num{1} solution $\bar{\boldsymbol{\phi}}^{\star}$ extracted from $\boldsymbol{\Phi}^{\star}$ may not be a stationary point of the original problem~\eqref{op:original}. In Section~\ref{se:performance_evaluation}, we numerically show that $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} for all tested channel realizations under different configurations such that the performance loss by SDR is insignificant. Problem~\eqref{op:irs} without constraint \eqref{co:irs_rank} can be solved using existing optimization tools such as CVX \cite{Grant2013}.
-
-			When $\boldsymbol{\Phi}^{\star}$ is rank-\num{1}, the optimal phase shift vector $\bar{\boldsymbol{\phi}}^\star$ can be obtained by Eigenvalue Decomposition (EVD). Otherwise, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$, construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the one that maximizes the objective function \eqref{ob:irs}. Finally, the phase shifts are retrieved by $\theta_l^{\star}=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. The SCA algorithm for passive beamforming optimization is summarized in Algorithm~\ref{al:irs}.
+			Problem~\eqref{op:irs} is not a standard Semidefinite Programming (SDP). If we relax the rank constraint \eqref{co:irs_rank} to formulate a convex problem, there is no guarantee $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} and the optimal rank-\num{1} solution $\boldsymbol{\phi}^{\star}$ extracted from $\boldsymbol{\Phi}^{\star}$ may not be a stationary point of the original problem~\eqref{op:original}. In Section~\ref{se:performance_evaluation}, we numerically show that $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} for all tested channel realizations under different configurations, and the performance loss by SDR is insignificant. When $\boldsymbol{\Phi}^{\star}$ is rank-\num{1}, the optimal phase shift vector $\boldsymbol{\phi}^\star$ can be obtained by Eigenvalue Decomposition (EVD). Otherwise, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$, construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the one that maximizes the objective function \eqref{ob:irs}. Finally, the phase shifts are retrieved by $\theta_l^{\star}=\arg(\phi_l^\star/\phi_{L+1}^\star), \ l=1,\dots,L$. Problem~\eqref{op:irs} without constraint \eqref{co:irs_rank} can be solved using existing optimization tools such as CVX \cite{Grant2013}. The SCA algorithm for the passive beamforming optimization is summarized in Algorithm~\ref{al:irs}.
 			\begin{algorithm}[!t]
 				\caption{SCA: IRS Phase Shift.}
 				\label{al:irs}
@@ -398,14 +396,14 @@
 		\end{subsection}
 
 
-		\begin{subsection}{Waveform and Splitting Ratio}
+		\begin{subsection}{Waveform, Active Beamforming and Splitting Ratio}
 			Next, we jointly optimize both information and power waveforms $\boldsymbol{w}_{\text{I/P}}$ together with splitting ratio $\rho$ for any given IRS phase shift $\boldsymbol{\phi}$. As pointed out in \cite{Clerckx2018b}, the waveform design in frequency and spatial domain can be decoupled without performance loss, and the optimal spatial weight is given by Maximum-Ratio Transmission (MRT) beamformer
 			\begin{equation}\label{eq:w_IP}
-				\boldsymbol{w}_{\text{I/P,}n}=s_{\text{I/P,}n}\frac{\boldsymbol{h}_n}{\lVert{\boldsymbol{h}_n}\rVert}\,.
+				\boldsymbol{w}_{\text{I/P,}n}=s_{\text{I/P,}n}\frac{\boldsymbol{h}_n}{\lVert{\boldsymbol{h}_n}\rVert}.
 			\end{equation}
 			That is to say, for single-user MISO SWIPT, the optimal active beamformer is MRT and we only need to determine the amplitudes $s_{\text{I/P,}n}$ at different tones. Hence, the original waveform optimization with $2MN$ complex variables is converted into a power allocation problem with $2N$ nonnegative real variables. Let $\boldsymbol{s}_{\text{I/P}}=[s_{\text{I/P,}1},\dots,s_{\text{I/P,}N}]^T \in \mathbb{C}^{N \times 1}$. At subband $n$, the effective channel gain is given by $\lVert{\boldsymbol{h}_n}\rVert$, and the power allocated to the modulated and unmodulated waveform are given by $s_{\text{I,}n}^2$ and $s_{\text{P},n}^2$, respectively. With such an active beamformer selection, we have $\boldsymbol{h}_n^H\boldsymbol{w}_{\text{I,}n}=\lvert{\boldsymbol{h}_n^H\boldsymbol{w}_{\text{I,}n}}\rvert=\lVert{\boldsymbol{h}_n}\rVert s_{\text{I,}n}$ such that the rate and objective functions further reduce to \eqref{eq:R_waveform} and \eqref{eq:z_waveform}, respectively.
 			\begin{equation}\label{eq:R_waveform}
-				R(\boldsymbol{s}_{\text{I}},\rho) = \log_2\left(\prod_{n=1}^N\biggl(1+\frac{(1-\rho)\lVert{\boldsymbol{h}_n}\rVert^2 s_{\text{I,}n}^2}{\sigma_n^2}\biggr)\right)\,.
+				R(\boldsymbol{s}_{\text{I}},\rho) = \log_2\left(\prod_{n=1}^N\biggl(1+\frac{(1-\rho)\lVert{\boldsymbol{h}_n}\rVert^2 s_{\text{I,}n}^2}{\sigma_n^2}\biggr)\right).
 			\end{equation}
 			\begin{figure*}[b]
 				\hrule
@@ -413,14 +411,14 @@
 					z(\boldsymbol{s}_{\text{I}},\boldsymbol{s}_\text{P},\rho)
 					& = \frac{1}{2}{\beta_2}{\rho} \sum_{n=1}^N \lVert{\boldsymbol{h}_n}\rVert^2(s_{\text{I,}n}^2+s_{\text{P},n}^2)\nonumber\\
 					& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left( 2\sum_{n_1,n_2} \prod_{j=1}^2 \lVert{\boldsymbol{h}_{n_j}}\rVert^2 s_{\text{I,}{n_j}}^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}} \prod_{j=1}^4 \lVert{\boldsymbol{h}_{n_j}}\rVert s_{\text{P,}{n_j}} \right)\nonumber\\
-					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left( \sum_{n_1,n_2} \lVert{\boldsymbol{h}_{n_1}}\rVert^2 \lVert{\boldsymbol{h}_{n_2}}\rVert^2 s_{\text{I,}{n_1}}^2 s_{\text{P,}{n_2}}^2 \right)\,.\label{eq:z_waveform}
+					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left( \sum_{n_1,n_2} \lVert{\boldsymbol{h}_{n_1}}\rVert^2 \lVert{\boldsymbol{h}_{n_2}}\rVert^2 s_{\text{I,}{n_1}}^2 s_{\text{P,}{n_2}}^2 \right).\label{eq:z_waveform}
 				\end{align}
 			\end{figure*}%
 			Therefore, problem~\eqref{op:original} is reduced to an amplitude optimization issue
 			\begin{maxi!}
 				{\boldsymbol{s}_{\text{I}},\boldsymbol{s}_\text{P},\rho}{z(\boldsymbol{s}_{\text{I}},\boldsymbol{s}_\text{P},\rho)}{\label{op:waveform}}{}
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\text{I}}}\rVert^2+\lVert{\boldsymbol{s}_\text{P}}\rVert^2\right)\le{P}}
-				\addConstraint{R(\boldsymbol{s}_{\text{I}},\rho) \ge \bar{R}\,.}
+				\addConstraint{R(\boldsymbol{s}_{\text{I}},\rho) \ge \bar{R}.}
 			\end{maxi!}
 			Since problem~\eqref{op:waveform} involves the production of nonnegative real variables, we introduce auxiliary variables $t',\bar{\rho}$ and transform it into a reversed GP
 			\begin{mini!}
@@ -428,11 +426,11 @@
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\text{I}}}\rVert^2+\lVert{\boldsymbol{s}_\text{P}}\rVert^2\right) \le P}\label{co:waveform_power}
 				\addConstraint{\frac{t'}{z(\boldsymbol{s}_{\text{I}},\boldsymbol{s}_\text{P},\rho)} \le 1}\label{co:waveform_objective}
 				\addConstraint{\frac{2^{\bar{R}}}{\prod_{n=1}^N \left(1+{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{\text{I,}n}^2}\big/{\sigma_n^2}\right)} \le 1}\label{co:waveform_rate}
-				\addConstraint{\rho + \bar{\rho} \le 1\,.}
+				\addConstraint{\rho + \bar{\rho} \le 1.}
 			\end{mini!}
 			The denominators of \eqref{co:waveform_objective}, \eqref{co:waveform_rate} are posynomials \cite{Boyd2007} that are further decomposed as
 			\begin{align}
-				z(\boldsymbol{s}_{\text{I}},\boldsymbol{s}_\text{P},\rho)&=\sum_{m_\text{P}}{g_{m_\text{P}}(\boldsymbol{s}_{\text{I}},\boldsymbol{s}_\text{P},\rho)}\label{eq:posynomial_objective}\,,\\
+				z(\boldsymbol{s}_{\text{I}},\boldsymbol{s}_\text{P},\rho)&=\sum_{m_\text{P}}{g_{m_\text{P}}(\boldsymbol{s}_{\text{I}},\boldsymbol{s}_\text{P},\rho)}\label{eq:posynomial_objective},\\
 				1+\frac{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{\text{I,}n}^2}{\sigma_n^2}&=\sum_{m_{\text{I,}n}}g_{m_{\text{I,}n}}(s_{\text{I,}n},\bar{\rho})\label{eq:posynomial_rate}
 			\end{align}
 			where $m_\text{P}=(2N^3+6N^2+7N)/3$, $m_{\text{I,}n}=2$ are the number of monomials. Following \cite{Chiang2005}, we upper bound posynomials \eqref{eq:posynomial_objective} and \eqref{eq:posynomial_rate} by Arithmetic Mean-Geometric Mean (AM-GM) inequality such that problem~\eqref{op:waveform_rgp} reduces to
@@ -445,8 +443,8 @@
 			\end{mini!}
 			where $\gamma_{m_\text{P}},\gamma_{m_{\text{I,}n}} \ge 0$, $\sum_{m_\text{P}}\gamma_{m_\text{P}}=\sum_{m_{\text{I,}n}}\gamma_{m_{\text{I,}n}}=1$. The tightness of the AM-GM inequality depends on $\{\gamma_{m_\text{P}},\gamma_{m_{\text{I,}n}}\}$ that require successive update. As suggested in \cite{Clerckx2018b}, a feasible choice at iteration $i$ is
 			\begin{align}
-				\gamma_{m_\text{P}}^{(i)} & = \frac{g_{m_\text{P}}(\boldsymbol{s}_{\text{I}}^{(i-1)},\boldsymbol{s}_\text{P}^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_{\text{I}}^{(i-1)},\boldsymbol{s}_\text{P}^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}\,,\\
-				\gamma_{m_{\text{I,}n}}^{(i)} & = \frac{g_{m_{\text{I,}n}}(s_{\text{I,}n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{\text{I,}n}^{(i-1)})^2}\big/{\sigma_n^2}}\,.\label{eq:gamma_I}
+				\gamma_{m_\text{P}}^{(i)} & = \frac{g_{m_\text{P}}(\boldsymbol{s}_{\text{I}}^{(i-1)},\boldsymbol{s}_\text{P}^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_{\text{I}}^{(i-1)},\boldsymbol{s}_\text{P}^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P},\\
+				\gamma_{m_{\text{I,}n}}^{(i)} & = \frac{g_{m_{\text{I,}n}}(s_{\text{I,}n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{\text{I,}n}^{(i-1)})^2}\big/{\sigma_n^2}}.\label{eq:gamma_I}
 			\end{align}
 			Problem~\eqref{op:waveform_gp} can be solved using existing optimization tools such as CVX \cite{Grant2013}. $\boldsymbol{s}_{\text{I}},\boldsymbol{s}_\text{P},\rho$ are updated iteratively until convergence. The GP algorithm of waveform, active beamforming and splitting ratio optimization is summarized in Algorithm~\ref{al:waveform}.
 			\begin{algorithm}[!t]
@@ -640,7 +638,7 @@
 
 		Fig.~\ref{fi:re_irs_1mhz} and \ref{fi:re_irs_10mhz} explore the average R-E region under different IRS configuration for narrowband (\SI{1}{\MHz} bandwidth) transmission and broadband transmission (\SI{10}{\MHz} bandwidth). The adaptive IRS strategy adjusts the passive beamforming for each sample in the R-E boundary, while the WIT/WPT-based non-adaptive IRS schemes only optimize the phase shifts for information and power purposes (correspond to the points on the $x$ and $y$ axes). To gain some insight into the IRS behavior, we compare the results above to ideal frequency-selective IRS and no IRS. In contrast to Remark \ref{re:irs_frequency_flat}, each element in the ideal Frequency-Selective (FS) IRS is assumed to have an independent reflection coefficient for each subband, accounting for a total design flexibility of $NL$. When there is only one transmit antenna, each FS reflector simply aligns the AP-IRS-user to the AP-user channel at all subbands, namely
 		\begin{equation}
-			\theta_{l,n}^{\star}=e^{j\arg{\left(h_{\text{D,}n}/h_{\text{I,}n,l}h_{\text{R,}n,l}\right)}}\,,\quad \forall n,l\,.
+			\theta_{l,n}^{\star}=e^{j\arg{\left(h_{\text{D,}n}/h_{\text{I,}n,l}h_{\text{R,}n,l}\right)}},\quad \forall n,l.
 		\end{equation}
 		\textit{First}, it is observed that the assistance of the IRS effectively enlarges the achievable R-E region for both narrowband and broadband transmissions. It is because the IRS enables a constructive channel composition that enhances the received signal strength. \textit{Second}, the performance of all four IRS strategies coincide with each other for narrowband SWIPT. It suggests that the optimal passive beamforming obtained for any R-E point is also optimal for the whole R-E region, and for a given channel, we only need to adapt the waveform and splitting ratio to achieve different rate and energy performance. When the bandwidth is small, all channels are approximately flat, and the optimal ideal reflection coefficients would almost synchronize at all subbands so that the loss by frequency-flat IRS is negligible. Also, the subchannel tradeoff in Remark \ref{re:irs_frequency_flat} does not exist as the auxiliary channel can be simultaneously maximized at different frequencies, and the adaptive and non-adaptive strategies end up with the same result. \textit{Third}, the adaptive passive beamforming is required to maximize the R-E tradeoff for broadband SWIPT. Recall Remark \ref{re:irs_subchannel_alignment} that WIT and WPT prefer different subchannel strength distribution. By adaptive passive beamforming, the channel energy can either be concentrated in few strongest subbands to increase the rate at a low SNR, or spread evenly over all subbands to boost the output DC power. The advantage of such a smart channel control is prominent for broadband SWIPT where the tradeoff between subbands becomes more obvious.
 	\end{section}
