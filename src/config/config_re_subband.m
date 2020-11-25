@@ -16,6 +16,8 @@ nUsers = 1;
 txPower = db2pow(6);
 % average noise power
 noisePower = db2pow(-70);
+% IRS element gain
+irsGain = 1;
 % receive antenna gain
 rxGain = db2pow(2);
 

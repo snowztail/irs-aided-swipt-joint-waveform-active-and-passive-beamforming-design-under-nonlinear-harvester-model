@@ -19,7 +19,7 @@ for iChannel = 1 : nChannels
         [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
 
         % * Construct extra channels
-        [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, rxGain, subbandFrequency, fadingMode);
+        [incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, irsGain, subbandFrequency, fadingMode);
         [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
         % * Alternating optimization
