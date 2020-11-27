@@ -72,7 +72,7 @@
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="-34.855925"
+     inkscape:cy="-35.386255"
      inkscape:cx="-8.523277"
      inkscape:zoom="2.8284271"
      inkscape:pageshadow="2"
@@ -94,7 +94,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -453,7 +453,7 @@
          y="-7.7139311"
          x="-10.585737"
          id="tspan2042"
-         sodipodi:role="line">$\boldsymbol{h}_{\text{D},n}^H$</tspan></text>
+         sodipodi:role="line">$\boldsymbol{h}_{\mathrm{D},n}^H$</tspan></text>
     <text
        id="text2048"
        y="-18.046551"
@@ -464,7 +464,7 @@
          y="-18.046551"
          x="9.8021317"
          id="tspan2046"
-         sodipodi:role="line">$\boldsymbol{h}_{\text{R},n}^H$</tspan></text>
+         sodipodi:role="line">$\boldsymbol{h}_{\mathrm{R},n}^H$</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.82223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -475,6 +475,6 @@
          id="tspan2046-7"
          x="-31.84763"
          y="-27.730185"
-         style="font-size:2.82223px;stroke-width:0.264583">$\boldsymbol{H}_{\text{I},n}$</tspan></text>
+         style="font-size:2.82223px;stroke-width:0.264583">$\boldsymbol{H}_{\mathrm{I},n}$</tspan></text>
   </g>
 </svg>

@@ -54,15 +54,15 @@
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{layout.pdf}}%
-    \put(0.40731638,0.07700226){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\text{D}}$\end{tabular}}}}%
-    \put(0.17022076,0.00383177){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\text{H}}$\end{tabular}}}}%
-    \put(0.30965211,0.16988516){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\text{V}}$\end{tabular}}}}%
+    \put(0.40731638,0.07700226){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{D}}$\end{tabular}}}}%
+    \put(0.17022076,0.00383177){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{H}}$\end{tabular}}}}%
+    \put(0.30965211,0.16988516){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{V}}$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{layout.pdf}}%
     \put(0.28447979,0.30961545){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IRS\end{tabular}}}}%
     \put(-0,0.04260542){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}AP\end{tabular}}}}%
     \put(0.94732538,0.0427742){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}User\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{layout.pdf}}%
-    \put(0.12776478,0.16988516){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\text{I}}$\end{tabular}}}}%
-    \put(0.6506909,0.16988516){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\text{R}}$\end{tabular}}}}%
+    \put(0.12776478,0.16988516){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{I}}$\end{tabular}}}}%
+    \put(0.6506909,0.16988516){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{R}}$\end{tabular}}}}%
   \end{picture}%
 \endgroup%

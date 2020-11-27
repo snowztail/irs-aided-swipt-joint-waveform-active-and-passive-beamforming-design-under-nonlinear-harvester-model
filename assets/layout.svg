@@ -414,7 +414,7 @@
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
-     inkscape:cy="45.419211"
+     inkscape:cy="44.859273"
      inkscape:cx="117.50441"
      inkscape:zoom="2.6788702"
      inkscape:pageshadow="2"
@@ -525,7 +525,7 @@
          id="tspan4847"
          x="7.9160457"
          y="7.8092618"
-         style="font-size:2.82222px;stroke-width:0.264583">$d_{\text{D}}$</tspan></text>
+         style="font-size:2.82222px;stroke-width:0.264583">$d_{\mathrm{D}}$</tspan></text>
     <text
        id="text4849-0"
        y="16.324289"
@@ -536,7 +536,7 @@
          y="16.324289"
          x="-19.675346"
          id="tspan4847-9"
-         sodipodi:role="line">$d_{\text{H}}$</tspan></text>
+         sodipodi:role="line">$d_{\mathrm{H}}$</tspan></text>
     <text
        id="text4849-3"
        y="-2.9997458"
@@ -547,7 +547,7 @@
          y="-2.9997458"
          x="-3.4493818"
          id="tspan4847-6"
-         sodipodi:role="line">$d_{\text{V}}$</tspan></text>
+         sodipodi:role="line">$d_{\mathrm{V}}$</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker5027);marker-end:url(#marker6575)"
        d="M -2.5311671,-15.278596 66.456781,8.6288123"
@@ -607,7 +607,7 @@
          id="tspan2247"
          x="-24.616051"
          y="-2.9997458"
-         style="font-size:2.82223px;stroke-width:0.264583">$d_{\text{I}}$</tspan></text>
+         style="font-size:2.82223px;stroke-width:0.264583">$d_{\mathrm{I}}$</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:2.82223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -618,6 +618,6 @@
          id="tspan2251"
          x="36.238129"
          y="-2.9997458"
-         style="font-size:2.82223px;stroke-width:0.264583">$d_{\text{R}}$</tspan></text>
+         style="font-size:2.82223px;stroke-width:0.264583">$d_{\mathrm{R}}$</tspan></text>
   </g>
 </svg>
