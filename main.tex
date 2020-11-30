@@ -1,4 +1,4 @@
-\documentclass[journal,12pt,onecolumn,draftcls]{IEEEtran}
+\documentclass[journal]{IEEEtran}
 
 \usepackage{adjustbox}
 \usepackage{algorithm}
@@ -100,7 +100,7 @@
 
 			\textit{Second}, we formulate an optimization for this joint waveform, active and passive beamforming design to characterize the R-E region achieved by the proposed architecture. The R-E region characterization problem is transformed into multiple energy maximization problems subject to rate constraints. Each achievable R-E pair is obtained through an Alternating Optimization (AO) algorithm that iteratively updates 1) the phase shift at the IRS, 2) the waveform, active beamforming at the transmitter and the power splitting ratio at the receiver, until convergence. On top of the SWIPT optimization by Geometric Programming (GP) \cite{Clerckx2018b}, our IRS-aided SWIPT optimization employs a low-complexity passive beamforming algorithm based on Successive Convex Approximation (SCA) and Semidefinite Relaxation (SDR), which solves the highly non-convex problem in an efficient and reliable manner. Numerical results demonstrated SDR is tight and the proposed algorithm can always find a stationary point for all tested channel realizations under different configurations.
 
-			\textit{Third}, we conduct numerical evaluations to demonstrate the advantage of the proposed IRS-aided SWIPT architecture. Despite the hardware limitations of the IRS that constraint the reflection elements to be frequency-flat, numerical results show significant R-E benefits of the proposed joint waveform and beamforming design. We confirmed the main observations of SWIPT, namely a dedicated power waveform is beneficial for multi-carrier transmission, and TS/PS are preferred at low/high SNR, carry on to the IRS-aided SWIPT. Moreover, new observations are that 1) the IRS should be placed close to the transmitter or the receiver for optimal performance, 2) the number of transmit antenna and IRS elements have no noticeable impact on the optimal transceiving mode (TS/PS), 3) for active beamforming, increasing the number of transmit antennas brings a linear enhancement to the SNR and a quadratic boost to the harvested DC power, 4) for passive beamforming, increasing the number of reflecting elements provides a quadratic enhancement to the SNR and a quartic boost to the harvested DC power, 5) only the waveform and splitting ratio need to be updated for the R-E boundary of narrowband transmission, 6) the adaptive (i.e. rate-dependent) passive beamforming is required for broadband transmission.
+			\textit{Third}, we conduct numerical evaluations to demonstrate the advantage of the proposed IRS-aided SWIPT architecture. Despite the hardware limitations of the IRS that constraint the reflection elements to be frequency-flat, numerical results show significant R-E benefits of the proposed joint waveform and beamforming design. We confirmed the main observations of SWIPT, namely a dedicated power waveform is beneficial for multi-carrier transmission, and TS/PS are preferred at low/high SNR, carry on to the IRS-aided SWIPT. Moreover, new observations are that 1) the IRS should be placed close to the transmitter or the receiver for optimal performance, 2) the number of transmit antenna and IRS elements have no noticeable impact on the optimal transceiving mode (TS/PS), 3) for active beamforming, increasing the number of transmit antennas brings a linear enhancement to the SNR and a quadratic boost to the harvested DC power, 4) for passive beamforming, increasing the number of reflecting elements provides a quadratic enhancement to the SNR and a quartic boost to the harvested DC power, 5) for narrowband transmission, the optimal active and passive beamforming are fixed for a given channel, and one only need to update the waveform and splitting ratio to draw the whole R-E boundary, 6) for broadband transmission, the frequency diversity enables rate-dependent adaptive passive beamforming to control the subchannel strength distribution and improve the R-E tradeoff.
 
 			\textit{Organization:} The rest of this paper is organized as follows. Section~\ref{se:system_model} introduces the signal, channel, receiver, and R-E tradeoff models of the IRS-aided SWIPT system. Section~\ref{se:problem_formulation} tackles the waveform, active and passive beamforming optimization. Section~\ref{se:performance_evaluation} presents simulation results to evaluate the proposed design. Section~\ref{se:conclusion_and_future_works} concludes the paper.
 
@@ -233,31 +233,55 @@
 
 			\begin{figure*}[!b]
 				\hrule
-				\begin{align}
-					z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho) & = \beta_2\rho\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr)\nonumber\\
-					& \quad + \beta_4\rho^2\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}+6\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr).\label{eq:z_expand}
-				\end{align}
+				\begin{equation}
+					z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho) = \beta_2\rho\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}+6\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr).\label{eq:z_expand}
+				\end{equation}
 				\hrule
-				\begin{align}
+				\begin{flalign}
 					\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}
-					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h},\label{eq:y_I2}\\
+					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h},&&\label{eq:y_I2}\\
 					\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}
-					& = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h})^2,\label{eq:y_I4}\\
+					& = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h})^2,&&\label{eq:y_I4}
+				\end{flalign}
+				\begin{flalign}
 					\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}
-					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},0}\boldsymbol{h},\label{eq:y_P2}\\
+					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},0}\boldsymbol{h},&&\label{eq:y_P2}\\
 					\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}
-					& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{\mathrm{P},{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{\mathrm{P},{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{\mathrm{P},{n_3}})^*(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{\mathrm{P},{n_4}})^*}\nonumber\\
-					& = \frac{3}{8}\sum_{k=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})^*.\label{eq:y_P4}
-				\end{align}
+					& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{\mathrm{P},{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{\mathrm{P},{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{\mathrm{P},{n_3}})^*(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{\mathrm{P},{n_4}})^*} = \frac{3}{8}\sum_{k=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})^*.&&\label{eq:y_P4}
+				\end{flalign}
 			\end{figure*}
+			% \begin{figure*}[!b]
+			% 	\hrule
+			% 	\begin{align}
+			% 		z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho) & = \beta_2\rho\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr)\nonumber\\
+			% 		& \quad + \beta_4\rho^2\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}+6\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr).\label{eq:z_expand}
+			% 	\end{align}
+			% 	\hrule
+			% 	\begin{align}
+			% 		\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}
+			% 		& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h},\label{eq:y_I2}\\
+			% 		\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}
+			% 		& = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h})^2,\label{eq:y_I4}\\
+			% 		\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}
+			% 		& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},0}\boldsymbol{h},\label{eq:y_P2}\\
+			% 		\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}
+			% 		& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{\mathrm{P},{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{\mathrm{P},{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{\mathrm{P},{n_3}})^*(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{\mathrm{P},{n_4}})^*}\nonumber\\
+			% 		& = \frac{3}{8}\sum_{k=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})^*.\label{eq:y_P4}
+			% 	\end{align}
+			% \end{figure*}
 		\end{subsection}
 
 
 		\begin{subsection}{Rate-Energy Region}
 			The achievable R-E region is defined as
-			\begin{equation}
-				C_{R_{\mathrm{ID}}-I_{\mathrm{EH}}}(P) \triangleq \biggl\{(R_{\mathrm{ID}}, I_{\mathrm{EH}}): R_{\mathrm{ID}} \le R, I_{\mathrm{EH}} \le z, \frac{1}{2}\left(\lVert{\boldsymbol{w}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{w}_{\mathrm{P}}}\rVert^2\right) \le P\biggr\}
-			\end{equation}
+			\begin{align}
+				C_{R_{\mathrm{ID}}-I_{\mathrm{EH}}}(P)
+				&\triangleq \biggl\{(R_{\mathrm{ID}}, I_{\mathrm{EH}}): R_{\mathrm{ID}} \le R, I_{\mathrm{EH}} \le z,\nonumber\\
+				&\quad \frac{1}{2}\left(\lVert{\boldsymbol{w}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{w}_{\mathrm{P}}}\rVert^2\right) \le P\biggr\}
+			\end{align}
+			% \begin{equation}
+			% 	C_{R_{\mathrm{ID}}-I_{\mathrm{EH}}}(P) \triangleq \biggl\{(R_{\mathrm{ID}}, I_{\mathrm{EH}}): R_{\mathrm{ID}} \le R, I_{\mathrm{EH}} \le z, \frac{1}{2}\left(\lVert{\boldsymbol{w}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{w}_{\mathrm{P}}}\rVert^2\right) \le P\biggr\}
+			% \end{equation}
 			where $P$ is the average transmit power budget and the coefficient \num{1/2} converts the peak power of sine waves to the average power.
 		\end{subsection}
 	\end{section}
@@ -303,8 +327,16 @@
 				R(\boldsymbol{\Phi})
 				& = \sum_{n=1}^{N}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)},\label{eq:R_irs}\\
 				z(\boldsymbol{\Phi})
-				& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}+t_{\mathrm{P},0}) + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{\mathrm{I},0}^2 + \sum_{k=-N+1}^{N-1}{t_{\mathrm{P},k}t_{\mathrm{P},k}^*}\right) + \frac{3}{2}{\beta_4}{\rho^2}t_{\mathrm{I},0}t_{\mathrm{P},0}.\label{eq:z_irs}
+				& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}+t_{\mathrm{P},0})\nonumber\\
+				& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{\mathrm{I},0}^2 + \sum_{k=-N+1}^{N-1}{t_{\mathrm{P},k}t_{\mathrm{P},k}^*}\right)\nonumber\\
+				& \quad + \frac{3}{2}{\beta_4}{\rho^2}t_{\mathrm{I},0}t_{\mathrm{P},0}.\label{eq:z_irs}
 			\end{align}
+			% \begin{align}
+			% 	R(\boldsymbol{\Phi})
+			% 	& = \sum_{n=1}^{N}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)},\label{eq:R_irs}\\
+			% 	z(\boldsymbol{\Phi})
+			% 	& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}+t_{\mathrm{P},0}) + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{\mathrm{I},0}^2 + \sum_{k=-N+1}^{N-1}{t_{\mathrm{P},k}t_{\mathrm{P},k}^*}\right) + \frac{3}{2}{\beta_4}{\rho^2}t_{\mathrm{I},0}t_{\mathrm{P},0}.\label{eq:z_irs}
+			% \end{align}
 			To maximize non-concave expression \eqref{eq:z_irs}, we propose a SCA algorithm that approximate the second-order terms by their first-order Taylor expansion \cite{Adali2010}. Based on the solution at iteration $i - 1$, the approximations at iteration $i$ are
 			\begin{align}
 				(t_{\mathrm{I},0}^{(i)})^2
@@ -313,8 +345,18 @@
 				& \ge 2 \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*,\label{eq:taylor_2}\\
 				t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i)}
 				& = \frac{1}{4}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\nonumber\\
-				& \ge \frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\label{eq:taylor_3}
+				& \ge \frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})\nonumber\\
+				& \quad - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\label{eq:taylor_3}
 			\end{align}
+			% \begin{align}
+			% 	(t_{\mathrm{I},0}^{(i)})^2
+			% 	& \ge 2 t_{\mathrm{I},0}^{(i)}t_{\mathrm{I},0}^{(i-1)} - (t_{\mathrm{I},0}^{(i-1)})^2,\label{eq:taylor_1}\\
+			% 	t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i)})^*
+			% 	& \ge 2 \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*,\label{eq:taylor_2}\\
+			% 	t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i)}
+			% 	& = \frac{1}{4}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\nonumber\\
+			% 	& \ge \frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\label{eq:taylor_3}
+			% \end{align}
 			which provide lower bounds to the corresponding terms in \eqref{eq:z_irs}. Hence, the objective function is approximated by $\tilde{z}(\boldsymbol{\Phi}^{(i)})$ in \eqref{eq:z_irs_approx}, and problem~\eqref{op:original} is transformed to
 			\begin{figure*}[!b]
 				\hrule
@@ -493,7 +535,7 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/re_subband.tex}
 			\end{adjustbox}
 			\caption{Average R-E region versus $N$ for $M=1$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
@@ -502,7 +544,7 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/waveform_subband.tex}
 			\end{adjustbox}
 			\caption{WPT-optimized waveform amplitudes versus $N$ for $M=1$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
@@ -513,7 +555,7 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/re_noise.tex}
 			\end{adjustbox}
 			\caption{Average R-E region and splitting ratio versus $\sigma_n$ for $M=1$, $N=16$, $L=20$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
@@ -524,7 +566,7 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/re_distance.tex}
 			\end{adjustbox}
 			\caption{Average R-E region versus $d_{\mathrm{H}}$ for $M=1$, $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{V}}=2\,\si{\meter}$.}
@@ -533,7 +575,7 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/path_loss.tex}
 			\end{adjustbox}
 			\caption{Path loss versus distance for IEEE TGn channel model D.}
@@ -544,7 +586,7 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/re_tx.tex}
 			\end{adjustbox}
 			\caption{Average R-E region versus $M$ for $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
@@ -553,7 +595,7 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/re_reflector.tex}
 			\end{adjustbox}
 			\caption{Average R-E region versus $L$ for $M=1$, $N=16$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
@@ -562,7 +604,7 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/scaling_tx.tex}
 			\end{adjustbox}
 			\caption{Average WIT SNR and WPT DC current versus $M$ for $L=20$, $N=16$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$, $d_{\mathrm{H}}=0$ and $d_{\mathrm{V}}=0.5\,\si{\meter}$.}
@@ -571,7 +613,7 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/scaling_reflector.tex}
 			\end{adjustbox}
 			\caption{Average WIT SNR and WPT DC current versus $L$ for $M=1$, $N=16$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$, $d_{\mathrm{H}}=0$ and $d_{\mathrm{V}}=0.5\,\si{\meter}$.}
@@ -581,7 +623,7 @@
 		The number of transmit antennas $M$ and IRS elements $L$ influence the average R-E tradeoff as revealed in Fig.~\ref{fi:re_tx} and \ref{fi:re_reflector}. \textit{First,} it is observed that adding either active or passive elements benefits both information and power transmission. This is because increasing $M$ or $L$ indeed enhances the equivalent composite channel strength. \textit{Second,} the number of active and passive elements have negligible impacts on the optimal transceiving mode (TS/PS). Unlike the noise, the channel strength influences both information and power transfer, thus varying $M$ or $L$ simultaneously scales both rate and current and preserves the general trend of the R-E boundary. \textit{Third,} the passive beamforming has a larger array gain and power scaling order than the active beamforming. This behavior is more obvious in Fig.~\ref{fi:scaling_tx} and \ref{fi:scaling_reflector} that illustrate the performance of WIT and WPT only. For the active MRT beamforming, doubling $M$ brings a \SI{3}{\dB} gain at the average output SNR, corresponding to a transmit array gain of $M$ and a doubled harvester input power. Due to the rectifier nonlinearity, the output DC current ends up with a nearly four-time (\SI{12}{\dB}) increase, validating the active scaling law in the order of $M^2$ \cite{Clerckx2016a}. On the other hand, when the IRS is very close to the transmitter or the receiver, doubling $L$ can bring an SNR boost up to \SI{6}{\dB}, corresponding to a reflect array gain of $L^2$. An interpretation is that the IRS coherently combines multiple signal copies with a receive array gain $L$, then performs an equal gain reflection with a transmit array gain $L$, achieving a total gain of $L^2$. As a consequence, doubling IRS elements brings a four-fold boost on the received signal power that further amplifies the harvested DC current by 16 times (\SI{24}{\dB}), suggesting a passive scaling law in the order of $L^4$. Besides, by considering harvester nonlinearity, the proposed design brings a nearly \SI{20}{\dB} increase in the output DC current over the conventional linear perspective. These results emphasize the effectiveness of passive beamforming and the importance of modeling rectifier nonlinearity in the SWIPT system design. \textit{Fourth,} small-scale SWIPT is dominated by the active beamforming while large-scale SWIPT relies more on the passive beamforming. As shown in Fig.~\ref{fi:path_loss}, in our setup, the direct path loss $\Lambda_\mathrm{D}$ is around \SI{60}{\dB} while the auxiliary path loss product $\Lambda_{\mathrm{I}}\Lambda_R$ is over \SI{100}{\dB}. Hence, to fully exploit the R-E advantage of passive beamforming, a large number of reflecting elements are required to enhance the auxiliary channel strength. Another explanation is that the RF-chains of active antennas provide design flexibility in the frequency domain, while the frequency-flat characteristic of the IRS restricts its benefit for broadband transmission, especially when $L$ is small.
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/re_irs_1mhz.tex}
 			\end{adjustbox}
 			\caption{Average R-E region for ideal, adaptive, fixed and no IRS over $B=1\,\si{\MHz}$ for $M=1$, $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
@@ -590,23 +632,23 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.25\columnwidth}
+			\begin{adjustbox}{width=0.9\columnwidth}
 				\input{assets/re_irs_10mhz.tex}
 			\end{adjustbox}
 			\caption{Average R-E region for ideal, adaptive, fixed and no IRS over $B=10\,\si{\MHz}$ for $M=1$, $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
 			\label{fi:re_irs_10mhz}
 		\end{figure}
 
-		Fig.~\ref{fi:re_irs_1mhz} and \ref{fi:re_irs_10mhz} explore the average R-E region under different IRS configuration for narrowband transmission ($B=1\,\si{\MHz}$) and broadband transmission ($B=10\,\si{\MHz}$). The adaptive rate-dependent IRS strategy adjusts the passive beamforming for each point on the R-E boundary, while the WIT/WPT-based non-adaptive IRS schemes only optimize the phase shifts for information and power purposes (correspond to the points on the $x$ and $y$ axes, respectively). To gain some insight into the IRS behavior, we compare the results above to no IRS and an ideal Frequency-Selective (FS) IRS. In contrast to Remark~\ref{re:irs_frequency_flat}, each element in the ideal FS IRS is assumed to have an independent reflection coefficient for each subband, accounting for $NL$ variables in total. When there is only one transmit antenna, each ideal IRS element simply aligns the AP-IRS-user channel to the AP-user channel at all subbands, namely
+		Fig.~\ref{fi:re_irs_1mhz} and \ref{fi:re_irs_10mhz} explore the average R-E region under different IRS configuration for narrowband transmission ($B=1\,\si{\MHz}$) and broadband transmission ($B=10\,\si{\MHz}$). The rate-dependent adaptive IRS strategy adjusts the passive beamforming for each point on the R-E boundary, while the WIT/WPT-based non-adaptive IRS schemes only optimize the phase shifts for information and power purposes (correspond to the points on the $x$ and $y$ axes, respectively). To gain some insight into the IRS behavior, we compare the results above to no IRS and an ideal Frequency-Selective (FS) IRS. In contrast to Remark~\ref{re:irs_frequency_flat}, each element in the ideal FS IRS is assumed to have an independent reflection coefficient for each subband, accounting for $NL$ variables in total. When there is only one transmit antenna, each ideal IRS element simply aligns the AP-IRS-user channel to the AP-user channel at all subbands, namely
 		\begin{equation}
 			\theta_{l,n}^{\star}=e^{j\arg{\left(h_{\mathrm{D},n}/h_{\mathrm{I},n,l}h_{\mathrm{R},n,l}\right)}},\quad \forall n,l.
 		\end{equation}
-		\textit{First}, it is observed that the assistance of the IRS effectively enlarges the achievable R-E region for both narrowband and broadband transmissions. \textit{Second}, the performance of all four IRS strategies coincide with each other for narrowband SWIPT. It suggests that the optimal passive beamforming obtained for any R-E point is also optimal for the whole R-E region. Therefore, for a given channel, we can fix the active and passive beamforming, and only adapt the waveform and splitting ratio to achieve different R-E performance. This is because when the bandwidth is small, all channels are approximately flat such that the optimal ideal reflection coefficients at all subbands are approximately the same. Also, the subchannel tradeoff in Remark~\ref{re:irs_frequency_flat} does not exist as the auxiliary channel can be simultaneously maximized at different frequencies. \textit{Third}, a joint optimization of waveform, active and passive beamforming, and splitting ratio is necessary to maximize the R-E tradeoff for broadband SWIPT. Recall Remark~\ref{re:irs_subchannel_alignment} that WIT and WPT prefer different subchannel strength distribution. By adaptive rate-dependent passive beamforming, the channel strength can either be concentrated in few strongest subbands to enhance the rate at a low SNR, or be spread evenly over all subbands to boost the output DC power. The advantage of such a smart channel control is prominent for broadband SWIPT where the strength can vary significantly for different subbands.
+		\textit{First}, it is observed that the assistance of the IRS effectively enlarges the achievable R-E region for both narrowband and broadband transmissions. \textit{Second}, the performance of all four IRS strategies coincide with each other for narrowband SWIPT. It suggests that the optimal passive beamforming obtained for any R-E point is also optimal for the whole R-E region. Therefore, for a given channel, we can fix the active and passive beamforming, and only adapt the waveform and splitting ratio to achieve different R-E performance. This is because when the bandwidth is small, all channels are approximately flat such that the optimal ideal reflection coefficients at all subbands are approximately the same. Also, the subchannel tradeoff in Remark~\ref{re:irs_frequency_flat} does not exist as the auxiliary channel can be simultaneously maximized at different frequencies. \textit{Third}, a joint optimization of waveform, active and passive beamforming, and splitting ratio is necessary to maximize the R-E tradeoff for broadband SWIPT. Recall Remark~\ref{re:irs_subchannel_alignment} that WIT and WPT prefer different subchannel strength distribution. By adaptive passive beamforming, the channel strength can either be concentrated in few strongest subbands to enhance the rate at a low SNR, or be spread evenly over all subbands to boost the output DC power. The advantage of such a smart channel control is prominent for broadband SWIPT where the strength can vary significantly for different subbands.
 	\end{section}
 
 
 	\begin{section}{Conclusion and Future Works}\label{se:conclusion_and_future_works}
-		This paper proposes a novel IRS-aided multi-carrier downlink MISO SWIPT system to enhance the rate and energy tradeoff of a single user. We perform a joint optimization of the waveform and active beamforming at the transmitter, the passive beamforming at the IRS, and the power splitting ratio at the receiver to enlarge the achievable R-E region. Different from the existing IRS-aided SWIPT literature, this paper leverages rectifier nonlinearity in passive beamforming design and investigates a multi-carrier transmission for practical co-localized receiver architectures. Efficient algorithms based on the AO, SCA, SDR and GP techniques are numerically demonstrated feasible for all tested channel realizations under different configurations. We confirm that considering harvester nonlinearity, a dedicated power waveform is generally required to boost the R-E tradeoff. When developed near the transmitter, the IRS can provide effective channel enhancement to enlarge the R-E region and expand the operation range. Compared with the transmit antenna, the IRS element has no design flexibility in the frequency domain, but it integrates the coherent combining and transmission techniques in a fully passive manner to further boost the array gain and power scaling effects. Finally, the optimal passive beamforming at any R-E point is also optimal for the whole R-E region of narrowband transmission, and the adaptive rate-dependent passive beamforming is beneficial for broadband transmission.
+		This paper proposes a novel IRS-aided multi-carrier downlink MISO SWIPT system to enhance the rate and energy tradeoff of a single user. We perform a joint optimization of the waveform and active beamforming at the transmitter, the passive beamforming at the IRS, and the power splitting ratio at the receiver to enlarge the achievable R-E region. Different from the existing IRS-aided SWIPT literature, this paper leverages rectifier nonlinearity in passive beamforming design and investigates a multi-carrier transmission for practical co-localized receiver architectures. Efficient algorithms based on the AO, SCA, SDR and GP techniques are numerically demonstrated feasible for all tested channel realizations under different configurations. We confirm that considering harvester nonlinearity, a dedicated power waveform is generally required to boost the R-E tradeoff. When developed near the transmitter, the IRS can provide effective channel enhancement to enlarge the R-E region and expand the operation range. Compared with the transmit antenna, the IRS element has no design flexibility in the frequency domain, but it integrates the coherent combining and transmission techniques in a fully passive manner to further boost the array gain and power scaling effects. Finally, the optimal passive beamforming at any R-E point is also optimal for the whole R-E region of narrowband transmission, and the rate-dependent adaptive passive beamforming is beneficial for broadband transmission.
 
 		The combination of IRS and SWIPT brings many possibilities and challenges. For example, how to optimize the waveform, active and passive beamforming in a multi-user SWIPT system? How can multiple IRS cooperate with each other to further benefit the R-E tradeoff? How to perform channel estimation without RF-chains at the IRS? How to design an IRS-aided SWIPT system for different multiple access techniques? How to develop SWIPT in new networks, such as cell-free massive Multiple-Input Multiple-Output (MIMO)? Can IRS operation be directly supported by SWIPT? Answers to these questions may bring a new wireless revolution.
 	\end{section}
