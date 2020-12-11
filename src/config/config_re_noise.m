@@ -15,7 +15,7 @@ nUsers = 1;
 % average transmit power
 txPower = db2pow(6);
 % IRS element gain
-irsGain = 1;
+irsGain = db2pow(2);
 % receive antenna gain
 rxGain = db2pow(2);
 
