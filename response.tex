@@ -1,0 +1,79 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{pdfpages}
+
+
+\newcounter{reviewer}
+\setcounter{reviewer}{0}
+\newcounter{point}[reviewer]
+\setcounter{point}{0}
+
+
+\newcommand{\reviewersection}
+	{\stepcounter{reviewer} \bigskip \hrule \section*{Reviewer \thereviewer}}
+
+\renewcommand{\thepoint}
+	{\thereviewer.\arabic{point}}
+
+\newenvironment{point}
+	{\refstepcounter{point} \bigskip \noindent {\textbf{Comment~\thepoint} } ---\ \itshape}
+	{\par}
+
+\newenvironment{response}
+	{\medskip \noindent \textbf{Response:}\ }
+	{\medskip}
+
+
+\begin{document}
+	\includepdf{letter.pdf}
+
+	\begin{reviewersection}
+		\begin{point}
+			This paper assumed that the perfect channel state information (CSI) of the whole system is available at the base station. However, since the IRS is in general not equipped with a radio frequency chain, the accurate CSI of the reflecting links established by the IRS is very challenging to obtain. The reviewer wonders if the proposed algorithm can also be applied to a case where the imperfect CSI of the network is available at the base station.
+			\label{pt:1.1}
+		\end{point}
+
+		\begin{response}
+			Thank you for pointing out the issue of CSI acquisition in presence of IRS. Practical protocols based on element-wise on/off switching \cite{Nadeem2019}, joint training sequence and reflection pattern design \cite{Kang2020} and compressed sensing \cite{Wang2020} have been developed to estimate the cascaded AP-IRS-user link for specific applications, yet channel estimation and codebook design for multi-carrier SWIPT remain unresolved and are beyond our current scope. The proposed algorithm is based on the assumption of cascaded CSIT (not individual AP-IRS and IRS-user ones) and can be readily extended to the imperfect CSIT case, where the joint waveform and beamforming design is based on a quantized CSI feedback.
+			\label{re:1.1}
+		\end{response}
+
+		\begin{point}
+			This paper considered a relatively simple system model where there is only one user in the system. However, in practice, there can be many users co-existing in the SWIPT systems and there may also be two different and independent quality of service requirements: energy harvesting requirement and information decoding requirement. It could be better if the authors can clarify if the proposed algorithm can be employed in a more general case where the base station and the IRS cooperate to serve multiple users in the same time slot.
+		\end{point}
+
+		\begin{response}
+			We appreciate your suggestion on IRS-aided multi-user SWIPT and believe it would be very promising. To achieve this, we would need to tackle 1) the passive beamforming design with tradeoff across frequency and spatial domains, 2) the waveform and active beamforming design for multi-user SWIPT considering harvester nonlinearity. Although the proposed algorithm can be extended to address the first issue, the second issue is still unknown in SWIPT literatures. Extending our problem to the multi-user case would require first to solve relevant problems in the non-IRS case, and is not the intention of this paper.
+		\end{response}
+
+		\begin{point}
+			It is well known that after employing semidefinite programming for handling the phase shift matrix at the IRS, it is very unlikely to obtain a rank-one phase shift matrix without any further modification. The reviewer notices that the authors proposed the Gaussian randomization method to ensure a rank-one solution. Also, the convergence of the proposed overall algorithm also relies on the unit-rank solution. Therefore, to make this paper more comprehensive and convincing, it is suggested to provide more results (such as figures, tables, and data analysis) in the simulation part to show that the rank-one solution can always be obtained even without applying the Gaussian randomization. As this is a very important and interesting conclusion to the colleagues working in the same area, it could be better if the authors can further discuss, interpret, and clarify this in a remark.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			The figures in the current version are relatively small, it is suggested to provide larger figures to help the readers better understand the results.
+		\end{point}
+
+		\begin{response}
+			We apologize for the inconvenience. The figures would be amplified in future versions.
+		\end{response}
+
+		\begin{point}
+			In the current version, the authors claimed that by applying semidefinite relaxation and omitting the rank-one constraint, the performance loss is negligible. The reviewer wonders if this is because of the relatively simple system model, as there is only one single user who has both power and information requirements. It could be better if the authors can further discuss this issue for a more general multiple user scenario.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+	\end{reviewersection}
+
+
+	\bibliographystyle{IEEEtran}
+	\bibliography{IEEEabrv,library.bib}
+\end{document}
