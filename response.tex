@@ -1,6 +1,10 @@
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{fullpage}
 \usepackage{pdfpages}
 
@@ -45,7 +49,18 @@
 		\end{point}
 
 		\begin{response}
-			We appreciate your suggestion on IRS-aided multi-user SWIPT and believe it would be very promising. To achieve this, we would need to tackle 1) the passive beamforming design with tradeoff across frequency and spatial domains, 2) the waveform and active beamforming design for multi-user SWIPT considering harvester nonlinearity. Although the proposed algorithm can be extended to address the first issue, the second issue is still unknown in SWIPT literatures. Extending our problem to the multi-user case would require first to solve relevant problems in the non-IRS case, and is not the intention of this paper.
+			We appreciate your suggestion on IRS-aided multi-user SWIPT and believe it would be very promising. To extend the current work, we would first need to tackle the waveform and active beamforming design for a multi-user SWIPT system. For a multi-carrier network, each subcarrier only serves one information user but may serve all power user simultaneously (as whole received signal can be used for energy harvesting), and it involves an additional resource allocation problem that cannot be solved by the proposed GP algorithm.
+
+			To see the reason, recall that in the single-user scenario, the optimal information beamformer and power beamformer coincide at MRT [see TODO] with corresponding waveform as
+			\begin{equation}
+				\boldsymbol{w}_{\mathrm{I/P}, n} = s_{\mathrm{I/P}, n} \frac{\boldsymbol{h}_{n}}{\lVert{\boldsymbol{h}_{n}}\rVert}
+				\label{eq:decouple_waveform}
+			\end{equation}
+			which decouples the design in the spatial domain (beamformer) and frequency domain (power allocation $s_{\mathrm{I/P},n}^2$) thus satisfy $\boldsymbol{h}_n^H\boldsymbol{w}_{\mathrm{I/P},n}=\lVert{\boldsymbol{h}_n}\rVert s_{\mathrm{I/P},n}$. Apparently, picking $s_{\mathrm{I/P}, n}$ as nonnegative value would maximize (27) and make (28) a real-value optimization problem, thus enable GP tools.
+
+			However, this is not generally the case in a multi-user scenario. For any optimal information and power waveform $\boldsymbol{w}_{\mathrm{I}, n}^{\star}, \boldsymbol{w}_{\mathrm{P}, n}^{\star}$ on subband $n$, they generally cannot be decoupled as \eqref{eq:decouple_waveform} because users have different channel response, and the optimization should be performed over complex field. Some attempts were made for WPT in \cite{Huang2017a}, but the extension to SWIPT is not straightforward as the power splitting ratio at all users require a joint update as well.
+
+			Extending our problem to the multi-user case would require first to solve relevant problems in the non-IRS case above. It is not the intention of this paper and may be considered in our further research.
 		\end{response}
 
 		\begin{point}
@@ -66,6 +81,126 @@
 
 		\begin{point}
 			In the current version, the authors claimed that by applying semidefinite relaxation and omitting the rank-one constraint, the performance loss is negligible. The reviewer wonders if this is because of the relatively simple system model, as there is only one single user who has both power and information requirements. It could be better if the authors can further discuss this issue for a more general multiple user scenario.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+	\end{reviewersection}
+
+	\begin{reviewersection}
+		\begin{point}
+			New RIS models are now being adopted as in \cite{Abeywickrama2019} where it has been shown that the reflected signals depend on the direction of the arriving signal and this needs to be included in the analysis for realistic quantification.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			Why  is MRT considered as precoder by (25) rather than optimizing it? Is it globally optimal too?
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			Some strong assumptions like perfect CSI availability limit the practical utility of the proposed analytical results.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			All the assumptions and relaxations adopted used in the derivation of results as in (23) need to be explicitly mentioned along with appropriate justification for the same.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			Some transformations have been made while solving the original problem, but it has not been explicitly mentioned whether it is equivalent to transformation or not.
+		\end{point}
+
+		\begin{point}
+			Are the proposed solutions locally optimal or globally optimal? It is not clear whether the convergence of proposed solution methodologies is local or global? Also, how fast is it?
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			The time complexity of the proposed algorithms, especially involving branch and bound methods, seems to be high especially applications assuming perfectly CSI availability as the coherence times are practically pretty low. So, the authors would like to justify it so that the proposed solution can be obtained over relatively short coherence intervals.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			How practical is it to consider lossless reflection from the RIS? Specifically, by considering the magnitude to be 1, the reflection losses at the RIS have been ignored.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			Minor comment: The size of all the numerical results figures is too small.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+	\end{reviewersection}
+
+	\begin{reviewersection}
+		\begin{point}
+			First of all, motivations of studying the IRS on SWIPT is very unclear to me. Please clarify.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			Also, the contributions of this work are rather unclear, and thus, those should be better mentioned.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			Please explain the derived results more intuitively for better understanding.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			Authors assumed the unrealistic situation: the channels are assumed to be perfectly known. However, in practice, the channel should be estimated, e.g., as studied in \cite{You2019}, \cite{Kang2020}. It would be much better to discuss the channel estimation issue by citing the above references.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			More simulation results should be added to better and aggregately validate the effectiveness of the proposed method.
+		\end{point}
+
+		\begin{response}
+			% TODO
+		\end{response}
+
+		\begin{point}
+			The sizes of figures are too small.
 		\end{point}
 
 		\begin{response}
