@@ -130,7 +130,9 @@
 		\end{point}
 
 		\begin{response}
-			% TODO
+			Algorithm 1 -- 3 only provide local optimal solutions with local convergence proof, and the performance indeed depends on the initialization. For different sum rate constraints, we use water-filling with MRT to initialize the modulated waveform while use scaled matched filter to initialize the unmodulated waveform (corresponding to a transmit power of $2P$, regulated afterwards). We also initialize the IRS phase shift by uniform distribution over $[0, 2\pi)$. Nevertheless, as the solutions are locally optimal, some result points on the R-E boundary may be strictly worse (with lower rate and energy) than another, especially for a large $M$ and $L$. To address this, we draw the R-E boundary from high-rate low-energy (lower right) points to low-rate high-energy (upper left) points. If the issue above happens, we discard the dominated result and reinitialize the waveform and IRS phase shift by the solution at the previous point.
+
+			% TODO: complexity
 		\end{response}
 
 		\begin{point}
