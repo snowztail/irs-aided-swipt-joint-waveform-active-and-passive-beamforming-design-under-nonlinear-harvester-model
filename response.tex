@@ -9,6 +9,10 @@
 \usepackage{pdfpages}
 \usepackage{siunitx}
 
+\DeclareSIUnit{\belm}{Bm}
+\DeclareSIUnit{\dBm}{\deci\belm}
+\DeclareSIUnit{\beli}{Bi}
+\DeclareSIUnit{\dBi}{\deci\beli}
 
 \newcounter{reviewer}
 \setcounter{reviewer}{0}
@@ -54,7 +58,7 @@
 
 			To see the reason, recall that in the single-user scenario, the optimal information beamformer and power beamformer coincide at MRT [see TODO] with corresponding waveform as given by (25), which decouples the design in the spatial domain (beamformer) and frequency domain (power allocation $s_{\mathrm{I/P},n}^2$) thus satisfy $\boldsymbol{h}_n^H\boldsymbol{w}_{\mathrm{I/P},n}=\lVert{\boldsymbol{h}_n}\rVert s_{\mathrm{I/P},n}$. Apparently, picking $s_{\mathrm{I/P}, n}$ as nonnegative value would maximize (27) and make (28) a real-value optimization problem, thus enable GP tools.
 
-			However, this is not generally the case in a multi-user scenario. For any optimal information and power waveform $\boldsymbol{w}_{\mathrm{I}, n}^{\star}, \boldsymbol{w}_{\mathrm{P}, n}^{\star}$ on subband $n$, they generally cannot be decoupled as \eqref{eq:decouple_waveform} because users have different channel response, and the optimization should be performed over complex field. Some attempts were made for WPT in \cite{Huang2017a}, but the extension to SWIPT is not straightforward as the power splitting ratio at all users require a joint update as well.
+			However, this is not generally the case in a multi-user scenario. For any optimal information and power waveform $\boldsymbol{w}_{\mathrm{I}, n}^{\star}, \boldsymbol{w}_{\mathrm{P}, n}^{\star}$ on subband $n$, they generally cannot be decoupled as (25) because users have different channel response, and the optimization should be performed over complex field. Some attempts were made for WPT in \cite{Huang2017a}, but the extension to SWIPT is not straightforward as the power splitting ratio at all users require a joint update as well.
 
 			Extending our problem to the multi-user case would require first to solve relevant problems in the non-IRS case above. It is not the intention of this paper and may be considered in our further research.
 		\end{response}
@@ -90,7 +94,7 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for sharing! This acknowledged paper investigated the impact of non-zero effective resistance on the reflection pattern and pointed out that the amplitude of the reflection coefficient depends on the phase shift forced on the incoming signal when power dissipation is considered at the IRS. It also proposed an analytical IRS model together with an AO algorithm to maximize the achievable rate by passive beamforming. Simulation results emphasized the importance of modeling such a relationship in practical IRS design. We actually thought about integrating these new models in our system design, but finally decided to use the most common and simplest IRS model in the current stage to reduce the design complexity and provide a primary benchmark for IRS-aided SWIPT.
+			Thank you for sharing this acknowledged paper, which investigated the impact of non-zero effective resistance on the reflection pattern and pointed out that the amplitude of the reflection coefficient depends on the phase shift forced on the incoming signal when power dissipation is considered at the IRS. It also proposed an analytical IRS model together with an AO algorithm to maximize the achievable rate by passive beamforming. Simulation results emphasized the importance of modeling such a relationship in practical IRS design. We actually thought about integrating these new models in our system design, but finally decided to use the most common and simplest IRS model in the current stage to reduce the design complexity and provide a primary benchmark for IRS-aided SWIPT.
 		\end{response}
 
 		\begin{point}
@@ -132,7 +136,7 @@
 		\begin{response}
 			Algorithm 1 -- 3 only provide local optimal solutions with local convergence proof, and the performance indeed depends on the initialization. For different sum rate constraints, we use water-filling with MRT to initialize the modulated waveform while use scaled matched filter to initialize the unmodulated waveform (corresponding to a transmit power of $2P$, regulated afterwards). We also initialize the IRS phase shift by uniform distribution over $[0, 2\pi)$. Nevertheless, as the solutions are locally optimal, some result points on the R-E boundary may be strictly worse (with lower rate and energy) than another, especially for a large $M$ and $L$. To address this, we draw the R-E boundary from high-rate low-energy (lower right) points to low-rate high-energy (upper left) points. If the issue above happens, we discard the dominated result and reinitialize the waveform and IRS phase shift by the solution at the previous point.
 
-			% TODO: complexity
+			For a tolerance of $\epsilon=10^{-8}$, the SDR-based Algorithm 1 usually converge within 3 iterations while the GP-based Algorithm 2 tends to converge within 8 iterations. The AO-based Algorithm 3 typically converge within 3 iterations.
 		\end{response}
 
 		\begin{point}
@@ -140,7 +144,9 @@
 		\end{point}
 
 		\begin{response}
-			% TODO
+			We agree with the reviewer that the proposed algorithm (especially Algorithm 2) could be too time-consuming for practical applications with relatively short coherence time. The proposed algorithms ensure best performance by iteratively solving intricate optimization problems and may not be implemented in practice, while suboptimal design (e.g. scaled matched filter) is expected to achieve a good performance.
+
+			% TODO: branch and bound / complexity analysis
 		\end{response}
 
 		\begin{point}
@@ -148,7 +154,16 @@
 		\end{point}
 
 		\begin{response}
-			% TODO
+			Green's decomposition indicates that the backscattered/reflected signal of an antenna can be decomposed into the \emph{structural mode} component and the \emph{antenna mode} component. The former is fixed for a given antenna and can be regarded as part of the environment multipath, while the latter is adjustable and depends on the mismatch of the antenna and load impedances. The reflection coefficient of the $l$-th IRS element is thus defined as
+			\begin{equation}
+				\phi_l = \frac{Z_l - Z_0}{Z_l + Z_0}
+			\end{equation}
+			where $Z_0$ is the characteristic impedance and $Z_l = R_l + j X_l$ is the impedance of the $l$-th IRS element. It implies that $\lvert{\phi_l}\rvert \le 1$ for $R_l \ge 0$, and we assume $Z_l$ is pure reactive such that
+			\begin{equation}
+				\phi_l = \frac{j X_l - Z_0}{j X_l + Z_0} = e^{j \theta_{l}}
+			\end{equation}
+			which corresponds to the lossless reflection model adopted in the paper. Nevertheless, due to the non-zero power consumption at the IRS in practice, $R_l$ would be positive and $\lvert{\phi_l}\rvert$ indeed depends on the
+			the reflection coefficient not only has a magnitude smaller than 1 but also depends on the phase shift. \cite{Abeywickrama2019} found that $\lvert{\phi}_l\rvert$ experiences a trough as low as \num{0.2} for $R_l = 2.5\,\si{\ohm}$ at zero phase shift, which suggests that the position and direction of the IRS should be carefully designed.
 		\end{response}
 
 		\begin{point}
@@ -156,7 +171,7 @@
 		\end{point}
 
 		\begin{response}
-			% TODO
+			We apologize for the inconvenience. The figures would be amplified in future versions.
 		\end{response}
 	\end{reviewersection}
 
@@ -166,7 +181,7 @@
 		\end{point}
 
 		\begin{response}
-			% TODO
+			We appreciate your suggestion and have modified the manuscript to emphasize this point. A major challenge for SWIPT is that the information decoder and energy harvester have different sensitivity -- although conventional radios as Wi-Fi and Bluetooth can support a signal strength of \num{-90} to \SI{-100}{\dBm}, most existing harvesters only capture signals at \num{-20} to \SI{-30}{\dBm}. Since the transmit power is strictly subject to regulations, it is crucial to increase the energy efficiency to boost the signal strength and extend the system coverage. Therefore, we believe the effective channel enhancement and the low power consumption of IRS is a perfect match for SWIPT.
 		\end{response}
 
 		\begin{point}
@@ -174,7 +189,14 @@
 		\end{point}
 
 		\begin{response}
-			% TODO
+			Thank you for the opinion and the manuscript has been revised accordingly. This paper proposed an IRS-aided SWIPT network and considered a joint waveform and beamforming design over spatial and frequency domains under energy harvester nonlinearity. To the best of our knowledge, relevant existing papers assumed linear harvester model where the RF-to-DC conversion efficiency is a constant regardless of its input. However, the harvester consists of an antenna to intercept RF signal and a diode rectifier (nonlinear device) to produce DC power, and the RF-to-DC efficiency indeed depends on the power and shape of the input waveform. By exploiting the joint impact of passive beamforming and harvester nonlinearity, we found that:
+			\begin{itemize}
+				\item the IRS should be developed next to the transmitter or the receiver due to double fading;
+				\item the optimal transceiving mode depends on the SNR and the number of subbands;
+				\item the power scaling laws of active and passive beamforming are in the order of $M^2$ and $L^4$, respectively;
+				\item the IRS reflection coefficient cannot be designed per subband and there exists a tradeoff in subchannel enhancement;
+				\item the optimal passive beamforming can be approximated in closed form for narrowband transmission but varies at different R-E points for broadband transmission.
+			\end{itemize}
 		\end{response}
 
 		\begin{point}
