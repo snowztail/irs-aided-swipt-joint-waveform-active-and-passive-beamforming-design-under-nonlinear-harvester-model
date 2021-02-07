@@ -18,7 +18,15 @@
 \setcounter{reviewer}{0}
 \newcounter{point}[reviewer]
 \setcounter{point}{0}
+\newcounter{response}[reviewer]
+\setcounter{response}{0}
 
+\let\svbibcite\bibcite
+\def\bibcite#1#2{\svbibcite{#1}{R#2}}
+\makeatletter
+\let\svbiblabel\@biblabel
+\def\@biblabel#1{\svbiblabel{R#1}}
+\makeatother
 
 \newcommand{\reviewersection}
 	{\stepcounter{reviewer} \bigskip \hrule \section*{Reviewer \thereviewer}}
@@ -26,12 +34,15 @@
 \renewcommand{\thepoint}
 	{\thereviewer.\arabic{point}}
 
+\renewcommand{\theresponse}
+	{\thereviewer.\arabic{response}}
+
 \newenvironment{point}
 	{\refstepcounter{point} \bigskip \noindent {\textbf{Comment~\thepoint} } ---\ \itshape}
 	{\par}
 
 \newenvironment{response}
-	{\medskip \noindent \textbf{Response:}\ }
+	{\refstepcounter{response} \medskip \noindent \textbf{Response:}\ }
 	{\medskip}
 
 
@@ -45,12 +56,13 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for pointing out the issue of CSI acquisition in presence of IRS. Practical protocols based on element-wise on/off switching \cite{Nadeem2019}, joint training sequence and reflection pattern design \cite{Kang2020} and compressed sensing \cite{Wang2020} have been developed to estimate the cascaded AP-IRS-user link for specific applications, yet channel estimation and codebook design for multi-carrier SWIPT remain unresolved and are beyond our current scope. The proposed algorithm is based on the assumption of cascaded CSIT (not individual AP-IRS and IRS-user ones) and can be readily extended to the imperfect CSIT case, where the joint waveform and beamforming design is based on a quantized CSI feedback.
+			Thank you for pointing out the issue of CSI acquisition in presence of IRS. Practical protocols based on element-wise on/off switching [24], joint training sequence and reflection pattern design \cite{Kang2020} and compressed sensing \cite{Wang2020} have been developed to estimate the cascaded AP-IRS-user link for specific applications, yet channel estimation and codebook design for multi-carrier SWIPT remain unresolved and are beyond our current scope. The proposed algorithm is based on the assumption of cascaded CSIT (not individual AP-IRS and IRS-user ones) and can be readily extended to the imperfect CSIT case, where the joint waveform and beamforming design is based on a quantized CSI feedback.
 			\label{re:1.1}
 		\end{response}
 
 		\begin{point}
 			This paper considered a relatively simple system model where there is only one user in the system. However, in practice, there can be many users co-existing in the SWIPT systems and there may also be two different and independent quality of service requirements: energy harvesting requirement and information decoding requirement. It could be better if the authors can clarify if the proposed algorithm can be employed in a more general case where the base station and the IRS cooperate to serve multiple users in the same time slot.
+			\label{pt:1.2}
 		\end{point}
 
 		\begin{response}
@@ -58,9 +70,10 @@
 
 			To see the reason, recall that in the single-user scenario, the optimal information beamformer and power beamformer coincide at MRT [see TODO] with corresponding waveform as given by (25), which decouples the design in the spatial domain (beamformer) and frequency domain (power allocation $s_{\mathrm{I/P},n}^2$) thus satisfy $\boldsymbol{h}_n^H\boldsymbol{w}_{\mathrm{I/P},n}=\lVert{\boldsymbol{h}_n}\rVert s_{\mathrm{I/P},n}$. Apparently, picking $s_{\mathrm{I/P}, n}$ as nonnegative value would maximize (27) and make (28) a real-value optimization problem, thus enable GP tools.
 
-			However, this is not generally the case in a multi-user scenario. For any optimal information and power waveform $\boldsymbol{w}_{\mathrm{I}, n}^{\star}, \boldsymbol{w}_{\mathrm{P}, n}^{\star}$ on subband $n$, they generally cannot be decoupled as (25) because users have different channel response, and the optimization should be performed over complex field. Some attempts were made for WPT in \cite{Huang2017a}, but the extension to SWIPT is not straightforward as the power splitting ratio at all users require a joint update as well.
+			However, this is not generally the case in a multi-user scenario. For any optimal information and power waveform $\boldsymbol{w}_{\mathrm{I}, n}^{\star}, \boldsymbol{w}_{\mathrm{P}, n}^{\star}$ on subband $n$, they generally cannot be decoupled as (25) because users have different channel response, and the optimization should be performed over complex field. Some attempts were made for WPT in [32], but the extension to SWIPT is not straightforward as the power splitting ratio at all users require a joint update as well.
 
 			Extending our problem to the multi-user case would require first to solve relevant problems in the non-IRS case above. It is not the intention of this paper and may be considered in our further research.
+			\label{re:1.2}
 		\end{response}
 
 		\begin{point}
@@ -84,13 +97,19 @@
 		\end{point}
 
 		\begin{response}
-			[How do we answer this question?]
+			We agree with the reviewer that the performance loss by relaxing the rank-one constraint deserves more attention. In \cite{Feng2021}, we investigated the joint waveform and beamforming design for multi-user WPT (with no information waveform and rate requirements) and formulated the WSE problem as complex constant-modulus QP to enable SDR with at least $\gamma = \pi / 4$ approximation to the original objective function. However, due to the reason mentioned in Response \ref{re:1.2}, we did not extend the work to multi-user SWIPT in this paper.
+
+			In contrast, the performance guarantee of rank relaxation in our single-user problem is only demonstrated by simulation. Due to the coupling of the information and power waveform, the objective function (23) involves
+			\begin{equation}
+				(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2 = \left(\mathrm{Tr}(\boldsymbol{C}_{\mathrm{I},0}\boldsymbol{\Phi^{(i)}}) - \mathrm{Tr}(\boldsymbol{C}_{\mathrm{P},0}\boldsymbol{\Phi^{(i)}})\right)^2 = \mathrm{Tr}\left((\boldsymbol{C}_{\mathrm{I},0} - \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi^{(i)}}\right)^2
+			\end{equation}
+			which is not a semidefinite objective (due to the square). Also, the sum-rate constraint (24b) is not a semidefinite constraint. Therefore, existing SDR bounds cannot be applied directly to problem (24).
 		\end{response}
 	\end{reviewersection}
 
 	\begin{reviewersection}
 		\begin{point}
-			New RIS models are now being adopted as in \cite{Abeywickrama2019} where it has been shown that the reflected signals depend on the direction of the arriving signal and this needs to be included in the analysis for realistic quantification.
+			New RIS models are now being adopted as in [23] where it has been shown that the reflected signals depend on the direction of the arriving signal and this needs to be included in the analysis for realistic quantification.
 		\end{point}
 
 		\begin{response}
@@ -110,7 +129,7 @@
 		\end{point}
 
 		\begin{response}
-			The reviewer is referred to our response to Comment \ref{pt:1.1}. Indeed, the assumption of perfect CSIT is very ideal and the existing protocols may not provide a good enough estimation in practice. We follow the convention of most existing papers on this topic and expect some breakthroughs in future research.
+			The reviewer is referred to Response \ref{re:1.1}. Indeed, the assumption of perfect CSIT is very ideal and the existing protocols may not provide a good enough estimation in practice. We follow the convention of most existing papers on this topic and expect some breakthroughs in future research.
 		\end{response}
 
 		\begin{point}
@@ -163,7 +182,7 @@
 				\phi_l = \frac{j X_l - Z_0}{j X_l + Z_0} = e^{j \theta_{l}}
 			\end{equation}
 			which corresponds to the lossless reflection model adopted in the paper. Nevertheless, due to the non-zero power consumption at the IRS in practice, $R_l$ would be positive and $\lvert{\phi_l}\rvert$ indeed depends on the
-			the reflection coefficient not only has a magnitude smaller than 1 but also depends on the phase shift. \cite{Abeywickrama2019} found that $\lvert{\phi}_l\rvert$ experiences a trough as low as \num{0.2} for $R_l = 2.5\,\si{\ohm}$ at zero phase shift, which suggests that the position and direction of the IRS should be carefully designed.
+			the reflection coefficient not only has a magnitude smaller than 1 but also depends on the phase shift. [23] found that $\lvert{\phi}_l\rvert$ experiences a trough as low as \num{0.2} for $R_l = 2.5\,\si{\ohm}$ at zero phase shift, which suggests that the position and direction of the IRS should be carefully designed.
 		\end{response}
 
 		\begin{point}
@@ -204,15 +223,15 @@
 		\end{point}
 
 		\begin{response}
-			% TODO
+			TODO
 		\end{response}
 
 		\begin{point}
-			Authors assumed the unrealistic situation: the channels are assumed to be perfectly known. However, in practice, the channel should be estimated, e.g., as studied in \cite{You2019}, \cite{Kang2020}. It would be much better to discuss the channel estimation issue by citing the above references.
+			Authors assumed the unrealistic situation: the channels are assumed to be perfectly known. However, in practice, the channel should be estimated, e.g., as studied in \cite{Kang2020}, \cite{You2019}. It would be much better to discuss the channel estimation issue by citing the above references.
 		\end{point}
 
 		\begin{response}
-			% TODO
+			The reviewer is referred to Response \ref{re:1.1}. We have incorporated the channel estimation issue into the revised manuscript by citing those references.
 		\end{response}
 
 		\begin{point}
@@ -220,7 +239,7 @@
 		\end{point}
 
 		\begin{response}
-			% TODO
+			TODO
 		\end{response}
 
 		\begin{point}
@@ -228,7 +247,7 @@
 		\end{point}
 
 		\begin{response}
-			% TODO
+			We apologize for the inconvenience. The figures would be amplified in future versions.
 		\end{response}
 	\end{reviewersection}
 
