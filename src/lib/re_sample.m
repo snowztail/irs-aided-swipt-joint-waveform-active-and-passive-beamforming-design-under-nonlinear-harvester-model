@@ -16,7 +16,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     %
     % Output:
     %   - sample [2 * nSamples]: rate-energy sample
-    %   - solution: waveform and splitting ratio
+    %   - solution: waveform, splitting ratio and eigenvalue ratio
     %
     % Comment:
     %   - suboptimal algorithm only converge to stationary points
@@ -32,13 +32,13 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     solution = cell(nSamples, 1);
 
     % * Initialize algorithm and set rate constraints
-    [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+    [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
     [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
     rateConstraint = linspace(capacity, 0, nSamples);
 
     % * WIT point
     sample(:, 1) = [capacity; 0];
-    solution{1} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio);
+    solution{1} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
 
     % * Non-WIT points
     for iSample = 2 : nSamples
@@ -56,9 +56,10 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
 
             % * Alternating optimization
             isConverged = false;
-            current_ = 0;
+			current_ = 0;
+			eigRatio = [];
             while ~isConverged
-                [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
+                [irs, eigRatio(end + 1)] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
                 [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
                 [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
                 [infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
@@ -73,7 +74,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
             end
         end
         sample(:, iSample) = [rate; current];
-        solution{iSample} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio);
+        solution{iSample} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
     end
 
 end

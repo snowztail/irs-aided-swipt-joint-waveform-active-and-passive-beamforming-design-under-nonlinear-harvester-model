@@ -1,4 +1,4 @@
-function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates, tolerance)
+function [irs, eigRatio] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates, tolerance)
     % Function:
     %   - optimize the IRS reflection coefficients to maximize the R-E region
     %
@@ -19,7 +19,8 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
     %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
-    %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
+	%   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
+	%	- eigRatio (r): the maximum eigenvalue of the relaxed solution over the sum eigenvalue of the relaxed solution
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank IRS outer product matrix
@@ -126,8 +127,11 @@ function [irs] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiv
     end
     irsMatrix = full(irsMatrix);
 
-    % * Recover rank-1 solution by randomization method
-    [u, sigma] = eig(irsMatrix);
+	% * Examine the unit-rank property of the result by eigenvalue ratio
+	[u, sigma] = eig(irsMatrix);
+	eigRatio = max(sigma) / sum(sigma);
+
+	% * Recover rank-1 solution by randomization method
     current = 0;
     for iCandidate = 1 : nCandidates
         irsCandidate = exp(1i * angle(u * sigma ^ (1 / 2) * (randn(nReflectors + 1, 1) + 1i * randn(nReflectors + 1, 1))));

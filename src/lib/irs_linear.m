@@ -1,4 +1,4 @@
-function [irs] = irs_linear(beta2, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates)
+function [irs, eigRatio] = irs_linear(beta2, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates)
     % Function:
     %   - optimize the IRS reflection coefficients to maximize the R-E region
     %
@@ -17,7 +17,8 @@ function [irs] = irs_linear(beta2, directChannel, incidentChannel, reflectiveCha
     %   - nCandidates (Q): number of CSCG random vectors to generate
     %
     % Output:
-    %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
+	%   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
+	%	- eigRatio (r): the maximum eigenvalue of the relaxed solution over the sum eigenvalue of the relaxed solution
     %
 	% Comment:
 	%	- based on linear harvester model
@@ -103,11 +104,13 @@ function [irs] = irs_linear(beta2, directChannel, incidentChannel, reflectiveCha
 			diag(irsMatrix) == ones(nReflectors + 1, 1);
 			rate >= rateConstraint;
 	cvx_end
-
     irsMatrix = full(irsMatrix);
 
+	% * Examine the unit-rank property of the result by eigenvalue ratio
+	[u, sigma] = eig(irsMatrix);
+	eigRatio = max(sigma) / sum(sigma);
+
     % * Recover rank-1 solution by randomization method
-    [u, sigma] = eig(irsMatrix);
     currentLinear = 0;
     for iCandidate = 1 : nCandidates
         irsCandidate = exp(1i * angle(u * sigma ^ (1 / 2) * (randn(nReflectors + 1, 1) + 1i * randn(nReflectors + 1, 1))));

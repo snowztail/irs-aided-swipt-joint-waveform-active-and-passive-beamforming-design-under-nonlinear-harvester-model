@@ -1,4 +1,4 @@
-function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
+function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
     %   - optimize the waveform and IRS reflection coefficients to maximize user rate
     %
@@ -17,7 +17,8 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
     %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
     %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
     %   - infoRatio (\bar{\rho}): information splitting ratio
-    %   - powerRatio (\rho): power splitting ratio
+	%   - powerRatio (\rho): power splitting ratio
+	%	- eigRatio (r): the maximum eigenvalue of the relaxed solution over the sum eigenvalue of the relaxed solution
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank IRS outer product matrix
@@ -54,7 +55,8 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
 
     % * AO
     isConverged = false;
-    capacity_ = 0;
+	capacity_ = 0;
+	eigRatio = [];
     while ~isConverged
         % * Solve high-rank outer product matrix by CVX
         cvx_begin quiet
@@ -73,8 +75,11 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
         cvx_end
         irsMatrix = full(irsMatrix);
 
-        % * Recover rank-1 solution by randomization method
-        [u, sigma] = eig(irsMatrix);
+		% * Examine the unit-rank property of the result by eigenvalue ratio
+		[u, sigma] = eig(irsMatrix);
+		eigRatio(end + 1) = max(sigma) / sum(sigma);
+
+		% * Recover rank-1 solution by randomization method
         rate = 0;
         for iCandidate = 1 : nCandidates
             irsCandidate = exp(1i * angle(u * sigma ^ (1 / 2) * (randn(nReflectors + 1, 1) + 1i * randn(nReflectors + 1, 1))));

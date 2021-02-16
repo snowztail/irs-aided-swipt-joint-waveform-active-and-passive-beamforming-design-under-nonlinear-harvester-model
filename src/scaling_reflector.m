@@ -26,22 +26,22 @@ for iChannel = 1 : nChannels
         [reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
 		% * WIT
-		[rateSample(iChannel, iReflector), irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+		[rateSample(iChannel, iReflector), irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
 		[compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-		witSolution{iChannel, iReflector} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio);
-		clearvars irs compositeChannel infoAmplitude powerAmplitude infoRatio powerRatio;
+		witSolution{iChannel, iReflector} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
+		clearvars irs compositeChannel infoAmplitude powerAmplitude infoRatio powerRatio eigRatio;
 
 		% * WPT by linear harvester model
-		[currentLinearSample(iChannel, iReflector), irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wpt_linear(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+		[currentLinearSample(iChannel, iReflector), irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio] = wpt_linear(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
 		[compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-		wptLinearSolution{iChannel, iReflector} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio);
-		clearvars irs compositeChannel infoAmplitude powerAmplitude infoRatio powerRatio;
+		wptLinearSolution{iChannel, iReflector} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
+		clearvars irs compositeChannel infoAmplitude powerAmplitude infoRatio powerRatio eigRatio;
 
 		% * WPT by nonlinear harvester model
-		[currentNonlinearSample(iChannel, iReflector), irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wpt(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+		[currentNonlinearSample(iChannel, iReflector), irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio] = wpt(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
 		[compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-		wptNonlinearSolution{iChannel, iReflector} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio);
-		clearvars irs compositeChannel infoAmplitude powerAmplitude infoRatio powerRatio;
+		wptNonlinearSolution{iChannel, iReflector} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
+		clearvars irs compositeChannel infoAmplitude powerAmplitude infoRatio powerRatio eigRatio;
     end
 end
 
