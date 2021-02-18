@@ -56,7 +56,7 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for pointing out the CSI acquisition issue in presence of IRS. To estimate the cascaded Tx-IRS-Rx link, practical protocols based on element-wise on/off switching [24], joint training sequence and reflection pattern design \cite{Kang2020} and compressed sensing \cite{Wang2020} have been developed for specific networks. The proposed algorithm relies on such cascaded CSI (not individual Tx-IRS and IRS-Rx channels) at the transmitter (CSIT) and can be readily applied to the quantized CSIT case. However, the codebook design for SWIPT with harvester nonlinearity remains as an open issue and one particular challenge is how to evolve from the information codebook to satisfy the power demand.
+			Thank you for pointing out the CSI acquisition issue in presence of IRS. To estimate the cascaded Tx-IRS-Rx link, practical protocols based on element-wise on/off switching [24], joint training sequence and reflection pattern design \cite{Kang2020} and compressed sensing \cite{Wang2020} have been developed for specific networks. The proposed Algorithm 1 relies on such cascaded CSI (not individual Tx-IRS and IRS-Rx channels) at the transmitter (CSIT) and can be readily applied to the quantized CSIT case. However, the codebook design for SWIPT with harvester nonlinearity remains as an open issue and one particular challenge is how to evolve from the information codebook to satisfy the power demand.
 			\label{re:1.1}
 		\end{response}
 
@@ -66,11 +66,11 @@
 		\end{point}
 
 		\begin{response}
-			We appreciate your suggestion on IRS-aided multi-user SWIPT and believe it would be very promising. To that end, we would first need to tackle the waveform and beamforming design for a multi-user SWIPT system without IRS. Interestingly, in a multi-carrier network, each subcarrier only serves one information user but may serve all energy user simultaneously (the entire signal can be used for energy purpose), and it involves an additional resource allocation problem that cannot be solved by the GP algorithm proposed in this paper.
+			We appreciate your suggestion on IRS-aided multi-user SWIPT and believe it would be very promising. To that end, we would first need to tackle the waveform and beamforming design for a multi-user SWIPT system without IRS. Interestingly, in a multi-carrier network, each subcarrier only serves one information user at a time but may serve all energy user simultaneously (use the entire signal for energy purpose), and it involves an additional resource allocation problem that cannot be solved by the GP algorithm proposed in this paper.
 
 			To see the reason, recall that in the single-user scenario, the optimal information beamformer and power beamformer coincide at MRT (see Response \ref{pt:2.2} for details) and the optimal waveform is given by (25), which decouples the design in the spatial domain (beamforming) and frequency domain (power allocation $s_{\mathrm{I/P},n}^2$) to ensure the term involved in the sum rate (7) and DC components (10) -- (13) satisfy $\boldsymbol{h}_n^H\boldsymbol{w}_{\mathrm{I/P},n}=\lVert{\boldsymbol{h}_n}\rVert s_{\mathrm{I/P},n}$. Apparently, picking $s_{\mathrm{I/P}, n}$ as nonnegative real value would not only maximize (27) but also make (28) an amplitude optimization problem and enable GP tools.
 
-			However, this may not be the case in a multi-user scenario. At subband $n$, the composite channel is now $\boldsymbol{h}_{k, n}$ for user $k$ and the term above becomes $\boldsymbol{h}_{k, n}^H\boldsymbol{w}_{\mathrm{I/P},n}$. It is generally complex and require approaches other than GP to solve the highly non-convex optimization problem in complex field. Although the waveform and beamforming design for multi-user multi-carrier WPT was investigated in [32], the extension to SWIPT is not straightforward because the power splitting ratio of all users require a joint update as well.
+			However, this may not be the case in a multi-user scenario. At subband $n$, the composite channel is now $\boldsymbol{h}_{k, n}$ for user $k$ and the term above becomes $\boldsymbol{h}_{k, n}^H\boldsymbol{w}_{\mathrm{I/P},n}$. It is generally complex and require other approaches to solve the highly non-convex optimization problem in the complex field. Although the waveform and beamforming design for multi-user multi-carrier WPT has been investigated in [32], the extension to SWIPT is not straightforward as the power splitting ratio of all users also require a joint update, which prevents the SDR method to be directly applied.
 			\label{re:1.2}
 		\end{response}
 
@@ -80,11 +80,11 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for raising this issue. The rank-\num{1} property of $\boldsymbol{\Phi}$ to the relaxed problem (24) is suggested by simulation under different configurations. As indicated by the comment, the strict convergence of the AO algorithm relies on this conclusion (as $\boldsymbol{\phi}$ can be retrieved without performance loss), but it is intricate to provide a mathematical proof due to the coupled objective (24a) and the sum log constraint (24b). Instead, we considered \num{300} individual channel realizations for different $M$, $N$ and $L$. The extensive numerical results show that the proposed SCA Algorithm 1 returned unit-rank solution $\boldsymbol{\Phi}$ for all channel realizations, at all rate constraints, and during all iterations.
+			Thank you for raising this issue. The rank-\num{1} property of $\boldsymbol{\Phi}$ to the relaxed problem (24) is suggested by CVX toolbox under different configurations. As indicated by the comment, the strict convergence of the AO algorithm relies on this conclusion (as $\boldsymbol{\phi}$ can be retrieved without performance loss), but it is intricate to provide a mathematical proof due to the coupled objective (24a) and the log sum constraint (24b). Instead, we considered \num{300} individual channel realizations for different $M$, $N$, $L$ and employed \num{30} samples (corresponding to \num{30} sum rate constraints) for each individual R-E region.	The extensive numerical results show that the proposed SCA Algorithm 1 returned unit-rank solution $\boldsymbol{\Phi}$ for all channel realizations, at all rate constraints, and during all iterations.
 
 			% TODO figs?
 
-			Therefore, the convergence and performance are guaranteed for all tested scenario, and we believe that Algorithm 1 can return a feasible and reliable solution for general passive beamforming design.
+			Therefore, the convergence and performance are guaranteed for all tested scenario, and we believe that Algorithm 1 can provide a feasible and reliable passive beamformer in general SWIPT systems.
 			\label{re:1.3}
 		\end{response}
 
@@ -94,7 +94,7 @@
 		\end{point}
 
 		\begin{response}
-			We apologize for the inconvenience. The figures would be amplified in future versions.
+			We sincerely apologize for the inconvenience. The figures would be amplified in future versions.
 			\label{re:1.4}
 		\end{response}
 
@@ -104,13 +104,13 @@
 		\end{point}
 
 		\begin{response}
-			We agree with the reviewer that the performance loss by relaxing the rank-one constraint deserves more attention. In \cite{Feng2021}, we investigated the joint waveform and beamforming design for multi-user WPT (with no information waveform and rate requirements) and formulated the WSE problem as complex constant-modulus QP to enable SDR with at least $\gamma = \pi / 4$ approximation to the original objective function. However, due to the reason mentioned in Response \ref{re:1.2}, we did not extend the work to multi-user SWIPT in this paper.
+			We agree with the reviewer that the performance loss by relaxing the rank-one constraint deserves more attention. In \cite{Feng2021}, we investigated the joint waveform and beamforming design for multi-user multi-carrier WPT (with no information waveform and rate requirements) and formulated the WSE problem as complex constant-modulus QP to enable SDR with at least $\gamma = \pi / 4$ approximation to the original objective function. However, due to the reason mentioned in Response \ref{re:1.2}, we did not extend the work to multi-user SWIPT in this paper.
 
 			In contrast, the performance guarantee of rank relaxation in our single-user problem is only demonstrated by simulation. Due to the coupling of the information and power waveform, the objective function (23) involves
 			\begin{equation}
 				(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2 = \left(\mathrm{Tr}(\boldsymbol{C}_{\mathrm{I},0}\boldsymbol{\Phi^{(i)}}) - \mathrm{Tr}(\boldsymbol{C}_{\mathrm{P},0}\boldsymbol{\Phi^{(i)}})\right)^2 = \mathrm{Tr}\left((\boldsymbol{C}_{\mathrm{I},0} - \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi^{(i)}}\right)^2
 			\end{equation}
-			which is not a semidefinite objective (due to the square). Also, the sum-rate constraint (24b) is not a semidefinite constraint. Therefore, existing SDR bounds cannot be applied directly to problem (24).
+			which consists of trace square and is not a semidefinite expression. Compared with standard SDP, problem (24) also introduces an additional log sum constraint (24b) for communication purpose, and the existing SDR bounds cannot be applied directly for performance guarantee.
 			\label{re:1.5}
 		\end{response}
 	\end{reviewersection}
@@ -122,7 +122,7 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for sharing this acknowledged paper, which investigated the impact of non-zero effective resistance on the reflection pattern and pointed out that the amplitude of the reflection coefficient depends on the phase shift forced on the incoming signal when power dissipation is considered at the IRS. It also proposed an analytical IRS model together with an AO algorithm to maximize the achievable rate by passive beamforming. Simulation results emphasized the importance of modeling such a relationship in practical IRS design. We actually thought about integrating these new models in our system design, but finally decided to use the most common and simplest IRS model in the current stage to reduce the design complexity and provide a primary benchmark for IRS-aided SWIPT.
+			Thank you for sharing this acknowledged paper. It investigated the impact of non-zero effective resistance on the reflection pattern and pointed out that the amplitude of the reflection coefficient depends on the phase shift forced on the incoming signal when power dissipation is considered at the IRS. It also proposed an analytical IRS model together with an AO algorithm to maximize the achievable rate by passive beamforming. Simulation results emphasized the importance of modeling such a relationship in practical IRS design. We actually thought about integrating these new models in our system design, but finally decided to use the most common and simplest IRS model in the current stage to reduce the design complexity and provide a primary benchmark for practical IRS-aided SWIPT.
 			\label{re:2.1}
 		\end{response}
 
@@ -132,7 +132,11 @@
 		\end{point}
 
 		\begin{response}
-			The waveform design involves the optimization in the spatial domain (beamformer) and frequency domain (power allocation $s_{\mathrm{I/P},n}^2$). For the single-user scenario, MRT is global optimal for both information and power transmission. This is because the sum rate (7) and DC components (10) -- (13) only involve waveform in terms of $\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n}$ thus can be simultaneously maximized by MRT precoder. However, this is not the case for multi-user SWIPT (since users have different channels) where the beamformer and power allocation require a joint optimization.
+			In the single-user scenario, MRT is the global optimal information and power precoder. We decouple the waveform in the spatial and frequency domain by
+			\begin{equation}
+				\boldsymbol{w}_{\mathrm{I/P}, n} = s_{\mathrm{I/P}, n} \bar{\boldsymbol{w}}_{\mathrm{I/P}, n}
+			\end{equation}
+			where $s_{\mathrm{I/P},n}^2$ denote the power allocated to the information/power waveform at subband $n$, and $\bar{\boldsymbol{w}}_{\mathrm{I/P}, n}$ is the active beamformer at subband $n$. For simplicity, we define $s_{\mathrm{I/P}, n}$ as nonnegative real value (as the phase can be included in the beamformer).	From the information perspective, the MRT precoder maximizes $\lvert{\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I}, n}}\rvert = s_{\mathrm{I}, n} \lvert{\boldsymbol{h}_{n}^H \bar{\boldsymbol{w}}_{\mathrm{I}, n}}\rvert$ thus maximizes the sum rate (7). From the energy perspective, the MRT precoder maximizes $(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})^*$ thus maximizes the second and fourth order DC terms (10) -- (13). Therefore, MRT is the global optimal information and power precoder. However, this is not the case for the multi-user scenario where the beamformer and power allocation require a joint optimization.
 			\label{re:2.2}
 		\end{response}
 
@@ -142,7 +146,7 @@
 		\end{point}
 
 		\begin{response}
-			The reviewer is referred to Response \ref{re:1.1}. Indeed, the assumption of perfect CSIT is very ideal and the existing protocols may not provide a good enough estimation in practice. We follow the convention of most existing papers on this topic and expect some breakthroughs in future research.
+			The reviewer is referred to Response \ref{re:1.1}. Indeed, the assumption of perfect CSIT is very ideal and the existing protocols may not provide a good enough estimation in practice. We follow the convention of most existing papers on this topic and expect some breakthroughs in the future research.
 			\label{re:2.3}
 		\end{response}
 
@@ -152,7 +156,7 @@
 		\end{point}
 
 		\begin{response}
-			We appreciate your suggestion. The original objective function (19) is differentiable and non-concave in $\mathbb{C}^{4N - 2}$, and we approximate (linearize) the second-order terms by their first-order local Taylor expansions (20) -- (22) to formulate a series of convex problems. These problems are SCA to the original passive beamforming problem (maximize (19) s.t. (24b) -- (24e)), and the objective function (23) is obtained by plugging (20) -- (22) into (19), which is an affine and satisfies $\tilde{z}(\boldsymbol{\Phi}^{(i)}, \boldsymbol{\Phi}^{(i)}) = z(\boldsymbol{\Phi}^{(i)}) \ge \tilde{z}(\boldsymbol{\Phi}^{(i)}, \boldsymbol{\Phi}^{(i-1)})$. We start from any feasible point and approach the original solution by SCA.
+			We appreciate your suggestion and have revised the manuscript correspondingly. The original objective function (19) is differentiable and non-concave in $\mathbb{C}^{4N - 2}$, and we approximate (linearize) the second-order terms by the first-order Taylor expansions (20) -- (22) to formulate SCA problems of the original passive beamforming problem, i.e. maximize (19) s.t. (24b) -- (24e). Specifically, the objective affine function (23) is obtained by plugging (20) -- (22) into (19) and it satisfies $\tilde{z}(\boldsymbol{\Phi}^{(i)}, \boldsymbol{\Phi}^{(i)}) = z(\boldsymbol{\Phi}^{(i)}) \ge \tilde{z}(\boldsymbol{\Phi}^{(i)}, \boldsymbol{\Phi}^{(i-1)})$.
 			\label{re:2.4}
 		\end{response}
 
@@ -162,7 +166,7 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for pointing this out. All transformations are equivalent to their original form and we would make this clear in the revised manuscript.
+			Thank you for the reminder. All transformations are equivalent to their original form and we have make this clear in the revised manuscript.
 			\label{re:2.5}
 		\end{response}
 
@@ -172,9 +176,10 @@
 		\end{point}
 
 		\begin{response}
-			Algorithm 1 -- 3 only provide local optimal solutions with local convergence proof, and the performance indeed depends on the initialization. For different sum rate constraints, we use water-filling with MRT to initialize the modulated waveform while use scaled matched filter to initialize the unmodulated waveform (corresponding to a transmit power of $2P$, regulated afterwards). We also initialize the IRS phase shift by uniform distribution over $[0, 2\pi)$. Nevertheless, as the solutions are locally optimal, some result points on the R-E boundary may be strictly worse (with lower rate and energy) than another, especially for a large $M$ and $L$. To address this, we draw the R-E boundary from high-rate low-energy (lower right) points to low-rate high-energy (upper left) points. If the issue above happens, we discard the dominated result and reinitialize the waveform and IRS phase shift by the solution at the previous point.
+			Algorithm 1 -- 3 only provide local optimal solutions with local convergence proof, and the performance indeed depends on the initialization. For different sum rate constraints, we use water-filling with MRT to initialize the modulated waveform while use scaled matched filter to initialize the unmodulated waveform (corresponding to a total power of $2P$, regulated afterwards). The phase shift of each IRS element is initialized as i.i.d. uniform random variables over $[0, 2\pi)$. Nevertheless, as the algorithms only converge to local optimal, few R-E points might be strictly worse (in terms of both rate and energy) than the others, especially when $M$ and $L$ are very large. To address this issue, we draw the R-E boundary from the high-rate low-energy (lower right) points to the low-rate high-energy (upper left) points. If a point is strictly dominated, we discard the candidate, reinitialize the waveform and IRS phase shift by the solution at the previous point, then perform the optimization again.
 
-			For a tolerance of $\epsilon=10^{-8}$, the SDR-based Algorithm 1 usually converge within 3 iterations while the GP-based Algorithm 2 tends to converge within 8 iterations. The AO-based Algorithm 3 typically converge within 3 iterations.
+			For a tolerance of $\epsilon=10^{-8}$, the SDR-based Algorithm 1 usually converge within 2 iterations while the GP-based Algorithm 2 tends to converge within 8 iterations. The AO-based Algorithm 3 typically converge within 2 iterations. Unfortunately, the complexity analysis is very challenging as the optimization problems are in intricate form.
+			and the existing works
 			\label{re:2.6}
 		\end{response}
 
@@ -184,7 +189,7 @@
 		\end{point}
 
 		\begin{response}
-			We agree with the reviewer that the proposed algorithm (especially Algorithm 2) could be too time-consuming for practical applications with relatively short coherence time. The proposed algorithms ensure best performance by iteratively solving intricate optimization problems and may not be implemented in practice, while suboptimal design (e.g. scaled matched filter) is expected to achieve a good performance.
+			We agree that the proposed algorithm (especially Algorithm 2) could be very time-consuming for applications with short coherence time. The proposed algorithms ensure optimal performance by iteratively solving intricate optimization problems. Although suboptimal design in closed form (e.g. scaled matched filter) has been proved effective in practical WPT systems, the extension to SWIPT is much more challenging because the two waveforms and the splitting ratio need to be jointly designed under the influence of SNR.
 
 			% TODO: branch and bound / complexity analysis
 			\label{re:2.7}
@@ -215,7 +220,7 @@
 		\end{point}
 
 		\begin{response}
-			We apologize for the inconvenience. The figures would be amplified in future versions.
+			We sincerely apologize for the inconvenience. The figures would be amplified in future versions.
 			\label{re:2.9}
 		\end{response}
 	\end{reviewersection}
@@ -284,7 +289,7 @@
 		\end{point}
 
 		\begin{response}
-			We apologize for the inconvenience. The figures would be amplified in future versions.
+			We sincerely apologize for the inconvenience. The figures would be amplified in future versions.
 			\label{re:3.6}
 		\end{response}
 	\end{reviewersection}
