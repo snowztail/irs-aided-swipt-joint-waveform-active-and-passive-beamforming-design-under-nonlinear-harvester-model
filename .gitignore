@@ -313,3 +313,6 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+# Data
+*.mat
