@@ -553,7 +553,7 @@
 			\begin{subsubsection}{Waveform and Active Beamforming}
 				The optimal resource allocation for WIT corresponds to the Water-Filling (WF) strategy that assigns the amplitude of modulated tone $n$ by
 				\begin{equation}
-					s_{\mathrm{I}, n} = \sqrt{\left(\mu - \frac{\sigma_n}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}
+					s_{\mathrm{I}, n} = \sqrt{2\left(\mu - \frac{\sigma_n}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}
 				\end{equation}
 				where $\mu$ is chosen to satisfy the power constraint $\lVert{\boldsymbol{s}_I}\rVert^2 / 2 \le P$. The closed-form solution can be obtained by iterative power allocation and the details are omitted here. On the other hand, the Scaled Matched Filter (SMF) was proposed in \cite{Clerckx2017} as a suboptimal resource allocation scheme for WPT. It involves no modulated waveform and assigns the amplitude of sinewave $n$ by
 				\begin{equation}
