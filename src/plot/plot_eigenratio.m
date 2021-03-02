@@ -78,6 +78,8 @@ grid on;
 box on;
 title('');
 legend(legendString);
+xlabel('');
+ylabel('');
 apply_style(plotHandle);
 
 config_re_tx;
@@ -94,7 +96,8 @@ grid on;
 box on;
 title('');
 legend(legendString);
-xlabel('Max eigenvalue over sum eigenvalue');
+xlabel('');
+ylabel('Cumulative probability');
 apply_style(plotHandle);
 
 config_re_reflector;
@@ -111,7 +114,8 @@ grid on;
 box on;
 title('');
 legend(legendString);
-ylabel('Cumulative probability');
+xlabel('Max eigenvalue over sum eigenvalue');
+ylabel('');
 apply_style(plotHandle);
 
 savefig('../figures/cdf_eigenratio.fig');

@@ -39,7 +39,7 @@ function [current, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, ei
     % * Initialize waveform and splitting ratio
 	infoAmplitude = zeros(1, nSubbands) + eps;
     powerAmplitude = sqrt(2 * txPower / nSubbands) * ones(1, nSubbands);
-	[infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
+	[infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
     infoRatio = eps;
     powerRatio = 1 - infoRatio;
 
@@ -52,7 +52,7 @@ function [current, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, ei
 		[irs, eigRatio(end + 1)] = irs_linear(beta2, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates);
 		[compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 		[infoAmplitude, powerAmplitude, current] = waveform_linear(beta2, beta4, compositeChannel, txPower);
-		[infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
+		[infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
         isConverged = abs(current - current_) <= tolerance;
         current_ = current;
     end

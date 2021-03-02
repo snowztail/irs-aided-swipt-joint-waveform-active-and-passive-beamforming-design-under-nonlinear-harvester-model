@@ -1,13 +1,13 @@
 clear; clc; setup; config_re_irs;
 
 %% ! R-E region for ideal, adaptive, fixed and no IRS
-reFsIrsSample = cell(nChannels, length(Variable.bandwidth));
+reIdealIrsSample = cell(nChannels, length(Variable.bandwidth));
 reAdaptiveIrsSample = cell(nChannels, length(Variable.bandwidth));
 reWitIrsSample = cell(nChannels, length(Variable.bandwidth));
 reWptIrsSample = cell(nChannels, length(Variable.bandwidth));
 reNoIrsSample = cell(nChannels, length(Variable.bandwidth));
 
-reFsIrsSolution = cell(nChannels, length(Variable.bandwidth));
+reIdealIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reAdaptiveIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reWitIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reWptIrsSolution = cell(nChannels, length(Variable.bandwidth));
@@ -24,13 +24,13 @@ for iChannel = 1 : nChannels
 		[subbandFrequency] = subband_frequency(centerFrequency, Variable.bandwidth(iBandwidth), nSubbands);
 
 		% * Construct channels
-		[directChannel] = frequency_response(directTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
-		[incidentChannel] = frequency_response(incidentTapGain, incidentTapDelay, incidentDistance, irsGain, subbandFrequency, fadingMode);
-		[reflectiveChannel] = frequency_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
+		[directChannel] = channel_response(directTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
+		[incidentChannel] = channel_response(incidentTapGain, incidentTapDelay, incidentDistance, irsGain, subbandFrequency, fadingMode);
+		[reflectiveChannel] = channel_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
 		% * Upper bound by frequency-selective IRS
-		[fsIrsCompositeChannel] = fs_irs_composite_channel(directChannel, incidentChannel, reflectiveChannel);
-		[reFsIrsSample{iChannel, iBandwidth}, reFsIrsSolution{iChannel, iBandwidth}] = re_sample_reference(beta2, beta4, fsIrsCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[idealCompositeChannel] = composite_channel_ideal(directChannel, incidentChannel, reflectiveChannel);
+		[reIdealIrsSample{iChannel, iBandwidth}, reIdealIrsSolution{iChannel, iBandwidth}] = re_sample_fixed_channel(beta2, beta4, idealCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Adaptive IRS and waveform design
 		[reAdaptiveIrsSample{iChannel, iBandwidth}, reAdaptiveIrsSolution{iChannel, iBandwidth}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
@@ -38,25 +38,25 @@ for iChannel = 1 : nChannels
 		wptCompositeChannel = reAdaptiveIrsSolution{iChannel, iBandwidth}{end}.compositeChannel;
 
 		% * Waveform optimization with fixed WIT-optimized IRS
-		[reWitIrsSample{iChannel, iBandwidth}, reWitIrsSolution{iChannel, iBandwidth}] = re_sample_reference(beta2, beta4, witCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reWitIrsSample{iChannel, iBandwidth}, reWitIrsSolution{iChannel, iBandwidth}] = re_sample_fixed_channel(beta2, beta4, witCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Waveform optimization with fixed WPT-optimized IRS
-		[reWptIrsSample{iChannel, iBandwidth}, reWptIrsSolution{iChannel, iBandwidth}] = re_sample_reference(beta2, beta4, wptCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reWptIrsSample{iChannel, iBandwidth}, reWptIrsSolution{iChannel, iBandwidth}] = re_sample_fixed_channel(beta2, beta4, wptCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Waveform optimization without IRS
-		[reNoIrsSample{iChannel, iBandwidth}, reNoIrsSolution{iChannel, iBandwidth}] = re_sample_reference(beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
+		[reNoIrsSample{iChannel, iBandwidth}, reNoIrsSolution{iChannel, iBandwidth}] = re_sample_fixed_channel(beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
 	end
 end
 
 % * Average over channel realizations
-reFsIrsInstance = cell(1, length(Variable.bandwidth));
+reIdealIrsInstance = cell(1, length(Variable.bandwidth));
 reAdaptiveIrsInstance = cell(1, length(Variable.bandwidth));
 reWitIrsInstance = cell(1, length(Variable.bandwidth));
 reWptIrsInstance = cell(1, length(Variable.bandwidth));
 reNoIrsInstance = cell(1, length(Variable.bandwidth));
 
 for iBandwidth = 1 : length(Variable.bandwidth)
-	reFsIrsInstance{iBandwidth} = mean(cat(3, reFsIrsSample{:, iBandwidth}), 3);
+	reIdealIrsInstance{iBandwidth} = mean(cat(3, reIdealIrsSample{:, iBandwidth}), 3);
 	reAdaptiveIrsInstance{iBandwidth} = mean(cat(3, reAdaptiveIrsSample{:, iBandwidth}), 3);
 	reWitIrsInstance{iBandwidth} = mean(cat(3, reWitIrsSample{:, iBandwidth}), 3);
 	reWptIrsInstance{iBandwidth} = mean(cat(3, reWptIrsSample{:, iBandwidth}), 3);

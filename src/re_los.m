@@ -17,12 +17,12 @@ for iChannel = 1 : nChannels
     [reflectiveLosTapGain, ~] = tap_tgn(corIrs, corRx, 'los');
 
     % * Construct channels
-    [directNlosChannel] = frequency_response(directNlosTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
-    [incidentNlosChannel] = frequency_response(incidentNlosTapGain, incidentTapDelay, incidentDistance, irsGain, subbandFrequency, fadingMode);
-    [reflectiveNlosChannel] = frequency_response(reflectiveNlosTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
+    [directNlosChannel] = channel_response(directNlosTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
+    [incidentNlosChannel] = channel_response(incidentNlosTapGain, incidentTapDelay, incidentDistance, irsGain, subbandFrequency, fadingMode);
+    [reflectiveNlosChannel] = channel_response(reflectiveNlosTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
-    [incidentLosChannel] = frequency_response(incidentLosTapGain, incidentTapDelay, incidentDistance, irsGain, subbandFrequency, fadingMode);
-    [reflectiveLosChannel] = frequency_response(reflectiveLosTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
+    [incidentLosChannel] = channel_response(incidentLosTapGain, incidentTapDelay, incidentDistance, irsGain, subbandFrequency, fadingMode);
+    [reflectiveLosChannel] = channel_response(reflectiveLosTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
     % * Optimization based on NLoS channels
     [reNlosSample{iChannel}, reNlosSolution{iChannel}] = re_sample(beta2, beta4, directNlosChannel, incidentNlosChannel, reflectiveNlosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);

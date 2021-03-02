@@ -1,6 +1,6 @@
-function [infoWaveform, powerWaveform] = beamform(channel, infoAmplitude, powerAmplitude)
+function [infoWaveform, powerWaveform] = precoder_mrt(channel, infoAmplitude, powerAmplitude)
     % Function:
-    %   - obtain waveform in spatial domain
+    %   - information and power precoder in spatial domain
     %
     % Input:
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
@@ -12,7 +12,7 @@ function [infoWaveform, powerWaveform] = beamform(channel, infoAmplitude, powerA
     %   - powerWaveform (w_P) [nTxs * nSubbands]: weight on power waveform
     %
     % Comment:
-    %   - the optimal spatial single-user beamformer is MRT
+    %   - the optimal information and power beamformers coincide at MRT for single-user SWIPT
     %
     % Author & Date: Yang (i@snowztail.com) - 5 Aug 20
 

@@ -13,13 +13,13 @@ nCases = 2;
 
 % AP-IRS pathloss
 incidentPathloss = zeros(nSamples, 1);
-% production of AP-IRS and IRS-user pathloss
-extraPathloss = zeros(nSamples, 1);
+% product AP-IRS-User pathloss model
+auxiliaryPathloss = zeros(nSamples, 1);
 for iSample = 1 : nSamples
 	% AP-IRS and IRS-user distance
 	[incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance(iSample));
 	incidentPathloss(iSample) = path_loss(incidentDistance);
-	extraPathloss(iSample) = path_loss(incidentDistance) * path_loss(reflectiveDistance);
+	auxiliaryPathloss(iSample) = path_loss(incidentDistance) * path_loss(reflectiveDistance);
 end
 
 %% * Waveform amplitude
@@ -38,7 +38,7 @@ box on;
 
 % * Extra pathloss
 nexttile;
-plotHandle(2) = plot(horizontalDistance, pow2db(1 ./ extraPathloss));
+plotHandle(2) = plot(horizontalDistance, pow2db(1 ./ auxiliaryPathloss));
 grid on;
 legend('$\Lambda_I\Lambda_R$', 'location', 'ne')
 xlabel('AP-IRS horizontal distance [m]');

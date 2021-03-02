@@ -52,7 +52,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
                 struct2variables(solution{iSample - 1});
             end
             [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
-            [infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
+            [infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
 
             % * Alternating optimization
             isConverged = false;
@@ -62,7 +62,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
                 [irs, eigRatio(end + 1)] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
                 [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
                 [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
-                [infoWaveform, powerWaveform] = beamform(compositeChannel, infoAmplitude, powerAmplitude);
+                [infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
                 isConverged = abs(current - current_) <= tolerance;
                 current_ = current;
             end

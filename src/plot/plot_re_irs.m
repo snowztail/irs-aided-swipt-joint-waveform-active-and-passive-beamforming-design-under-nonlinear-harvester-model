@@ -2,15 +2,15 @@ clear; clc; close all; config_re_irs;
 
 %% * Load batch data
 indexSet = 1 : nBatches;
-reFsIrsSet = cell(nBatches, length(Variable.bandwidth));
+reIdealIrsSet = cell(nBatches, length(Variable.bandwidth));
 reAdaptiveIrsSet = cell(nBatches, length(Variable.bandwidth));
 reWitIrsSet = cell(nBatches, length(Variable.bandwidth));
 reWptIrsSet = cell(nBatches, length(Variable.bandwidth));
 reNoIrsSet = cell(nBatches, length(Variable.bandwidth));
 for iBatch = 1 : nBatches
     try
-		load(sprintf('../data/re_irs/re_irs_%d.mat', iBatch), 'reFsIrsInstance', 'reAdaptiveIrsInstance', 'reWitIrsInstance', 'reWptIrsInstance', 'reNoIrsInstance');
-        reFsIrsSet(iBatch, :) = reFsIrsInstance;
+		load(sprintf('../data/re_irs/re_irs_%d.mat', iBatch), 'reIdealIrsInstance', 'reAdaptiveIrsInstance', 'reWitIrsInstance', 'reWptIrsInstance', 'reNoIrsInstance');
+        reIdealIrsSet(iBatch, :) = reIdealIrsInstance;
         reAdaptiveIrsSet(iBatch, :) = reAdaptiveIrsInstance;
         reWitIrsSet(iBatch, :) = reWitIrsInstance;
         reWptIrsSet(iBatch, :) = reWptIrsInstance;
@@ -22,13 +22,13 @@ for iBatch = 1 : nBatches
 end
 
 %% * Average over batches
-reFsIrs = cell(1, length(Variable.bandwidth));
+reIdealIrs = cell(1, length(Variable.bandwidth));
 reAdaptiveIrs = cell(1, length(Variable.bandwidth));
 reWitIrs = cell(1, length(Variable.bandwidth));
 reWptIrs = cell(1, length(Variable.bandwidth));
 reNoIrs = cell(1, length(Variable.bandwidth));
 for iBandwidth = 1 : length(Variable.bandwidth)
-	reFsIrs{iBandwidth} = mean(cat(3, reFsIrsSet{indexSet, iBandwidth}), 3);
+	reIdealIrs{iBandwidth} = mean(cat(3, reIdealIrsSet{indexSet, iBandwidth}), 3);
 	reAdaptiveIrs{iBandwidth} = mean(cat(3, reAdaptiveIrsSet{indexSet, iBandwidth}), 3);
 	reWitIrs{iBandwidth} = mean(cat(3, reWitIrsSet{indexSet, iBandwidth}), 3);
 	reWptIrs{iBandwidth} = mean(cat(3, reWptIrsSet{indexSet, iBandwidth}), 3);
@@ -41,7 +41,7 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	figure('name', sprintf('Average R-E region for ideal, adaptive, fixed and no IRS for $B = %d$ MHz', Variable.bandwidth(iBandwidth) / 1e6));
 	plotHandle = gobjects(1, length(Variable.bandwidth));
 	hold all;
-	plotHandle(1) = plot(reFsIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reFsIrs{iBandwidth}(2, :));
+	plotHandle(1) = plot(reIdealIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reIdealIrs{iBandwidth}(2, :));
 	plotHandle(2) = plot(reAdaptiveIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reAdaptiveIrs{iBandwidth}(2, :));
 	plotHandle(3) = plot(reWitIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reWitIrs{iBandwidth}(2, :));
 	plotHandle(4) = plot(reWptIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reWptIrs{iBandwidth}(2, :));
@@ -55,7 +55,7 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	ylim([0 inf]);
     box on;
 	apply_style(plotHandle);
-    
+
 	savefig(sprintf('../figures/re_irs_%dmhz.fig', Variable.bandwidth(iBandwidth) / 1e6));
 	matlab2tikz(sprintf('../../assets/re_irs_%dmhz.tex', Variable.bandwidth(iBandwidth) / 1e6));
 	close;

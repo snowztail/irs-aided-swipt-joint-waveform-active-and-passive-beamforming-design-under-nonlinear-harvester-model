@@ -29,10 +29,6 @@ verticalDistance = 0.5;
 horizontalDistance = 0;
 % AP-IRS and IRS-user distance
 [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
-% equivalent pathloss
-[sumPathloss] = sum_pathloss(directDistance, incidentDistance, reflectiveDistance);
-% large-scale signal-to-noise ratio
-snr = txPower * sumPathloss * rxGain / noisePower;
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth

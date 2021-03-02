@@ -1,4 +1,4 @@
-function [channel] = frequency_response(tapGain, tapDelay, distance, rxGain, subbandFrequency, fadingMode)
+function [channel] = channel_response(tapGain, tapDelay, distance, rxGain, subbandFrequency, fadingMode)
     % Function:
     %   - get frequency response of direct, incident and reflective channels
     %
@@ -21,7 +21,7 @@ function [channel] = frequency_response(tapGain, tapDelay, distance, rxGain, sub
 
 
     [pathloss] = path_loss(distance);
-    [fading] = fading_tgn(tapGain, tapDelay, subbandFrequency, fadingMode);
+    [fading] = multipath_fading(tapGain, tapDelay, subbandFrequency, fadingMode);
     channel = sqrt(pathloss * rxGain) * fading;
 
 end
