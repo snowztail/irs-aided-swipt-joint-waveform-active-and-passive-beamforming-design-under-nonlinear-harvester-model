@@ -37,7 +37,7 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, e
     [compositeChannel, ~, concatSubchannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 
     % * Construct waveform (water-filling + MRT) and initialize splitting ratio
-    [~, infoAmplitude] = channel_capacity(compositeChannel, txPower, noisePower);
+    [~, infoAmplitude] = water_filling(compositeChannel, txPower, noisePower);
     powerAmplitude = zeros(1, nSubbands) + eps;
     [infoWaveform, ~] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
     infoRatio = 1 - eps;
@@ -102,7 +102,7 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, e
 
         % * Update composite channel and optimal waveform
         [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-        [capacity, infoAmplitude] = channel_capacity(compositeChannel, txPower, noisePower);
+        [capacity, infoAmplitude] = water_filling(compositeChannel, txPower, noisePower);
         [infoWaveform, ~] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
 
         % * Update coefficients

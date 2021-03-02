@@ -30,7 +30,7 @@ function [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_wav
     % * Initialize algorithm
     infoRatio = 1;
     powerRatio = 1;
-	[~, infoAmplitude] = channel_capacity(channel, txPower, noisePower);
+	[~, infoAmplitude] = water_filling(channel, txPower, noisePower);
 
 	% * If number of subbands is too small, it is unnecessary to use power waveform
 	nSubbands = size(channel, 1);
