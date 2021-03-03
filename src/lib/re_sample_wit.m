@@ -1,4 +1,4 @@
-function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
+function [sample, solution] = re_sample_wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
     %   - optimize the waveform and IRS reflection coefficients to maximize user rate
     %
@@ -12,13 +12,8 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, e
     %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
-    %	- rate (R): achievable sum rate of all subbands
-    %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
-    %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
-    %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
-    %   - infoRatio (\bar{\rho}): information splitting ratio
-	%   - powerRatio (\rho): power splitting ratio
-	%	- eigRatio (r): the maximum eigenvalue of the relaxed solution over the sum eigenvalue of the relaxed solution
+    %   - sample [2 * nSamples]: rate-energy sample
+    %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio and eigenvalue ratio
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank IRS outer product matrix
@@ -32,16 +27,12 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, e
     [nSubbands, ~, nReflectors] = size(incidentChannel);
 
     % * Initialize IRS and composite channel
-    % irs = ones(nReflectors, 1);
     irs = exp(1i * 2 * pi * rand(nReflectors, 1));
     [compositeChannel, ~, concatSubchannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 
     % * Construct waveform (water-filling + MRT) and initialize splitting ratio
-    [~, infoAmplitude] = water_filling(compositeChannel, txPower, noisePower);
-    powerAmplitude = zeros(1, nSubbands) + eps;
+    [~, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = water_filling(compositeChannel, txPower, noisePower);
     [infoWaveform, ~] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
-    infoRatio = 1 - eps;
-    powerRatio = 1 - infoRatio;
 
     % * Obtain coefficients
     % \boldsymbol{M}_n, \boldsymbol{C}_n
@@ -115,5 +106,8 @@ function [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, e
         isConverged = abs(capacity - capacity_) <= tolerance;
         capacity_ = capacity;
     end
+
+	sample = [capacity; eps];
+	solution = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
 
 end

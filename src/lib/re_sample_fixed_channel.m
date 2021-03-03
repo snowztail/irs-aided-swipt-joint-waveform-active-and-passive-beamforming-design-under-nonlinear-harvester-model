@@ -32,11 +32,8 @@ function [sample, solution] = re_sample_fixed_channel(beta2, beta4, channel, txP
     solution = cell(nSamples, 1);
 
     % * Initialize algorithm and set rate constraints
-    [capacity, infoAmplitude] = water_filling(channel, txPower, noisePower);
+    [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = water_filling(channel, txPower, noisePower);
     rateConstraint = linspace(capacity, 0, nSamples);
-    powerAmplitude = zeros(size(infoAmplitude)) + eps;
-    infoRatio = 1 - eps;
-    powerRatio = 1 - infoRatio;
 
     % * WIT point
     sample(:, 1) = [capacity; 0];

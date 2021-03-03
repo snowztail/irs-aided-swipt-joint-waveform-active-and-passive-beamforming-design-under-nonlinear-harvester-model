@@ -1,4 +1,4 @@
-function [capacity, infoAmplitude] = water_filling(channel, txPower, noisePower)
+function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = water_filling(channel, txPower, noisePower)
     % Function:
     %   - water-filling power allocation for OFDM channels
     %
@@ -14,6 +14,7 @@ function [capacity, infoAmplitude] = water_filling(channel, txPower, noisePower)
     % Comment:
     %   - for MISO OFDM channels
 	%	- convert waveform amplitude to peak value by multiplying sqrt(2)
+	%	- assign no power to multisine waveform and set splitting ratio to 0
     %
     % Author & Date: Yang (i@snowztail.com) - 28 Aug 19
 
@@ -46,5 +47,10 @@ function [capacity, infoAmplitude] = water_filling(channel, txPower, noisePower)
     % * Obtain amplitude and compute capacity
     infoAmplitude = sqrt(2 * subbandPower);
     capacity = sum(log2(1 + subbandPower .* subbandStrength / noisePower));
+
+	% * Initialize multisine waveform and splitting ratio
+    powerAmplitude = zeros(1, nSubbands) + eps;
+    infoRatio = 1 - eps;
+    powerRatio = eps;
 
 end

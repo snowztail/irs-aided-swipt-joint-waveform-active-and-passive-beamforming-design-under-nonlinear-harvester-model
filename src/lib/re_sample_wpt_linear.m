@@ -1,4 +1,4 @@
-function [current, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio] = wpt_linear(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
+function [sample, solution] = re_sample_wpt_linear(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
     %   - optimize the waveform and IRS reflection coefficients based on linear harvetser model to maximize average output DC current
     %
@@ -14,13 +14,8 @@ function [current, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, ei
     %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
-    %	- current (z): objective function to maximize output DC current
-    %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
-    %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
-    %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
-    %   - infoRatio (\bar{\rho}): information splitting ratio
-	%   - powerRatio (\rho): power splitting ratio
-	%	- eigRatio (r): the maximum eigenvalue of the relaxed solution over the sum eigenvalue of the relaxed solution
+    %   - sample [2 * nSamples]: rate-energy sample
+    %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio and eigenvalue ratio
     %
     % Comment:
     %   - based on linear harvester model
@@ -32,7 +27,6 @@ function [current, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, ei
 	[nSubbands, ~, nReflectors] = size(incidentChannel);
 
     % * Initialize IRS and composite channel
-    % irs = ones(nReflectors, 1);
     irs = exp(1i * 2 * pi * rand(nReflectors, 1));
     [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 
@@ -56,5 +50,8 @@ function [current, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, ei
         isConverged = abs(current - current_) <= tolerance;
         current_ = current;
     end
+
+	sample = [eps; current];
+	solution = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
 
 end

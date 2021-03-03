@@ -16,7 +16,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     %
     % Output:
     %   - sample [2 * nSamples]: rate-energy sample
-    %   - solution: waveform, splitting ratio and eigenvalue ratio
+    %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio and eigenvalue ratio
     %
     % Comment:
     %   - suboptimal algorithm only converge to stationary points
@@ -31,14 +31,10 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     sample = zeros(2, nSamples);
     solution = cell(nSamples, 1);
 
-    % * Initialize algorithm and set rate constraints
-    [capacity, irs, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio] = wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
-    [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-    rateConstraint = linspace(capacity, 0, nSamples);
-
-    % * WIT point
-    sample(:, 1) = [capacity; 0];
-    solution{1} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
+    % * Initialize algorithm by WIT point and set rate constraints
+    [sample(:, 1), solution{1}] = re_sample_wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+    compositeChannel = solution{1}.compositeChannel;
+    rateConstraint = linspace(sample(1, 1), 0, nSamples);
 
     % * Non-WIT points
     for iSample = 2 : nSamples
