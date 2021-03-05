@@ -1,4 +1,4 @@
-function [sample, solution] = re_sample_wpt(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
+function [sample, solution] = re_sample_wpt_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
     %   - optimize the waveform and IRS reflection coefficients to maximize average output DC current
     %
@@ -24,21 +24,15 @@ function [sample, solution] = re_sample_wpt(beta2, beta4, directChannel, inciden
 
 
     % * Get data
-	[nSubbands, ~, nReflectors] = size(incidentChannel);
+	nReflectors = size(incidentChannel, 3);
 
     % * Initialize IRS and composite channel
     irs = exp(1i * 2 * pi * rand(nReflectors, 1));
     [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
 
-    % * Get equivalent channel gain
-    channelAmplitude = vecnorm(compositeChannel, 2, 2);
-
     % * Initialize waveform and splitting ratio
-    infoAmplitude = zeros(1, nSubbands) + eps;
-    powerAmplitude = sqrt(2 * txPower) * channelAmplitude' ./ norm(channelAmplitude);
+	[~, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = scaled_matched_filter(alpha, beta2, beta4, channel, txPower);
 	[infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
-    infoRatio = eps;
-    powerRatio = 1 - infoRatio;
 
     % * AO
     isConverged = false;
@@ -48,7 +42,7 @@ function [sample, solution] = re_sample_wpt(beta2, beta4, directChannel, inciden
     while ~isConverged
 		[irs, eigRatio(end + 1)] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates, tolerance);
 		[compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-		[infoAmplitude, powerAmplitude, current] = waveform_sdr(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, txPower, nCandidates, tolerance);
+		[current, infoAmplitude, powerAmplitude] = waveform_sdr(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, txPower, nCandidates, tolerance);
 		[infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
         isConverged = abs(current - current_) <= tolerance;
         current_ = current;

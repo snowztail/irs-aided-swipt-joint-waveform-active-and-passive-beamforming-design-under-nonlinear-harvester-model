@@ -30,21 +30,21 @@ for iChannel = 1 : nChannels
 
 		% * Upper bound by frequency-selective IRS
 		[idealCompositeChannel] = composite_channel_ideal(directChannel, incidentChannel, reflectiveChannel);
-		[reIdealIrsSample{iChannel, iBandwidth}, reIdealIrsSolution{iChannel, iBandwidth}] = re_sample_nonadaptive_channel(beta2, beta4, idealCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reIdealIrsSample{iChannel, iBandwidth}, reIdealIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, idealCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Adaptive IRS and waveform design
-		[reAdaptiveIrsSample{iChannel, iBandwidth}, reAdaptiveIrsSolution{iChannel, iBandwidth}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+		[reAdaptiveIrsSample{iChannel, iBandwidth}, reAdaptiveIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 		witCompositeChannel = reAdaptiveIrsSolution{iChannel, iBandwidth}{1}.compositeChannel;
 		wptCompositeChannel = reAdaptiveIrsSolution{iChannel, iBandwidth}{end}.compositeChannel;
 
 		% * Waveform optimization with nonadaptive WIT-optimized IRS
-		[reWitIrsSample{iChannel, iBandwidth}, reWitIrsSolution{iChannel, iBandwidth}] = re_sample_nonadaptive_channel(beta2, beta4, witCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reWitIrsSample{iChannel, iBandwidth}, reWitIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, witCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Waveform optimization with nonadaptive WPT-optimized IRS
-		[reWptIrsSample{iChannel, iBandwidth}, reWptIrsSolution{iChannel, iBandwidth}] = re_sample_nonadaptive_channel(beta2, beta4, wptCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reWptIrsSample{iChannel, iBandwidth}, reWptIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, wptCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Waveform optimization without IRS
-		[reNoIrsSample{iChannel, iBandwidth}, reNoIrsSolution{iChannel, iBandwidth}] = re_sample_nonadaptive_channel(beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
+		[reNoIrsSample{iChannel, iBandwidth}, reNoIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
 	end
 end
 

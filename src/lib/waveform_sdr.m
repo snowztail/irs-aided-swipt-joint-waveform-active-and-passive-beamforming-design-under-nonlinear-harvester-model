@@ -1,4 +1,4 @@
-function [infoAmplitude, powerAmplitude, current] = waveform_sdr(beta2, beta4, channel, infoAmplitude, powerAmplitude, txPower, nCandidates, tolerance)
+function [current, infoAmplitude, powerAmplitude] = waveform_sdr(beta2, beta4, channel, infoAmplitude, powerAmplitude, txPower, nCandidates, tolerance)
     % Function:
     %   - optimize the information and power waveform amplitude to maximize the R-E region
     %
@@ -13,9 +13,9 @@ function [infoAmplitude, powerAmplitude, current] = waveform_sdr(beta2, beta4, c
     %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
+	%	- current (z): objective function to maximize output DC current
     %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
 	%   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
-	%	- current (z): objective function to maximize output DC current
     %
     % Comment:
     %   - suitable for WPT

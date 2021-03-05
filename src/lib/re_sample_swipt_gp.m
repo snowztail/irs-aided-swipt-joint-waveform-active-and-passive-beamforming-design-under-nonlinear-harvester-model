@@ -1,8 +1,9 @@
-function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance)
+function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance)
     % Function:
     %   - sample R-E region by computing the output DC current and rate
     %
     % Input:
+    %   - alpha: scale ratio of SMF
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
     %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
@@ -19,7 +20,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio and eigenvalue ratio
     %
     % Comment:
-    %   - suboptimal algorithm only converge to stationary points
+    %   - AO algorithm only converge to stationary points
     %   - proceed from high rate points to high current points
     %   - results are sensitive to initialization
     %   - under default initialization, some samples may be strictly worse than previous ones (especially for a large number of transmit antennas or reflectors)
@@ -32,7 +33,8 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
     solution = cell(nSamples, 1);
 
     % * Initialize algorithm by WIT point and set rate constraints
-    [sample(:, 1), solution{1}] = re_sample_wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+    [sample(:, 1), solution{1}] = re_sample_wit_wf(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+	irs = solution{1}.irs;
     compositeChannel = solution{1}.compositeChannel;
     rateConstraint = linspace(sample(1, 1), 0, nSamples);
 
@@ -42,12 +44,12 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
         while true
             if ~isDominated
                 % * Default initialization
-                [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(compositeChannel, txPower, noisePower);
+                [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(alpha, beta2, beta4, compositeChannel, txPower, noisePower);
             else
                 % * Initialize with previous solution
                 struct2variables(solution{iSample - 1});
             end
-            [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+            [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
             [infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
 
             % * Alternating optimization
@@ -57,7 +59,7 @@ function [sample, solution] = re_sample(beta2, beta4, directChannel, incidentCha
             while ~isConverged
                 [irs, eigRatio(end + 1)] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
                 [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
-                [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+                [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
                 [infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
                 isConverged = abs(current - current_) <= tolerance;
                 current_ = current;

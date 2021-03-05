@@ -1,4 +1,4 @@
-function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = water_filling(channel, txPower, noisePower)
+function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = water_filling(channel, txPower, noisePower, waveformRatio)
     % Function:
     %   - water-filling power allocation for OFDM channels
     %
@@ -6,6 +6,7 @@ function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wate
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
     %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
+	%	- waveformRatio (\delta): balancing ratio for modulated and multisine waveforms
     %
     % Output:
     %   - capacity: maximum achievable sum rate over all subbands
@@ -21,6 +22,10 @@ function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wate
     %
     % Author & Date: Yang (i@snowztail.com) - 28 Aug 19
 
+
+	if nargin == 3
+		waveformRatio = 0;
+	end
 
     % * Get data
     nSubbands = size(channel, 1);
@@ -46,7 +51,7 @@ function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wate
 
 	% * Recover order and normalize transmit power
     channelAmplitude(index) = channelAmplitude;
-    subbandPower(index) = txPower * (subbandPower ./ sum(subbandPower));
+    subbandPower(index) = (1 - waveformRatio) * txPower * (subbandPower ./ sum(subbandPower));
 
     % * Obtain waveform amplitude and capacity
     infoAmplitude = sqrt(2 * subbandPower);

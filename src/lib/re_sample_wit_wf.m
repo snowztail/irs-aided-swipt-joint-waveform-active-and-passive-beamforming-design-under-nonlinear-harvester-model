@@ -1,4 +1,4 @@
-function [sample, solution] = re_sample_wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
+function [sample, solution] = re_sample_wit_wf(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
     %   - optimize the waveform and IRS reflection coefficients to maximize user rate
     %
@@ -32,7 +32,7 @@ function [sample, solution] = re_sample_wit(directChannel, incidentChannel, refl
 
     % * Construct waveform (water-filling + MRT) and initialize splitting ratio
     [~, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = water_filling(compositeChannel, txPower, noisePower);
-    [infoWaveform, ~] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
+    [infoWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
 
     % * Obtain coefficients
     % \boldsymbol{M}_n, \boldsymbol{C}_n
@@ -94,7 +94,7 @@ function [sample, solution] = re_sample_wit(directChannel, incidentChannel, refl
         % * Update composite channel and optimal waveform
         [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
         [capacity, infoAmplitude] = water_filling(compositeChannel, txPower, noisePower);
-        [infoWaveform, ~] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
+        [infoWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
 
         % * Update coefficients
         for iSubband = 1 : nSubbands

@@ -4,6 +4,8 @@ k2 = 0.0034;
 k4 = 0.3829;
 % antenna resistance
 resistance = 50;
+% scale ratio of SMF
+alpha = 1;
 % coefficients on current terms
 beta2 = k2 * resistance;
 beta4 = k4 * resistance ^ 2;

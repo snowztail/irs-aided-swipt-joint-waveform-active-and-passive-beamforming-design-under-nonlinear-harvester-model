@@ -13,8 +13,8 @@ for iChannel = 1 : nChannels
     [incidentNlosTapGain, incidentTapDelay] = tap_tgn(corTx, corIrs, 'nlos');
     [reflectiveNlosTapGain, reflectiveTapDelay] = tap_tgn(corIrs, corRx, 'nlos');
 
-    [incidentLosTapGain, ~] = tap_tgn(corTx, corIrs, 'los');
-    [reflectiveLosTapGain, ~] = tap_tgn(corIrs, corRx, 'los');
+    [incidentLosTapGain] = tap_tgn(corTx, corIrs, 'los');
+    [reflectiveLosTapGain] = tap_tgn(corIrs, corRx, 'los');
 
     % * Construct channels
     [directNlosChannel] = channel_response(directNlosTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
@@ -25,10 +25,10 @@ for iChannel = 1 : nChannels
     [reflectiveLosChannel] = channel_response(reflectiveLosTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
     % * Optimization based on NLoS channels
-    [reNlosSample{iChannel}, reNlosSolution{iChannel}] = re_sample(beta2, beta4, directNlosChannel, incidentNlosChannel, reflectiveNlosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+    [reNlosSample{iChannel}, reNlosSolution{iChannel}] = re_sample_swipt_gp(alpha, beta2, beta4, directNlosChannel, incidentNlosChannel, reflectiveNlosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 
     % * Optimization based on NLoS direct channel and LoS incident and reflective channels
-    [reLosSample{iChannel}, reLosSolution{iChannel}] = re_sample(beta2, beta4, directNlosChannel, incidentLosChannel, reflectiveLosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+    [reLosSample{iChannel}, reLosSolution{iChannel}] = re_sample_swipt_gp(alpha, beta2, beta4, directNlosChannel, incidentLosChannel, reflectiveLosChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 end
 
 % * Average over channel realizations

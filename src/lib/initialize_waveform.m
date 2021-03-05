@@ -1,8 +1,11 @@
-function [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(channel, txPower, noisePower)
+function [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(alpha, beta2, beta4, channel, txPower, noisePower)
     % Function:
     %   - initialize waveform and splitting ratio for GP algorithm
     %
     % Input:
+    %   - alpha: scale ratio of SMF
+    %   - beta2: coefficients on second-order current terms
+    %   - beta4: coefficients on fourth-order current terms
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
     %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
@@ -14,30 +17,32 @@ function [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_wav
     %   - powerRatio (\rho): power splitting ratio
     %
     % Comment:
-    %   - the iterative GP algorithm is sensitive to initialization (only converges to stationary point)
+    %   - the iterative GP algorithm is sensitive to initialization (only converges to stationary points)
     %   - GP requires nonzero entries thus use eps to replace zero
     %   - cvx crashes when initial rate is far from constraint
     %       - use scaled matched filter to initialize power waveform with power P
     %       - use water-filling + MRT to initialize information waveform with power P
     %       - initialize both splitting ratio to 1
+	%		- regulated over iterations
+	%	- if the number of subbands is too small, it is unnecessary to use multisine waveform
     %
     % Author & Date: Yang (i@snowztail.com) - 31 Jul 20
 
 
-    % * Get equivalent channel gain
-    channelAmplitude = vecnorm(channel, 2, 2);
+	% * Get data
+	nSubbands = size(channel, 1);
 
-    % * Initialize algorithm
-    infoRatio = 1;
-    powerRatio = 1;
+	% * Initialize modulated waveform by WF
 	[~, infoAmplitude] = water_filling(channel, txPower, noisePower);
 
-	% * If number of subbands is too small, it is unnecessary to use power waveform
-	nSubbands = size(channel, 1);
+	% * If necessary, initialize multisine waveform by SMF
 	if nSubbands <= 2
 		powerAmplitude = zeros(1, nSubbands) + eps;
 	else
-		powerAmplitude = sqrt(2 * txPower) * channelAmplitude' ./ norm(channelAmplitude);
+		[~, ~, powerAmplitude] = scaled_matched_filter(alpha, beta2, beta4, channel, txPower);
 	end
+
+	infoRatio = 1 - eps;
+    powerRatio = 1 - eps;
 
 end

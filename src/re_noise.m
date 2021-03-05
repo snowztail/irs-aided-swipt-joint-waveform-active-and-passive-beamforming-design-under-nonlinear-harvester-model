@@ -20,7 +20,7 @@ for iChannel = 1 : nChannels
         noisePower = Variable.noisePower(iNoise);
 
         % * Alternating optimization
-        [reSample{iChannel, iNoise}, reSolution{iChannel, iNoise}] = re_sample(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reSample{iChannel, iNoise}, reSolution{iChannel, iNoise}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
     end
 end
 

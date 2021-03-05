@@ -1,8 +1,9 @@
-function [sample, solution] = re_sample_nonadaptive_channel(beta2, beta4, channel, txPower, noisePower, nSamples, tolerance)
+function [sample, solution] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, channel, txPower, noisePower, nSamples, tolerance)
     % Function:
     %   - sample R-E region by computing the output DC current and rate
     %
     % Input:
+    %   - alpha: scale ratio of SMF
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
@@ -45,13 +46,13 @@ function [sample, solution] = re_sample_nonadaptive_channel(beta2, beta4, channe
         while true
             if ~isDominated
                 % * Default initialization
-                [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(channel, txPower, noisePower);
+                [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_waveform(alpha, beta2, beta4, channel, txPower, noisePower);
             else
                 % * Initialize with previous solution
                 struct2variables(solution{iSample - 1});
             end
             % * Optimize waveform with WIT-optimized IRS
-            [infoAmplitude, powerAmplitude, infoRatio, powerRatio, rate, current] = waveform_gp(beta2, beta4, channel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+            [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = waveform_gp(beta2, beta4, channel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
 
             % * Check whether strictly dominated
             isDominated = current <= sample(2, iSample - 1);

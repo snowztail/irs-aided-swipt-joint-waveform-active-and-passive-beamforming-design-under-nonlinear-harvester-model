@@ -26,13 +26,13 @@ for iChannel = 1 : nChannels
         [reflectiveChannel] = channel_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
 
 		% * WIT
-		[witSample(iChannel, iReflector, :), witSolution{iChannel, iReflector}] = re_sample_wit(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+		[witSample(iChannel, iReflector, :), witSolution{iChannel, iReflector}] = re_sample_wit_wf(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
 
 		% * WPT by linear harvester model
-		[wptLinearSample(iChannel, iReflector, :), wptLinearSolution{iChannel, iReflector}] = re_sample_wpt_linear(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+		[wptLinearSample(iChannel, iReflector, :), wptLinearSolution{iChannel, iReflector}] = re_sample_wpt_ass(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
 
 		% * WPT by nonlinear harvester model
-		[wptNonlinearSample(iChannel, iReflector, :), wptNonlinearSolution{iChannel, iReflector}] = re_sample_wpt(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+		[wptNonlinearSample(iChannel, iReflector, :), wptNonlinearSolution{iChannel, iReflector}] = re_sample_wpt_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
     end
 end
 
