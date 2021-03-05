@@ -17,8 +17,11 @@ function [infoWaveform, powerWaveform] = precoder_mrt(channel, infoAmplitude, po
     % Author & Date: Yang (i@snowztail.com) - 5 Aug 20
 
 
+	% * Get equivalent channel gain
+	channelAmplitude = vecnorm(channel, 2, 2);
+
     % * Reconstruct waveform by power allocation + beamforming
-    infoWaveform = infoAmplitude .* channel' ./ vecnorm(channel, 2, 2)';
-    powerWaveform = powerAmplitude .* channel' ./ vecnorm(channel, 2, 2)';
+    infoWaveform = infoAmplitude .* (channel ./ channelAmplitude)';
+    powerWaveform = powerAmplitude .* (channel ./ channelAmplitude)';
 
 end

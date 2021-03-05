@@ -10,6 +10,9 @@ function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wate
     % Output:
     %   - capacity: maximum achievable sum rate over all subbands
     %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
+    %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
+    %   - infoRatio (\bar{\rho}): information splitting ratio
+    %   - powerRatio (\rho): power splitting ratio
     %
     % Comment:
     %   - for MISO OFDM channels
@@ -22,14 +25,14 @@ function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wate
     % * Get data
     nSubbands = size(channel, 1);
 
-	% * Obtain SNR and equivalent channel strength
+	% * Obtain SNR and equivalent channel gain
     snr = txPower / noisePower;
-	subbandStrength = vecnorm(channel, 2, 2)' .^ 2;
+	channelAmplitude = vecnorm(channel, 2, 2);
 
     % * Iterative water-filling power allocation
     subbandPower = zeros(1, nSubbands);
-    [subbandStrength, index] = sort(subbandStrength, 'descend');
-    baseLevel = 1 ./ (snr * subbandStrength);
+    [channelAmplitude, index] = sort(channelAmplitude, 'descend');
+    baseLevel = 1 ./ (snr * channelAmplitude .^ 2);
 
     for iSubband = 1 : nSubbands
         waterLevel = (1 + sum(baseLevel(1 : (nSubbands - iSubband + 1)))) / (nSubbands - iSubband + 1);
@@ -41,14 +44,15 @@ function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wate
 		end
     end
 
-    subbandStrength(index) = subbandStrength;
+	% * Recover order and normalize transmit power
+    channelAmplitude(index) = channelAmplitude;
     subbandPower(index) = txPower * (subbandPower ./ sum(subbandPower));
 
-    % * Obtain amplitude and compute capacity
+    % * Obtain waveform amplitude and capacity
     infoAmplitude = sqrt(2 * subbandPower);
-    capacity = sum(log2(1 + subbandPower .* subbandStrength / noisePower));
+    capacity = sum(log2(1 + subbandPower .* channelAmplitude' .^ 2 / noisePower));
 
-	% * Initialize multisine waveform and splitting ratio
+	% * Assign multisine waveform and splitting ratio
     powerAmplitude = zeros(1, nSubbands) + eps;
     infoRatio = 1 - eps;
     powerRatio = eps;
