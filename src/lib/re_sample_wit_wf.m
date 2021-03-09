@@ -1,11 +1,10 @@
-function [sample, solution] = re_sample_wit_wf(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance)
+function [sample, solution] = re_sample_wit_wf(directChannel, cascadedChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
     %   - optimize the waveform and IRS reflection coefficients to maximize user rate
     %
     % Input:
-    %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
-    %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
-    %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
+    %   - directChannel (h_D) [nSubbands * nTxs]: the AP-user channel
+	%   - cascadedChannel (V) [nReflectors * nTxs * nSubbands]: AP-IRS-user concatenated channel
     %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %   - nCandidates (Q): number of CSCG random vectors to generate
@@ -24,11 +23,11 @@ function [sample, solution] = re_sample_wit_wf(directChannel, incidentChannel, r
 
 
     % * Get data
-    [nSubbands, ~, nReflectors] = size(incidentChannel);
+    [nReflectors, ~, nSubbands] = size(cascadedChannel);
 
     % * Initialize IRS and composite channel
     irs = exp(1i * 2 * pi * rand(nReflectors, 1));
-    [compositeChannel, ~, concatSubchannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+    [compositeChannel] = composite_channel(directChannel, cascadedChannel, irs);
 
     % * Construct waveform (water-filling + MRT) and initialize splitting ratio
     [~, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = water_filling(compositeChannel, txPower, noisePower);
@@ -39,7 +38,7 @@ function [sample, solution] = re_sample_wit_wf(directChannel, incidentChannel, r
     stackSubmatrix = cell(nSubbands, 1);
     rateMatrix = cell(nSubbands, 1);
     for iSubband = 1 : nSubbands
-        stackSubmatrix{iSubband} = [concatSubchannel{iSubband}; directChannel(iSubband, :)];
+        stackSubmatrix{iSubband} = [cascadedChannel(:, :, iSubband); directChannel(iSubband, :)];
         rateMatrix{iSubband} = stackSubmatrix{iSubband} * infoWaveform(:, iSubband) * infoWaveform(:, iSubband)' * stackSubmatrix{iSubband}';
         rateMatrix{iSubband} = hermitianize(rateMatrix{iSubband});
     end
@@ -92,7 +91,7 @@ function [sample, solution] = re_sample_wit_wf(directChannel, incidentChannel, r
         irs = reshape(irs(1 : nReflectors) / irs(end), [nReflectors, 1]);
 
         % * Update composite channel and optimal waveform
-        [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+        [compositeChannel] = composite_channel(directChannel, cascadedChannel, irs);
         [capacity, infoAmplitude] = water_filling(compositeChannel, txPower, noisePower);
         [infoWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
 

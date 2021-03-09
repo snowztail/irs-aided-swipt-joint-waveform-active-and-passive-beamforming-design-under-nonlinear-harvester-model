@@ -1,4 +1,4 @@
-function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance)
+function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance)
     % Function:
     %   - sample R-E region by computing the output DC current and rate
     %
@@ -6,9 +6,8 @@ function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChan
     %   - alpha: scale ratio of SMF
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
-    %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
-    %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
-    %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
+    %   - directChannel (h_D) [nSubbands * nTxs]: the AP-user channel
+	%   - cascadedChannel (V) [nReflectors * nTxs * nSubbands]: AP-IRS-user concatenated channel
     %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %   - nCandidates (Q): number of CSCG random vectors to generate
@@ -33,7 +32,7 @@ function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChan
     solution = cell(nSamples, 1);
 
     % * Initialize algorithm by WIT point and set rate constraints
-    [sample(:, 1), solution{1}] = re_sample_wit_wf(directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, tolerance);
+    [sample(:, 1), solution{1}] = re_sample_wit_wf(directChannel, cascadedChannel, txPower, noisePower, nCandidates, tolerance);
 	irs = solution{1}.irs;
     compositeChannel = solution{1}.compositeChannel;
     rateConstraint = linspace(sample(1, 1), 0, nSamples);
@@ -57,8 +56,8 @@ function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChan
 			current_ = 0;
 			eigRatio = [];
             while ~isConverged
-                [irs, eigRatio(end + 1)] = irs_sdr(beta2, beta4, directChannel, incidentChannel, reflectiveChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
-                [compositeChannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs);
+                [irs, eigRatio(end + 1)] = irs_sdr(beta2, beta4, directChannel, cascadedChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
+                [compositeChannel] = composite_channel(directChannel, cascadedChannel, irs);
                 [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
                 [infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
                 isConverged = abs(current - current_) <= tolerance;

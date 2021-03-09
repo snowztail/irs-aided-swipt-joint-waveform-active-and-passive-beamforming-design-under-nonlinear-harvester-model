@@ -1,17 +1,14 @@
-function [compositeChannel, concatChannel, concatSubchannel] = composite_channel(directChannel, incidentChannel, reflectiveChannel, irs)
+function [compositeChannel] = composite_channel(directChannel, cascadedChannel, irs)
     % Function:
     %   - obtain the composition of direct channel and IRS-aided channel
     %
     % Input:
-    %   - directChannel (h_D) [nSubbands * nTxs * nRxs]: the AP-user channel
-    %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
-    %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
+    %   - directChannel (h_D) [nSubbands * nTxs]: the AP-user channel
+	%   - cascadedChannel (V) [nReflectors * nTxs * nSubbands]: AP-IRS-user concatenated channel
     %   - irs (\phi) [nReflectors * 1]: IRS reflection coefficient
     %
     % Output:
-    %   - compositeChannel (h) [nSubbands * nTxs * nRxs]: superposition of direct and extra channels
-    %   - concatChannel (V) [nReflectors * (nTxs * nSubbands)]: AP-IRS-user concatenated channel
-    %   - concatSubchannel (V_n) {nSubbands}[nReflectors * nTxs]: AP-IRS-user concatenated subchannel
+    %   - compositeChannel (h) [nSubbands * nTxs]: equivalent composite channel
     %
     % Comment:
     %   - \boldsymbol{h}_{D,n}^H = directChannel(iSubband, :)
@@ -24,18 +21,15 @@ function [compositeChannel, concatChannel, concatSubchannel] = composite_channel
 
 
     % * Get data
-    [nSubbands, nTxs, ~] = size(incidentChannel);
+    [~, nTxs, nSubbands] = size(cascadedChannel);
 
-    % * Construct IRS-aided extra channel and AP-IRS-user concatenated channel
-    extraChannel = zeros(nSubbands, nTxs);
-    concatSubchannel = cell(nSubbands, 1);
-    for iSubband = 1 : nSubbands
-        concatSubchannel{iSubband} = diag(reflectiveChannel(iSubband, :)) * permute(incidentChannel(iSubband, :, :), [2 3 1])';
-        extraChannel(iSubband, :) = irs' * concatSubchannel{iSubband};
-    end
-    concatChannel = cat(2, concatSubchannel{:});
+    % * IRS-aided auxiliary channel
+	auxiliaryChannel = zeros(nSubbands, nTxs);
+	for iSubband = 1 : nSubbands
+		auxiliaryChannel(iSubband, :) = irs' * cascadedChannel(:, :, iSubband);
+	end
 
-    % * Combine for composite channel
-    compositeChannel = directChannel + extraChannel;
+    % * Composite channel
+    compositeChannel = directChannel + auxiliaryChannel;
 
 end

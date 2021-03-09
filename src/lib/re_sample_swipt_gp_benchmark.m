@@ -7,8 +7,6 @@ function [sample, solution] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, 
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
     %   - channel (h) [nSubbands * nTxs * nRxs]: channel frequency response
-    %   - incidentChannel (h_I) [nSubbands * nTxs * nReflectors]: the AP-IRS channel
-    %   - reflectiveChannel (h_R) [nSubbands * nReflectors * nRxs]: the IRS-user channel
     %   - txPower (P): average transmit power budget
     %   - noisePower (\sigma_n^2): average noise power
     %   - nSamples (S): number of samples in R-E region

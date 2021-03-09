@@ -19,9 +19,10 @@ for iChannel = 1 : nChannels
         [directChannel] = channel_response(directTapGain, directTapDelay, directDistance, rxGain, subbandFrequency, fadingMode);
         [incidentChannel] = channel_response(incidentTapGain, incidentTapDelay, incidentDistance, irsGain, subbandFrequency, fadingMode);
         [reflectiveChannel] = channel_response(reflectiveTapGain, reflectiveTapDelay, reflectiveDistance, rxGain, subbandFrequency, fadingMode);
+		[cascadedChannel] = cascaded_channel(incidentChannel, reflectiveChannel);
 
         % * Alternating optimization
-        [reSample{iChannel, iTx}, reSolution{iChannel, iTx}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, incidentChannel, reflectiveChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reSample{iChannel, iTx}, reSolution{iChannel, iTx}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
     end
 end
 
