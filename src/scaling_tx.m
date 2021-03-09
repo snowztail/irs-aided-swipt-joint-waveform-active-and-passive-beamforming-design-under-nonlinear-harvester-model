@@ -33,7 +33,7 @@ for iChannel = 1 : nChannels
 		[wptLinearSample(iChannel, iTx, :), wptLinearSolution{iChannel, iTx}] = re_sample_wpt_ass(beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, tolerance);
 
 		% * WPT by nonlinear harvester model
-		[wptNonlinearSample(iChannel, iTx, :), wptNonlinearSolution{iChannel, iTx}] = re_sample_wpt_sdr(beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, tolerance);
+		[wptNonlinearSample(iChannel, iTx, :), wptNonlinearSolution{iChannel, iTx}] = re_sample_wpt_sdr(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, tolerance);
     end
 end
 
