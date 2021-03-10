@@ -21,7 +21,8 @@ ymin=0,
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
-legend style={legend cell align=left, align=left, draw=white!15!black}
+legend style={legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}] table[row sep=crcr] {%
 1	2.82172700965795\\
@@ -54,7 +55,9 @@ xtick={1, 2},
 ymin=0,
 axis background/.style={fill=white},
 xmajorgrids,
-ymajorgrids
+ymajorgrids,
+legend style={legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}, forget plot] table[row sep=crcr] {%
 1	0.295470946033806\\
@@ -87,7 +90,9 @@ ylabel style={font=\color{white!15!black}},
 ylabel={Waveform amplitude},
 axis background/.style={fill=white},
 xmajorgrids,
-ymajorgrids
+ymajorgrids,
+legend style={legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}, forget plot] table[row sep=crcr] {%
 1	0.00886602819700381\\
@@ -122,7 +127,9 @@ xtick={1, 2, 3, 4, 5, 6, 7, 8},
 ymin=0,
 axis background/.style={fill=white},
 xmajorgrids,
-ymajorgrids
+ymajorgrids,
+legend style={legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}, forget plot] table[row sep=crcr] {%
 1	0.00167790645812327\\
@@ -162,12 +169,15 @@ scale only axis,
 xmin=0,
 xmax=17,
 xtick={ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16},
+ytick={ 0, 0.4, 0.8},
 xlabel style={font=\color{white!15!black}},
 xlabel={Sorted subband index},
 ymin=0,
 axis background/.style={fill=white},
 xmajorgrids,
-ymajorgrids
+ymajorgrids,
+legend style={legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}, forget plot] table[row sep=crcr] {%
 1	0.000617491691008369\\

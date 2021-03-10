@@ -26,6 +26,7 @@
 \usepackage[RPvoltages]{circuitikz}
 \usepackage[T1]{fontenc}
 \usepackage[caption=false,font=footnotesize]{subfig}
+% \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
 % \usepackage[cmintegrals]{newtxmath}
 \usepackage[short]{optidef}
 
@@ -599,20 +600,17 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/re_subband.tex}
-			\end{adjustbox}
-			\caption{Average R-E region versus $N$ for $M=1$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
-			\label{fi:re_subband}
-		\end{figure}
-
-		\begin{figure}[!t]
-			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/waveform_subband.tex}
-			\end{adjustbox}
-			\caption{WPT-optimized waveform amplitudes versus $N$ for $M=1$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
-			\label{fi:waveform_subband}
+			\subfloat[R-E region\label{fi:re_subband}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/re_subband.tex}
+				}
+			}
+			\subfloat[Waveform amplitude\label{fi:waveform_subband}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/waveform_subband.tex}
+				}
+			}
+			\caption{Average R-E region and waveform amplitude versus $N$ for $M=1$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
 		\end{figure}
 
 		Fig.~\ref{fi:re_subband} illustrates the average R-E region versus the number of subband $N$. \textit{First}, it is observed that increasing $N$ reduces the average per-subband rate $R/N$ but boosts the harvested energy. The reason is that the power budget is divided into smaller portions for each subband, but the number of balanced DC terms $m_\mathrm{P}$ is increased to boost the output DC current, as suggested by the scaling laws in \cite{Clerckx2018b}. Sorted waveform amplitudes in Fig.~\ref{fi:waveform_subband} also confirmed that, from the perspective of WPT, a dedicated multisine waveform is unnecessary for a small $N$ but is required for a large $N$. As shown in \eqref{eq:y_I4} and \eqref{eq:y_P4}, the only difference between modulated and unmodulated waveform on $z$ exists in the fourth-order terms, where $\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}$ has $N^2$ monomials with a modulation gain of \num{2} and $\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}$ has $(2N^3+N)/3$ monomials without modulation gains. Therefore, the superposed waveform enlarges the R-E region for a sufficiently large $N$ (typically no smaller than 4). \textit{Second}, the R-E region is convex for $N = 2, 4$ and concave-convex for $N = 8, 16$. This has the consequence that PS outperforms TS for a small $N$ and is outperformed for a large $N$. When $N$ is in between, the optimal strategy is a combination of both, i.e. a time sharing between the WPT point and the saddle SWIPT point obtained by PS (as the red curve in Fig.~\ref{fi:re_subband}). Compared with the linear harvester model that requires no dedicated power waveform and always prefer PS, the rectifier nonlinearity enlarges the R-E region by favoring a different waveform and transceiving mode, both heavily depends on $N$.
@@ -630,77 +628,66 @@
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/re_distance.tex}
-			\end{adjustbox}
-			\caption{Average R-E region versus $d_{\mathrm{H}}$ for $M=1$, $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{V}}=2\,\si{\meter}$.}
-			\label{fi:re_distance}
-		\end{figure}
-
-		\begin{figure}[!t]
-			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/path_loss.tex}
-			\end{adjustbox}
-			\caption{Path loss versus distance for IEEE TGn channel model D.}
-			\label{fi:path_loss}
+			\subfloat[R-E region\label{fi:re_distance}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/re_distance.tex}
+				}
+			}
+			\subfloat[Path loss\label{fi:path_loss}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/path_loss.tex}
+				}
+			}
+			\caption{Average R-E region and path loss versus $d_{\mathrm{H}}$ for $M=1$, $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{V}}=2\,\si{\meter}$.}
 		\end{figure}
 
 		In Fig.~\ref{fi:re_distance}, we compare the average R-E region achieved by different AP-IRS horizontal distance $d_{\mathrm{H}}$. A \textit{first} observation is that, different from the active Amplify-and-Forward (AF) relay with the optimal development location around the midpoint \cite{Li2017}, placing the IRS closer to either the transmitter or the receiver would further improve the R-E tradeoff. It origins from the product-distance path loss model that applies to finite-size element reflection. As shown in Fig.~\ref{fi:path_loss}, although the piecewise TGn path loss model further penalizes large distance (greater than \SI{10}{\meter} for model D), it is still beneficial to have a short-long or long-short transmission setup, since signal attenuation increases fast at a short distance and experiences marginal effect at a long distance. On the other hand, it also suggests that developing an IRS next to the AP can effectively extend the operation range of SWIPT systems. Considering the passive characteristic of the IRS, opportunities are that it can be directly supported by the SWIPT network. A \textit{second} observation from Fig.~\ref{fi:path_loss} is that there exist two optimal IRS development locations that minimize the path loss production $\Lambda_{\mathrm{I}}\Lambda_R$. It implies that two IRSs may be implemented to further enlarge the R-E region, one attached to the AP and one attached to the UE.
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/re_tx.tex}
-			\end{adjustbox}
-			\caption{Average R-E region versus $M$ for $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
-			\label{fi:re_tx}
+			\subfloat[R-E region\label{fi:re_tx}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/re_tx.tex}
+				}
+			}
+			\subfloat[WIT SNR and WPT DC current\label{fi:scaling_tx}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/scaling_tx.tex}
+				}
+			}
+			\caption{Average R-E region, WIT SNR and WPT DC current versus $M$ for $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
 		\end{figure}
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/re_reflector.tex}
-			\end{adjustbox}
-			\caption{Average R-E region versus $L$ for $M=1$, $N=16$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
-			\label{fi:re_reflector}
-		\end{figure}
-
-		\begin{figure}[!t]
-			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/scaling_tx.tex}
-			\end{adjustbox}
-			\caption{Average WIT SNR and WPT DC current versus $M$ for $L=20$, $N=16$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$, $d_{\mathrm{H}}=0$ and $d_{\mathrm{V}}=0.5\,\si{\meter}$.}
-			\label{fi:scaling_tx}
-		\end{figure}
-
-		\begin{figure}[!t]
-			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/scaling_reflector.tex}
-			\end{adjustbox}
-			\caption{Average WIT SNR and WPT DC current versus $L$ for $M=1$, $N=16$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$, $d_{\mathrm{H}}=0$ and $d_{\mathrm{V}}=0.5\,\si{\meter}$.}
-			\label{fi:scaling_reflector}
+			\subfloat[R-E region\label{fi:re_reflector}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/re_reflector.tex}
+				}
+			}
+			\subfloat[WIT SNR and WPT DC current\label{fi:scaling_reflector}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/scaling_reflector.tex}
+				}
+			}
+			\caption{Average R-E region, WIT SNR and WPT DC current versus $L$ for $M=1$, $N=16$, $\sigma_n=-40\,\si{\dBm}$, $B=1\,\si{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
 		\end{figure}
 
 		The number of transmit antennas $M$ and IRS elements $L$ influence the average R-E tradeoff as revealed in Fig.~\ref{fi:re_tx} and \ref{fi:re_reflector}. \textit{First,} it is observed that adding either active or passive elements benefits both information and power transmission. This is because increasing $M$ or $L$ indeed enhances the equivalent composite channel strength. \textit{Second,} the number of active and passive elements have negligible impacts on the optimal transceiving mode (TS/PS). Unlike the noise, the channel strength influences both information and power transfer, thus varying $M$ or $L$ simultaneously scales both rate and current and preserves the general trend of the R-E boundary. \textit{Third,} the passive beamforming has a larger array gain and power scaling order than the active beamforming. This behavior is more obvious in Fig.~\ref{fi:scaling_tx} and \ref{fi:scaling_reflector} that illustrate the performance of WIT and WPT only. For the active MRT beamforming, doubling $M$ brings a \SI{3}{\dB} gain at the average output SNR, corresponding to a transmit array gain of $M$ and a doubled harvester input power. Due to the rectifier nonlinearity, the output DC current ends up with a nearly four-time (\SI{12}{\dB}) increase, validating the active scaling law in the order of $M^2$ \cite{Clerckx2016a}. On the other hand, when the IRS is very close to the transmitter or the receiver, doubling $L$ can bring an SNR boost up to \SI{6}{\dB}, corresponding to a reflect array gain of $L^2$. An interpretation is that the IRS coherently combines multiple signal copies with a receive array gain $L$, then performs an equal gain reflection with a transmit array gain $L$, achieving a total gain of $L^2$. As a consequence, doubling IRS elements brings a four-fold boost on the received signal power that further amplifies the harvested DC current by \num{16} times (\SI{24}{\dB}), suggesting a passive scaling law in the order of $L^4$. Besides, by considering harvester nonlinearity, the proposed design brings a nearly \SI{20}{\dB} increase in the output DC current over the conventional linear perspective. These results emphasize the effectiveness of passive beamforming and the importance of modeling rectifier nonlinearity in the SWIPT system design. \textit{Fourth,} small-scale SWIPT is dominated by the active beamforming while large-scale SWIPT relies more on the passive beamforming. As shown in Fig.~\ref{fi:path_loss}, in our setup, the direct path loss $\Lambda_\mathrm{D}$ is around \SI{60}{\dB} while the auxiliary path loss product $\Lambda_{\mathrm{I}}\Lambda_R$ is over \SI{100}{\dB}. Hence, to fully exploit the R-E advantage of passive beamforming, a large number of reflecting elements are required to enhance the auxiliary channel strength. Another explanation is that the RF-chains of active antennas provide design flexibility in the frequency domain, while the frequency-flat characteristic of the IRS restricts its benefit for broadband transmission, especially when $L$ is small.
-		\begin{figure}[!t]
-			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/re_irs_1mhz.tex}
-			\end{adjustbox}
-			\caption{Average R-E region for ideal, adaptive, fixed and no IRS over $B=1\,\si{\MHz}$ for $M=1$, $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
-			\label{fi:re_irs_1mhz}
-		\end{figure}
 
 		\begin{figure}[!t]
 			\centering
-			\begin{adjustbox}{width=0.9\columnwidth}
-				\input{assets/re_irs_10mhz.tex}
-			\end{adjustbox}
-			\caption{Average R-E region for ideal, adaptive, fixed and no IRS over $B=10\,\si{\MHz}$ for $M=1$, $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
-			\label{fi:re_irs_10mhz}
+			\subfloat[$B=1\,\si{\MHz}$\label{fi:re_irs_1mhz}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/re_irs_1mhz.tex}
+				}
+			}
+			\subfloat[$B=10\,\si{\MHz}$\label{fi:re_irs_10mhz}]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/re_irs_10mhz.tex}
+				}
+			}
+			\caption{Average R-E region for ideal, adaptive, fixed and no IRS versus $B$ for $M=1$, $N=16$, $L=20$, $\sigma_n=-40\,\si{\dBm}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=2\,\si{\meter}$.}
 		\end{figure}
 
 		Fig.~\ref{fi:re_irs_1mhz} and \ref{fi:re_irs_10mhz} explore the average R-E region under different IRS configuration for narrowband transmission ($B=1\,\si{\MHz}$) and broadband transmission ($B=10\,\si{\MHz}$). The rate-dependent adaptive IRS strategy adjusts the passive beamforming for each point on the R-E boundary, while the WIT/WPT-based non-adaptive IRS schemes only optimize the phase shifts for information and power purposes (correspond to the points on the $x$ and $y$ axes, respectively). To gain some insight into the IRS behavior, we compare the results above to no IRS and an ideal Frequency-Selective (FS) IRS. In contrast to Remark~\ref{re:irs_frequency_flat}, each element in the ideal FS IRS is assumed to have an independent reflection coefficient for each subband, accounting for $NL$ variables in total. When there is only one transmit antenna, each ideal IRS element simply aligns the AP-IRS-UE channel to the AP-UE channel at all subbands, namely
