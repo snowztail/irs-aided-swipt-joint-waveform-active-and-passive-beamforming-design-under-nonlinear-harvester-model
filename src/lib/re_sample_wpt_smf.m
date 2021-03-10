@@ -1,8 +1,9 @@
-function [sample, solution] = re_sample_wpt_smf(beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, tolerance)
+function [sample, solution] = re_sample_wpt_smf(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
     %   - optimize the waveform and IRS reflection coefficients to maximize average output DC current
     %
     % Input:
+    %   - alpha: scale ratio of SMF
     %   - beta2: coefficients on second-order current terms
     %   - beta4: coefficients on fourth-order current terms
     %   - directChannel (h_D) [nSubbands * nTxs]: the AP-user channel
@@ -31,7 +32,7 @@ function [sample, solution] = re_sample_wpt_smf(beta2, beta4, directChannel, cas
     [compositeChannel] = composite_channel(directChannel, cascadedChannel, irs);
 
     % * Initialize waveform and splitting ratio
-	[~, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = scaled_matched_filter(alpha, beta2, beta4, channel, txPower);
+	[~, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = scaled_matched_filter(alpha, beta2, beta4, compositeChannel, txPower);
 	[infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
 
     % * AO
@@ -48,7 +49,7 @@ function [sample, solution] = re_sample_wpt_smf(beta2, beta4, directChannel, cas
         current_ = current;
     end
 
-	sample = [capacity; eps];
+	sample = [eps; current];
 	solution = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
 
 end
