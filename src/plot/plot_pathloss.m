@@ -3,7 +3,7 @@ clear; clc; close all;
 % number of distance samples
 nSamples = 1e2;
 % AP-user distance
-directDistance = 15;
+directDistance = 12;
 % vertical distance from the IRS to the AP-user path
 verticalDistance = 2;
 % projection of AP-IRS distance to the AP-user path

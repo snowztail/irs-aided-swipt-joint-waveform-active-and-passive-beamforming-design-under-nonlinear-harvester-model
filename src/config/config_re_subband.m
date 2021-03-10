@@ -19,13 +19,13 @@ txPower = db2pow(6);
 % average noise power
 noisePower = db2pow(-70);
 % IRS element gain
-irsGain = db2pow(2);
+irsGain = 1;
 % receive antenna gain
 rxGain = db2pow(2);
 
 %% * Channel
 % AP-user distance
-directDistance = 15;
+directDistance = 12;
 % vertical distance from the IRS to the AP-user path
 verticalDistance = 2;
 % projection of AP-IRS distance to the AP-user path
