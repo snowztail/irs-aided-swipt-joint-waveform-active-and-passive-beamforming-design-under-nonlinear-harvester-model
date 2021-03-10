@@ -21,7 +21,7 @@ end
 save('../data/re_reflector.mat');
 
 %% * R-E plots
-figure('name', 'Average R-E region vs number of reflectors');
+figure('name', 'Average R-E region vs number of reflectors', 'position', [0, 0, 500, 400]);
 legendString = cell(1, length(Variable.nReflectors));
 plotHandle = gobjects(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
@@ -40,4 +40,4 @@ box on;
 apply_style(plotHandle);
 
 savefig('../figures/re_reflector.fig');
-matlab2tikz('../../assets/re_reflector.tex');
+matlab2tikz('../../assets/re_reflector.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

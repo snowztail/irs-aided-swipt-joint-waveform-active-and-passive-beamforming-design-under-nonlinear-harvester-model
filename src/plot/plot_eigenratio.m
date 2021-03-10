@@ -61,7 +61,7 @@ end
 clearvars -except eigRatioSubband eigRatioTx eigRatioReflector;
 
 %% * Eigenratio plots
-figure('name', 'Max eigenvalue of the relaxed solution over sum eigenvalue of the relaxed solution under different configurations');
+figure('name', 'Max eigenvalue of the relaxed solution over sum eigenvalue of the relaxed solution under different configurations', 'position', [0, 0, 500, 400]);
 eigenRatioPlot = tiledlayout(3, 1, 'tilespacing', 'compact');
 
 config_re_subband;
@@ -119,4 +119,4 @@ ylabel('');
 apply_style(plotHandle);
 
 savefig('../figures/cdf_eigenratio.fig');
-matlab2tikz('../../assets/cdf_eigenratio.tex');
+matlab2tikz('../../assets/cdf_eigenratio.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

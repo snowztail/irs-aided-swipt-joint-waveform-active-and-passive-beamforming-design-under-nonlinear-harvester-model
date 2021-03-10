@@ -21,7 +21,7 @@ end
 save('../data/re_tx.mat');
 
 %% * R-E plots
-figure('name', 'Average R-E region vs number of transmit antennas');
+figure('name', 'Average R-E region vs number of transmit antennas', 'position', [0, 0, 500, 400]);
 legendString = cell(1, length(Variable.nTxs));
 plotHandle = gobjects(1, length(Variable.nTxs));
 for iTx = 1 : length(Variable.nTxs)
@@ -40,4 +40,4 @@ box on;
 apply_style(plotHandle);
 
 savefig('../figures/re_tx.fig');
-matlab2tikz('../../assets/re_tx.tex');
+matlab2tikz('../../assets/re_tx.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

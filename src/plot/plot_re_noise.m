@@ -28,11 +28,7 @@ powerRatio = permute(mean(powerRatio(indexSet, :, :), 1), [2 3 1]);
 save('../data/re_noise.mat');
 
 %% * R-E and splitting ratio plots
-figure('name', 'Average R-E region and power splitting ratio vs average noise power');
-tiledlayout(2, 1, 'tilespacing', 'compact');
-
-% * R-E region
-nexttile;
+figure('name', 'Average R-E region vs average noise power', 'position', [0, 0, 500, 400]);
 legendString = cell(1, length(Variable.noisePower));
 plotHandle = gobjects(1, length(Variable.noisePower));
 for iNoise = 1 : length(Variable.noisePower)
@@ -49,9 +45,12 @@ xlim([0 inf]);
 ylim([0 inf]);
 box on;
 apply_style(plotHandle);
+savefig('../figures/re_noise.fig');
+matlab2tikz('../../assets/re_noise.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
+close;
 
 % * Power splitting ratio
-nexttile;
+figure('name', 'Average splitting ratio vs average noise power', 'position', [0, 0, 500, 400]);
 plotHandle = gobjects(1, length(Variable.noisePower));
 for iNoise = 1 : length(Variable.noisePower)
     plotHandle(iNoise) = plot(reNoise{iNoise}(1, :) / nSubbands, powerRatio(iNoise, :));
@@ -67,4 +66,4 @@ box on;
 apply_style(plotHandle);
 
 savefig('../figures/re_noise.fig');
-matlab2tikz('../../assets/re_noise.tex');
+matlab2tikz('../../assets/re_noise.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

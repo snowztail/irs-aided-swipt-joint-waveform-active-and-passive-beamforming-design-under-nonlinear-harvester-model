@@ -31,13 +31,13 @@ end
 save('../data/re_subband.mat');
 
 %% * R-E plots
-figure('name', 'Average R-E region vs number of subbands');
+figure('name', 'Average R-E region vs number of subbands', 'position', [0, 0, 500, 400]);
 legendString = cell(1, length(Variable.nSubbands) + 2);
 plotHandle = gobjects(1, length(Variable.nSubbands) + 2);
+hold all;
 for iSubband = 1 : length(Variable.nSubbands)
     plotHandle(iSubband) = plot(reSubband{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reSubband{iSubband}(2, :));
     legendString{iSubband} = sprintf('PS: $N = %d$', Variable.nSubbands(iSubband));
-	hold on;
 end
 
 % * Optimal strategy for medium number of subbands (TS + PS)
@@ -46,13 +46,11 @@ optIndex = convhull(transpose([0, reSubband{subbandIndex}(1, :) / Variable.nSubb
 optIndex = optIndex(2 : end - 1);
 plotHandle(iSubband + 1) = plot(reSubband{subbandIndex}(1, optIndex) / Variable.nSubbands(subbandIndex), 1e6 * reSubband{subbandIndex}(2, optIndex), 'r');
 legendString{iSubband + 1} = sprintf('TS + PS: $N = %d$', Variable.nSubbands(subbandIndex));
-hold on;
 
 % * Optimal strategy for large number of subbands (TS)
 subbandIndex = 5;
 plotHandle(iSubband + 2) = plot([reSubband{subbandIndex}(1, end) / Variable.nSubbands(subbandIndex), reSubband{subbandIndex}(1, 1) / Variable.nSubbands(subbandIndex)], [1e6 * reSubband{iSubband}(2, end), 1e6 * reSubband{iSubband}(2, 1)], 'k');
 legendString{iSubband + 2} = sprintf('TS: $N = %d$', Variable.nSubbands(subbandIndex));
-
 hold off;
 grid on;
 legend(legendString);
@@ -61,14 +59,14 @@ ylabel('Average output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
 box on;
-
 apply_style(plotHandle);
+
 savefig('../figures/re_subband.fig');
-matlab2tikz('../../assets/re_subband.tex');
+matlab2tikz('../../assets/re_subband.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
 close;
 
 %% * Waveform amplitude
-figure('name', 'Sorted waveform amplitude vs number of subbands');
+figure('name', 'Sorted waveform amplitude vs number of subbands', 'position', [0, 0, 500, 400]);
 waveformPlot = tiledlayout(length(Variable.nSubbands), 1, 'tilespacing', 'compact');
 for iSubband = 1 : length(Variable.nSubbands)
 	nexttile;
@@ -84,10 +82,12 @@ for iSubband = 1 : length(Variable.nSubbands)
 		legend('$s_I$', '$s_P$');
 	elseif iSubband == 3
 		ylabel('Waveform amplitude');
+	elseif iSubband == 5
+		yticks([0, 0.4, 0.8]);
     end
     box on;
 end
 xlabel('Sorted subband index');
 
 savefig('../figures/waveform_subband.fig');
-matlab2tikz('../../assets/waveform_subband.tex');
+matlab2tikz('../../assets/waveform_subband.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

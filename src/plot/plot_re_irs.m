@@ -38,7 +38,7 @@ save('../data/re_irs.mat');
 
 %% * R-E plots
 for iBandwidth = 1 : length(Variable.bandwidth)
-	figure('name', sprintf('Average R-E region for ideal, adaptive, nonadaptive and no IRS for $B = %d$ MHz', Variable.bandwidth(iBandwidth) / 1e6));
+	figure('name', sprintf('Average R-E region for ideal, adaptive, nonadaptive and no IRS for $B = %d$ MHz', Variable.bandwidth(iBandwidth) / 1e6), 'position', [0, 0, 500, 400]);
 	plotHandle = gobjects(1, length(Variable.bandwidth));
 	hold all;
 	plotHandle(1) = plot(reIdealIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reIdealIrs{iBandwidth}(2, :));
@@ -57,6 +57,6 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	apply_style(plotHandle);
 
 	savefig(sprintf('../figures/re_irs_%dmhz.fig', Variable.bandwidth(iBandwidth) / 1e6));
-	matlab2tikz(sprintf('../../assets/re_irs_%dmhz.tex', Variable.bandwidth(iBandwidth) / 1e6));
+	matlab2tikz(sprintf('../../assets/re_irs_%dmhz.tex', Variable.bandwidth(iBandwidth) / 1e6), 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
 	close;
 end

@@ -21,7 +21,7 @@ end
 save('../data/re_distance.mat');
 
 %% * R-E plots
-figure('name', 'Average R-E region vs AP-IRS horizontal distance');
+figure('name', 'Average R-E region vs AP-IRS horizontal distance', 'position', [0, 0, 500, 400]);
 legendString = cell(1, length(Variable.horizontalDistance));
 plotHandle = gobjects(1, length(Variable.horizontalDistance));
 for iDistance = 1 : length(Variable.horizontalDistance)
@@ -40,4 +40,4 @@ box on;
 apply_style(plotHandle);
 
 savefig('../figures/re_distance.fig');
-matlab2tikz('../../assets/re_distance.tex');
+matlab2tikz('../../assets/re_distance.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

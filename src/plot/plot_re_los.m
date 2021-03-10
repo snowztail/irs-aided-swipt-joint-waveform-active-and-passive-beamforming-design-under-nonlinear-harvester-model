@@ -29,7 +29,7 @@ reLos = mean(cat(3, reLosSet{indexSet}), 3);
 save('../data/re_los.mat');
 
 %% * R-E plots
-figure('name', 'Average R-E region for IRS-aided NLoS and LoS channels');
+figure('name', 'Average R-E region for IRS-aided NLoS and LoS channels', 'position', [0, 0, 500, 400]);
 plotHandle = gobjects(1, nCases);
 hold all;
 plotHandle(1) = plot(reNlos(1, :) / nSubbands, 1e6 * reNlos(2, :));
@@ -45,11 +45,11 @@ box on;
 
 apply_style(plotHandle);
 savefig('../figures/re_los.fig');
-matlab2tikz('../../assets/re_los.tex');
+matlab2tikz('../../assets/re_los.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
 close;
 
 %% * CDF plots
-figure('name', 'WIT and WPT CDF for IRS-aided NLoS and LoS channels');
+figure('name', 'WIT and WPT CDF for IRS-aided NLoS and LoS channels', 'position', [0, 0, 500, 400]);
 cdfPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
 
 nexttile;
@@ -79,4 +79,4 @@ ylim([0 inf]);
 box on;
 
 savefig('../figures/cdf_los.fig');
-matlab2tikz('../../assets/cdf_los.tex');
+matlab2tikz('../../assets/cdf_los.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

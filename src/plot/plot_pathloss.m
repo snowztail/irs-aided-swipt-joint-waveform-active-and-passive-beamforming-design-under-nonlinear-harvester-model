@@ -22,28 +22,14 @@ for iSample = 1 : nSamples
 	auxiliaryPathloss(iSample) = path_loss(incidentDistance) * path_loss(reflectiveDistance);
 end
 
-%% * Waveform amplitude
-figure('name', 'Path loss vs AP-IRS horizontal distance');
-pathlossPlot = tiledlayout(nCases, 1, 'tilespacing', 'compact');
-plotHandle = gobjects(1, nCases);
-
-% * Incident pathloss
-nexttile;
-plotHandle(1) = plot(horizontalDistance, pow2db(1 ./ incidentPathloss));
-grid on;
-legend('$\Lambda_D$', 'location', 'se')
-xlabel('AP-user distance [m]');
-ylabel('Path loss [dB]');
-box on;
-
-% * Extra pathloss
-nexttile;
-plotHandle(2) = plot(horizontalDistance, pow2db(1 ./ auxiliaryPathloss));
+%% * Auxiliary path loss
+figure('name', 'Auxiliary path loss product vs AP-IRS horizontal distance', 'position', [0, 0, 500, 400]);
+plotHandle = plot(horizontalDistance, pow2db(1 ./ auxiliaryPathloss));
 grid on;
 legend('$\Lambda_I\Lambda_R$', 'location', 'ne')
 xlabel('AP-IRS horizontal distance [m]');
-ylabel('Path loss product [dB]');
+ylabel('Auxiliary path loss product [dB]');
 box on;
 
 savefig('../figures/path_loss.fig');
-matlab2tikz('../../assets/path_loss.tex');
+matlab2tikz('../../assets/path_loss.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

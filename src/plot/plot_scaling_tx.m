@@ -28,7 +28,7 @@ snrDb = pow2db(2 .^ (rateWf / nSubbands));
 save('../data/scaling_tx.mat');
 
 %% * Rate and current plots
-figure('name', 'Average SNR and harvested DC power vs number of transmit antennas');
+figure('name', 'Average SNR and harvested DC power vs number of transmit antennas', 'position', [0, 0, 500, 400]);
 pathlossPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
 
 % * SNR plot
@@ -62,4 +62,4 @@ box on;
 apply_style(plotHandle);
 
 savefig('../figures/scaling_tx.fig');
-matlab2tikz('../../assets/scaling_tx.tex');
+matlab2tikz('../../assets/scaling_tx.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
