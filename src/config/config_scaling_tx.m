@@ -28,7 +28,7 @@ directDistance = 12;
 % vertical distance from the IRS to the AP-user path
 verticalDistance = 0.5;
 % projection of AP-IRS distance to the AP-user path
-horizontalDistance = 0;
+horizontalDistance = 0.5;
 % AP-IRS and IRS-user distance
 [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
 % center frequency
