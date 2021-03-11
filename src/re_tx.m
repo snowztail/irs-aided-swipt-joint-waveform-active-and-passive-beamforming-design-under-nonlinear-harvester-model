@@ -1,8 +1,11 @@
 clear; clc; setup; config_re_tx;
 
 %% ! R-E region vs number of transmit antennas
-reSample = cell(nChannels, length(Variable.nTxs));
-reSolution = cell(nChannels, length(Variable.nTxs));
+reAoSample = cell(nChannels, length(Variable.nTxs));
+reLcSample = cell(nChannels, length(Variable.nTxs));
+
+reAoSolution = cell(nChannels, length(Variable.nTxs));
+reLcSolution = cell(nChannels, length(Variable.nTxs));
 
 for iChannel = 1 : nChannels
     for iTx = 1 : length(Variable.nTxs)
@@ -22,14 +25,17 @@ for iChannel = 1 : nChannels
 		[cascadedChannel] = cascaded_channel(incidentChannel, reflectiveChannel);
 
         % * Alternating optimization
-        [reSample{iChannel, iTx}, reSolution{iChannel, iTx}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reAoSample{iChannel, iTx}, reAoSolution{iChannel, iTx}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reLcSample{iChannel, iTx}, reLcSolution{iChannel, iTx}] = re_sample_swipt_low_complexity(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
     end
 end
 
 % * Average over channel realizations
-reInstance = cell(1, length(Variable.nTxs));
+reAoInstance = cell(1, length(Variable.nTxs));
+reLcInstance = cell(1, length(Variable.nTxs));
 for iTx = 1 : length(Variable.nTxs)
-    reInstance{iTx} = mean(cat(3, reSample{:, iTx}), 3);
+    reAoInstance{iTx} = mean(cat(3, reAoSample{:, iTx}), 3);
+    reLcInstance{iTx} = mean(cat(3, reAoSample{:, iTx}), 3);
 end
 
 % * Save batch data

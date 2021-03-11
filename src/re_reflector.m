@@ -1,8 +1,11 @@
 clear; clc; setup; config_re_reflector;
 
 %% ! R-E region vs number of IRS elements
-reSample = cell(nChannels, length(Variable.nReflectors));
-reSolution = cell(nChannels, length(Variable.nReflectors));
+reAoSample = cell(nChannels, length(Variable.nReflectors));
+reLcSample = cell(nChannels, length(Variable.nReflectors));
+
+reAoSolution = cell(nChannels, length(Variable.nReflectors));
+reLcSolution = cell(nChannels, length(Variable.nReflectors));
 
 for iChannel = 1 : nChannels
     for iReflector = 1 : length(Variable.nReflectors)
@@ -22,14 +25,17 @@ for iChannel = 1 : nChannels
 		[cascadedChannel] = cascaded_channel(incidentChannel, reflectiveChannel);
 
         % * Alternating optimization
-        [reSample{iChannel, iReflector}, reSolution{iChannel, iReflector}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reAoSample{iChannel, iReflector}, reAoSolution{iChannel, iReflector}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reLcSample{iChannel, iReflector}, reLcSolution{iChannel, iReflector}] = re_sample_swipt_low_complexity(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
     end
 end
 
 % * Average over channel realizations
-reInstance = cell(1, length(Variable.nReflectors));
+reAoInstance = cell(1, length(Variable.nReflectors));
+reLcInstance = cell(1, length(Variable.nReflectors));
 for iReflector = 1 : length(Variable.nReflectors)
-    reInstance{iReflector} = mean(cat(3, reSample{:, iReflector}), 3);
+    reAoInstance{iReflector} = mean(cat(3, reAoSample{:, iReflector}), 3);
+    reLcInstance{iReflector} = mean(cat(3, reLcSample{:, iReflector}), 3);
 end
 
 % * Save batch data

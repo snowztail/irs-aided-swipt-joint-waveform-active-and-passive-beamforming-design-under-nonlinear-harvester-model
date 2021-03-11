@@ -1,8 +1,11 @@
 clear; clc; setup; config_re_distance;
 
 %% ! R-E region vs AP-IRS distance
-reSample = cell(nChannels, length(Variable.horizontalDistance));
-reSolution = cell(nChannels, length(Variable.horizontalDistance));
+reAoSample = cell(nChannels, length(Variable.horizontalDistance));
+reLcSample = cell(nChannels, length(Variable.horizontalDistance));
+
+reAoSolution = cell(nChannels, length(Variable.horizontalDistance));
+reLcSolution = cell(nChannels, length(Variable.horizontalDistance));
 
 for iChannel = 1 : nChannels
     % * Generate tap gains and delays
@@ -24,14 +27,17 @@ for iChannel = 1 : nChannels
 		cascadedChannel = cascaded_channel(incidentChannel, reflectiveChannel);
 
         % * Alternating optimization
-        [reSample{iChannel, iDistance}, reSolution{iChannel, iDistance}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reAoSample{iChannel, iDistance}, reAoSolution{iChannel, iDistance}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+		[reLcSample{iChannel, iDistance}, reLcSolution{iChannel, iDistance}] = re_sample_swipt_low_complexity(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
     end
 end
 
 % * Average over channel realizations
-reInstance = cell(1, length(Variable.horizontalDistance));
+reAoInstance = cell(1, length(Variable.horizontalDistance));
+reLcInstance = cell(1, length(Variable.horizontalDistance));
 for iDistance = 1 : length(Variable.horizontalDistance)
-    reInstance{iDistance} = mean(cat(3, reSample{:, iDistance}), 3);
+    reAoInstance{iDistance} = mean(cat(3, reAoSample{:, iDistance}), 3);
+    reLcInstance{iDistance} = mean(cat(3, reLcSample{:, iDistance}), 3);
 end
 
 % * Save batch data

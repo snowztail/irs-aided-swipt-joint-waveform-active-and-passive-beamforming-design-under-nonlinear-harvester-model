@@ -1,8 +1,11 @@
 clear; clc; setup; config_re_noise;
 
 %% ! R-E region for different large-scale SNR
-reSample = cell(nChannels, length(Variable.noisePower));
-reSolution = cell(nChannels, length(Variable.noisePower));
+reAoSample = cell(nChannels, length(Variable.noisePower));
+reLcSample = cell(nChannels, length(Variable.noisePower));
+
+reAoSolution = cell(nChannels, length(Variable.noisePower));
+reLcSolution = cell(nChannels, length(Variable.noisePower));
 
 for iChannel = 1 : nChannels
     % * Generate tap gains and delays
@@ -21,14 +24,17 @@ for iChannel = 1 : nChannels
         noisePower = Variable.noisePower(iNoise);
 
         % * Alternating optimization
-        [reSample{iChannel, iNoise}, reSolution{iChannel, iNoise}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reAoSample{iChannel, iNoise}, reAoSolution{iChannel, iNoise}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+        [reLcSample{iChannel, iNoise}, reLcSolution{iChannel, iNoise}] = re_sample_swipt_low_complexity(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
     end
 end
 
 % * Average over channel realizations
-reInstance = cell(1, length(Variable.noisePower));
+reAoInstance = cell(1, length(Variable.noisePower));
+reLcInstance = cell(1, length(Variable.noisePower));
 for iNoise = 1 : length(Variable.noisePower)
-    reInstance{iNoise} = mean(cat(3, reSample{:, iNoise}), 3);
+    reAoInstance{iNoise} = mean(cat(3, reAoSample{:, iNoise}), 3);
+    reLcInstance{iNoise} = mean(cat(3, reLcSample{:, iNoise}), 3);
 end
 
 % * Save batch data
