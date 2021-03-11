@@ -16,7 +16,7 @@ function [sample, solution] = re_sample_swipt_low_complexity(alpha, beta2, beta4
     %
     % Output:
     %   - sample [2 * nSamples]: rate-energy sample
-    %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio and eigenvalue ratio
+    %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio, waveform ratio and eigenvalue ratio
     %
     % Comment:
     %   - time sharing between WPT point achieved by SMF and WIT point achieved by WF
@@ -40,7 +40,7 @@ function [sample, solution] = re_sample_swipt_low_complexity(alpha, beta2, beta4
 		infoRatio = (nSamples - iSample) / (nSamples - 1);
 		powerRatio = 1 - infoRatio;
 
-		% TODO Update waveform ratio
+		% * Design waveform ratio
 		waveformRatio = powerRatio;
 
 		isConverged = false;
@@ -66,7 +66,7 @@ function [sample, solution] = re_sample_swipt_low_complexity(alpha, beta2, beta4
 			current_ = current;
 		end
 		sample(:, iSample) = [rate; current];
-        solution{iSample} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
+        solution{iSample} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, waveformRatio, eigRatio);
 	end
 
 end
