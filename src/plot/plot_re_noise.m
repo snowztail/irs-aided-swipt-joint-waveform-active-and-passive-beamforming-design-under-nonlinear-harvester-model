@@ -2,15 +2,19 @@ clear; clc; close all; config_re_noise;
 
 %% * Load batch data
 indexSet = 1 : nBatches;
-reSet = cell(nBatches, length(Variable.noisePower));
-powerRatio = zeros(nBatches, length(Variable.noisePower), nSamples);
+reAoSet = cell(nBatches, length(Variable.noisePower));
+reLcSet = cell(nBatches, length(Variable.noisePower));
+aoPowerRatio = zeros(nBatches, length(Variable.noisePower), nSamples);
+lcPowerRatio = zeros(nBatches, length(Variable.noisePower), nSamples);
 for iBatch = 1 : nBatches
     try
-        load(sprintf('../data/re_noise/re_noise_%d.mat', iBatch), 'reInstance', 'reSolution');
-        reSet(iBatch, :) = reInstance;
+        load(sprintf('../data/re_noise/re_noise_%d.mat', iBatch), 'reAoInstance', 'reLcInstance', 'reAoSolution', 'reLcSolution');
+        reAoSet(iBatch, :) = reAoInstance;
+        reLcSet(iBatch, :) = reLcInstance;
 		for iNoise = 1 : length(Variable.noisePower)
 			for iSample = 1 : nSamples
-				powerRatio(iBatch, iNoise, iSample) = reSolution{iNoise}{iSample}.powerRatio;
+				aoPowerRatio(iBatch, iNoise, iSample) = reAoSolution{iNoise}{iSample}.powerRatio;
+				lcPowerRatio(iBatch, iNoise, iSample) = reLcSolution{iNoise}{iSample}.powerRatio;
 			end
 		end
 	catch
@@ -20,50 +24,56 @@ for iBatch = 1 : nBatches
 end
 
 %% * Average over batches
-reNoise = cell(1, length(Variable.noisePower));
+reAoNoise = cell(1, length(Variable.noisePower));
+reLcNoise = cell(1, length(Variable.noisePower));
 for iNoise = 1 : length(Variable.noisePower)
-    reNoise{iNoise} = mean(cat(3, reSet{indexSet, iNoise}), 3);
+    reAoNoise{iNoise} = mean(cat(3, reAoSet{indexSet, iNoise}), 3);
+    reLcNoise{iNoise} = mean(cat(3, reLcSet{indexSet, iNoise}), 3);
 end
-powerRatio = permute(mean(powerRatio(indexSet, :, :), 1), [2 3 1]);
+aoPowerRatio = permute(mean(aoPowerRatio(indexSet, :, :), 1), [2 3 1]);
+lcPowerRatio = permute(mean(lcPowerRatio(indexSet, :, :), 1), [2 3 1]);
 save('../data/re_noise.mat');
 
 %% * R-E and splitting ratio plots
-figure('name', 'Average R-E region vs average noise power', 'position', [0, 0, 500, 400]);
-legendString = cell(1, length(Variable.noisePower));
-plotHandle = gobjects(1, length(Variable.noisePower));
+figure('name', 'R-E region vs average noise power', 'position', [0, 0, 500, 400]);
+legendString = cell(2, length(Variable.noisePower));
+plotHandle = gobjects(2, length(Variable.noisePower));
+hold all;
 for iNoise = 1 : length(Variable.noisePower)
-    plotHandle(iNoise) = plot(reNoise{iNoise}(1, :) / nSubbands, 1e6 * reNoise{iNoise}(2, :));
-    legendString{iNoise} = sprintf('$\\sigma_n = %d$ dBm', pow2db(Variable.noisePower(iNoise)) + 30);
-    hold on;
+    plotHandle(1, iNoise) = plot(reAoNoise{iNoise}(1, :) / nSubbands, 1e6 * reAoNoise{iNoise}(2, :));
+    plotHandle(2, iNoise) = plot(reLcNoise{iNoise}(1, :) / nSubbands, 1e6 * reLcNoise{iNoise}(2, :));
+    legendString{1, iNoise} = sprintf('AO: $\\sigma_n = %d$ dBm', pow2db(Variable.noisePower(iNoise)) + 30);
+    legendString{2, iNoise} = sprintf('LC (PS): $\\sigma_n = %d$ dBm', pow2db(Variable.noisePower(iNoise)) + 30);
 end
 hold off;
 grid on;
-legend(legendString);
-xlabel('Average subband rate [bps/Hz]');
-ylabel('Average output DC current [$\mu$A]');
+legend(legendString(:));
+xlabel('Per-subband rate [bps/Hz]');
+ylabel('Output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
 box on;
-apply_style(plotHandle);
+apply_group_style(plotHandle(:), 2);
 savefig('../figures/re_noise.fig');
 matlab2tikz('../../assets/re_noise.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
 close;
 
 % * Power splitting ratio
-figure('name', 'Average splitting ratio vs average noise power', 'position', [0, 0, 500, 400]);
-plotHandle = gobjects(1, length(Variable.noisePower));
+figure('name', 'Splitting ratio vs average noise power', 'position', [0, 0, 500, 400]);
+plotHandle = gobjects(2, length(Variable.noisePower));
+hold all;
 for iNoise = 1 : length(Variable.noisePower)
-    plotHandle(iNoise) = plot(reNoise{iNoise}(1, :) / nSubbands, powerRatio(iNoise, :));
-    hold on;
+    plotHandle(1, iNoise) = plot(reAoNoise{iNoise}(1, :) / nSubbands, aoPowerRatio(iNoise, :));
+    plotHandle(2, iNoise) = plot(reLcNoise{iNoise}(1, :) / nSubbands, lcPowerRatio(iNoise, :));
 end
 hold off;
 grid on;
-xlabel('Average subband rate [bps/Hz]');
-ylabel('Average power splitting ratio');
+xlabel('Per-subband rate [bps/Hz]');
+ylabel('Splitting ratio');
 xlim([0 inf]);
 ylim([0 inf]);
 box on;
-apply_style(plotHandle);
+apply_group_style(plotHandle(:), 2);
 
-savefig('../figures/re_noise.fig');
-matlab2tikz('../../assets/re_noise.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
+savefig('../figures/splitting_ratio_noise.fig');
+matlab2tikz('../../assets/splitting_ratio_noise.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

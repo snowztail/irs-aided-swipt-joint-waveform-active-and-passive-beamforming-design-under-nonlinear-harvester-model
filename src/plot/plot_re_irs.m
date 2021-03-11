@@ -38,7 +38,7 @@ save('../data/re_irs.mat');
 
 %% * R-E plots
 for iBandwidth = 1 : length(Variable.bandwidth)
-	figure('name', sprintf('Average R-E region for ideal, adaptive, nonadaptive and no IRS for $B = %d$ MHz', Variable.bandwidth(iBandwidth) / 1e6), 'position', [0, 0, 500, 400]);
+	figure('name', sprintf('R-E region for ideal, adaptive, nonadaptive and no IRS for $B = %d$ MHz', Variable.bandwidth(iBandwidth) / 1e6), 'position', [0, 0, 500, 400]);
 	plotHandle = gobjects(1, length(Variable.bandwidth));
 	hold all;
 	plotHandle(1) = plot(reIdealIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reIdealIrs{iBandwidth}(2, :));
@@ -49,8 +49,8 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	hold off;
 	grid on;
 	legend('Ideal FS IRS', 'Adaptive IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'No IRS');
-	xlabel('Average subband rate [bps/Hz]');
-	ylabel('Average output DC current [$\mu$A]');
+	xlabel('Per-subband rate [bps/Hz]');
+	ylabel('Output DC current [$\mu$A]');
 	xlim([0 inf]);
 	ylim([0 inf]);
     box on;

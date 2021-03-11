@@ -8,8 +8,6 @@ directDistance = 12;
 verticalDistance = 2;
 % projection of AP-IRS distance to the AP-user path
 horizontalDistance = linspace(0, directDistance, nSamples);
-% number of cases to plot (path loss, path loss product)
-nCases = 2;
 
 % AP-IRS pathloss
 incidentPathloss = zeros(nSamples, 1);

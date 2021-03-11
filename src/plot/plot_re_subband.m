@@ -31,7 +31,7 @@ end
 save('../data/re_subband.mat');
 
 %% * R-E plots
-figure('name', 'Average R-E region vs number of subbands', 'position', [0, 0, 500, 400]);
+figure('name', 'R-E region vs number of subbands', 'position', [0, 0, 500, 400]);
 legendString = cell(1, length(Variable.nSubbands) + 2);
 plotHandle = gobjects(1, length(Variable.nSubbands) + 2);
 hold all;
@@ -54,8 +54,8 @@ legendString{iSubband + 2} = sprintf('TS: $N = %d$', Variable.nSubbands(subbandI
 hold off;
 grid on;
 legend(legendString);
-xlabel('Average subband rate [bps/Hz]');
-ylabel('Average output DC current [$\mu$A]');
+xlabel('Per-subband rate [bps/Hz]');
+ylabel('Output DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
 box on;
@@ -70,8 +70,8 @@ figure('name', 'Sorted waveform amplitude vs number of subbands', 'position', [0
 waveformPlot = tiledlayout(length(Variable.nSubbands), 1, 'tilespacing', 'compact');
 for iSubband = 1 : length(Variable.nSubbands)
 	nexttile;
+	hold all;
 	stem(1 : Variable.nSubbands(iSubband), infoAmplitude{iSubband}, 'marker', 'o');
-    hold on;
     stem(1 : Variable.nSubbands(iSubband), powerAmplitude{iSubband}, 'marker', 'x');
 	xlim([0 Variable.nSubbands(iSubband) + 1]);
 	ylim([0 inf]);

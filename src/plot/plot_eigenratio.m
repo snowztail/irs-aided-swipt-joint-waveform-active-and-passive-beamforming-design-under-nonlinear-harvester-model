@@ -2,7 +2,6 @@ clear; clc; close all;
 
 %% * Max eigenvalue over sum eigenvalue vs number of subbands
 config_re_subband;
-
 indexSet = 1 : nBatches;
 eigRatioSubband = cell(nBatches, length(Variable.nSubbands), nSamples);
 for iBatch = 1 : nBatches
@@ -22,15 +21,14 @@ clearvars -except eigRatioSubband;
 
 %% * Max eigenvalue over sum eigenvalue vs number of transmit antennas
 config_re_tx;
-
 indexSet = 1 : nBatches;
 eigRatioTx = cell(nBatches, length(Variable.nTxs), nSamples);
 for iBatch = 1 : nBatches
     try
-        load(sprintf('../data/re_tx/re_tx_%d.mat', iBatch), 'reSolution');
+        load(sprintf('../data/re_tx/re_tx_%d.mat', iBatch), 'reAoSolution');
 		for iTx = 1 : length(Variable.nTxs)
 			for iSample = 1 : nSamples
-				eigRatioTx{iBatch, iTx, iSample} = reSolution{iTx}{iSample}.eigRatio;
+				eigRatioTx{iBatch, iTx, iSample} = reAoSolution{iTx}{iSample}.eigRatio;
 			end
 		end
     catch
@@ -42,15 +40,14 @@ clearvars -except eigRatioSubband eigRatioTx;
 
 %% * Max eigenvalue over sum eigenvalue vs number of IRS elements
 config_re_reflector;
-
 indexSet = 1 : nBatches;
 eigRatioReflector = cell(nBatches, length(Variable.nReflectors), nSamples);
 for iBatch = 1 : nBatches
     try
-        load(sprintf('../data/re_reflector/re_reflector_%d.mat', iBatch), 'reSolution');
+        load(sprintf('../data/re_reflector/re_reflector_%d.mat', iBatch), 'reAoSolution');
 		for iReflector = 1 : length(Variable.nReflectors)
 			for iSample = 1 : nSamples
-				eigRatioReflector{iBatch, iReflector, iSample} = reSolution{iReflector}{iSample}.eigRatio;
+				eigRatioReflector{iBatch, iReflector, iSample} = reAoSolution{iReflector}{iSample}.eigRatio;
 			end
 		end
     catch
@@ -68,10 +65,10 @@ config_re_subband;
 nexttile;
 plotHandle = gobjects(1, length(Variable.nSubbands));
 legendString = cell(1, length(Variable.nSubbands));
+hold all;
 for iSubband = 1 : length(Variable.nSubbands)
 	plotHandle(iSubband) = cdfplot([eigRatioSubband{:, iSubband, :}]);
 	legendString{iSubband} = sprintf('$N = %d$', Variable.nSubbands(iSubband));
-    hold on;
 end
 hold off;
 grid on;
@@ -86,10 +83,10 @@ config_re_tx;
 nexttile;
 plotHandle = gobjects(1, length(Variable.nTxs));
 legendString = cell(1, length(Variable.nTxs));
+hold all;
 for iTx = 1 : length(Variable.nTxs)
 	plotHandle(iTx) = cdfplot([eigRatioTx{:, iTx, :}]);
 	legendString{iTx} = sprintf('$M = %d$', Variable.nTxs(iTx));
-    hold on;
 end
 hold off;
 grid on;
@@ -104,10 +101,10 @@ config_re_reflector;
 nexttile;
 plotHandle = gobjects(1, length(Variable.nReflectors));
 legendString = cell(1, length(Variable.nReflectors));
+hold all;
 for iReflector = 1 : length(Variable.nReflectors)
 	plotHandle(iReflector) = cdfplot([eigRatioReflector{:, iReflector, :}]);
 	legendString{iReflector} = sprintf('$L = %d$', Variable.nReflectors(iReflector));
-    hold on;
 end
 hold off;
 grid on;

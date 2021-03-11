@@ -28,7 +28,7 @@ snrDb = pow2db(2 .^ (rateWf / nSubbands));
 save('../data/scaling_reflector.mat');
 
 %% * SNR and power plots
-figure('name', 'Average SNR and harvested DC power vs number of reflectors', 'position', [0, 0, 500, 400]);
+figure('name', 'SNR and harvested DC power vs number of reflectors', 'position', [0, 0, 500, 400]);
 pathlossPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
 
 % * SNR plot
@@ -37,7 +37,7 @@ plotHandle = plot(Variable.nReflectors, snrDb);
 grid on;
 legend('WF', 'location', 'nw');
 xlabel('Number of reflectors');
-ylabel('Average subband SNR [dB]');
+ylabel('Per-subband SNR [dB]');
 xlim([Variable.nReflectors(1), Variable.nReflectors(end)]);
 xticks(Variable.nReflectors(1 : 2 : end));
 box on;
@@ -54,7 +54,7 @@ hold off;
 grid on;
 legend('ASS', 'SMF', 'SDR', 'location', 'nw');
 xlabel('Number of reflectors');
-ylabel('Average output DC current [dBA]');
+ylabel('Output DC current [dBA]');
 xlim([Variable.nReflectors(1), Variable.nReflectors(end)]);
 xticks(Variable.nReflectors(1 : 2 : end));
 yticks(-100 : 20 : 0);
