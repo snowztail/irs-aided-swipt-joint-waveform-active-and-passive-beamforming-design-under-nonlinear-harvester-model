@@ -59,7 +59,7 @@ nChannels = 1;
 
 %% * Variable
 % number of transmit antennas
-Variable.nTxs = [1 2 4 6 8];
+Variable.nTxs = [1, 2, 4];
 
 %% * PBS
 % number of individual jobs

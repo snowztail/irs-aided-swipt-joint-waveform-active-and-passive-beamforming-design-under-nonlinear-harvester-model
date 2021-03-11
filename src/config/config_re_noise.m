@@ -59,7 +59,7 @@ nChannels = 1;
 
 %% * Variable
 % average noise power
-Variable.noisePower = db2pow(-50 : -10 : -90);
+Variable.noisePower = db2pow(-50 : -20 : -90);
 
 %% * PBS
 % number of individual jobs
