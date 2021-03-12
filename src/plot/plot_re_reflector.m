@@ -32,8 +32,8 @@ hold all;
 for iReflector = 1 : length(Variable.nReflectors)
     plotHandle(1, iReflector) = plot(reAoReflector{iReflector}(1, :) / nSubbands, 1e6 * reAoReflector{iReflector}(2, :));
     plotHandle(2, iReflector) = plot(reLcReflector{iReflector}(1, :) / nSubbands, 1e6 * reLcReflector{iReflector}(2, :));
-	legendString{1, iReflector} = sprintf('AO: $M = %d, L = %d$', nTxs, Variable.nReflectors(iReflector));
-	legendString{2, iReflector} = sprintf('LC (PS): $M = %d, L = %d$', nTxs, Variable.nReflectors(iReflector));
+	legendString{1, iReflector} = sprintf('AO: $L = %d$', Variable.nReflectors(iReflector));
+	legendString{2, iReflector} = sprintf('LC (PS): $L = %d$', Variable.nReflectors(iReflector));
 end
 hold off;
 grid on;
