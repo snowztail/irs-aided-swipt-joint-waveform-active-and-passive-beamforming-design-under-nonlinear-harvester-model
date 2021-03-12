@@ -15,6 +15,6 @@ function [quantizedIrs] = quantized_irs(irs, nQuantizeBits)
     % Author & Date: Yang (i@snowztail.com) - 10 Mar 21
 
 
-	quantizedIrs = exp(1i * floor(angle(irs) * 2 ^ nQuantizeBits) / 2 ^ nQuantizeBits);
+	quantizedIrs = exp(1i * 2 * pi * round(angle(irs) / (2 * pi) * 2 ^ nQuantizeBits) / 2 ^ nQuantizeBits);
 
 end
