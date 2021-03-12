@@ -1,6 +1,6 @@
 clear; clc; setup; config_re_quantization;
 
-%% ! R-E region vs number of transmit antennas
+%% ! R-E region vs quantization bits
 reNoIrsSample = cell(nChannels, 1);
 reIrsSample = cell(nChannels, 1);
 reQuantizedSample = cell(nChannels, length(Variable.nQuantizeBits));

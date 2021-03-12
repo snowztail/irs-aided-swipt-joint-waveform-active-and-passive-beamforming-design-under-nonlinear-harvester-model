@@ -1,6 +1,6 @@
 clear; clc; setup; config_re_csi;
 
-%% ! R-E region vs number of transmit antennas
+%% ! R-E region vs CSIT error
 reNoIrsSample = cell(nChannels, 1);
 reErrorSample = cell(nChannels, length(Variable.cascadedErrorVariance));
 
