@@ -55,7 +55,7 @@ function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wate
 
     % * Obtain waveform amplitude and capacity
     infoAmplitude = sqrt(2 * subbandPower);
-    capacity = sum(log2(1 + subbandPower .* channelAmplitude' .^ 2 / noisePower));
+    capacity = sum(log2(1 + infoAmplitude .^ 2 .* channelAmplitude' .^ 2 / noisePower));
 
 	% * Assign multisine waveform and splitting ratio
     powerAmplitude = zeros(1, nSubbands) + eps;
