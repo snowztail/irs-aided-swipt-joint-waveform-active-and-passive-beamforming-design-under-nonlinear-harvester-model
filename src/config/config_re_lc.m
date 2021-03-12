@@ -4,6 +4,8 @@ k2 = 0.0034;
 k4 = 0.3829;
 % antenna resistance
 resistance = 50;
+% reference scale ratio of SMF
+alpha = 2;
 % coefficients on current terms
 beta2 = k2 * resistance;
 beta4 = k4 * resistance ^ 2;
@@ -34,12 +36,8 @@ horizontalDistance = 2;
 centerFrequency = 5.18e9;
 % bandwidth
 bandwidth = 1e6;
-% number of frequency bands
-nSubbands = 16;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
-% carrier frequency
-[subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % number of reflecting elements in IRS
 nReflectors = 20;
 % spatial correlation
@@ -56,10 +54,10 @@ nCandidates = 1e3;
 nSamples = 30;
 % number of channel realizations
 nChannels = 1;
-% number of cases to investigate (LoS, NLoS)
-nCases = 2;
 
-%% * Variables
+%% * Variable
+% number of frequency bands
+Variable.nSubbands = [4, 8];
 % scale ratio of SMF
 Variable.alpha = 1 : 3;
 
