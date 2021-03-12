@@ -42,8 +42,8 @@ hold all;
 for iNoise = 1 : length(Variable.noisePower)
     plotHandle(1, iNoise) = plot(reAoNoise{iNoise}(1, :) / nSubbands, 1e6 * reAoNoise{iNoise}(2, :));
     plotHandle(2, iNoise) = plot(reLcNoise{iNoise}(1, :) / nSubbands, 1e6 * reLcNoise{iNoise}(2, :));
-    legendString{1, iNoise} = sprintf('AO: $\\sigma_n = %d$ dBm', pow2db(Variable.noisePower(iNoise)) + 30);
-    legendString{2, iNoise} = sprintf('LC (PS): $\\sigma_n = %d$ dBm', pow2db(Variable.noisePower(iNoise)) + 30);
+    legendString{1, iNoise} = sprintf('AO: $\\sigma_n^2 = %d$ dBm', pow2db(Variable.noisePower(iNoise)) + 30);
+    legendString{2, iNoise} = sprintf('LC (PS): $\\sigma_n^2 = %d$ dBm', pow2db(Variable.noisePower(iNoise)) + 30);
 end
 hold off;
 grid on;
