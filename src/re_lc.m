@@ -40,7 +40,7 @@ reLcInstance = cell(length(Variable.nSubbands), length(Variable.alpha));
 for iSubband = 1 : length(Variable.nSubbands)
 	reAoInstance{iSubband} = mean(cat(3, reAoSample{:, iSubband}), 3);
 	for iAlpha = 1 : length(Variable.alpha)
-		reLcInstance{iSubband, iAlpha} = mean(cat(4, reLcInstance{:, iSubband, iAlpha}), 4);
+		reLcInstance{iSubband, iAlpha} = mean(cat(4, reLcSample{:, iSubband, iAlpha}), 4);
 	end
 end
 
