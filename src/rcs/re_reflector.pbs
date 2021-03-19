@@ -1,6 +1,5 @@
 #PBS -l walltime=72:00:00,select=1:ncpus=8:ompthreads=1:mem=8gb
 #PBS -N re_reflector
-#PBS -j oe
 #PBS -J 1-300
 
 module load matlab/R2020a
