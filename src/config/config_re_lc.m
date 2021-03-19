@@ -57,7 +57,7 @@ nChannels = 1;
 
 %% * Variable
 % number of frequency bands
-Variable.nSubbands = [2, 16];
+Variable.nSubbands = [1, 16];
 % scale ratio of SMF
 Variable.alpha = 1 : 3;
 
