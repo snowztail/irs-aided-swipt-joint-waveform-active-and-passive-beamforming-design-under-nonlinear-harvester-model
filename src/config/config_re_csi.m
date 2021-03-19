@@ -51,17 +51,17 @@ corIrs = eye(nReflectors);
 
 %% * Algorithm
 % minimum gain per iteration
-tolerance = 1e-8;
+tolerance = 1e-7;
 % number of CSCG random vectors to generate
 nCandidates = 1e3;
 % number of samples in R-E curves
-nSamples = 30;
+nSamples = 20;
 % number of channel realizations
 nChannels = 1;
 
 %% * Variables
 % scale ratio of SMF
-Variable.cascadedErrorVarianceRatio = [0, 0.1, 1, 10];
+Variable.cascadedErrorVarianceRatio = [0, 0.1, 0.5, 1, 10];
 Variable.cascadedErrorVariance = Variable.cascadedErrorVarianceRatio * path_loss(incidentDistance) * path_loss(reflectiveDistance);
 
 %% * PBS

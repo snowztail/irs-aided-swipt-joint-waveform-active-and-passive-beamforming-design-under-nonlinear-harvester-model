@@ -37,7 +37,7 @@ centerFrequency = 5.18e9;
 % bandwidth
 bandwidth = 1e6;
 % number of frequency bands
-nSubbands = 2;
+nSubbands = 16;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
 % carrier frequency
@@ -51,11 +51,11 @@ corIrs = eye(nReflectors);
 
 %% * Algorithm
 % minimum gain per iteration
-tolerance = 1e-8;
+tolerance = 1e-7;
 % number of CSCG random vectors to generate
 nCandidates = 1e3;
 % number of samples in R-E curves
-nSamples = 3;
+nSamples = 20;
 % number of channel realizations
 nChannels = 1;
 
