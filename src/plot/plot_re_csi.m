@@ -7,7 +7,7 @@ reErrorSet = cell(nBatches, length(Variable.cascadedErrorVariance));
 for iBatch = 1 : nBatches
     try
         load(sprintf('../data/re_csi/re_csi_%d.mat', iBatch), 'reNoIrsInstance', 'reErrorInstance');
-        reNoIrsSet(iBatch) = reNoIrsInstance;
+        reNoIrsSet{iBatch} = reNoIrsInstance;
         reErrorSet(iBatch, :) = reErrorInstance;
     catch
 		indexSet(indexSet == iBatch) = [];
@@ -30,10 +30,10 @@ plotHandle = gobjects(1, length(Variable.cascadedErrorVariance) + 1);
 hold all;
 for iError = 1 : length(Variable.cascadedErrorVariance)
     plotHandle(iError) = plot(reErrorCsi{iError}(1, :) / nSubbands, 1e6 * reErrorCsi{iError}(2, :));
-	legendString{iError} = sprintf('$\\epsilon_n^2 = %s \Lambda_I\Lambda_R$', num2str(Variable.cascadedErrorVarianceRatio(iError)));
+	legendString{iError} = sprintf('$\\epsilon_n^2 = %s \\Lambda_I\\Lambda_R$', num2str(Variable.cascadedErrorVarianceRatio(iError)));
 end
 plotHandle(end) = plot(reNoIrsCsi(1, :) / nSubbands, 1e6 * reNoIrsCsi(2, :));
-legendString{end} = 'no IRS';
+legendString{end} = 'No IRS';
 hold off;
 grid on;
 legend(legendString);
