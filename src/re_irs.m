@@ -5,12 +5,14 @@ reIdealIrsSample = cell(nChannels, length(Variable.bandwidth));
 reAdaptiveIrsSample = cell(nChannels, length(Variable.bandwidth));
 reWitIrsSample = cell(nChannels, length(Variable.bandwidth));
 reWptIrsSample = cell(nChannels, length(Variable.bandwidth));
+reRandomIrsSample = cell(nChannels, length(Variable.bandwidth));
 reNoIrsSample = cell(nChannels, length(Variable.bandwidth));
 
 reIdealIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reAdaptiveIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reWitIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reWptIrsSolution = cell(nChannels, length(Variable.bandwidth));
+reRandomIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reNoIrsSolution = cell(nChannels, length(Variable.bandwidth));
 
 for iChannel = 1 : nChannels
@@ -44,6 +46,11 @@ for iChannel = 1 : nChannels
 		% * Waveform optimization with nonadaptive WPT-optimized IRS
 		[reWptIrsSample{iChannel, iBandwidth}, reWptIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, wptCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
+		% * Waveform design with random IRS
+		randomIrs = exp(1i * 2 * pi * rand(nReflectors, 1));
+		randomCompositeChannel = composite_channel(directChannel, cascadedChannel, randomIrs);
+		[reRandomIrsSample{iChannel, iBandwidth}, reRandomIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, randomCompositeChannel, txPower, noisePower, nSamples, tolerance);
+
 		% * Waveform optimization without IRS
 		[reNoIrsSample{iChannel, iBandwidth}, reNoIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
 	end
@@ -54,6 +61,7 @@ reIdealIrsInstance = cell(1, length(Variable.bandwidth));
 reAdaptiveIrsInstance = cell(1, length(Variable.bandwidth));
 reWitIrsInstance = cell(1, length(Variable.bandwidth));
 reWptIrsInstance = cell(1, length(Variable.bandwidth));
+reRandomIrsInstance = cell(1, length(Variable.bandwidth));
 reNoIrsInstance = cell(1, length(Variable.bandwidth));
 
 for iBandwidth = 1 : length(Variable.bandwidth)
@@ -61,6 +69,7 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	reAdaptiveIrsInstance{iBandwidth} = mean(cat(3, reAdaptiveIrsSample{:, iBandwidth}), 3);
 	reWitIrsInstance{iBandwidth} = mean(cat(3, reWitIrsSample{:, iBandwidth}), 3);
 	reWptIrsInstance{iBandwidth} = mean(cat(3, reWptIrsSample{:, iBandwidth}), 3);
+	reRandomIrsInstance{iBandwidth} = mean(cat(3, reRandomIrsSample{:, iBandwidth}), 3);
 	reNoIrsInstance{iBandwidth} = mean(cat(3, reNoIrsSample{:, iBandwidth}), 3);
 end
 
