@@ -8,8 +8,8 @@ reQuantizedSet = cell(nBatches, length(Variable.nQuantizeBits));
 for iBatch = 1 : nBatches
     try
         load(sprintf('../data/re_quantization/re_quantization_%d.mat', iBatch), 'reNoIrsInstance', 'reIrsInstance', 'reQuantizedInstance');
-        reNoIrsSet(iBatch) = reNoIrsInstance;
-        reIrsSet(iBatch) = reIrsInstance;
+        reNoIrsSet{iBatch} = reNoIrsInstance;
+        reIrsSet{iBatch} = reIrsInstance;
         reQuantizedSet(iBatch, :) = reQuantizedInstance;
     catch
 		indexSet(indexSet == iBatch) = [];
@@ -32,7 +32,7 @@ legendString = cell(1, length(Variable.nQuantizeBits) + 2);
 plotHandle = gobjects(1, length(Variable.nQuantizeBits) + 2);
 hold all;
 plotHandle(1) = plot(reNoIrs(1, :) / nSubbands, 1e6 * reNoIrs(2, :));
-legendString{1} = 'no IRS';
+legendString{1} = 'No IRS';
 for iBit = 1 : length(Variable.nQuantizeBits)
     plotHandle(iBit + 1) = plot(reQuantized{iBit}(1, :) / nSubbands, 1e6 * reQuantized{iBit}(2, :));
 	legendString{iBit + 1} = sprintf('$b = %s$', num2str(Variable.nQuantizeBits(iBit)));
