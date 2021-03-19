@@ -36,12 +36,8 @@ horizontalDistance = 2;
 centerFrequency = 5.18e9;
 % bandwidth
 bandwidth = 1e6;
-% number of frequency bands
-nSubbands = 16;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
-% carrier frequency
-[subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % number of reflecting elements in IRS
 nReflectors = 20;
 % spatial correlation
@@ -51,7 +47,7 @@ corIrs = eye(nReflectors);
 
 %% * Algorithm
 % minimum gain per iteration
-tolerance = 1e-7;
+tolerance = 1e-8;
 % number of CSCG random vectors to generate
 nCandidates = 1e3;
 % number of samples in R-E curves
@@ -60,8 +56,10 @@ nSamples = 20;
 nChannels = 1;
 
 %% * Variables
-% scale ratio of SMF
-Variable.cascadedErrorVarianceRatio = [0, 0.1, 0.5, 1, 10];
+% number of frequency bands
+Variable.nSubbands = [1, 16];
+% estimation error variance of the cascaded channel
+Variable.cascadedErrorVarianceRatio = [0.1, 1, 10];
 Variable.cascadedErrorVariance = Variable.cascadedErrorVarianceRatio * path_loss(incidentDistance) * path_loss(reflectiveDistance);
 
 %% * PBS

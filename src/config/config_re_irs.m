@@ -47,15 +47,15 @@ corIrs = eye(nReflectors);
 
 %% * Algorithm
 % minimum gain per iteration
-tolerance = 1e-7;
+tolerance = 1e-8;
 % number of CSCG random vectors to generate
 nCandidates = 1e3;
 % number of samples in R-E curves
 nSamples = 20;
 % number of channel realizations
 nChannels = 1;
-% number of cases to investigate (ideal, adaptive, WIT, WPT, no IRS)
-nCases = 5;
+% number of cases to investigate (ideal, adaptive, WIT, WPT, random, no IRS)
+nCases = 6;
 
 %% * Variable
 % bandwidth

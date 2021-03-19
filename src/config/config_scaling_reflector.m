@@ -48,7 +48,7 @@ corRx = eye(nRxs);
 
 %% * Algorithm
 % minimum gain per iteration
-tolerance = 1e-7;
+tolerance = 1e-8;
 % number of CSCG random vectors to generate
 nCandidates = 1e3;
 % number of channel realizations
