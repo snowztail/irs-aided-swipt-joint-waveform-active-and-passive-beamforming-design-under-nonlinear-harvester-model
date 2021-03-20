@@ -264,9 +264,9 @@
 
 			\begin{figure*}[!b]
 				\hrule
-				\begin{equation}
-					z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho) = \beta_2\rho\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}+6\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr),\label{eq:z_expand}
-				\end{equation}
+				\begin{flalign}
+					z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho) = \beta_2\rho\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}+6\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr),&&\label{eq:z_expand}
+				\end{flalign}
 				\begin{flalign}
 					\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}
 					& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h},&&\label{eq:y_I2}\\
@@ -280,25 +280,6 @@
 					& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{\mathrm{P},{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{\mathrm{P},{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{\mathrm{P},{n_3}})^*(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{\mathrm{P},{n_4}})^*} = \frac{3}{8}\sum_{k=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})^*.&&\label{eq:y_P4}
 				\end{flalign}
 			\end{figure*}
-			% \begin{figure*}[!b]
-			% 	\hrule
-			% 	\begin{align}
-			% 		z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho) & = \beta_2\rho\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr)\nonumber\\
-			% 		& \quad + \beta_4\rho^2\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}+6\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr).\label{eq:z_expand}
-			% 	\end{align}
-			% 	\hrule
-			% 	\begin{align}
-			% 		\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}
-			% 		& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h},\label{eq:y_I2}\\
-			% 		\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}
-			% 		& = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h})^2,\label{eq:y_I4}\\
-			% 		\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}
-			% 		& = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},0}\boldsymbol{h},\label{eq:y_P2}\\
-			% 		\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}
-			% 		& = \frac{3}{8}\sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}}{(\boldsymbol{h}_{{n_1}}^H\boldsymbol{w}_{\mathrm{P},{n_1}})(\boldsymbol{h}_{{n_2}}^H\boldsymbol{w}_{\mathrm{P},{n_2}})(\boldsymbol{h}_{{n_3}}^H\boldsymbol{w}_{\mathrm{P},{n_3}})^*(\boldsymbol{h}_{{n_4}}^H\boldsymbol{w}_{\mathrm{P},{n_4}})^*}\nonumber\\
-			% 		& = \frac{3}{8}\sum_{k=-N+1}^{N-1}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},k}\boldsymbol{h})^*.\label{eq:y_P4}
-			% 	\end{align}
-			% \end{figure*}
 		\end{subsection}
 
 
@@ -309,16 +290,13 @@
 				&\triangleq \biggl\{(R_{\mathrm{ID}}, I_{\mathrm{EH}}): R_{\mathrm{ID}} \le R, I_{\mathrm{EH}} \le z,\nonumber\\
 				&\quad \frac{1}{2}\left(\lVert{\boldsymbol{w}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{w}_{\mathrm{P}}}\rVert^2\right) \le P\biggr\}
 			\end{align}
-			% \begin{equation}
-			% 	C_{R_{\mathrm{ID}}-I_{\mathrm{EH}}}(P) \triangleq \biggl\{(R_{\mathrm{ID}}, I_{\mathrm{EH}}): R_{\mathrm{ID}} \le R, I_{\mathrm{EH}} \le z, \frac{1}{2}\left(\lVert{\boldsymbol{w}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{w}_{\mathrm{P}}}\rVert^2\right) \le P\biggr\}
-			% \end{equation}
 			where $P$ is the average transmit power budget and \num{1/2} converts the peak value to the average value.
 		\end{subsection}
 	\end{section}
 
 
 	\begin{section}{Problem Formulation}\label{se:problem_formulation}
-		We characterize each R-E boundary point through a current maximization problem subject to transmit power, IRS magnitude, and rate constraint
+		We characterize each R-E boundary point through a current maximization problem subject to transmit power, IRS magnitude, and rate constraint as
 		\begin{maxi!}
 			{\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho}{z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho)}{\label{op:original}}{\label{ob:original}}
 			\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{w}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{w}_{\mathrm{P}}}\rVert^2\right)\le{P}}\label{co:original_power}
@@ -326,6 +304,7 @@
 			\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}\label{co:original_modulus}
 			\addConstraint{0 \le \rho \le 1.}
 		\end{maxi!}
+
 		Problem~\eqref{op:original} is intricate with coupled variables in non-convex expressions \eqref{ob:original}, \eqref{co:original_rate}, \eqref{co:original_modulus}. To obtain a feasible solution, we propose an BCD algorithm that iteratively updates 1) the IRS phase shift, 2) the active precoder, 3) the waveform amplitude and the splitting ratio, until convergence.
 		% \begin{remark}\label{re:irs_subchannel_alignment}
 		% 	As information and power transfer prefer different subchannel strength distribution, the frequency-flat characteristic of the IRS introduces a resource allocation problem. Following Remark~\ref{re:irs_frequency_flat}, if the IRS is frequency-selective and there is only one transmit antenna, then each reflecting element can simultaneously align the corresponding AP-IRS-UE channel with the AP-UE channel at all subbands. In this case, the strengths of all subchannels are maximized so that the joint design would follow straightforwardly from existing SWIPT work \cite{Clerckx2018b}.
@@ -342,7 +321,7 @@
 				& = \mathrm{Tr}(\boldsymbol{M}_n\boldsymbol{w}_{\mathrm{I},n}\boldsymbol{w}_{\mathrm{I},n}^H\boldsymbol{M}_n^H\boldsymbol{\Phi})\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})
 			\end{align}
-			where $\boldsymbol{M}_n \triangleq [\boldsymbol{V}_n^H, \boldsymbol{h}_{\mathrm{D},n}]^H \in \mathbb{C}^{(L+1) \times M}$, $t$ is an auxiliary variable with unit modulus, $\bar{\boldsymbol{\phi}} \triangleq [\boldsymbol{\phi}^H, t]^H \in \mathbb{C}^{(L+1) \times 1}$, $\boldsymbol{\Phi} \triangleq \bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H \in \mathbb{C}^{(L+1) \times (L+1)}$, $\boldsymbol{C}_n \triangleq \boldsymbol{M}_n\boldsymbol{w}_{\mathrm{I},n}\boldsymbol{w}_{\mathrm{I},n}^H\boldsymbol{M}_n^H \in \mathbb{C}^{(L+1)\times(L+1)}$. On the other hand, we define $t_{\mathrm{I/P},k}$ as
+			where $\boldsymbol{M}_n \triangleq [\boldsymbol{V}_n^H, \boldsymbol{h}_{\mathrm{D},n}]^H \in \mathbb{C}^{(L+1) \times M}$, $t'$ is an auxiliary variable with unit modulus, $\bar{\boldsymbol{\phi}} \triangleq [\boldsymbol{\phi}^H, t']^H \in \mathbb{C}^{(L+1) \times 1}$, $\boldsymbol{\Phi} \triangleq \bar{\boldsymbol{\phi}}\bar{\boldsymbol{\phi}}^H \in \mathbb{C}^{(L+1) \times (L+1)}$, $\boldsymbol{C}_n \triangleq \boldsymbol{M}_n\boldsymbol{w}_{\mathrm{I},n}\boldsymbol{w}_{\mathrm{I},n}^H\boldsymbol{M}_n^H \in \mathbb{C}^{(L+1)\times(L+1)}$. On the other hand, we define $t_{\mathrm{I/P},k}$ as
 			\begin{align}
 				t_{\mathrm{I/P},k}
 				& \triangleq \boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I/P},k}\boldsymbol{h}\nonumber\\
@@ -352,7 +331,7 @@
 				& = \mathrm{Tr}(\boldsymbol{M}\boldsymbol{W}_{\mathrm{I/P},k}\boldsymbol{M}^H\boldsymbol{\Phi})\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{C}_{\mathrm{I/P},k}\boldsymbol{\Phi})
 			\end{align}
-			where $\boldsymbol{V} \triangleq [\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M} \triangleq [\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{\mathrm{I/P},k} \triangleq \boldsymbol{M}\boldsymbol{W}_{\mathrm{I/P},k}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. Therefore, we can rewrite \ref{eq:R} and \ref{eq:z_expand} as
+			where $\boldsymbol{V} \triangleq [\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M} \triangleq [\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{\mathrm{I/P},k} \triangleq \boldsymbol{M}\boldsymbol{W}_{\mathrm{I/P},k}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. On top of this, \eqref{eq:R} and \eqref{eq:z_expand} reduce to
 			\begin{align}
 				R(\boldsymbol{\Phi})
 				& = \sum_{n=1}^{N}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)},\label{eq:R_irs}\\
@@ -361,12 +340,7 @@
 				& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{\mathrm{I},0}^2 + \sum_{k=-N+1}^{N-1}{t_{\mathrm{P},k}t_{\mathrm{P},k}^*}\right)\nonumber\\
 				& \quad + \frac{3}{2}{\beta_4}{\rho^2}t_{\mathrm{I},0}t_{\mathrm{P},0}.\label{eq:z_irs}
 			\end{align}
-			% \begin{align}
-			% 	R(\boldsymbol{\Phi})
-			% 	& = \sum_{n=1}^{N}{\log_2\left(1+\frac{(1-\rho)\mathrm{Tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)},\label{eq:R_irs}\\
-			% 	z(\boldsymbol{\Phi})
-			% 	& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}+t_{\mathrm{P},0}) + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{\mathrm{I},0}^2 + \sum_{k=-N+1}^{N-1}{t_{\mathrm{P},k}t_{\mathrm{P},k}^*}\right) + \frac{3}{2}{\beta_4}{\rho^2}t_{\mathrm{I},0}t_{\mathrm{P},0}.\label{eq:z_irs}
-			% \end{align}
+
 			To maximize the non-concave expression \eqref{eq:z_irs}, we propose a SCA algorithm and lower bound the second-order terms by their first-order Taylor expansions \cite{Adali2010}. Based on the solution at iteration $i - 1$, the approximations at iteration $i$ are
 			\begin{align}
 				(t_{\mathrm{I},0}^{(i)})^2
@@ -378,16 +352,8 @@
 				& \ge \frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})\nonumber\\
 				& \quad - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\label{eq:taylor_3}
 			\end{align}
-			% \begin{align}
-			% 	(t_{\mathrm{I},0}^{(i)})^2
-			% 	& \ge 2 t_{\mathrm{I},0}^{(i)}t_{\mathrm{I},0}^{(i-1)} - (t_{\mathrm{I},0}^{(i-1)})^2,\label{eq:taylor_1}\\
-			% 	t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i)})^*
-			% 	& \ge 2 \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*,\label{eq:taylor_2}\\
-			% 	t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i)}
-			% 	& = \frac{1}{4}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\nonumber\\
-			% 	& \ge \frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\label{eq:taylor_3}
-			% \end{align}
-			Plugging \eqref{eq:taylor_1} -- \eqref{eq:taylor_3} into \eqref{eq:z_irs}, we obtain \eqref{eq:z_irs_approx} and transform problem~\eqref{op:original} to
+
+			Plugging \eqref{eq:taylor_1} -- \eqref{eq:taylor_3} into \eqref{eq:z_irs}, we obtain the DC current approximation \eqref{eq:z_irs_approx} and transform problem~\eqref{op:original} to
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}
@@ -401,10 +367,11 @@
 				{\boldsymbol{\Phi}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{ob:irs}}
 				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_rate}
 				\addConstraint{\boldsymbol{\Phi}_{l',l'}=1, \quad l'=1,\dots,L+1}\label{co:irs_modulus}
-				\addConstraint{\boldsymbol{\Phi}\succeq{0}}
+				\addConstraint{\boldsymbol{\Phi}\succeq{0}}\label{co:irs_sd}
 				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_rank}}
 			\end{maxi!}
-			Problem~\eqref{op:irs} is not a Semidefinite Programming (SDP). If we relax the rank constraint \eqref{co:irs_rank} to formulate a convex problem, there is no guarantee that $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} and the extracted rank-\num{1} solution $\boldsymbol{\phi}^{\star}$ be a stationary point of the original problem~\eqref{op:original}. In Section~\ref{se:performance_evaluation}, we numerically show that $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} for all tested channel realizations under different configurations, where the performance loss by SDR is negligible. If $\boldsymbol{\Phi}^{\star}$ is rank-\num{1}, the augmented phase shift vector $\bar{\boldsymbol{\phi}}^\star$ can be obtained by Eigenvalue Decomposition (EVD). Otherwise, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}, where we perform EVD $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate $Q$ CSCG random vectors $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1}),\ q=1,\dots,Q$, construct the corresponding candidates $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the one that maximizes the objective function \eqref{ob:irs}. Finally, the phase shifts are retrieved by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star), \ l=1,\dots,L$. Problem~\eqref{op:irs} without constraint \eqref{co:irs_rank} can be solved by existing optimization tools such as CVX \cite{Grant2013}. The SCA algorithm for the passive beamforming optimization is summarized in Algorithm~\ref{al:irs}.
+
+			Note that problem~\eqref{op:irs} is not a Semidefinite Programming (SDP) such that relaxing the rank constraint \eqref{co:irs_rank} has no analytical performance guarantee. In Section~\ref{se:performance_evaluation}, we prove through numerical simulations that the solution $\boldsymbol{\Phi}^{\star}$ to \ref{ob:irs} -- \ref{co:irs_sd} is rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint \eqref{co:irs_rank} can be dropped with negligible impact and $\bar{\boldsymbol{\phi}}^\star$ can be directly obtained through Eigenvalue Decomposition (EVD). In case $\boldsymbol{\Phi}^{\star}$ is not rank-\num{1}, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we decompose $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate CSCG random vector $q \in \{1, \dots, Q\}$ by $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, construct the candidate $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the $\bar{\boldsymbol{\phi}}^\star$ that maximizes \eqref{ob:irs} as the solution. Finally, the phase shift of element $l$ is retrieved by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. Problem~\eqref{op:irs} after rank relaxation can be solved by existing optimization tools such as CVX \cite{Grant2013}. The SCA algorithm of passive beamforming is summarized in Algorithm~\ref{al:irs}.
 			\begin{algorithm}[!t]
 				\caption{SCA: IRS Phase Shift.}
 				\label{al:irs}
@@ -414,17 +381,17 @@
 					\State \textbf{Initialize} $i \gets 0,\boldsymbol{\Phi}^{(0)},t_{\mathrm{I/P},k}^{(0)}$, $\forall k$
 					\Repeat
 						\State $i \gets i + 1$
-						\State Obtain $\boldsymbol{\Phi}^{(i)},t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by solving problem~\eqref{op:irs}
+						\State Get $\boldsymbol{\Phi}^{(i)},t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by solving \ref{ob:irs} -- \ref{co:irs_sd}
 						\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
 					\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
 					\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
 					\If{$\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$}
-						\State Obtain $\bar{\boldsymbol{\phi}}^\star$ by EVD, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
+						\State Get $\bar{\boldsymbol{\phi}}^\star$ by EVD, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
 					\Else
-						\State Obtain $\boldsymbol{U},\boldsymbol{\Sigma}$ by EVD, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$
+						\State Get $\boldsymbol{U},\boldsymbol{\Sigma}$ by EVD, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$
 						\State Generate $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $\forall q$
 						\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)},\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$, $\forall q$
-						\State Set $q^{\star}=\arg\max_q{z(\boldsymbol{\Phi}_q)},\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
+						\State Set $q^{\star}=\arg\max_q{\tilde{z}(\boldsymbol{\Phi}_q)},\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
 					\EndIf
 					\State Set $\theta_l^\star=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$, $\forall l$, $\boldsymbol{\phi}^{\star}=[e^{j\theta_1^\star},\dots,e^{j\theta_L^\star}]^H$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$
@@ -437,67 +404,64 @@
 			\begin{equation}
 				\boldsymbol{w}_{\mathrm{I/P}, n} = s_{\mathrm{I/P}, n} \boldsymbol{b}_{\mathrm{I/P}, n}
 			\end{equation}
-			where $s_{\mathrm{I/P},n}$ are the amplitude of modulated/multisine waveform at tone $n$ and $\boldsymbol{b}_{\mathrm{I/P}, n}$ denote the corresponding precoders. The optimal MRT precoder at subband $n$ is given by
-			\begin{equation}
+			where $s_{\mathrm{I/P},n}$ denotes the amplitude of modulated/multisine waveform at tone $n$, and $\boldsymbol{b}_{\mathrm{I/P}, n}$ denotes the information/power precoder. Define $\boldsymbol{s}_{\mathrm{I/P}} \triangleq [s_{\mathrm{I/P},1},\dots,s_{\mathrm{I/P},N}]^T \in \mathbb{C}^{N \times 1}$. On the other hand, the MRT precoder at subband $n$ is given by
+			\begin{equation}\label{eq:b}
 				\boldsymbol{b}_{\mathrm{I/P}, n}^\star = \frac{\boldsymbol{h}_n}{\lVert{\boldsymbol{h}_n}\rVert}
 			\end{equation}
-			From the perspective of data transmission, the MRT precoder maximizes $\lvert{\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I}, n}}\rvert = \lVert{\boldsymbol{h}_{n}}\rVert s_{\mathrm{I}, n}$ thus maximizes the sum rate \eqref{eq:R}. From the perspective of energy harvesting, the MRT precoder maximizes $(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})^* = \lVert{\boldsymbol{h}_{n}}\rVert^2 s_{\mathrm{I/P}, n}^2$ thus maximizes the second and fourth order DC terms \eqref{eq:y_I2} -- \eqref{eq:y_P4}. Hence, MRT is the global optimal precoder and no dedicated energy beams are required in the single-user SWIPT.
+
+			From the perspective of communication, the MRT precoder maximizes $\lvert{\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I}, n}}\rvert = \lVert{\boldsymbol{h}_{n}}\rVert s_{\mathrm{I}, n}$ thus maximizes rate \eqref{eq:R}. From the perspective of energy harvesting, the MRT precoder maximizes $(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})^* = \lVert{\boldsymbol{h}_{n}}\rVert^2 s_{\mathrm{I/P}, n}^2$ thus maximizes the second and fourth order DC terms \eqref{eq:y_I2} -- \eqref{eq:y_P4}. Hence, MRT is the global optimal precoder and no dedicated energy beams are required in the single-user SWIPT.
 		\end{subsection}
 
 
 		\begin{subsection}{Waveform and Splitting Ratio}
-			Next, we jointly optimize the waveform and active beamforming $\boldsymbol{w}_{\mathrm{I/P}}$ together with the splitting ratio $\rho$ for any given IRS phase shift $\boldsymbol{\phi}$. As pointed out in \cite{Clerckx2018b}, the waveform design in the frequency domain and the active beamformer in the spatial domain can be decoupled without performance loss, and the optimal spatial weight is given by Maximum-Ratio Transmission (MRT) beamformer
-			\begin{equation}\label{eq:w_IP}
-				\boldsymbol{w}_{\mathrm{I/P},n}=s_{\mathrm{I/P},n}\frac{\boldsymbol{h}_n}{\lVert{\boldsymbol{h}_n}\rVert}.
-			\end{equation}
-			That is to say, for single-user MISO SWIPT, the optimal active beamformer is MRT and we only need to determine the amplitudes $s_{\mathrm{I/P},n}$ at different tones. Hence, the original waveform and active beamforming optimization with $2MN$ complex variables is converted into a power allocation problem with $2N$ nonnegative real variables. Define $\boldsymbol{s}_{\mathrm{I/P}} \triangleq [s_{\mathrm{I/P},1},\dots,s_{\mathrm{I/P},N}]^T \in \mathbb{C}^{N \times 1}$. At subband $n$, the effective channel strength is given by $\lVert{\boldsymbol{h}_n}\rVert$, and the power allocated to the modulated and unmodulated waveform are given by $s_{\mathrm{I},n}^2$ and $s_{\mathrm{P},n}^2$, respectively. With such an active beamformer selection, we have $\boldsymbol{h}_n^H\boldsymbol{w}_{\mathrm{I},n}=\lvert{\boldsymbol{h}_n^H\boldsymbol{w}_{\mathrm{I},n}}\rvert=\lVert{\boldsymbol{h}_n}\rVert s_{\mathrm{I},n}$ such that the rate and objective functions further reduce to \eqref{eq:R_waveform} and \eqref{eq:z_waveform}, respectively.
-			\begin{equation}\label{eq:R_waveform}
-				R(\boldsymbol{s}_{\mathrm{I}},\rho) = \log_2\left(\prod_{n=1}^N\biggl(1+\frac{(1-\rho)\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}{\sigma_n^2}\biggr)\right).
-			\end{equation}
+			Next, we jointly optimize the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ and the splitting ratio $\rho$ for any given IRS phase shift $\boldsymbol{\phi}$ and active precoder $\boldsymbol{b}_{\mathrm{I/P}, n}$, $\forall n$. On top of \eqref{eq:b}, the equivalent channel strength at subband $n$ is $\lVert{\boldsymbol{h}_n}\rVert$ and the power allocated to the modulated/multisine waveform is $s_{\mathrm{I/P},n}^2$. Hence, rate \eqref{eq:R} and DC current \eqref{eq:z_expand} reduce respectively to \eqref{eq:R_waveform} and \eqref{eq:z_waveform}, and problem~\eqref{op:original} boils down to
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}
+					R(\boldsymbol{s}_{\mathrm{I}},\rho)
+					& = \log_2\left(\prod_{n=1}^N\biggl(1+\frac{(1-\rho)\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}{\sigma_n^2}\biggr)\right),\label{eq:R_waveform}\\
 					z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)
-					& = \frac{1}{2}{\beta_2}{\rho} \sum_{n=1}^N \lVert{\boldsymbol{h}_n}\rVert^2(s_{\mathrm{I},n}^2+s_{\mathrm{P},n}^2)\nonumber\\
-					& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left( 2\sum_{n_1,n_2} \prod_{j=1}^2 \lVert{\boldsymbol{h}_{n_j}}\rVert^2 s_{\mathrm{I},{n_j}}^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}} \prod_{j=1}^4 \lVert{\boldsymbol{h}_{n_j}}\rVert s_{\mathrm{P},{n_j}} \right)\nonumber\\
-					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left( \sum_{n_1,n_2} \lVert{\boldsymbol{h}_{n_1}}\rVert^2 \lVert{\boldsymbol{h}_{n_2}}\rVert^2 s_{\mathrm{I},{n_1}}^2 s_{\mathrm{P},{n_2}}^2 \right).\label{eq:z_waveform}
+					& = \frac{1}{2}{\beta_2}{\rho} \sum_{n=1}^N \lVert{\boldsymbol{h}_n}\rVert^2(s_{\mathrm{I},n}^2+s_{\mathrm{P},n}^2) + \frac{3}{8}{\beta_4}{\rho^2} \left( 2\sum_{n_1,n_2} \prod_{j=1}^2 \lVert{\boldsymbol{h}_{n_j}}\rVert^2 s_{\mathrm{I},{n_j}}^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}} \prod_{j=1}^4 \lVert{\boldsymbol{h}_{n_j}}\rVert s_{\mathrm{P},{n_j}} \right)\nonumber\\
+					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left( \sum_{n_1,n_2} \lVert{\boldsymbol{h}_{n_1}}\rVert^2 \lVert{\boldsymbol{h}_{n_2}}\rVert^2 s_{\mathrm{I},{n_1}}^2 s_{\mathrm{P},{n_2}}^2 \right).&&\label{eq:z_waveform}
 				\end{align}
 			\end{figure*}%
-			Therefore, problem~\eqref{op:original} is reduced to an amplitude optimization issue
 			\begin{maxi!}
 				{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho}{z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)}{\label{op:waveform}}{}
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{s}_\mathrm{P}}\rVert^2\right)\le{P}}
 				\addConstraint{R(\boldsymbol{s}_{\mathrm{I}},\rho) \ge \bar{R}.}
 			\end{maxi!}
-			Since problem~\eqref{op:waveform} involves the production of nonnegative real variables, we introduce auxiliary variables $t',\bar{\rho}$ and transform it into a reversed GP
+
+			Following \cite{Clerckx2018b}, we introduce auxiliary variables $t'',\bar{\rho}$ and transform it into a reversed GP
 			\begin{mini!}
-				{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho,\bar{\rho},t'}{\frac{1}{t'}}{\label{op:waveform_rgp}}{}
+				{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho,\bar{\rho},t''}{\frac{1}{t''}}{\label{op:waveform_rgp}}{}
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{s}_\mathrm{P}}\rVert^2\right) \le P}\label{co:waveform_power}
-				\addConstraint{\frac{t'}{z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)} \le 1}\label{co:waveform_objective}
+				\addConstraint{\frac{t''}{z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)} \le 1}\label{co:waveform_objective}
 				\addConstraint{\frac{2^{\bar{R}}}{\prod_{n=1}^N \left(1+{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}\big/{\sigma_n^2}\right)} \le 1}\label{co:waveform_rate}
 				\addConstraint{\rho + \bar{\rho} \le 1.}
 			\end{mini!}
-			The denominators of \eqref{co:waveform_objective}, \eqref{co:waveform_rate} are posynomials \cite{Boyd2007} that can be further decomposed as
+
+			The denominators of \eqref{co:waveform_objective}, \eqref{co:waveform_rate} are posynomials \cite{Boyd2007} which can be decomposed as sums of monomials
 			\begin{align}
 				z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho) &\triangleq \sum_{m_\mathrm{P}}{g_{m_\mathrm{P}}(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)}\label{eq:posynomial_objective},\\
 				1+\frac{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}{\sigma_n^2} &\triangleq \sum_{m_{\mathrm{I},n}}g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n},\bar{\rho})\label{eq:posynomial_rate}
 			\end{align}
-			where $m_\mathrm{P}=(2N^3+6N^2+7N)/3$, $m_{\mathrm{I},n}=2$ are the number of monomials. Following \cite{Chiang2005}, we upper bound posynomials \eqref{eq:posynomial_objective} and \eqref{eq:posynomial_rate} by Arithmetic Mean-Geometric Mean (AM-GM) inequality such that problem~\eqref{op:waveform_rgp} reduces to
+			where $m_\mathrm{P}=(2N^3+6N^2+7N)/3$ and $m_{\mathrm{I},n}=2$. We then upper bound \eqref{eq:posynomial_objective} and \eqref{eq:posynomial_rate} by Arithmetic Mean-Geometric Mean (AM-GM) inequality \cite{Chiang2005} and transform problem~\eqref{op:waveform_rgp} to
 			\begin{mini!}
-				{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho,\bar{\rho},t'}{\frac{1}{t'}}{\label{op:waveform_gp}}{}
+				{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho,\bar{\rho},t''}{\frac{1}{t''}}{\label{op:waveform_gp}}{}
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{s}_\mathrm{P}}\rVert^2\right)\le{P}}
-				\addConstraint{{t'}\prod_{m_\mathrm{P}}{\left(\frac{g_{{m_\mathrm{P}}}(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)}{\gamma_{{m_\mathrm{P}}}}\right)^{-\gamma_{{m_\mathrm{P}}}}}\le{1}}
+				\addConstraint{{t''}\prod_{m_\mathrm{P}}{\left(\frac{g_{{m_\mathrm{P}}}(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)}{\gamma_{{m_\mathrm{P}}}}\right)^{-\gamma_{{m_\mathrm{P}}}}}\le{1}}
 				\addConstraint{2^{\bar{R}}\prod_{n}\prod_{m_{\mathrm{I},n}}\left(\frac{g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n},\bar{\rho})}{\gamma_{m_{\mathrm{I},n}}}\right)^{-\gamma_{m_{\mathrm{I},n}}}\le{1}}
 				\addConstraint{\rho + \bar{\rho} \le 1}
 			\end{mini!}
-			where $\gamma_{m_\mathrm{P}},\gamma_{m_{\mathrm{I},n}} \ge 0$, $\sum_{m_\mathrm{P}}\gamma_{m_\mathrm{P}}=\sum_{m_{\mathrm{I},n}}\gamma_{m_{\mathrm{I},n}}=1$. The tightness of the AM-GM inequality depends on $\{\gamma_{m_\mathrm{P}},\gamma_{m_{\mathrm{I},n}}\}$ that require successive update. As suggested in \cite{Clerckx2018b}, a feasible choice at iteration $i$ is
+			where $\gamma_{m_\mathrm{P}},\gamma_{m_{\mathrm{I},n}} \ge 0$, $\sum_{m_\mathrm{P}}\gamma_{m_\mathrm{P}}=\sum_{m_{\mathrm{I},n}}\gamma_{m_{\mathrm{I},n}}=1$. The tightness of the AM-GM inequality depends on $\{\gamma_{m_\mathrm{P}},\gamma_{m_{\mathrm{I},n}}\}$ that require successive update \cite{Clerckx2018b}, and a feasible choice at iteration $i$ is
 			\begin{align}
 				\gamma_{m_\mathrm{P}}^{(i)} & = \frac{g_{m_\mathrm{P}}(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P},\\
 				\gamma_{m_{\mathrm{I},n}}^{(i)} & = \frac{g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{\mathrm{I},n}^{(i-1)})^2}\big/{\sigma_n^2}}.\label{eq:gamma_I}
 			\end{align}
-			$\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho$ are updated iteratively until convergence. Problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2013}. The GP algorithm of the waveform, active beamforming and splitting ratio optimization is summarized in Algorithm~\ref{al:waveform}.
+
+			$\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho$ are updated iteratively until convergence. Problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2013}. The GP algorithm of joint waveform amplitude and splitting ratio optimization is summarized in Algorithm~\ref{al:waveform}.
 			\begin{algorithm}[!t]
-				\caption{GP: Waveform, Active Beamforming and Splitting Ratio.}
+				\caption{GP: Waveform Amplitude and Splitting Ratio.}
 				\label{al:waveform}
 				\begin{algorithmic}[1]
 					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h},P,\sigma_n,\bar{R},\epsilon$, $\forall n$
@@ -505,11 +469,11 @@
 					\Repeat
 						\State $i \gets i + 1$
 						\State Update $\{\gamma_{m_\mathrm{P}}^{(i)},\gamma_{m_{\mathrm{I},n}}^{(i)}\}$, $\forall n$ by \eqref{eq:gamma_P}, \eqref{eq:gamma_I}
-						\State Obtain $\boldsymbol{s}_{\mathrm{I/P}}^{(i)},\rho^{(i)}$ by solving problem~\eqref{op:waveform_gp}
+						\State Get $\boldsymbol{s}_{\mathrm{I/P}}^{(i)},\rho^{(i)}$ by solving problem~\eqref{op:waveform_gp}
 						\State Compute $z^{(i)}$ by \eqref{eq:z_waveform}
 					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
-					\State Set $\boldsymbol{s}_{\mathrm{I/P}}^{\star}=\boldsymbol{s}_{\mathrm{I/P}}^{(i)},\rho^{\star}=\rho^{(i)}$, retrieve $\boldsymbol{w}_{\mathrm{I/P}}^{\star}$ by \eqref{eq:w_IP}
-					\State \textbf{Output} $\boldsymbol{w}_{\mathrm{I}}^{\star},\boldsymbol{w}_{\mathrm{P}}^{\star},\rho^{\star}$
+					\State Set $\boldsymbol{s}_{\mathrm{I/P}}^{\star}=\boldsymbol{s}_{\mathrm{I/P}}^{(i)},\rho^{\star}=\rho^{(i)}$
+					\State \textbf{Output} $\boldsymbol{s}_{\mathrm{I}}^{\star},\boldsymbol{s}_{\mathrm{P}}^{\star},\rho^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
 		\end{subsection}
@@ -525,7 +489,7 @@
 					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{w}_{\mathrm{I/P}}^{(0)},\rho^{(0)}$
 					\Repeat
 						\State $i \gets i + 1$
-						\State Fix $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)},\rho^{(i-1)}$ and obtain $\boldsymbol{\phi}^{(i)}$ by Algorithm~\ref{al:irs}
+						\State Fix $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)},\rho^{(i-1)}$, get $\boldsymbol{\phi}^{(i)}$ by Algorithm~\ref{al:irs}
 						\State Fix $\boldsymbol{\phi}^{(i)}$, update $\boldsymbol{h}_n^{(i)}$, $\forall n$ by \eqref{eq:h_n}, obtain $\boldsymbol{w}_{\mathrm{I/P}}^{(i)}, \rho^{(i)}$ by Algorithm~\ref{al:waveform}
 						\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
 					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
