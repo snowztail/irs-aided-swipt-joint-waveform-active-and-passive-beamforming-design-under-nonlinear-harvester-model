@@ -235,7 +235,7 @@
 			\begin{equation}\label{eq:z}
 				z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho)=\sum_{i\,\mathrm{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\mathrm{A}}^{i/2}}{\mathbb{E}\left\{\mathbb{A}\left\{y(t)^i\right\}\right\}}
 			\end{equation}
-			where $n_0$ is the truncation order and $k_i \triangleq i_{\mathrm{S}}/i!(n'v_{\mathrm{T}})^i$ is the diode coefficient ($i_{\mathrm{S}}$ is the reverse bias saturation current, $n'$ is the diode ideality factor, $v_{\mathrm{T}}$ is the thermal voltage). With a slight abuse of notation, we refer to $z$ as the average output DC current in the following context. It can be observed that the traditional linear harvester model, where the output DC power equals the sum of the power harvested on each frequency, is a special case of \eqref{eq:z} with $n_0=2$. However, due to the coupling effect among different frequencies, some high-order AC components compensate each other and further contribute to the output DC power. In other words, even-order terms with $i \ge 4$ account for the diode nonlinear behavior. For simplicity, we choose $n_0=4$ to investigate the fundamental rectifier nonlinearity, and define $\beta_2 \triangleq {k_2}{R_{\mathrm{A}}}$, $\beta_4 \triangleq {k_4}{R_{\mathrm{A}}^2}$ to rewrite $z$ by \eqref{eq:z_expand}. Note that $\mathbb{E}\left\{\lvert\tilde{x}_{\mathrm{I},n}\rvert^2\right\}=1$ but $\mathbb{E}\left\{\lvert\tilde{x}_{\mathrm{I},n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current. Inspired by \cite{Huang2017}, we further stack $\boldsymbol{h} \triangleq [\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{w}_{\mathrm{I/P}} \triangleq [\boldsymbol{w}_{\mathrm{I/P},1}^T,\dots,\boldsymbol{w}_{\mathrm{I/P},N}^T]^T \in \mathbb{C}^{MN \times 1}$, and define $\boldsymbol{W}_{\mathrm{I/P}} \triangleq \boldsymbol{w}_{\mathrm{I/P}}\boldsymbol{w}_{\mathrm{I/P}}^H \in \mathbb{C}^{MN \times MN}$. As illustrated by Fig.~\ref{fi:block_diagonal}, $\boldsymbol{W}_{\mathrm{I/P}}$ can be divided into $N \times N$ blocks of size $M \times M$, and we let $\boldsymbol{W}_{\mathrm{I/P},k}$ keep its $k$-th ($k=-N+1,\dots,N-1$) block diagonal and set all other blocks to $\boldsymbol{0}^{M \times M}$. Hence, the components of $z$ reduce to \eqref{eq:y_I2} -- \eqref{eq:y_P4}.
+			where $n_0$ is the truncation order and $k_i \triangleq i_{\mathrm{S}}/i!(n'v_{\mathrm{T}})^i$ is the diode coefficient ($i_{\mathrm{S}}$ is the reverse bias saturation current, $n'$ is the diode ideality factor, $v_{\mathrm{T}}$ is the thermal voltage). With a slight abuse of notation, we refer to $z$ as the average output DC current in the following context. It can be observed that the traditional linear harvester model, where the output DC power equals the sum of the power harvested on each frequency, is a special case of \eqref{eq:z} with $n_0=2$. However, due to the coupling effect among different frequencies, some high-order AC components compensate each other and further contribute to the output DC power. In other words, even-order terms with $i \ge 4$ account for the diode nonlinear behavior. For simplicity, we choose $n_0=4$ to investigate the fundamental rectifier nonlinearity, and define $\beta_2 \triangleq {k_2}{R_{\mathrm{A}}}$, $\beta_4 \triangleq {k_4}{R_{\mathrm{A}}^2}$ to rewrite $z$ by \eqref{eq:z_expand}. Note that $\mathbb{E}\left\{\lvert\tilde{x}_{\mathrm{I},n}\rvert^2\right\}=1$ but $\mathbb{E}\left\{\lvert\tilde{x}_{\mathrm{I},n}\rvert^4\right\}=2$, which can be interpreted as a modulation gain on the nonlinear terms of the output DC current. Inspired by \cite{Huang2017}, we further stack $\boldsymbol{h} \triangleq [\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{w}_{\mathrm{I/P}} \triangleq [\boldsymbol{w}_{\mathrm{I/P},1}^T,\dots,\boldsymbol{w}_{\mathrm{I/P},N}^T]^T \in \mathbb{C}^{MN \times 1}$, and define $\boldsymbol{W}_{\mathrm{I/P}} \triangleq \boldsymbol{w}_{\mathrm{I/P}}\boldsymbol{w}_{\mathrm{I/P}}^H \in \mathbb{C}^{MN \times MN}$. As illustrated by Fig.~\ref{fi:block_diagonal}, $\boldsymbol{W}_{\mathrm{I/P}}$ can be divided into $N \times N$ blocks of size $M \times M$, and we let $\boldsymbol{W}_{\mathrm{I/P},k}$ keep its block diagonal $k \in \{-N+1,\dots,N-1\}$ and set all other blocks to $\boldsymbol{0}^{M \times M}$. Hence, the components of $z$ reduce to \eqref{eq:y_I2} -- \eqref{eq:y_P4}.
 
 			\begin{figure*}[!t]
 				\begin{equation*}
@@ -329,7 +329,7 @@
 				& = \mathrm{Tr}\left((\boldsymbol{h}_{D}+\boldsymbol{V}^H\boldsymbol{\phi})(\boldsymbol{h}_{D}^H+\boldsymbol{\phi}^H\boldsymbol{V})\boldsymbol{W}_{\mathrm{I/P},k}\right)\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{M}^H\boldsymbol{\Phi}\boldsymbol{M}\boldsymbol{W}_{\mathrm{I/P},k})\nonumber\\
 				& = \mathrm{Tr}(\boldsymbol{M}\boldsymbol{W}_{\mathrm{I/P},k}\boldsymbol{M}^H\boldsymbol{\Phi})\nonumber\\
-				& = \mathrm{Tr}(\boldsymbol{C}_{\mathrm{I/P},k}\boldsymbol{\Phi})
+				& = \mathrm{Tr}(\boldsymbol{C}_{\mathrm{I/P},k}\boldsymbol{\Phi})\label{eq:t_k}
 			\end{align}
 			where $\boldsymbol{V} \triangleq [\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M} \triangleq [\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{\mathrm{I/P},k} \triangleq \boldsymbol{M}\boldsymbol{W}_{\mathrm{I/P},k}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. On top of this, \eqref{eq:R} and \eqref{eq:z_expand} reduce to
 			\begin{align}
@@ -371,17 +371,19 @@
 				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_rank}}
 			\end{maxi!}
 
-			Note that problem~\eqref{op:irs} is not a Semidefinite Programming (SDP) such that relaxing the rank constraint \eqref{co:irs_rank} has no analytical performance guarantee. In Section~\ref{se:performance_evaluation}, we prove through numerical simulations that the solution $\boldsymbol{\Phi}^{\star}$ to \ref{ob:irs} -- \ref{co:irs_sd} is rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint \eqref{co:irs_rank} can be dropped with negligible impact and $\bar{\boldsymbol{\phi}}^\star$ can be directly obtained through Eigenvalue Decomposition (EVD). In case $\boldsymbol{\Phi}^{\star}$ is not rank-\num{1}, a suboptimal solution can be extracted via Gaussian randomization method \cite{Huang2010}. Specifically, we decompose $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate CSCG random vector $q \in \{1, \dots, Q\}$ by $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, construct the candidate $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the $\bar{\boldsymbol{\phi}}^\star$ that maximizes \eqref{ob:irs} as the solution. Finally, the phase shift of element $l$ is retrieved by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. Problem~\eqref{op:irs} after rank relaxation can be solved by existing optimization tools such as CVX \cite{Grant2013}. The SCA algorithm of passive beamforming is summarized in Algorithm~\ref{al:irs}.
+			Note that problem~\eqref{op:irs} is not a Semidefinite Programming (SDP) such that relaxing the rank constraint \eqref{co:irs_rank} has no analytical performance guarantee. In Section~\ref{se:performance_evaluation}, we prove through numerical simulations that the solution $\boldsymbol{\Phi}^{\star}$ to \ref{ob:irs} -- \ref{co:irs_sd} is rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint \eqref{co:irs_rank} can be dropped with negligible loss and $\bar{\boldsymbol{\phi}}^\star$ can be directly obtained through Eigenvalue Decomposition (EVD). In case $\boldsymbol{\Phi}^{\star}$ is not rank-\num{1}, a suboptimal solution can be extracted via the Gaussian randomization method \cite{Huang2010}. Specifically, we decompose $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate CSCG random vector $q \in \{1, \dots, Q\}$ by $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, construct the candidate $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the $\bar{\boldsymbol{\phi}}^\star$ that maximizes \eqref{ob:irs} as the solution. Finally, the phase shift of element $l$ is retrieved by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. Problem~\eqref{op:irs} after rank relaxation can be solved by existing optimization tools such as CVX \cite{Grant2013}. The SCA algorithm of passive beamforming is summarized in Algorithm~\ref{al:sca}.
 			\begin{algorithm}[!t]
 				\caption{SCA: IRS Phase Shift.}
-				\label{al:irs}
+				\label{al:sca}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{H}_{\mathrm{I},n},\boldsymbol{h}_{\mathrm{R},n},\boldsymbol{w}_{\mathrm{I/P}},\rho,\sigma_n,\bar{R},Q,\epsilon$, $\forall n$
-					\State Construct $\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n},\boldsymbol{C}_{\mathrm{I/P},k}$, $\forall n,k$
-					\State \textbf{Initialize} $i \gets 0,\boldsymbol{\Phi}^{(0)},t_{\mathrm{I/P},k}^{(0)}$, $\forall k$
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},\boldsymbol{w}_{\mathrm{I/P},n},\rho,\sigma_n,\bar{R},Q,\epsilon$, $\forall n$
+					\State Construct $\boldsymbol{V},\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n},\boldsymbol{C}_{\mathrm{I/P},k}$, $\forall n,k$
+					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\Phi}^{(0)}$
+					\State Get $t_{\mathrm{I/P},k}^{(0)}$, $\forall k$ by \eqref{eq:t_k}
 					\Repeat
 						\State $i \gets i + 1$
-						\State Get $\boldsymbol{\Phi}^{(i)},t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by solving \ref{ob:irs} -- \ref{co:irs_sd}
+						\State Get $\boldsymbol{\Phi}^{(i)}$ by solving \ref{ob:irs} -- \ref{co:irs_sd}
+						\State Update $t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by \eqref{eq:t_k}
 						\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
 					\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
 					\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
@@ -397,24 +399,32 @@
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
+
+			\begin{proposition}\label{pr:sca}
+				For any feasible initial point, the proposed SCA Algorithm~\ref{al:sca} can provide a local optimal $\boldsymbol{\Phi}^{\star}$ that satisfies the KKT conditions, although there is no guarantee $\boldsymbol{\Phi}^{\star}$ is rank-\num{1}.
+			\end{proposition}
+
+			\begin{proof}\label{pf:sca}
+				The objective function \eqref{ob:irs} is non-decreasing over iterations because the solution of problem~\eqref{op:irs} at iteration $i-1$ is still a feasible point at iteration $i$. Moreover, the sequence $\{\tilde{z}(\boldsymbol{\Phi}^{(i)})\}_{i=1}^{\infty}$ is bounded above due to the unit-modulus constraint \eqref{co:irs_modulus}. Thus, Algorithm~\ref{al:sca} is guaranteed to converge. To prove $\boldsymbol{\Phi}^{(i)}$ converges to stationary points, we notice that the SCA-based Algorithm~\ref{al:sca} is indeed an inner approximation algorithm \cite{Marks1978}, since $\tilde{z}(\boldsymbol{\Phi}) \le z(\boldsymbol{\Phi})$, $\partial\tilde{z}(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}=\partial z(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}$ and the approximation \eqref{eq:taylor_1} -- \eqref{eq:taylor_3} are asymptotically tight as $i \to \infty$ \cite{Li2013}. Therefore, Algorithm~\ref{al:sca} is guaranteed to provide a local optimal $\boldsymbol{\Phi}^{\star}$ that satisfies the KKT conditions.
+			\end{proof}
 		\end{subsection}
 
 		\begin{subsection}{Active Beamforming}
 			In the single-user scenario, the global optimal information and power precoders coincide at MRT. To prove this, we decouple the waveform in the spatial and frequency domains by
-			\begin{equation}
+			\begin{equation}\label{eq:w}
 				\boldsymbol{w}_{\mathrm{I/P}, n} = s_{\mathrm{I/P}, n} \boldsymbol{b}_{\mathrm{I/P}, n}
 			\end{equation}
-			where $s_{\mathrm{I/P},n}$ denotes the amplitude of modulated/multisine waveform at tone $n$, and $\boldsymbol{b}_{\mathrm{I/P}, n}$ denotes the information/power precoder. Define $\boldsymbol{s}_{\mathrm{I/P}} \triangleq [s_{\mathrm{I/P},1},\dots,s_{\mathrm{I/P},N}]^T \in \mathbb{C}^{N \times 1}$. On the other hand, the MRT precoder at subband $n$ is given by
+			where $s_{\mathrm{I/P},n}$ denotes the amplitude of modulated/multisine waveform at tone $n$, and $\boldsymbol{b}_{\mathrm{I/P}, n}$ denotes the information/power precoder. Define $\boldsymbol{s}_{\mathrm{I/P}} \triangleq [s_{\mathrm{I/P},1},\dots,s_{\mathrm{I/P},N}]^T \in \mathbb{C}^{N \times 1}$ and $\boldsymbol{b}_{\mathrm{I/P}} \triangleq [\boldsymbol{b}_{\mathrm{I/P}, 1}^T,\dots,\boldsymbol{b}_{\mathrm{I/P}, N}^T]^T \in \mathbb{C}^{MN \times 1}$ for simplicity. The MRT precoder at subband $n$ is given by
 			\begin{equation}\label{eq:b}
 				\boldsymbol{b}_{\mathrm{I/P}, n}^\star = \frac{\boldsymbol{h}_n}{\lVert{\boldsymbol{h}_n}\rVert}
 			\end{equation}
 
-			From the perspective of communication, the MRT precoder maximizes $\lvert{\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I}, n}}\rvert = \lVert{\boldsymbol{h}_{n}}\rVert s_{\mathrm{I}, n}$ thus maximizes rate \eqref{eq:R}. From the perspective of energy harvesting, the MRT precoder maximizes $(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})^* = \lVert{\boldsymbol{h}_{n}}\rVert^2 s_{\mathrm{I/P}, n}^2$ thus maximizes the second and fourth order DC terms \eqref{eq:y_I2} -- \eqref{eq:y_P4}. Hence, MRT is the global optimal precoder and no dedicated energy beams are required in the single-user SWIPT.
+			From the perspective of communications, the MRT precoder maximizes $\lvert{\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I}, n}}\rvert = \lVert{\boldsymbol{h}_{n}}\rVert s_{\mathrm{I}, n}$ thus maximizes rate \eqref{eq:R}. From the perspective of energy harvesting, the MRT precoder maximizes $(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})^* = \lVert{\boldsymbol{h}_{n}}\rVert^2 s_{\mathrm{I/P}, n}^2$ thus maximizes the second and fourth order DC terms \eqref{eq:y_I2} -- \eqref{eq:y_P4}. Hence, MRT is the global optimal active precoder and no dedicated energy beams are required in the single-user SWIPT.
 		\end{subsection}
 
 
 		\begin{subsection}{Waveform and Splitting Ratio}
-			Next, we jointly optimize the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ and the splitting ratio $\rho$ for any given IRS phase shift $\boldsymbol{\phi}$ and active precoder $\boldsymbol{b}_{\mathrm{I/P}, n}$, $\forall n$. On top of \eqref{eq:b}, the equivalent channel strength at subband $n$ is $\lVert{\boldsymbol{h}_n}\rVert$ and the power allocated to the modulated/multisine waveform is $s_{\mathrm{I/P},n}^2$. Hence, rate \eqref{eq:R} and DC current \eqref{eq:z_expand} reduce respectively to \eqref{eq:R_waveform} and \eqref{eq:z_waveform}, and problem~\eqref{op:original} boils down to
+			Next, we jointly optimize the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ and the splitting ratio $\rho$ for any given IRS phase shift $\boldsymbol{\phi}$ and active precoder $\boldsymbol{b}_{\mathrm{I/P}}$. On top of \eqref{eq:b}, the equivalent channel strength at subband $n$ is $\lVert{\boldsymbol{h}_n}\rVert$ and the power allocated to the modulated/multisine waveform is $s_{\mathrm{I/P},n}^2$. Hence, rate \eqref{eq:R} and DC current \eqref{eq:z_expand} reduce respectively to \eqref{eq:R_waveform} and \eqref{eq:z_waveform}, and problem~\eqref{op:original} boils down to
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}
@@ -459,12 +469,12 @@
 				\gamma_{m_{\mathrm{I},n}}^{(i)} & = \frac{g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{\mathrm{I},n}^{(i-1)})^2}\big/{\sigma_n^2}}.\label{eq:gamma_I}
 			\end{align}
 
-			$\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho$ are updated iteratively until convergence. Problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2013}. The GP algorithm of joint waveform amplitude and splitting ratio optimization is summarized in Algorithm~\ref{al:waveform}.
+			$\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho$ are updated iteratively until convergence. Problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2013}. The GP algorithm of joint waveform amplitude and splitting ratio optimization is summarized in Algorithm~\ref{al:gp}.
 			\begin{algorithm}[!t]
 				\caption{GP: Waveform Amplitude and Splitting Ratio.}
-				\label{al:waveform}
+				\label{al:gp}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h},P,\sigma_n,\bar{R},\epsilon$, $\forall n$
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_n,P,\sigma_n,\bar{R},\epsilon$, $\forall n$
 					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{s}_{\mathrm{I/P}}^{(0)}$, $\rho^{(0)}$
 					\Repeat
 						\State $i \gets i + 1$
@@ -476,54 +486,48 @@
 					\State \textbf{Output} $\boldsymbol{s}_{\mathrm{I}}^{\star},\boldsymbol{s}_{\mathrm{P}}^{\star},\rho^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
+
+			\begin{proposition}\label{pr:gp}
+				For any feasible initial point, the GP Algorithm~\ref{al:gp} is guaranteed to converge to a local optimal point of the waveform amplitude and splitting ratio problem \eqref{op:waveform}.
+			\end{proposition}
+
+			\begin{proof}\label{pf:gp}
+				See \cite{Clerckx2016a,Clerckx2018b}.
+			\end{proof}
 		\end{subsection}
 
 
 		\begin{subsection}{Block Coordinate Descent}
-			For any direct, incident and reflective channels, we iteratively update the passive beamforming $\boldsymbol{\phi}$ by Algorithm~\ref{al:irs}, and the waveform, active beamforming $\boldsymbol{w}_{\mathrm{I/P}}$ together with the splitting ratio $\rho$ by Algorithm~\ref{al:waveform} until convergence. The BCD algorithm is summarized in Algorithm~\ref{al:alternating}.
+			Based on the CSIT of direct and cascaded channels, we iteratively update the passive beamforming $\boldsymbol{\phi}$ by Algorithm~\ref{al:sca}, the active beamforming $\boldsymbol{b}_{\mathrm{I/P},n}$, $\forall n$ by equation \eqref{eq:b}, and the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ and splitting ratio $\rho$ by Algorithm~\ref{al:gp}, until convergence. The BCD algorithm is summarized in Algorithm~\ref{al:bcd}.
 			\begin{algorithm}[!t]
-				\caption{BCD: Waveform, Active and Passive Beamforming, and Splitting Ratio.}
-				\label{al:alternating}
+				\caption{BCD: Waveform, Beamforming and Splitting Ratio.}
+				\label{al:bcd}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{H}_{\mathrm{I},n},\boldsymbol{h}_{\mathrm{R},n},P,\sigma_n,\bar{R},Q,\epsilon$, $\forall n$
-					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{w}_{\mathrm{I/P}}^{(0)},\rho^{(0)}$
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},P,\sigma_n,\bar{R},Q,\epsilon$, $\forall n$
+					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{b}_{\mathrm{I/P}}^{(0)},\boldsymbol{s}_{\mathrm{I/P}}^{(0)},\rho^{(0)}$
+					\State Get $\boldsymbol{w}_{\mathrm{I/P},n}^{(0)}$, $\forall n$ by \eqref{eq:w}
 					\Repeat
 						\State $i \gets i + 1$
-						\State Fix $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)},\rho^{(i-1)}$, get $\boldsymbol{\phi}^{(i)}$ by Algorithm~\ref{al:irs}
-						\State Fix $\boldsymbol{\phi}^{(i)}$, update $\boldsymbol{h}_n^{(i)}$, $\forall n$ by \eqref{eq:h_n}, obtain $\boldsymbol{w}_{\mathrm{I/P}}^{(i)}, \rho^{(i)}$ by Algorithm~\ref{al:waveform}
-						\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
+						\State Get $\boldsymbol{\phi}^{(i)}$ based on $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)},\rho^{(i-1)}$ by Algorithm~\ref{al:sca}
+						\State Update $\boldsymbol{h}_n^{(i)}$, $\forall n$ by \eqref{eq:h_n}
+						\State Get $\boldsymbol{s}_{\mathrm{I/P}}^{(i)},\rho^{(i)}$ based on $\boldsymbol{h}_n^{(i)}$, $\forall n$ by Algorithm~\ref{al:gp}
+						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{eq:w}
+						\State Compute $z^{(i)}$ by \eqref{eq:z_waveform}
 					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
+					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)},\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)},\rho^{\star}=\rho^{(i)}$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star},\boldsymbol{w}_{\mathrm{I}}^{\star},\boldsymbol{w}_{\mathrm{P}}^{\star},\rho^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
-		\end{subsection}
 
-
-		\begin{subsection}{Convergence}
-			\begin{proposition}\label{pr:irs}
-				For any feasible initial point, the proposed SCA-based Algorithm~\ref{al:irs} can provide a feasible $\boldsymbol{\Phi}^{\star}$ that satisfies the KKT conditions, although there is no guarantee $\boldsymbol{\Phi}^{\star}$ is rank-\num{1}.
+			\begin{proposition}\label{pr:bcd}
+				Suppose $\boldsymbol{\Phi}$ is rank-\num{1}, every limit point $(\boldsymbol{\phi}^{\star},\boldsymbol{w}_{\mathrm{I}}^{\star},\boldsymbol{w}_{\mathrm{P}}^{\star},\rho^{\star})$ provided by the BCD algorithm is a local optimal point of the original problem~\eqref{op:original}.
 			\end{proposition}
 
-			\begin{proof}\label{pf:irs}
-				The objective function \eqref{ob:irs} is non-decreasing over iterations because the solution of problem~\eqref{op:irs} at iteration $i-1$ is still a feasible point at iteration $i$. Moreover, the sequence $\{\tilde{z}(\boldsymbol{\Phi}^{(i)})\}_{i=1}^{\infty}$ is bounded above due to the unit-modulus constraint \eqref{co:irs_modulus}. Thus, Algorithm~\ref{al:irs} is guaranteed to converge. To prove $\boldsymbol{\Phi}^{(i)}$ converges to the set of stationary points of IRS subproblem, we notice that the SCA-based Algorithm~\ref{al:irs} is indeed an inner approximation algorithm \cite{Marks1978}, since $\tilde{z}(\boldsymbol{\Phi}) \le z(\boldsymbol{\Phi})$, $\partial\tilde{z}(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}=\partial z(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}$ and the approximation \eqref{eq:taylor_1} -- \eqref{eq:taylor_3} are asymptotically tight as $i \to \infty$ \cite{Li2013}. Therefore, Algorithm~\ref{al:irs} is guaranteed to provide a feasible $\boldsymbol{\Phi}^{\star}$ that satisfies the KKT conditions.
-			\end{proof}
-
-			\begin{proposition}\label{pr:waveform}
-				For any feasible initial point, the GP-based Algorithm~\ref{al:waveform} is guaranteed to converge to a stationary point of the waveform, active beamforming and splitting ratio subproblem.
-			\end{proposition}
-
-			\begin{proof}\label{pf:waveform}
-				See \cite{Clerckx2016a,Clerckx2018b}.
-			\end{proof}
-
-			\begin{proposition}\label{pr:ao}
-				Suppose $\boldsymbol{\Phi}$ is rank-\num{1}, every limit point $(\boldsymbol{\phi}^{\star},\boldsymbol{w}_{\mathrm{I}}^{\star},\boldsymbol{w}_{\mathrm{P}}^{\star},\rho^{\star})$ of the proposed alternating algorithm is a stationary point of the original problem~\eqref{op:original}.
-			\end{proposition}
-
-			\begin{proof}\label{pf:ao}
-				The objective function \eqref{ob:original} is non-decreasing over iterations of Algorithm~\ref{al:alternating}, which is also upper-bounded due to the unit-modulus constraint \eqref{co:original_modulus} and the average transmit power constraint \eqref{co:original_power}. If $\boldsymbol{\Phi}$ is rank-\num{1}, then $\boldsymbol{\phi}$ can be obtained by EVD without performance loss, and the sequence $\{\boldsymbol{\phi}^{(i)},\boldsymbol{w}_{\mathrm{I}}^{(i)},\boldsymbol{w}_{\mathrm{P}}^{(i)},\rho^{(i)}\}$ generated by alternatively optimizing $\boldsymbol{\phi}$ and $\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho$ has limit points and Algorithm~\ref{al:alternating} is guaranteed to converge. As demonstrated in \cite{Grippo2000}, the solution is a stationary point of problem~\eqref{op:original}.
+			\begin{proof}\label{pf:bcd}
+				The objective function \eqref{ob:original} is non-decreasing over iterations of Algorithm~\ref{al:bcd}, which is also upper-bounded due to the unit-modulus constraint \eqref{co:original_modulus} and the transmit power constraint \eqref{co:original_power}. If $\boldsymbol{\Phi}$ is rank-\num{1}, then $\boldsymbol{\phi}$ can be extracted without performance loss and strict convergence of Algorithm~\ref{al:bcd} is guaranteed. As demonstrated in \cite{Grippo2000}, the limit point obtained by alternatively updating $\boldsymbol{\phi}$, $\boldsymbol{b}_{\mathrm{I/P}}$, $\boldsymbol{s}_{\mathrm{I/P}}$ and $\rho$ via BCD is a local optimal solution of problem~\eqref{op:original}.
 			\end{proof}
 		\end{subsection}
+
 
 		\begin{subsection}{Low-Complexity Adaptive Design}
 			\begin{subsubsection}{Waveform and Active Beamforming}
@@ -570,7 +574,7 @@
 			Recall in Remark \ref{re:reflection_coefficient} that one needs to vary the element impedance to adjust the reflection coefficient. To reduce the circuit complexity and control overhead, we design a passive beamforming codebook $\mathcal{C}_\phi = \{e^{j 2 \pi i / 2^b} \mid i = 1, \dots, 2^b\}$ to quantize each reflection coefficient by $b$ bits.
 		\end{subsection}
 
-		We first evaluate the performance of Algorithm~\ref{al:irs} under SDR. It is demonstrated that $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} for all tested channel realizations with different $M$, $N$ and $L$, such that $\boldsymbol{\phi}^{\star}$ can be directly obtained through EVD and the Gaussian randomization step is not required. Therefore, we claim Algorithm~\ref{al:irs} converges to stationary points of problem~\eqref{op:irs} without performance loss.
+		We first evaluate the performance of Algorithm~\ref{al:sca} under SDR. It is demonstrated that $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} for all tested channel realizations with different $M$, $N$ and $L$, such that $\boldsymbol{\phi}^{\star}$ can be directly obtained through EVD and the Gaussian randomization step is not required. Therefore, we claim Algorithm~\ref{al:sca} converges to stationary points of problem~\eqref{op:irs} without performance loss.
 
 		\begin{figure}[!t]
 			\centering
