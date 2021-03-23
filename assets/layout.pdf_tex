@@ -1,4 +1,4 @@
-%% Creator: Inkscape 1.0.1 (3bc2e813f5, 2020-09-07), www.inkscape.org
+%% Creator: Inkscape 1.0.2 (e86c870879, 2021-01-15), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'layout.pdf' (pdf, eps, ps)
 %%
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{329.50891919bp}%
+    \setlength{\unitlength}{531.32000225bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,19 +50,19 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.34264804)%
+  \begin{picture}(1,0.22982008)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{layout.pdf}}%
-    \put(0.40916371,0.0751697){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{D}}$\end{tabular}}}}%
-    \put(0.17180498,0.001918){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{H}}$\end{tabular}}}}%
-    \put(0.31139106,0.16815567){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{V}}$\end{tabular}}}}%
+    \put(0.38706636,0.00237898){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{D}}$\end{tabular}}}}%
+    \put(0.14983831,0.00237898){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{H}}$\end{tabular}}}}%
+    \put(0.24037581,0.10667481){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{V}}$\end{tabular}}}}%
+    \put(0.20100878,0.21891894){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IRS\end{tabular}}}}%
+    \put(-0,0.02692163){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}AP\end{tabular}}}}%
+    \put(0.98152529,0.02701951){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}UE\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{layout.pdf}}%
-    \put(0.27322035,0.30804102){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IRS\end{tabular}}}}%
-    \put(0,0.04073468){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}AP\end{tabular}}}}%
-    \put(0.94977198,0.04090365){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}User\end{tabular}}}}%
+    \put(0.10486412,0.10667481){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{I}}$\end{tabular}}}}%
+    \put(0.64126406,0.10667481){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{R}}$\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{layout.pdf}}%
-    \put(0.12930189,0.16815567){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{I}}$\end{tabular}}}}%
-    \put(0.65280831,0.16815567){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{R}}$\end{tabular}}}}%
   \end{picture}%
 \endgroup%
