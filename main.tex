@@ -387,7 +387,7 @@
 						\State Get $\boldsymbol{U},\boldsymbol{\Sigma}$ by EVD, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$
 						\State Generate $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $\forall q$
 						\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)},\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$, $\forall q$
-						\State Set $q^{\star}=\arg\max_q{\tilde{z}(\boldsymbol{\Phi}_q)},\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
+						\State Set $q^{\star}=\arg\max_q{z(\boldsymbol{\Phi}_q)},\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
 					\EndIf
 					\State Set $\theta_l^\star=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$, $\forall l$, $\boldsymbol{\phi}^{\star}=[e^{j\theta_1^\star},\dots,e^{j\theta_L^\star}]^H$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$
@@ -418,17 +418,19 @@
 
 
 		\begin{subsection}{Waveform and Splitting Ratio}
-			Next, we jointly optimize the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ and the splitting ratio $\rho$ for any given IRS phase shift $\boldsymbol{\phi}$ and active precoder $\boldsymbol{b}_{\mathrm{I/P}}$. On top of \eqref{eq:b}, the equivalent channel strength at subband $n$ is $\lVert{\boldsymbol{h}_n}\rVert$ and the power allocated to the modulated/multisine waveform is $s_{\mathrm{I/P},n}^2$. Hence, rate \eqref{eq:R} and DC current \eqref{eq:z_expand} reduce respectively to \eqref{eq:R_waveform} and \eqref{eq:z_waveform}, and problem~\eqref{op:original} boils down to
+			Next, we jointly optimize the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ and the splitting ratio $\rho$ for any given IRS phase shift $\boldsymbol{\phi}$ and active precoder $\boldsymbol{b}_{\mathrm{I/P}}$. On top of \eqref{eq:b}, the equivalent channel strength at subband $n$ is $\lVert{\boldsymbol{h}_n}\rVert$ and the power allocated to the modulated/multisine waveform is $s_{\mathrm{I/P},n}^2$. Hence, rate \eqref{eq:R} reduces to
+			\begin{equation}\label{eq:R_waveform}
+				R(\boldsymbol{s}_{\mathrm{I}},\rho) = \log_2\prod_{n=1}^N\left(1+\frac{(1-\rho)\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}{\sigma_n^2}\right)
+			\end{equation}
+			and DC current \eqref{eq:z_expand} reduces to \eqref{eq:z_waveform}, so that problem~\eqref{op:original} boils down to
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}
-					R(\boldsymbol{s}_{\mathrm{I}},\rho)
-					& = \log_2\left(\prod_{n=1}^N\biggl(1+\frac{(1-\rho)\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}{\sigma_n^2}\biggr)\right),\label{eq:R_waveform}\\
 					z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)
 					& = \frac{1}{2}{\beta_2}{\rho} \sum_{n=1}^N \lVert{\boldsymbol{h}_n}\rVert^2(s_{\mathrm{I},n}^2+s_{\mathrm{P},n}^2) + \frac{3}{8}{\beta_4}{\rho^2} \left( 2\sum_{n_1,n_2} \prod_{j=1}^2 \lVert{\boldsymbol{h}_{n_j}}\rVert^2 s_{\mathrm{I},{n_j}}^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}} \prod_{j=1}^4 \lVert{\boldsymbol{h}_{n_j}}\rVert s_{\mathrm{P},{n_j}} \right)\nonumber\\
 					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left( \sum_{n_1,n_2} \lVert{\boldsymbol{h}_{n_1}}\rVert^2 \lVert{\boldsymbol{h}_{n_2}}\rVert^2 s_{\mathrm{I},{n_1}}^2 s_{\mathrm{P},{n_2}}^2 \right).&&\label{eq:z_waveform}
 				\end{align}
-			\end{figure*}%
+			\end{figure*}
 			\begin{maxi!}
 				{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho}{z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)}{\label{op:waveform}}{}
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{s}_\mathrm{P}}\rVert^2\right)\le{P}}
@@ -524,7 +526,7 @@
 
 
 		\begin{subsection}{Low-Complexity Adaptive Design}
-			The GP Algorithm~\ref{al:gp} achieves local optimality at a cost of exponential computational complexity w.r.t. the number of subbands \cite{Chiang2005}. To facilitate practical SWIPT implementation, we propose two low-complexity waveform amplitude design by combining WF and SMF under TS and PS setups. The optimal waveform design for WIT corresponds to the WF strategy that assigns the amplitude of modulated tone $n$ by
+			The GP Algorithm~\ref{al:gp} achieves local optimality at a cost of exponential computational complexity \cite{Chiang2005}. To facilitate practical SWIPT implementation, we propose two low-complexity waveform amplitude design by combining WF and SMF under TS and PS setups. The optimal waveform design for WIT corresponds to the WF strategy that assigns the amplitude of modulated tone $n$ by
 			\begin{equation}\label{eq:wf}
 				s_{\mathrm{I}, n} = \sqrt{2\left(\mu - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}
 			\end{equation}
@@ -532,47 +534,47 @@
 			\begin{equation}\label{eq:smf}
 				s_{\mathrm{P}, n} = \sqrt{\frac{2 P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha
 			\end{equation}
-			where the scaling ratio $\alpha \ge 1$ scales the matched filter to exploit the rectifier nonlinearity. $\alpha = 1$ corresponds to a standard matched filter where the amplitude of sinewave $n$ is linearly proportional to the equivalent channel strength $\lVert{\boldsymbol{h}_n}\rVert$, while $\alpha > 1$ further elevates the strong subbands and suppresses the weak ones.
-
-			In the low-complexity TS waveform design, modulated waveform is used in the data session while multisine waveform is used in the energy session, and their amplitudes are given respectively by \eqref{eq:wf} and \eqref{eq:smf}. The R-E boundary is a segment between the WIT point ($\eta=0$) and the WPT point ($\eta=1$).
-
-			% For the WIT point, we
-
-			On the other hand, the low-complexity PS scheme controls the superposed waveform by balancing ratio $\delta$ and involves the design of splitting ratio $\rho$. The amplitude of modulated and multisine components are
+			where the scaling ratio $\alpha \ge 1$ scales the matched filter to exploit the rectifier nonlinearity. In the low-complexity TS waveform design, modulated waveform \eqref{eq:wf} is used in the data session while multisine waveform \eqref{eq:smf} is used in the energy session. In contrast, the low-complexity PS scheme jointly designs the waveform balancing ratio $\delta$ and splitting ratio $\rho$, and the amplitude of modulated and multisine components are given by
 			\begin{align}
-				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\mu - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+} \\
-				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha
+				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\mu - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+} \label{eq:s_i}\\
+				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha \label{eq:s_p}
 			\end{align}
 
-			Note that the balancing ratio $\delta$ denotes the proportion allocated to the multisine waveform while the splitting ratio $\rho$ denotes the proportion used for energy harvesting. For low-complexity PS design, we characterize the achievable R-E region by varying $\delta$ and $\rho$ from \num{0} to \num{1} such that the rate constraint \eqref{co:irs_rate} in the passive beamforming problem can be dropped (i.e. set $\bar{R}=0$).
-
-			Moreover, the low-complexity TS design can be regarded as a special case where
-
-			The low-complexity algorithm for joint waveform, active and passive beamforming design under TS and PS modes is summarized in Algorithm~.
-
-			% In contrast, the R-E boundary of low-complexity TS design is a segment
-
-
+			Besides, minor modification is required for passive beamforming to cooperate with the low-complexity waveform schemes. To achieve the WIT point ($\eta=\rho=0$), the achievable rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:z_irs_approx} should be maximized. To achievable non-WIT points, the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is now characterized by varying $\eta$, $\delta$ and $\rho$. Algorithm~\ref{al:lc} summarizes the modified passive beamforming design under low-complexity PS setup.
 
 			\begin{algorithm}[!t]
-				\caption{Low-Complexity Design under TS and PS Modes.}
+				\caption{Modified: IRS Phase Shift.}
 				\label{al:lc}
 				\begin{algorithmic}[1]
-					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},P,\delta,\rho,\sigma_n,\bar{R}=0,Q,\epsilon$, $\forall n$
-					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{b}_{\mathrm{I/P}}^{(0)},\boldsymbol{s}_{\mathrm{I/P}}^{(0)}$
-					\State Get $\boldsymbol{w}_{\mathrm{I/P},n}^{(0)}$, $\forall n$ by \eqref{eq:w}
-					\Repeat
-						\State $i \gets i + 1$
-						\State Get $\boldsymbol{\phi}^{(i)}$ based on $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)}$ by Algorithm~\ref{al:sca}
-						\State Update $\boldsymbol{h}_n^{(i)}$, $\forall n$ by \eqref{eq:h_n}
-						\State Get $\boldsymbol{s}_{\mathrm{I/P}}^{(i)}$ based on $\boldsymbol{h}_n^{(i)}$, $\forall n$ by \eqref{eq:wf}, {eq:smf}
-						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{eq:w}
-						\State Compute $z^{(i)}$ by \eqref{eq:z_waveform}
-					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
-					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)},\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)},\rho^{\star}=\rho^{(i)}$
-					\State \textbf{Output} $\boldsymbol{\phi}^{\star},\boldsymbol{w}_{\mathrm{I}}^{\star},\boldsymbol{w}_{\mathrm{P}}^{\star},\rho^{\star}$
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},\boldsymbol{w}_{\mathrm{I/P},n},\rho,\sigma_n,Q,\epsilon$, $\forall n$
+					\State Construct $\boldsymbol{V},\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n},\boldsymbol{C}_{\mathrm{I/P},k}$, $\forall n,k$
+					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\Phi}^{(0)}$
+					\If{$\rho=0$}
+						\State Get $\boldsymbol{\Phi}^{\star}$ by maximizing \eqref{eq:R_irs} w.r.t. \eqref{co:irs_modulus}, \eqref{co:irs_sd}
+					\Else
+						\Repeat
+							\State $i \gets i + 1$
+								\State Set $\bar{R}=0$
+								\State Get $\boldsymbol{\Phi}^{(i)}$ by solving \ref{ob:irs} -- \ref{co:irs_sd}
+								\State Update $t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by \eqref{eq:t_k}
+								\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
+						\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
+						\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
+					\EndIf
+					\If{$\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$}
+						\State Get $\bar{\boldsymbol{\phi}}^\star$ by EVD, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
+					\Else
+						\State Get $\boldsymbol{U},\boldsymbol{\Sigma}$ by EVD, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$
+						\State Generate $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $\forall q$
+						\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)},\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$, $\forall q$
+						\State Set $q^{\star}=\arg\max_q{R(\boldsymbol{\Phi}_q)}$ or $q^{\star}=\arg\max_q{z(\boldsymbol{\Phi}_q)}$, $\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
+					\EndIf
+					\State Set $\theta_l^\star=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$, $\forall l$, $\boldsymbol{\phi}^{\star}=[e^{j\theta_1^\star},\dots,e^{j\theta_L^\star}]^H$
+					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
+
+			Similar to Algorithm~\ref{al:bcd}, we iteratively update the passive beamforming $\boldsymbol{\phi}$ by Algorithm~\ref{al:lc}, the active beamforming $\boldsymbol{b}_{\mathrm{I/P},n}$, $\forall n$ by equation \eqref{eq:b}, and the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ by \eqref{eq:wf}, \eqref{eq:smf} for TS or \eqref{eq:s_i}, \eqref{eq:s_p} for PS, until convergence.
 		\end{subsection}
 	\end{section}
 
@@ -586,6 +588,12 @@
 			\label{fi:layout}
 		\end{figure}
 		To evaluate the performance of the proposed IRS-aided SWIPT system, we characterize the average R-E regions under typical setups. Consider a large open space Wi-Fi-like environment at a center frequency of \SI{5.18}{\GHz} with bandwidth $B=1\,\si{\MHz}$ as reference. As shown in Fig.~\ref{fi:layout}, we assume the IRS moves along a horizontal path parallel to the AP-UE path and let $d_{\mathrm{H}}$, $d_{\mathrm{V}}$ be the horizontal and vertical distances from the AP to the IRS, respectively. We also denote $d_{\mathrm{D}}$, $d_{\mathrm{I}}$, $d_{\mathrm{R}}$ as the length of direct, incident, reflective paths such that $d_{\mathrm{I}}=\sqrt{d_{\mathrm{H}}^2+d_{\mathrm{V}}^2}$, $d_{\mathrm{R}}=\sqrt{(d_{\mathrm{D}}-d_{\mathrm{H}})^2+d_{\mathrm{V}}^2}$. $d_{\mathrm{D}}=15\,\si{\meter}$, $d_{\mathrm{V}}=2\,\si{\meter}$ and $d_{\mathrm{H}}=2\,\si{\meter}$ are chosen as reference. The path loss and fading parameters are obtained from IEEE TGn channel model D \cite{Erceg2004}, and the path loss is set to $L_0=-35\,\si{\dB}$ at $d_0=1\,\si{\meter}$. We assume all channels are NLoS with taps modelled as i.i.d. CSCG random variables of unit average sum-power, corresponding to a normalized multipath response. The reference numbers of transmit antennas, IRS elements and subbands are $M=1$, $L=20$, $N=16$, respectively. No spatial correlation is assumed across transmit antennas and IRS elements. Rectenna parameters are taken as $k_2=0.0034$, $k_4=0.3829$, $R_{\mathrm{A}}=50\,\si{\ohm}$ such that $\beta_2=0.17$ and $\beta_4=957.25$. The average Effective Isotropic Radiated Power (EIRP) is fixed to $P=36\,\si{\dBm}$ and the average noise power is $\sigma_n^2=-40\,\si{\dBm}$ at all subbands as reference. We also assume a \SI{2}{\dBi} IRS element gain\footnote{Due to highly directional reflection.} and a \SI{2}{\dBi} receive antenna gain. For the algorithm, the tolerance is set to $\epsilon=10^{-8}$, the number of candidates in the Gaussian randomization method is set to $Q=10^{3}$, and the R-E region is averaged over \num{300} channel realizations. In the R-E boundary, the leftmost point corresponds to WPT ($\rho=1$) where power can be allocated simultaneously to modulated and unmodulated waveform to maximize the average output DC current. On the other hand, the rightmost point corresponds to WIT ($\rho=0$) where the solution coincides with the Water-Filling (WF) algorithm that allocates all power to the modulated waveform only. For a fair comparison, the $x$-axis of the plots has been normalized to the average subband rate $R/N$. We also investigate the impact of imperfect CSIT and quantized IRS on the system performance.
+
+
+		% (denotes the proportion allocated to the multisine waveform) (denotes the proportion used for energy harvesting)
+		% The R-E boundary is a segment between the WIT point and the WPT point.
+		% where the balancing ratio $\delta$ denotes the proportion allocated to the multisine waveform and the splitting ratio $\rho$ denotes the proportion used for energy harvesting. The R-E region is characterized under different $\delta$ and $\rho$ from \num{0} to \num{1}.
+
 
 		\begin{subsection}{Imperfect CSIT}
 			Due to the general lack of RF-chains at the IRS, accurate CSIT acquisition can be challenging especially for a short coherence time. Hence, we consider an imperfect CSIT model and denote the estimation of the cascaded links at subband $n$ as
