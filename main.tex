@@ -365,7 +365,7 @@
 				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_rank}}
 			\end{maxi!}
 
-			Note that problem~\eqref{op:irs} is not a Semidefinite Programming (SDP) such that relaxing the rank constraint \eqref{co:irs_rank} has no analytical performance guarantee. In Section~\ref{se:performance_evaluation}, we prove through numerical simulations that the solution $\boldsymbol{\Phi}^{\star}$ to \ref{ob:irs} -- \ref{co:irs_sd} is rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint \eqref{co:irs_rank} can be dropped with negligible loss and $\bar{\boldsymbol{\phi}}^\star$ can be directly obtained through Eigenvalue Decomposition (EVD). In case $\boldsymbol{\Phi}^{\star}$ is not rank-\num{1}, a suboptimal solution can be extracted via the Gaussian randomization method \cite{Huang2010}. Specifically, we decompose $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$, generate CSCG random vector $q \in \{1, \dots, Q\}$ by $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, construct the candidate $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)}$, and choose the $\bar{\boldsymbol{\phi}}^\star$ that maximizes \eqref{ob:irs} as the solution. Finally, the phase shift of element $l$ is retrieved by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. Problem~\eqref{op:irs} after rank relaxation can be solved by existing optimization tools such as CVX \cite{Grant2013}. The SCA algorithm of passive beamforming is summarized in Algorithm~\ref{al:sca}.
+			Note that problem~\eqref{op:irs} is not a Semidefinite Programming (SDP) such that relaxing the rank constraint \eqref{co:irs_rank} has no analytical performance guarantee. In Section~\ref{se:performance_evaluation}, we prove through numerical simulations that the solution $\boldsymbol{\Phi}^{\star}$ to \ref{ob:irs} -- \ref{co:irs_sd} is rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint \eqref{co:irs_rank} can be dropped with negligible loss and $\bar{\boldsymbol{\phi}}^\star$ can be directly obtained through eigen decomposition. In case $\boldsymbol{\Phi}^{\star}$ is not rank-\num{1}, a suboptimal solution can be extracted via the Gaussian randomization method \cite{Luo2010}. Specifically, we decompose $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Lambda}\boldsymbol{U}^H$, generate CSCG random vector $q \in \{1, \dots, Q\}$ by $\boldsymbol{\xi}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, construct the candidate $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Lambda}^{1/2}\boldsymbol{\xi}_q\right)}$, and choose the $\bar{\boldsymbol{\phi}}^\star$ that maximizes \eqref{ob:irs} as the solution. Finally, the phase shift of element $l$ is retrieved by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. Problem~\eqref{op:irs} after rank relaxation can be solved by existing optimization tools such as CVX \cite{Grant2013}. The SCA algorithm of passive beamforming is summarized in Algorithm~\ref{al:sca}.
 			\begin{algorithm}[!t]
 				\caption{SCA: IRS Phase Shift.}
 				\label{al:sca}
@@ -382,11 +382,11 @@
 					\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
 					\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
 					\If{$\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$}
-						\State Get $\bar{\boldsymbol{\phi}}^\star$ by EVD, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
+						\State Get $\bar{\boldsymbol{\phi}}^\star$ by eigen decomposition, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
 					\Else
-						\State Get $\boldsymbol{U},\boldsymbol{\Sigma}$ by EVD, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$
-						\State Generate $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $\forall q$
-						\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)},\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$, $\forall q$
+						\State Get $\boldsymbol{U},\boldsymbol{\Lambda}$ by eigen decomposition, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Lambda}\boldsymbol{U}^H$
+						\State Generate $\boldsymbol{\xi}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $\forall q$
+						\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Lambda}^{1/2}\boldsymbol{\xi}_q\right)},\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$, $\forall q$
 						\State Set $q^{\star}=\arg\max_q{z(\boldsymbol{\Phi}_q)},\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
 					\EndIf
 					\State Set $\theta_l^\star=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$, $\forall l$, $\boldsymbol{\phi}^{\star}=[e^{j\theta_1^\star},\dots,e^{j\theta_L^\star}]^H$
@@ -562,11 +562,11 @@
 						\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
 					\EndIf
 					\If{$\mathrm{rank}(\boldsymbol{\Phi}^{\star})=1$}
-						\State Get $\bar{\boldsymbol{\phi}}^\star$ by EVD, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
+						\State Get $\bar{\boldsymbol{\phi}}^\star$ by eigen decomposition, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
 					\Else
-						\State Get $\boldsymbol{U},\boldsymbol{\Sigma}$ by EVD, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Sigma}\boldsymbol{U}^H$
-						\State Generate $\boldsymbol{r}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $\forall q$
-						\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Sigma}^{1/2}\boldsymbol{r}_q\right)},\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$, $\forall q$
+						\State Get $\boldsymbol{U},\boldsymbol{\Lambda}$ by eigen decomposition, $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Lambda}\boldsymbol{U}^H$
+						\State Generate $\boldsymbol{\xi}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, $\forall q$
+						\State Construct $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Lambda}^{1/2}\boldsymbol{\xi}_q\right)},\boldsymbol{\Phi}_q=\bar{\boldsymbol{\phi}}_q\bar{\boldsymbol{\phi}}_q^H$, $\forall q$
 						\State Set $q^{\star}=\arg\max_q{R(\boldsymbol{\Phi}_q)}$ or $q^{\star}=\arg\max_q{z(\boldsymbol{\Phi}_q)}$, $\bar{\boldsymbol{\phi}}^\star=\bar{\boldsymbol{\phi}}_{q^{\star}}$
 					\EndIf
 					\State Set $\theta_l^\star=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$, $\forall l$, $\boldsymbol{\phi}^{\star}=[e^{j\theta_1^\star},\dots,e^{j\theta_L^\star}]^H$
@@ -574,7 +574,7 @@
 				\end{algorithmic}
 			\end{algorithm}
 
-			Similar to Algorithm~\ref{al:bcd}, we iteratively update the passive beamforming $\boldsymbol{\phi}$ by Algorithm~\ref{al:lc}, the active beamforming $\boldsymbol{b}_{\mathrm{I/P},n}$, $\forall n$ by equation \eqref{eq:b}, and the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ by \eqref{eq:wf}, \eqref{eq:smf} for TS or \eqref{eq:s_i}, \eqref{eq:s_p} for PS, until convergence.
+			Similar to Algorithm~\ref{al:bcd}, we iteratively update the passive beamforming $\boldsymbol{\phi}$ by Algorithm~\ref{al:lc}, the active beamforming $\boldsymbol{b}_{\mathrm{I/P},n}$, $\forall n$ by equation \eqref{eq:b}, and the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ by \eqref{eq:wf}, \eqref{eq:smf} for TS or \eqref{eq:s_i}, \eqref{eq:s_p} for PS, until convergence. Similar to Proposition \ref{pr:bcd}, strict convergence and local optimality of the low-complexity BCD algorithm are guaranteed if $\boldsymbol{\Phi}$ is rank-\num{1}.
 		\end{subsection}
 	\end{section}
 
@@ -589,7 +589,12 @@
 		\end{figure}
 		To evaluate the performance of the proposed IRS-aided SWIPT system, we suppose a layout as Fig.~\ref{fi:layout} where the IRS moves along a horizontal line parallel to the AP-UE path. Let $d_{\mathrm{H}}$, $d_{\mathrm{V}}$ be the horizontal and vertical distances from the AP to the IRS, and denote respectively $d_{\mathrm{D}}$, $d_{\mathrm{I}}=\sqrt{d_{\mathrm{H}}^2+d_{\mathrm{V}}^2}$, $d_{\mathrm{R}}=\sqrt{(d_{\mathrm{D}}-d_{\mathrm{H}})^2+d_{\mathrm{V}}^2}$ as the distance of direct, incident and reflective links. Consider a large open space Wi-Fi-like environment at center frequency \SI{5.18}{\GHz}, where the fading parameters follow IEEE TGn channel model D \cite{Erceg2004} and the reference path loss is \SI{-35}{\dB} at \SI{1}{\meter}. All channels are assumed NLoS with taps modelled as i.i.d. CSCG random variables of unit average sum-power, corresponding to a normalized multipath response. Rectenna parameters are chosen as $k_2=0.0034$, $k_4=0.3829$, $R_{\mathrm{A}}=50\,\si{\ohm}$ such that $\beta_2=0.17$ and $\beta_4=957.25$. The average Effective Isotropic Radiated Power (EIRP) is fixed to $P=36\,\si{\dBm}$ and the receive antenna gain is set to \SI{2}{\dBi}. For the algorithms, the tolerance is $\epsilon=10^{-8}$, the number of candidates for Gaussian randomization is $Q=10^{3}$, the scaling ratio is $\alpha=2$, and we assume $\delta=\rho$ for simplicity. All R-E regions are averaged over \num{300} channel realizations, and the $x$-axis has been normalized to per-subband rate $R/N$.
 
-		We first evaluate the performance of Algorithm~\ref{al:sca} under SDR. It is demonstrated that $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} for all tested channel realizations with different $M$, $N$ and $L$, such that $\boldsymbol{\phi}^{\star}$ can be directly obtained through EVD and the Gaussian randomization step is not required. Therefore, we claim Algorithm~\ref{al:sca} converges to stationary points of problem~\eqref{op:irs} without performance loss.
+		We first provide numerical proof on the strict convergence and local optimality of the proposed BCD algorithms. Too see this, we define the eigen ratio as $\nu=\max_l\lambda_l(\boldsymbol{\Phi})/\sum_l\lambda_l(\boldsymbol{\Phi})$ where $\lambda_l(\boldsymbol{\Phi})$ is the $l$-th eigenvalue of $\boldsymbol{\Phi}$. Table~ shows the minimum value of $\nu$ during both BCD algorithms for all tested channel realizations.
+
+
+		evaluate the rank of IRS matrix $\boldsymbol{\Phi}^\star$ obtained by Algorithm~\ref{al:sca} and \ref{al:lc}.
+
+		We first evaluate the performance of Algorithm~\ref{al:sca} under SDR. It is demonstrated that $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} for all tested channel realizations with different $M$, $N$ and $L$, such that $\boldsymbol{\phi}^{\star}$ can be directly obtained through eigen decomposition and the Gaussian randomization step is not required. Therefore, we claim Algorithm~\ref{al:sca} converges to stationary points of problem~\eqref{op:irs} without performance loss.
 
 		\begin{figure}[!t]
 			\centering
