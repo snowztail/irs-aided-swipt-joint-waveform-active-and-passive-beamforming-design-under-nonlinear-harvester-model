@@ -58,7 +58,7 @@ function [sample, solution] = re_sample_swipt_low_complexity(alpha, beta2, beta4
 			channelAmplitude = vecnorm(compositeChannel, 2, 2);
 
 			% * Get R-E sample
-			[rate] = water_filling(compositeChannel, txPower, noisePower, waveformRatio);
+            [rate] = rate_gp(channelAmplitude, infoAmplitude, infoRatio, noisePower);
 			[current] = current_sdr(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);
 
 			% * Check convergence
