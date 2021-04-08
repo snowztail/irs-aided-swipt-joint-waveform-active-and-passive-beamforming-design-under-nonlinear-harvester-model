@@ -7,6 +7,7 @@ reWitIrsSample = cell(nChannels, length(Variable.bandwidth));
 reWptIrsSample = cell(nChannels, length(Variable.bandwidth));
 reRandomIrsSample = cell(nChannels, length(Variable.bandwidth));
 reNoIrsSample = cell(nChannels, length(Variable.bandwidth));
+reLcSample = cell(nChannels, length(Variable.bandwidth));
 
 reIdealIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reAdaptiveIrsSolution = cell(nChannels, length(Variable.bandwidth));
@@ -14,6 +15,7 @@ reWitIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reWptIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reRandomIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reNoIrsSolution = cell(nChannels, length(Variable.bandwidth));
+reLcSolution = cell(nChannels, length(Variable.bandwidth));
 
 for iChannel = 1 : nChannels
     % * Generate tap gains and delays
@@ -53,6 +55,9 @@ for iChannel = 1 : nChannels
 
 		% * Waveform optimization without IRS
 		[reNoIrsSample{iChannel, iBandwidth}, reNoIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
+
+		% * Low-complexity waveform design
+		[reLcSample{iChannel, iBandwidth}, reLcSolution{iChannel, iBandwidth}] = re_sample_swipt_low_complexity(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 	end
 end
 
@@ -63,6 +68,7 @@ reWitIrsInstance = cell(1, length(Variable.bandwidth));
 reWptIrsInstance = cell(1, length(Variable.bandwidth));
 reRandomIrsInstance = cell(1, length(Variable.bandwidth));
 reNoIrsInstance = cell(1, length(Variable.bandwidth));
+reLcInstance = cell(1, length(Variable.bandwidth));
 
 for iBandwidth = 1 : length(Variable.bandwidth)
 	reIdealIrsInstance{iBandwidth} = mean(cat(3, reIdealIrsSample{:, iBandwidth}), 3);
@@ -71,6 +77,7 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	reWptIrsInstance{iBandwidth} = mean(cat(3, reWptIrsSample{:, iBandwidth}), 3);
 	reRandomIrsInstance{iBandwidth} = mean(cat(3, reRandomIrsSample{:, iBandwidth}), 3);
 	reNoIrsInstance{iBandwidth} = mean(cat(3, reNoIrsSample{:, iBandwidth}), 3);
+	reLcInstance{iBandwidth} = mean(cat(3, reLcSample{:, iBandwidth}), 3);
 end
 
 % * Save batch data

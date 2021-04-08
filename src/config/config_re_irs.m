@@ -54,12 +54,12 @@ nCandidates = 1e3;
 nSamples = 20;
 % number of channel realizations
 nChannels = 1;
-% number of cases to investigate (ideal, adaptive, WIT, WPT, random, no IRS)
-nCases = 6;
+% number of cases to investigate (ideal, adaptive, low-complexity, WIT, WPT, random, no IRS)
+nCases = 7;
 
 %% * Variable
 % bandwidth
-Variable.bandwidth = [1e6, 5e6, 1e7];
+Variable.bandwidth = [1e6, 1e7];
 
 %% * PBS
 % number of individual jobs
