@@ -35,7 +35,7 @@ reAoInstance = cell(1, length(Variable.nTxs));
 reLcInstance = cell(1, length(Variable.nTxs));
 for iTx = 1 : length(Variable.nTxs)
     reAoInstance{iTx} = mean(cat(3, reAoSample{:, iTx}), 3);
-    reLcInstance{iTx} = mean(cat(3, reAoSample{:, iTx}), 3);
+    reLcInstance{iTx} = mean(cat(3, reLcSample{:, iTx}), 3);
 end
 
 % * Save batch data
