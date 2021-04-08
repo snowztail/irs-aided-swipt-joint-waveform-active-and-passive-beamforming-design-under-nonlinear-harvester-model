@@ -18,7 +18,7 @@ function [current, infoAmplitude, powerAmplitude] = waveform_sdr(beta2, beta4, c
 	%   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
     %
     % Comment:
-    %   - suitable for WPT
+    %   - suitable for WPT, the result inlines with GP but with much lower complexity
     %   - solve SDR problem to obtain high-rank amplitude outer product matrices
     %   - use Gaussian randomization method to extract amplitude vectors
     %

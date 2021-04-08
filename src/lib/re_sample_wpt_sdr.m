@@ -19,6 +19,7 @@ function [sample, solution] = re_sample_wpt_sdr(alpha, beta2, beta4, directChann
     %
     % Comment:
     %   - solve both problems by SDR
+	%	- for waveform design, the result inlines with GP but with much lower complexity
     %
     % Author & Date: Yang (i@snowztail.com) - 21 Jun 20
 
