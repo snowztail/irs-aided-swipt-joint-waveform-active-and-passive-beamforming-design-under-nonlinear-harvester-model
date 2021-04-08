@@ -32,8 +32,8 @@ hold all;
 for iTx = 1 : length(Variable.nTxs)
     plotHandle(1, iTx) = plot(reAoTx{iTx}(1, :) / nSubbands, 1e6 * reAoTx{iTx}(2, :));
     plotHandle(2, iTx) = plot(reLcTx{iTx}(1, :) / nSubbands, 1e6 * reLcTx{iTx}(2, :));
-	legendString{1, iTx} = sprintf('AO: $M = %d$', Variable.nTxs(iTx));
-	legendString{2, iTx} = sprintf('LC (PS): $M = %d$', Variable.nTxs(iTx));
+	legendString{1, iTx} = sprintf('BCD: $M = %d$', Variable.nTxs(iTx));
+	legendString{2, iTx} = sprintf('LC-BCD: $M = %d$', Variable.nTxs(iTx));
 end
 hold off;
 grid on;

@@ -33,12 +33,12 @@ for iSubband = 1 : length(Variable.nSubbands)
 	plotHandle = gobjects(2, length(Variable.alpha) + 1);
 	hold all;
 	plotHandle(1, 1) = plot(reAoSubband{iSubband}(1, :) / Variable.nSubbands(iSubband), 1e6 * reAoSubband{iSubband}(2, :));
-	legendString{1, 1} = 'AO (PS)';
+	legendString{1, 1} = 'BCD';
 	plotHandle(2, 1) = plot([reAoSubband{iSubband}(1, end) / Variable.nSubbands(iSubband), reAoSubband{iSubband}(1, 1) / Variable.nSubbands(iSubband)], [1e6 * reAoSubband{iSubband}(2, end), 1e6 * reAoSubband{iSubband}(2, 1)]);
 	legendString{2, 1} = 'AO (TS)';
 	for iAlpha = 1 : length(Variable.alpha)
 		plotHandle(1, iAlpha + 1) = plot(reLcSubband{iSubband, iAlpha}(1, :) / Variable.nSubbands(iSubband), 1e6 * reLcSubband{iSubband, iAlpha}(2, :));
-		legendString{1, iAlpha + 1} = sprintf('LC (PS): $\\alpha = %s$', num2str(Variable.alpha(iAlpha)));
+		legendString{1, iAlpha + 1} = sprintf('LC-BCD: $\\alpha = %s$', num2str(Variable.alpha(iAlpha)));
 		plotHandle(2, iAlpha + 1) = plot([reLcSubband{iSubband, iAlpha}(1, end) / Variable.nSubbands(iSubband), reLcSubband{iSubband, iAlpha}(1, 1) / Variable.nSubbands(iSubband)], [1e6 * reLcSubband{iSubband, iAlpha}(2, end), 1e6 * reLcSubband{iSubband, iAlpha}(2, 1)]);
 		legendString{2, iAlpha + 1} = sprintf('LC (TS): $\\alpha = %s$', num2str(Variable.alpha(iAlpha)));
 	end

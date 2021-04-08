@@ -32,8 +32,8 @@ hold all;
 for iDistance = 1 : length(Variable.horizontalDistance)
     plotHandle(1, iDistance) = plot(reAoDistance{iDistance}(1, :) / nSubbands, 1e6 * reAoDistance{iDistance}(2, :));
     plotHandle(2, iDistance) = plot(reLcDistance{iDistance}(1, :) / nSubbands, 1e6 * reLcDistance{iDistance}(2, :));
-    legendString{1, iDistance} = sprintf('AO: $d_H = %s$ m', num2str(Variable.horizontalDistance(iDistance)));
-    legendString{2, iDistance} = sprintf('LC (PS): $d_H = %s$ m', num2str(Variable.horizontalDistance(iDistance)));
+    legendString{1, iDistance} = sprintf('BCD: $d_H = %s$ m', num2str(Variable.horizontalDistance(iDistance)));
+    legendString{2, iDistance} = sprintf('LC-BCD: $d_H = %s$ m', num2str(Variable.horizontalDistance(iDistance)));
 end
 hold off;
 grid on;

@@ -35,7 +35,7 @@ for iSubband = 1 : length(Variable.nSubbands)
 	nSubbands = Variable.nSubbands(iSubband);
 	for iError = 1 : length(Variable.cascadedErrorVariance)
 		plotHandle(iSubband, iError) = plot(reErrorCsi{iSubband, iError}(1, :) / nSubbands, 1e6 * reErrorCsi{iSubband, iError}(2, :));
-		legendString{iSubband, iError} = sprintf('$\\epsilon_n^2 = %s \\Lambda_I\\Lambda_R (N = %s)$', num2str(Variable.cascadedErrorVarianceRatio(iError)), num2str(Variable.nSubbands(iSubband)));
+		legendString{iSubband, iError} = sprintf('$\\epsilon_n^2 = %s \\Lambda_I\\Lambda_R$ $(N = %s)$', num2str(Variable.cascadedErrorVarianceRatio(iError)), num2str(Variable.nSubbands(iSubband)));
 	end
 	plotHandle(iSubband, iError + 1) = plot(reRandomCsi{iSubband}(1, :) / nSubbands, 1e6 * reRandomCsi{iSubband}(2, :));
 	legendString{iSubband, iError + 1} = sprintf('Random IRS $(N = %s)$', num2str(Variable.nSubbands(iSubband)));

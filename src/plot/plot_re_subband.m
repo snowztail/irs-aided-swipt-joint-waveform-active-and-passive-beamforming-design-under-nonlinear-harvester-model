@@ -7,11 +7,11 @@ infoAmplitudeSet = cell(nBatches, length(Variable.nSubbands));
 powerAmplitudeSet = cell(nBatches, length(Variable.nSubbands));
 for iBatch = 1 : nBatches
     try
-        load(sprintf('../data/re_subband/re_subband_%d.mat', iBatch), 'reInstance', 'reSolution');
-		reSet(iBatch, :) = reInstance;
+        load(sprintf('../data/re_subband/re_subband_%d.mat', iBatch), 'reAoInstance', 'reAoSolution');
+		reSet(iBatch, :) = reAoInstance;
 		for iSubband = 1 : length(Variable.nSubbands)
-			infoAmplitudeSet{iBatch, iSubband} = sort(reSolution{iSubband}{end}.infoAmplitude);
-			powerAmplitudeSet{iBatch, iSubband} = sort(reSolution{iSubband}{end}.powerAmplitude);
+			infoAmplitudeSet{iBatch, iSubband} = sort(reAoSolution{iSubband}{end}.infoAmplitude);
+			powerAmplitudeSet{iBatch, iSubband} = sort(reAoSolution{iSubband}{end}.powerAmplitude);
 		end
     catch
 		indexSet(indexSet == iBatch) = [];
