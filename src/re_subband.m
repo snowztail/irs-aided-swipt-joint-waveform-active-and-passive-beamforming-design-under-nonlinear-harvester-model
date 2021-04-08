@@ -1,8 +1,11 @@
 clear; clc; setup; config_re_subband;
 
 %% ! R-E region vs number of subbands
-reSample = cell(nChannels, length(Variable.nSubbands));
-reSolution = cell(nChannels, length(Variable.nSubbands));
+reAoSample = cell(nChannels, length(Variable.nSubbands));
+reLcSample = cell(nChannels, length(Variable.nSubbands));
+
+reAoSolution = cell(nChannels, length(Variable.nSubbands));
+reLcSolution = cell(nChannels, length(Variable.nSubbands));
 
 for iChannel = 1 : nChannels
     % * Generate tap gains and delays
@@ -22,14 +25,17 @@ for iChannel = 1 : nChannels
 		[cascadedChannel] = cascaded_channel(incidentChannel, reflectiveChannel);
 
         % * Alternating optimization
-		[reSample{iChannel, iSubband}, reSolution{iChannel, iSubband}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+		[reAoSample{iChannel, iSubband}, reAoSolution{iChannel, iSubband}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+		[reLcSample{iChannel, iSubband}, reLcSolution{iChannel, iSubband}] = re_sample_swipt_low_complexity(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
     end
 end
 
 % * Average over channel realizations
-reInstance = cell(1, length(Variable.nSubbands));
+reAoInstance = cell(1, length(Variable.nSubbands));
+reLcInstance = cell(1, length(Variable.nSubbands));
 for iSubband = 1 : length(Variable.nSubbands)
-	reInstance{iSubband} = mean(cat(3, reSample{:, iSubband}), 3);
+	reAoInstance{iSubband} = mean(cat(3, reAoSample{:, iSubband}), 3);
+	reLcInstance{iSubband} = mean(cat(3, reLcSample{:, iSubband}), 3);
 end
 
 % * Save batch data
