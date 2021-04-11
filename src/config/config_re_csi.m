@@ -36,14 +36,15 @@ horizontalDistance = 2;
 centerFrequency = 5.18e9;
 % bandwidth
 bandwidth = 1e7;
+% number of frequency bands
+nSubbands = 16;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
-% number of reflecting elements in IRS
-nReflectors = 20;
+% carrier frequency
+[subbandFrequency] = subband_frequency(centerFrequency, bandwidth, nSubbands);
 % spatial correlation
 corTx = eye(nTxs);
 corRx = eye(nRxs);
-corIrs = eye(nReflectors);
 
 %% * Algorithm
 % minimum gain per iteration
@@ -56,8 +57,8 @@ nSamples = 20;
 nChannels = 1;
 
 %% * Variables
-% number of frequency bands
-Variable.nSubbands = [1, 16];
+% number of reflecting elements in IRS
+Variable.nReflectors = [20, 40];
 % estimation error variance of the cascaded channel
 Variable.cascadedErrorVarianceRatio = [0.1, 1, 10];
 Variable.cascadedErrorVariance = Variable.cascadedErrorVarianceRatio * path_loss(incidentDistance) * path_loss(reflectiveDistance);

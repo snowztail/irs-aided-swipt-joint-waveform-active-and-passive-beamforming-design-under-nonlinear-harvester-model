@@ -2,8 +2,8 @@ clear; clc; close all; config_re_csi;
 
 %% * Load batch data
 indexSet = 1 : nBatches;
-reRandomSet = cell(nBatches, length(Variable.nSubbands));
-reErrorSet = cell(nBatches, length(Variable.nSubbands), length(Variable.cascadedErrorVariance));
+reRandomSet = cell(nBatches, length(Variable.nReflectors));
+reErrorSet = cell(nBatches, length(Variable.nReflectors), length(Variable.cascadedErrorVariance));
 for iBatch = 1 : nBatches
     try
         load(sprintf('../data/re_csi/re_csi_%d.mat', iBatch), 'reRandomInstance', 'reErrorInstance');
@@ -16,29 +16,29 @@ for iBatch = 1 : nBatches
 end
 
 %% * Average over batches
-reRandomCsi = cell(length(Variable.nSubbands), 1);
-reErrorCsi = cell(length(Variable.nSubbands), length(Variable.cascadedErrorVariance));
-for iSubband = 1 : length(Variable.nSubbands)
-	reRandomCsi{iSubband} = mean(cat(3, reRandomSet{indexSet, iSubband}), 3);
+reRandomCsi = cell(length(Variable.nReflectors), 1);
+reErrorCsi = cell(length(Variable.nReflectors), length(Variable.cascadedErrorVariance));
+for iReflector = 1 : length(Variable.nReflectors)
+	reRandomCsi{iReflector} = mean(cat(3, reRandomSet{indexSet, iReflector}), 3);
 	for iError = 1 : length(Variable.cascadedErrorVariance)
-		reErrorCsi{iSubband, iError} = mean(cat(4, reErrorSet{indexSet, iSubband, iError}), 4);
+		reErrorCsi{iReflector, iError} = mean(cat(4, reErrorSet{indexSet, iReflector, iError}), 4);
 	end
 end
 save('../data/re_csi.mat');
 
 %% * R-E plots
 figure('name', 'R-E region vs cascaded channel estimation error', 'position', [0, 0, 500, 400]);
-legendString = cell(length(Variable.nSubbands), length(Variable.cascadedErrorVariance) + 1);
-plotHandle = gobjects(length(Variable.nSubbands), length(Variable.cascadedErrorVariance) + 1);
+legendString = cell(length(Variable.nReflectors), length(Variable.cascadedErrorVariance) + 1);
+plotHandle = gobjects(length(Variable.nReflectors), length(Variable.cascadedErrorVariance) + 1);
 hold all;
-for iSubband = 1 : length(Variable.nSubbands)
-	nSubbands = Variable.nSubbands(iSubband);
+for iReflector = 1 : length(Variable.nReflectors)
+	nSubbands = Variable.nReflectors(iReflector);
 	for iError = 1 : length(Variable.cascadedErrorVariance)
-		plotHandle(iSubband, iError) = plot(reErrorCsi{iSubband, iError}(1, :) / nSubbands, 1e6 * reErrorCsi{iSubband, iError}(2, :));
-		legendString{iSubband, iError} = sprintf('$\\epsilon_n^2 = %s \\Lambda_I\\Lambda_R$ $(N = %s)$', num2str(Variable.cascadedErrorVarianceRatio(iError)), num2str(Variable.nSubbands(iSubband)));
+		plotHandle(iReflector, iError) = plot(reErrorCsi{iReflector, iError}(1, :) / nSubbands, 1e6 * reErrorCsi{iReflector, iError}(2, :));
+		legendString{iReflector, iError} = sprintf('$\\epsilon_n^2 = %s \\Lambda_I\\Lambda_R$ $(L = %s)$', num2str(Variable.cascadedErrorVarianceRatio(iError)), num2str(Variable.nReflectors(iReflector)));
 	end
-	plotHandle(iSubband, iError + 1) = plot(reRandomCsi{iSubband}(1, :) / nSubbands, 1e6 * reRandomCsi{iSubband}(2, :));
-	legendString{iSubband, iError + 1} = sprintf('Random IRS $(N = %s)$', num2str(Variable.nSubbands(iSubband)));
+	plotHandle(iReflector, iError + 1) = plot(reRandomCsi{iReflector}(1, :) / nSubbands, 1e6 * reRandomCsi{iReflector}(2, :));
+	legendString{iReflector, iError + 1} = sprintf('Random IRS $(L = %s)$', num2str(Variable.nReflectors(iReflector)));
 end
 hold off;
 grid on;
