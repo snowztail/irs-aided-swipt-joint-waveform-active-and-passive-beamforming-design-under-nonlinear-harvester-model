@@ -35,7 +35,7 @@ horizontalDistance = 2;
 % center frequency
 centerFrequency = 5.18e9;
 % bandwidth
-bandwidth = 1e6;
+bandwidth = 1e7;
 % number of frequency bands
 nSubbands = 16;
 % channel fading mode ('flat' or 'selective')
@@ -61,7 +61,7 @@ nChannels = 1;
 
 %% * Variables
 % number of bits used for quantization
-Variable.nQuantizeBits = 2 .^ (0 : 3);
+Variable.nQuantizeBits = 2 .^ (0 : 2);
 
 %% * PBS
 % number of individual jobs
