@@ -6,11 +6,11 @@ eigRatioAoSubband = cell(nBatches, length(Variable.nSubbands), nSamples);
 eigRatioLcSubband = cell(nBatches, length(Variable.nSubbands), nSamples);
 for iBatch = 1 : nBatches
     try
-        load(sprintf('../data/re_subband/re_subband_%d.mat', iBatch), 'reSolution');
+        load(sprintf('../data/re_subband/re_subband_%d.mat', iBatch), 'reAoSolution', 'reLcSolution');
 		for iSubband = 1 : length(Variable.nSubbands)
 			for iSample = 1 : nSamples
-				eigRatioAoSubband{iBatch, iSubband, iSample} = reSolution{iSubband}{iSample}.eigRatio;
-				eigRatioLcSubband{iBatch, iSubband, iSample} = reSolution{iSubband}{iSample}.eigRatio;
+				eigRatioAoSubband{iBatch, iSubband, iSample} = reAoSolution{iSubband}{iSample}.eigRatio;
+				eigRatioLcSubband{iBatch, iSubband, iSample} = reLcSolution{iSubband}{iSample}.eigRatio;
 			end
 		end
     catch
