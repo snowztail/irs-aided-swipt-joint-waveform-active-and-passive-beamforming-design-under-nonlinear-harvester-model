@@ -348,8 +348,7 @@
 				\hrule
 				\begin{align}
 					\tilde{z}(\boldsymbol{\Phi}^{(i)})
-					& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}^{(i)}+t_{\mathrm{P},0}^{(i)})\nonumber\\
-					& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(4 t_{\mathrm{I},0}^{(i)}t_{\mathrm{I},0}^{(i-1)} - 2 (t_{\mathrm{I},0}^{(i-1)})^2 + \sum_{k=-N+1}^{N-1}{2 \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*}\right)\nonumber\\
+					& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}^{(i)}+t_{\mathrm{P},0}^{(i)}) + \frac{3}{8}{\beta_4}{\rho^2} \left(4 t_{\mathrm{I},0}^{(i)}t_{\mathrm{I},0}^{(i-1)} - 2 (t_{\mathrm{I},0}^{(i-1)})^2 + \sum_{k=-N+1}^{N-1}{2 \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*}\right)\nonumber\\
 					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left(\frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\right).\label{eq:z_irs_approx}
 				\end{align}
 			\end{figure*}
@@ -361,7 +360,7 @@
 				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_rank}}
 			\end{maxi!}
 
-			Note that problem~\eqref{op:irs} is not a Semidefinite Programming (SDP) such that relaxing the rank constraint \eqref{co:irs_rank} has no analytical performance guarantee. In Section~\ref{se:performance_evaluation}, we prove through numerical simulations that the solution $\boldsymbol{\Phi}^{\star}$ to \ref{ob:irs} -- \ref{co:irs_sd} is rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint \eqref{co:irs_rank} can be dropped with negligible loss and $\bar{\boldsymbol{\phi}}^\star$ can be obtained by eigen decomposition. In case $\boldsymbol{\Phi}^{\star}$ is not rank-\num{1}, a suboptimal solution can be extracted via the Gaussian randomization method \cite{Luo2010}. Specifically, we decompose $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Lambda}\boldsymbol{U}^H$, generate CSCG random vector $q \in \{1, \dots, Q\}$ by $\boldsymbol{\xi}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, construct the candidate $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Lambda}^{1/2}\boldsymbol{\xi}_q\right)}$, and choose the $\bar{\boldsymbol{\phi}}^\star$ that maximizes \eqref{ob:irs} as the solution. Finally, the phase shift of element $l$ is retrieved by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. Problem~\eqref{op:irs} after rank relaxation can be solved by existing optimization tools such as CVX \cite{Grant2013}. The SCA algorithm of passive beamforming is summarized in Algorithm~\ref{al:sca}.
+			Note that problem~\eqref{op:irs} is not a Semidefinite Programming (SDP) such that relaxing the rank constraint \eqref{co:irs_rank} has no analytical performance guarantee. In Section~\ref{se:performance_evaluation}, we prove through numerical simulations that the solution $\boldsymbol{\Phi}^{\star}$ to \ref{ob:irs} -- \ref{co:irs_sd} is rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint \eqref{co:irs_rank} can be dropped with negligible loss and $\bar{\boldsymbol{\phi}}^\star$ can be obtained by eigen decomposition. In case $\boldsymbol{\Phi}^{\star}$ is not rank-\num{1}, a high-quality solution can be extracted via the Gaussian randomization method \cite{Luo2010}. Specifically, we decompose $\boldsymbol{\Phi}^{\star}=\boldsymbol{U}\boldsymbol{\Lambda}\boldsymbol{U}^H$, generate CSCG random vector $q \in \{1, \dots, Q\}$ by $\boldsymbol{\xi}_q \sim \mathcal{CN}(\boldsymbol{0},\boldsymbol{I}_{L+1})$, construct the candidate $\bar{\boldsymbol{\phi}}_q=e^{j\arg\left(\boldsymbol{U}\boldsymbol{\Lambda}^{1/2}\boldsymbol{\xi}_q\right)}$, and choose the $\bar{\boldsymbol{\phi}}^\star$ that maximizes \eqref{ob:irs} as the solution. Finally, the phase shift of element $l$ is retrieved by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. Problem~\eqref{op:irs} after rank relaxation can be solved by existing optimization tools such as CVX \cite{Grant2013}. The SCA algorithm of passive beamforming is summarized in Algorithm~\ref{al:sca}.
 			\begin{algorithm}[!t]
 				\caption{SCA: IRS Phase Shift.}
 				\label{al:sca}
@@ -395,7 +394,7 @@
 			\end{proposition}
 
 			\begin{proof}\label{pf:sca}
-				The objective function \eqref{ob:irs} is non-decreasing over iterations because the solution of problem~\eqref{op:irs} at iteration $i-1$ is still a feasible point at iteration $i$. Moreover, the sequence $\{\tilde{z}(\boldsymbol{\Phi}^{(i)})\}_{i=1}^{\infty}$ is bounded above due to the unit-modulus constraint \eqref{co:irs_modulus}. Thus, Algorithm~\ref{al:sca} is guaranteed to converge. To prove $\boldsymbol{\Phi}^{(i)}$ converges to stationary points, we notice that the SCA-based Algorithm~\ref{al:sca} is indeed an inner approximation algorithm \cite{Marks1978}, since $\tilde{z}(\boldsymbol{\Phi}) \le z(\boldsymbol{\Phi})$, $\partial\tilde{z}(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}=\partial z(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}$ and the approximation \eqref{eq:taylor_1} -- \eqref{eq:taylor_3} are asymptotically tight as $i \to \infty$ \cite{Li2013}. Therefore, Algorithm~\ref{al:sca} is guaranteed to provide a local optimal $\boldsymbol{\Phi}^{\star}$ that satisfies the KKT conditions.
+				The objective function \eqref{ob:irs} is non-decreasing over iterations because the solution of problem~\eqref{op:irs} at iteration $i-1$ is still a feasible point at iteration $i$. Moreover, the sequence $\{\tilde{z}(\boldsymbol{\Phi}^{(i)})\}_{i=1}^{\infty}$ is bounded above due to the unit-modulus constraint \eqref{co:irs_modulus}. Thus, Algorithm~\ref{al:sca} is guaranteed to converge. To prove $\boldsymbol{\Phi}^{(i)}$ converges to stationary points, we notice that the SCA-based Algorithm~\ref{al:sca} is indeed an inner approximation algorithm \cite{Marks1978}, since $\tilde{z}(\boldsymbol{\Phi}) \le z(\boldsymbol{\Phi})$, $\partial\tilde{z}(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}=\partial z(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}$ and the approximation \eqref{eq:taylor_1} -- \eqref{eq:taylor_3} are asymptotically tight as $i \to \infty$ \cite{Li2013}. Therefore, Algorithm~\ref{al:sca} is guaranteed to provide a local optimal $\boldsymbol{\Phi}^{\star}$ of the original passive beamforming problem (i.e. maximize \eqref{eq:z_irs} s.t. \eqref{co:irs_rate} -- \eqref{co:irs_sd}) that satisfies the KKT conditions.
 			\end{proof}
 		\end{subsection}
 
@@ -409,7 +408,7 @@
 				\boldsymbol{b}_{\mathrm{I/P}, n}^\star = \frac{\boldsymbol{h}_n}{\lVert{\boldsymbol{h}_n}\rVert}
 			\end{equation}
 
-			From the perspective of communications, the MRT precoder maximizes $\lvert{\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I}, n}}\rvert = \lVert{\boldsymbol{h}_{n}}\rVert s_{\mathrm{I}, n}$ thus maximizes the rate \eqref{eq:R}. From the perspective of energy harvesting, the MRT precoder maximizes $(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})^* = \lVert{\boldsymbol{h}_{n}}\rVert^2 s_{\mathrm{I/P}, n}^2$ thus maximizes the second and fourth order DC terms \eqref{eq:y_I2} -- \eqref{eq:y_P4}. Hence, MRT is the global optimal active precoder and no dedicated energy beams are required in the single-user SWIPT.
+			From the perspective of WIT, the MRT precoder maximizes $\lvert{\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I}, n}}\rvert = \lVert{\boldsymbol{h}_{n}}\rVert s_{\mathrm{I}, n}$ thus maximizes the rate \eqref{eq:R}. From the perspective of WPT, the MRT precoder maximizes $(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})(\boldsymbol{h}_{n}^H \boldsymbol{w}_{\mathrm{I/P}, n})^* = \lVert{\boldsymbol{h}_{n}}\rVert^2 s_{\mathrm{I/P}, n}^2$ thus maximizes the second and fourth order DC terms \eqref{eq:y_I2} -- \eqref{eq:y_P4}. Hence, MRT is the global optimal active precoder and no dedicated energy beams are required in the single-user SWIPT.
 		\end{subsection}
 
 
@@ -522,7 +521,7 @@
 
 
 		\begin{subsection}{Low-Complexity Adaptive Design}
-			The GP Algorithm~\ref{al:gp} achieves local optimality at a cost of exponential computational complexity \cite{Chiang2005}. To facilitate practical SWIPT implementation, we propose two low-complexity waveform amplitude design by combining WF and SMF under TS and PS setups. The optimal waveform design for WIT corresponds to the WF strategy that assigns the amplitude of modulated tone $n$ by
+			The GP Algorithm~\ref{al:gp} achieves local optimality at a cost of exponential computational complexity \cite{Chiang2005}. To facilitate practical SWIPT implementation, we propose two closed-form adaptive waveform amplitude design by combining WF and SMF under TS and PS setups. The optimal waveform design for WIT corresponds to the WF strategy that assigns the amplitude of modulated tone $n$ by
 			\begin{equation}\label{eq:wf}
 				s_{\mathrm{I}, n} = \sqrt{2\left(\mu - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}
 			\end{equation}
@@ -546,7 +545,7 @@
 					\State Construct $\boldsymbol{V},\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n},\boldsymbol{C}_{\mathrm{I/P},k}$, $\forall n,k$
 					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\Phi}^{(0)}$
 					\If{$\rho=0$}
-						\State Get $\boldsymbol{\Phi}^{\star}$ by maximizing \eqref{eq:R_irs} w.r.t. \eqref{co:irs_modulus}, \eqref{co:irs_sd}
+						\State Get $\boldsymbol{\Phi}^{\star}$ by maximizing \eqref{eq:R_irs} s.t. \eqref{co:irs_modulus}, \eqref{co:irs_sd}
 					\Else
 						\Repeat
 							\State $i \gets i + 1$
@@ -590,15 +589,15 @@
 			\label{ta:eigen_ratio}
 			\centering
 			\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-			\hline
-			\multicolumn{2}{|c|}{\multirow{2}{*}{}} & \multicolumn{3}{c|}{$M$} & \multicolumn{3}{c|}{$N$} & \multicolumn{3}{c|}{$L$} & \multicolumn{2}{c|}{$B$} \\ \cline{3-13}
-			\multicolumn{2}{|c|}{} & \num{1} & \num{2} & \num{4} & \num{1} & \num{4} & \num{16} & \num{20} & \num{40} & \num{80} & \SI{1}{\MHz} & \SI{10}{\MHz} \\ \hline
-			$\max(1 - \nu)$ & BCD & \num{5.5511} & \num{6.6613} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{6.6613} & \num{5.5511} \\ \cline{2-13}
-			$[\times \num{e-16}]$ & LC & \num{6.6613} & \num{6.6613} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{8.8818} & \num{6.6613} & \num{6.6613} & \num{5.5511} \\ \hline
+				\hline
+				\multicolumn{2}{|c|}{\multirow{2}{*}{}} & \multicolumn{3}{c|}{$M$} & \multicolumn{3}{c|}{$N$} & \multicolumn{3}{c|}{$L$} & \multicolumn{2}{c|}{$B$} \\ \cline{3-13}
+				\multicolumn{2}{|c|}{} & \num{1} & \num{2} & \num{4} & \num{1} & \num{4} & \num{16} & \num{20} & \num{40} & \num{80} & \SI{1}{\MHz} & \SI{10}{\MHz} \\ \hline
+				$\max(1 - \nu)$ & BCD & \num{5.5511} & \num{6.6613} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{6.6613} & \num{5.5511} \\ \cline{2-13}
+				$[\times \num{e-16}]$ & LC & \num{6.6613} & \num{6.6613} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{8.8818} & \num{6.6613} & \num{6.6613} & \num{5.5511} \\ \hline
 			\end{tabular}
 		\end{table*}
 
-		We first provide numerical proof on the strict convergence of both BCD algorithms. Too see this, we define the eigen ratio as $\nu=\max_l\lambda_l(\boldsymbol{\Phi})/\sum_l\lambda_l(\boldsymbol{\Phi})$ where $\lambda_l(\boldsymbol{\Phi})$ is the $l$-th eigenvalue of $\boldsymbol{\Phi}$. Since $\nu=1$ means $\boldsymbol{\Phi}$ is rank-\num{1}, we claim $\boldsymbol{\Phi}$ is approximately rank-\num{1} when $1-\nu \approx 0$. Table~\ref{ta:eigen_ratio} shows the maximum value of $1-\nu$ over all R-E samples for both BCD algorithms. With reasonable precision, we conclude that $\boldsymbol{\Phi}$ is always rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint \ref{co:irs_rank} can be relaxed with negligible performance loss, $\bar{\boldsymbol{\phi}}$ can be directly obtained through eigen decomposition, and the assumption of Proposition~\ref{pr:bcd} always hold such that the BCD Algorithm~\ref{al:bcd} converges to local optimal points.
+		We first provide numerical proof on the strict convergence of both BCD algorithms. Too see this, we define the eigen ratio as $\nu=\max_l\lambda_l(\boldsymbol{\Phi})/\sum_l\lambda_l(\boldsymbol{\Phi})$ where $\lambda_l(\boldsymbol{\Phi})$ is the $l$-th eigenvalue of $\boldsymbol{\Phi}$. Since $\nu=1$ means $\boldsymbol{\Phi}$ is rank-\num{1}, we claim $\boldsymbol{\Phi}$ is approximately rank-\num{1} when $1-\nu \approx 0$. Table~\ref{ta:eigen_ratio} shows the maximum value of $1-\nu$ over \num{20} R-E samples of \num{300} tested channel realizations for both BCD algorithms. With reasonable precision, we conclude that $\boldsymbol{\Phi}$ is always rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint \ref{co:irs_rank} can be relaxed with negligible performance loss, $\bar{\boldsymbol{\phi}}$ can be directly obtained through eigen decomposition, and the assumption of Proposition~\ref{pr:bcd} always hold such that the BCD Algorithm~\ref{al:bcd} converges to local optimal points.
 
 		\begin{figure}[!t]
 			\centering
@@ -719,7 +718,7 @@
 		\begin{equation}
 			\hat{\boldsymbol{V}}_{n} = \boldsymbol{V}_{n} + \tilde{\boldsymbol{V}}_{n}
 		\end{equation}
-		where $\tilde{\boldsymbol{V}}_{n}$ is the estimation error with entries following i.i.d. CSCG distribution $\mathcal{CN}(0, \epsilon_{n}^2)$. Perfect CSIT can be regarded as a special case with $\epsilon_{n}=0$. Note that the estimation at different subbands are independent but the subchannel responses are correlated. Figure~\ref{fi:re_csi} shows that the proposed passive beamforming Algorithm~\ref{al:sca} is robust to cascaded CSIT inaccuracy for different $L$. On the other hand, since the practical reflection coefficient depends on the element impedance set, we quantize each reflection coefficient by $b$ bits and introduce a passive beamforming codebook $\mathcal{C}_\phi = \{e^{j 2 \pi i / 2^b} \mid i = 1, \dots, 2^b\}$ to reduce the circuit complexity and control overhead. Figure~\ref{fi:re_quantization} suggests that even $b=1$ (i.e. two-state reflection) brings considerable R-E gain over the benchmark scheme without IRS, and the performance gap between $b=4$ and unquantized IRS is negligible. These observations demonstrate the advantage of the proposed joint waveform, active and passive beamforming design in practical IRS-aided SWIPT systems.
+		where $\tilde{\boldsymbol{V}}_{n}$ is the estimation error with entries following i.i.d. CSCG distribution $\mathcal{CN}(0, \epsilon_{n}^2)$. Perfect CSIT can be regarded as a special case with $\epsilon_{n}=0$. Note that the estimation at different subbands are independent but the subchannel responses are correlated. Figure~\ref{fi:re_csi} shows that the proposed passive beamforming Algorithm~\ref{al:sca} is robust to cascaded CSIT inaccuracy for broadband SWIPT with different $L$. On the other hand, since the practical reflection coefficient depends on the element impedance set, we quantize each reflection coefficient by $b$ bits and introduce a passive beamforming codebook $\mathcal{C}_\phi = \{e^{j 2 \pi i / 2^b} \mid i = 1, \dots, 2^b\}$ to reduce the circuit complexity and control overhead. Figure~\ref{fi:re_quantization} suggests that even $b=1$ (i.e. two-state reflection) brings considerable R-E gain over the benchmark scheme without IRS, and the performance gap between $b=4$ and unquantized IRS is negligible. These observations demonstrate the advantage of the proposed joint waveform, active and passive beamforming design in practical IRS-aided SWIPT systems.
 	\end{section}
 
 
