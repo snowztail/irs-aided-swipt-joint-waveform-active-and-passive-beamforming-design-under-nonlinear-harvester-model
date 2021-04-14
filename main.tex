@@ -98,7 +98,7 @@
 
 
 		\begin{subsection}{IRS-Aided SWIPT}
-			The effective channel enhancement and low power consumption of IRS are expected to bring more opportunities to SWIPT. For a multi-user IRS-aided SWIPT system, dedicated energy beams are proved unnecessary for the Weighted Sum-Power (WSP) maximization problem \cite{Wu2020b} but essential when fairness issue is considered \cite{Tang2019}. It was also demonstrated in \cite{Wu2020a} that Line-of-Sight (LoS) links can boost the WSP because rank-deficient channels require less energy beams. However, the above papers only consider single-carrier transmission based on an inaccurate linear energy harvester model. Motivated by this, we marry the benefits of joint multi-carrier waveform and active beamforming optimization for SWIPT (accounting for nonlinearity) with the passive beamforming capability of IRS in this paper. We ask ourselves the important question: \emph{How to jointly exploit the spatial domain and the frequency domain efficiently through joint waveform and beamforming design to enlarge the R-E region of IRS-aided SWIPT?} The contributions of this paper are summarized as follows.
+			Both SWIPT and IRS aim to achieve spectrum and energy efficient transmission, and the effective channel enhancement and low power consumption of IRS are expected to bring more opportunities to SWIPT. For a multi-user IRS-aided SWIPT system, dedicated energy beams are proved unnecessary for the Weighted Sum-Power (WSP) maximization problem \cite{Wu2020b} but essential when fairness issue is considered \cite{Tang2019}. It was also demonstrated in \cite{Wu2020a} that Line-of-Sight (LoS) links can boost the WSP because rank-deficient channels require less energy beams. However, the above papers only consider single-carrier transmission based on an inaccurate linear energy harvester model. Motivated by this, we marry the benefits of joint multi-carrier waveform and active beamforming optimization for SWIPT (accounting for nonlinearity) with the passive beamforming capability of IRS in this paper. We ask ourselves the important question: \emph{How to jointly exploit the spatial domain and the frequency domain efficiently through joint waveform and beamforming design to enlarge the R-E region of IRS-aided SWIPT?} The contributions of this paper are summarized as follows.
 
 			\emph{First}, we propose a novel IRS-aided SWIPT architecture based on joint waveform, active and passive beamforming design. To elevate the rectifier nonlinearity, we superpose a multi-carrier unmodulated power waveform (deterministic multisine) to a multi-carrier modulated information waveform and evaluate the performance under TS and PS modes. The proposed joint waveform, active and passive beamforming architecture exploits rectifier nonlinearity, beamforming gain and channel selectivity across spatial and frequency domains to enlarge the achievable R-E region. This is the first paper to tackle energy harvester nonlinearity, multi-carrier transmission, and co-localized receiver for IRS-aided SWIPT.
 
@@ -232,24 +232,24 @@
 
 			\begin{figure*}[!t]
 				\begin{equation*}
-						\boldsymbol{W}_{\mathrm{I/P}}=
-						\begin{tikzpicture}[>=stealth,thick,baseline,every right delimiter/.append style={name=rd},]
-							\matrix [matrix of math nodes,left delimiter=(,right delimiter=)] (m)
-							{
-								\boldsymbol{w}_{\mathrm{I/P},1}\boldsymbol{w}_{\mathrm{I/P},1}^H & \boldsymbol{w}_{\mathrm{I/P},1}\boldsymbol{w}_{\mathrm{I/P},2}^H & \dots & \boldsymbol{w}_{\mathrm{I/P},1}\boldsymbol{w}_{\mathrm{I/P},N}^H \\
-								\boldsymbol{w}_{\mathrm{I/P},2}\boldsymbol{w}_{\mathrm{I/P},1}^H & \boldsymbol{w}_{\mathrm{I/P},2}\boldsymbol{w}_{\mathrm{I/P},2}^H & \ddots & \vdots \\
-								\vdots & \ddots & \ddots & \boldsymbol{w}_{\mathrm{I/P},N-1}\boldsymbol{w}_{\mathrm{I/P},N}^H \\
-								\boldsymbol{w}_{\mathrm{I/P},N}\boldsymbol{w}_{\mathrm{I/P},1}^H & \dots & \boldsymbol{w}_{\mathrm{I/P},N}\boldsymbol{w}_{\mathrm{I/P},N-1}^H & \boldsymbol{w}_{\mathrm{I/P},N}\boldsymbol{w}_{\mathrm{I/P},N}^H \\
-							};
-							\draw[dotted,thick] (m-4-1.north west) rectangle (m-4-1.south east);
-							\draw[dotted,thick,fill=gray,opacity=0.125] (m-2-1.north west) rectangle (m-2-1.south east); \draw[dotted,thick,fill=gray,opacity=0.125] (m-3-2.north west) rectangle (m-3-2.south east); \draw[dotted,thick,fill=gray,opacity=0.125] (m-4-3.north west) rectangle (m-4-3.south east);
-							\draw[dashed,thick,fill=gray,opacity=0.5] (m-1-1.north west) rectangle (m-1-1.south east); \draw[dashed,thick,fill=gray,opacity=0.5] (m-2-2.north west) rectangle (m-2-2.south east); \draw[dashed,thick,fill=gray,opacity=0.5] (m-3-3.north west) rectangle (m-3-3.south east); \draw[dashed,thick,fill=gray,opacity=0.5] (m-4-4.north west) rectangle (m-4-4.south east);
-							\draw[solid,thick,fill=gray,opacity=0.25] (m-1-2.north west) rectangle (m-1-2.south east); \draw[solid,thick,fill=gray,opacity=0.25] (m-2-3.north west) rectangle (m-2-3.south east); \draw[solid,thick,fill=gray,opacity=0.25] (m-3-4.north west) rectangle (m-3-4.south east);
-							\draw[solid,thick] (m-1-4.north west) rectangle (m-1-4.south east);
-							\draw[<-] (m-4-3.south|-m.south) -- ++(0.5,-0.15) node[below]{$k=-1$};
-							\draw[<-] (rd.east|-m.south) -- ++(0.5,-0.15) node[right]{$k=0$};
-							\draw[<-] (rd.east|-m-3-4.east) -- ++(0.5,-0.15) node[right]{$k=1$};
-						\end{tikzpicture}
+					\boldsymbol{W}_{\mathrm{I/P}}=
+					\begin{tikzpicture}[>=stealth,thick,baseline,every right delimiter/.append style={name=rd},]
+						\matrix [matrix of math nodes,left delimiter=(,right delimiter=)] (m)
+						{
+							\boldsymbol{w}_{\mathrm{I/P},1}\boldsymbol{w}_{\mathrm{I/P},1}^H & \boldsymbol{w}_{\mathrm{I/P},1}\boldsymbol{w}_{\mathrm{I/P},2}^H & \dots & \boldsymbol{w}_{\mathrm{I/P},1}\boldsymbol{w}_{\mathrm{I/P},N}^H \\
+							\boldsymbol{w}_{\mathrm{I/P},2}\boldsymbol{w}_{\mathrm{I/P},1}^H & \boldsymbol{w}_{\mathrm{I/P},2}\boldsymbol{w}_{\mathrm{I/P},2}^H & \ddots & \vdots \\
+							\vdots & \ddots & \ddots & \boldsymbol{w}_{\mathrm{I/P},N-1}\boldsymbol{w}_{\mathrm{I/P},N}^H \\
+							\boldsymbol{w}_{\mathrm{I/P},N}\boldsymbol{w}_{\mathrm{I/P},1}^H & \dots & \boldsymbol{w}_{\mathrm{I/P},N}\boldsymbol{w}_{\mathrm{I/P},N-1}^H & \boldsymbol{w}_{\mathrm{I/P},N}\boldsymbol{w}_{\mathrm{I/P},N}^H \\
+						};
+						\draw[dotted,thick] (m-4-1.north west) rectangle (m-4-1.south east);
+						\draw[dotted,thick,fill=gray,opacity=0.125] (m-2-1.north west) rectangle (m-2-1.south east); \draw[dotted,thick,fill=gray,opacity=0.125] (m-3-2.north west) rectangle (m-3-2.south east); \draw[dotted,thick,fill=gray,opacity=0.125] (m-4-3.north west) rectangle (m-4-3.south east);
+						\draw[dashed,thick,fill=gray,opacity=0.5] (m-1-1.north west) rectangle (m-1-1.south east); \draw[dashed,thick,fill=gray,opacity=0.5] (m-2-2.north west) rectangle (m-2-2.south east); \draw[dashed,thick,fill=gray,opacity=0.5] (m-3-3.north west) rectangle (m-3-3.south east); \draw[dashed,thick,fill=gray,opacity=0.5] (m-4-4.north west) rectangle (m-4-4.south east);
+						\draw[solid,thick,fill=gray,opacity=0.25] (m-1-2.north west) rectangle (m-1-2.south east); \draw[solid,thick,fill=gray,opacity=0.25] (m-2-3.north west) rectangle (m-2-3.south east); \draw[solid,thick,fill=gray,opacity=0.25] (m-3-4.north west) rectangle (m-3-4.south east);
+						\draw[solid,thick] (m-1-4.north west) rectangle (m-1-4.south east);
+						\draw[<-] (m-4-3.south|-m.south) -- ++(0.5,-0.15) node[below]{$k=-1$};
+						\draw[<-] (rd.east|-m.south) -- ++(0.5,-0.15) node[right]{$k=0$};
+						\draw[<-] (rd.east|-m-3-4.east) -- ++(0.5,-0.15) node[right]{$k=1$};
+					\end{tikzpicture}
 				\end{equation*}
 				\caption{$\boldsymbol{W}_{\mathrm{I/P}}$ consists of $N \times N$ blocks of size $M \times M$. $\boldsymbol{W}_{\mathrm{I/P},k}$ keeps the $k$-th block diagonal of $\boldsymbol{W}_{\mathrm{I/P}}$ and nulls all remaining blocks. Solid, dashed and dotted blocks correspond to $k>0$, $k=0$ and $k<0$, respectively. For $\boldsymbol{w}_{\mathrm{I/P},n_1}\boldsymbol{w}_{\mathrm{I/P},n_2}^H$, the $k$-th block diagonal satisfies $k=n_2-n_1$.}
 				\label{fi:block_diagonal}
@@ -648,7 +648,7 @@
 			\caption{Average R-E region and path loss versus $d_{\mathrm{H}}$ for $M=1$, $N=16$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{1}{\MHz}$ and $d_{\mathrm{V}}=\SI{2}{\meter}$.}
 		\end{figure}
 
-		In Fig.~\ref{fi:re_distance}, we compare the average R-E region achieved by different AP-IRS horizontal distance $d_{\mathrm{H}}$. Different from the active Amplify-and-Forward (AF) relay that favors midpoint development \cite{Li2017}, the IRS should be placed close to either the AP or the UE based on the product path loss model that applies to finite-size element reflection \cite{Ozdogan2020}. Moreover, there exist two optimal IRS coordinates around $d_{\mathrm{H}}=0.6$ and \SI{11.4}{\meter} that minimize the path loss product $\Lambda_{\mathrm{I}}\Lambda_R$ and maximize the R-E tradeoff. It suggests that equipping the AP with an IRS can potentially extend the operation range of SWIPT systems. Considering the passive characteristic of the IRS, chances are that it can be directly supported by the SWIPT network.
+		In Fig.~\ref{fi:re_distance}, we compare the average R-E region achieved by different AP-IRS horizontal distance $d_{\mathrm{H}}$. Different from the active Amplify-and-Forward (AF) relay that favors midpoint development \cite{Li2017}, the IRS should be placed close to either the AP or the UE based on the product path loss model that applies to finite-size element reflection \cite{Ozdogan2020,Tang2021}. Moreover, there exist two optimal IRS coordinates around $d_{\mathrm{H}}=0.6$ and \SI{11.4}{\meter} that minimize the path loss product $\Lambda_{\mathrm{I}}\Lambda_R$ and maximize the R-E tradeoff. It suggests that equipping the AP with an IRS can potentially extend the operation range of SWIPT systems. Considering the passive characteristic of the IRS, chances are that it can be directly supported by the SWIPT network.
 
 		\begin{figure}[!t]
 			\centering
