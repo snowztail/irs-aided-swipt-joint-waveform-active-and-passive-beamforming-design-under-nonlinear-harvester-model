@@ -66,7 +66,7 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for pointing out the CSI acquisition issue regarding the cascaded AP-IRS-UE link. The proposed passive beamforming algorithms rely on such cascaded CSIT, and recent researches proposed element-wise on/off switching [25], joint training sequence and reflection pattern design \cite{Kang2020} and compressed sensing \cite{Wang2020} techniques to solve this issue. Those references have been cited in the literature review. To address the reviewer' comments, we consider an imperfect CSIT model where the estimation of the cascaded link at subband $n$ is
+			Thank you for pointing out the CSI acquisition issue regarding the cascaded AP-IRS-UE link. The proposed passive beamforming algorithms rely on such cascaded CSIT, and recent researches proposed element-wise on/off switching [25], joint training sequence and reflection pattern design \cite{Kang2020} and compressed sensing \cite{Wang2020} techniques to solve this issue. Those references have been cited in the literature review. To address the comment, we consider an imperfect CSIT model where the estimation of the cascaded link at subband $n$ is
 			\begin{equation}
 				\hat{\boldsymbol{V}}_{n} = \boldsymbol{V}_{n} + \tilde{\boldsymbol{V}}_{n}
 			\end{equation}
@@ -77,8 +77,8 @@
 				\resizebox{0.45\columnwidth}{!}{
 					\input{assets/re_csi.tex}
 				}
-				\label{fi:re_csi}
 				\caption{Average R-E region with imperfect cascaded CSIT for $M=1$, $N=16$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{10}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
+				\label{fi:re_csi}
 			\end{figure}
 
 			\label{re:1.1}
@@ -92,11 +92,11 @@
 		\begin{response}
 			Multi-user IRS-aided SWIPT is very interesting and should be investigated in the future, but is left for future work for the reasons explained below.
 
-			First, it is important to remind the reviewer that the problem of joint waveform and beamforming design for a multi-user SWIPT system without IRS has never been studied in the literature. In other words, it would not make sense at this stage to address this multiuser IRS-aided SWIPT since the underlying building block of multiuser SWIPT is not known. Only once the problem of multiuser joint waveform and beamforming for multi-user SWIPT has been addressed, can we investigate the multiuser joint waveform and beamforming design for IRS-aided SWIPT. Those problems could be addressed in future research, but are not the scope of this paper.
+			\emph{First}, it is important to remind the reviewer that the problem of joint waveform and beamforming design for a multi-user SWIPT system without IRS has never been studied in the literature. In other words, it would not make sense at this stage to address this multiuser IRS-aided SWIPT since the underlying building block of multiuser SWIPT is not known. Only once the problem of multiuser joint waveform and beamforming for multi-user SWIPT has been addressed, can we investigate the multiuser joint waveform and beamforming design for IRS-aided SWIPT. Those problems could be addressed in future research, but are not the scope of this paper.
 
-			Second, the emphasis is on single-user because we believe a proper understanding of the single-user case is crucial before jumping into multi-user scenarios. Our modeling of SWIPT is not "simple": not only we transmit both information and power, we deal with joint space and frequency optimization through a joint beamforming and waveform problem that is challenging due to the nonlinearity of the rectifier that induces coupling among frequencies components. This completely contrasts with any existing IRS-aided SWIPT work as discussed in the introduction [31 -- 33].
+			\emph{Second}, the emphasis is on single-user because we believe a proper understanding of the single-user case is crucial before jumping into multi-user scenarios. Our modeling of SWIPT is not "simple": not only we transmit both information and power, we deal with joint space and frequency optimization through a joint beamforming and waveform problem that is challenging due to the nonlinearity of the rectifier that induces coupling among frequencies components. This completely contrasts with any existing IRS-aided SWIPT work as discussed in the introduction [31 -- 33].
 
-			Third, multi-user WPT leads to its own set of challenges compared single-user WPT. Taking an non-IRS-aided WPT, frequency and spatial domains can be decoupled in single-user case, while they cannot be decoupled in the multi-user case, as shown in [8, 36]. Consequently, single-user and multi-user WPT are designed differently in [8, 36]. Though the SWIPT case has not been studied, the same set of problems is expected to occur between single user and multiuser case and would be even more challenging since communication is delivered simultaneously with power. Adding IRS into the picture would make it even more complicated.
+			\emph{Third}, multi-user WPT leads to its own set of challenges compared single-user WPT. Taking an non-IRS-aided WPT, frequency and spatial domains can be decoupled in single-user case, while they cannot be decoupled in the multi-user case, as shown in [8, 36]. Consequently, single-user and multi-user WPT are designed differently in [8, 36]. Though the SWIPT case has not been studied, the same set of problems is expected to occur between single user and multiuser case and would be even more challenging since communication is delivered simultaneously with power. Adding IRS into the picture would make it even more complicated.
 			\label{re:1.2}
 		\end{response}
 
@@ -272,15 +272,7 @@
 		\end{point}
 
 		\begin{response}
-			Green's decomposition suggests that the backscattered/reflected signal of an antenna can be decomposed into the \emph{structural mode} component and the \emph{antenna mode} component. The former is fixed for a given antenna and can be regarded as part of the environment multipath, while the latter is adjustable and depends on the mismatch of the antenna and load impedances. The reflection coefficient of the $l$-th IRS element is thus defined as
-			\begin{equation}
-				\phi_l = \frac{Z_l - Z_0}{Z_l + Z_0}
-			\end{equation}
-			where $Z_0$ is the characteristic impedance and $Z_l = R_l + j X_l$ is the impedance of the $l$-th IRS element. It implies that $\lvert{\phi_l}\rvert \le 1$ for $R_l \ge 0$, and we assume $Z_l$ is pure reactive such that
-			\begin{equation}
-				\phi_l = \frac{j X_l - Z_0}{j X_l + Z_0} = e^{j \theta_{l}}
-			\end{equation}
-			which corresponds to the lossless reflection model adopted in the paper. Nevertheless, due to the non-zero power consumption at the IRS in practice, $R_l$ would be positive and the reflection coefficient $\phi_l$ not only has a magnitude smaller than 1 but also depends on the phase shift. [23] found that $\lvert{\phi}_l\rvert$ experiences a trough as low as \num{0.2} for $R_l = 2.5\,\si{\ohm}$ at zero phase shift, which suggests that the position and direction of the IRS should be carefully designed.
+			The assumption of lossless reflection is indeed very ideal. Based on the circuit analysis, the authors of [24] shows that the reflection amplitude depends on the phase shift, which experiences a trough at \num{0} phase shift and is negatively correlated to the element resistance. For $R_l=\SI{1}{\ohm}$, $\lvert{\phi_l}\rvert$ is \num{1} at a phase shift of $\pi$ but around \num{0.6} at a phase shift of \num{0}. From the perspective of field and propagation, \cite{Ozdogan2020} points out that if the dimension of IRS element is much larger than the wavelength, the beamwidth would become small and the scattered field strength would depend on the observation angle. However, to reduce the design complexity and provide a preliminary insight, we considered the commonest lossless reflection pattern at the IRS in this paper.
 			\label{re:2.8}
 		\end{response}
 
@@ -302,7 +294,7 @@
 		\end{point}
 
 		\begin{response}
-			We appreciate your suggestion and have modified the manuscript to emphasize this point. A major challenge for SWIPT is that the information decoder and energy harvester have different sensitivity -- although conventional radios as Wi-Fi and Bluetooth can support a signal strength of \num{-90} to \SI{-100}{\dBm}, most existing harvesters only capture signals at \num{-20} to \SI{-30}{\dBm}. Since the transmit power is strictly subject to regulations, it is crucial to increase the energy efficiency to boost the signal strength and extend the system coverage. Therefore, we believe the effective channel enhancement and the low power consumption of IRS is a perfect match for SWIPT.
+			We appreciate your suggestion and have modified the manuscript to emphasize this point. Both SWIPT and IRS aim to achieve spectrum and energy efficient communication, and the effective channel enhancement and low power consumption of IRS are expected to bring more opportunities to SWIPT. A major challenge for SWIPT is that information decoding and energy harvesting have different sensitivity on the received signal. Although conventional radios as Wi-Fi and Bluetooth can support a signal strength of \num{-90} to \SI{-100}{\dBm}, most existing harvesters can only capture signals at \num{-20} to \SI{-30}{\dBm} power level. Since the transmit power is strictly constrained by government regulations, it is crucial to increase the end-to-end power transfer efficiency to boost the harvested power and extend the system coverage. Therefore, we believe the passive beamforming ability of the IRS can significantly enhance WPT and SWIPT performance.
 			\label{re:3.1}
 		\end{response}
 
@@ -312,14 +304,15 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for the opinion and the manuscript has been revised accordingly. This paper proposed an IRS-aided SWIPT network and considered a joint waveform and beamforming design over spatial and frequency domains under energy harvester nonlinearity. To the best of our knowledge, relevant existing papers assumed linear harvester model where the RF-to-DC conversion efficiency is a constant regardless of its input. However, the harvester consists of an antenna to intercept RF signal and a diode rectifier (nonlinear device) to produce DC power, and the RF-to-DC efficiency indeed depends on the power and shape of the input waveform. By exploiting the joint impact of passive beamforming and harvester nonlinearity, we found that:
-			\begin{itemize}
-				\item the IRS should be developed next to the transmitter or the receiver due to double fading;
-				\item the optimal transceiving mode depends on the SNR and the number of subbands;
-				\item the power scaling laws of active and passive beamforming are in the order of $M^2$ and $L^4$, respectively;
-				\item the IRS reflection coefficient cannot be designed per subband and there exists a tradeoff in subchannel enhancement;
-				\item the optimal passive beamforming can be approximated in closed form for narrowband transmission but varies at different R-E points for broadband transmission.
-			\end{itemize}
+			We have resummarized the contribution of this paper as follows.
+
+			\emph{First}, we propose a novel IRS-aided SWIPT architecture based on joint waveform, active and passive beamforming design. To elevate the rectifier nonlinearity, we superpose a multi-carrier unmodulated power waveform (deterministic multisine) to a multi-carrier modulated information waveform and evaluate the performance under TS and PS modes. The proposed joint waveform, active and passive beamforming architecture exploits rectifier nonlinearity, beamforming gain and channel selectivity across spatial and frequency domains to enlarge the achievable R-E region. This is the first paper to tackle energy harvester nonlinearity, multi-carrier transmission, and co-localized receiver for IRS-aided SWIPT.
+
+			\emph{Second}, we characterize the achievable R-E region with multiple energy maximization problems with different rate constraints, and solve each R-E boundary point by an Block Coordinate Descent (BCD) algorithm based on the Channel State Information at the Transmitter (CSIT). For active beamforming, we prove that the global optimal active information and power precoders coincide at Maximum-Ratio Transmission (MRT) under rectifier nonlinearity. For passive beamforming, we propose a Successive Convex Approximation (SCA) algorithm that obtains the IRS reflection coefficient by relax-then-extract method. Finally, the superposed waveform is optimized by the Geometric Programming (GP) technique. The IRS phase shift, active precoder and waveform amplitude are updated iteratively until convergence.
+
+			\emph{Third}, we introduce two low-complexity adaptive waveform design in the closed form to avoid the exponential complexity of the GP algorithm. The Water-Filling (WF) strategy for modulated waveform and SMF strategy for multisine waveform are combined under TS and PS setups to facilitate practical SWIPT implementation. To cooperate with the low-complexity waveform schemes, we modify the passive beamforming algorithm and characterize the R-E region by varying the duration ratio for TS and the waveform and splitting ratios for PS. The performance of the low-complexity design is proved close to the BCD algorithm under different configurations.
+
+			\emph{Fourth}, we provide numerical results to evaluate the performance of the proposed algorithms. It is concluded that 1) the proposed BCD algorithm always converge to local optimal points, 2) multisine waveform is beneficial to multi-carrier energy transfer especially when the number of subbands is large, 3) TS is preferred at low Signal-to-Noise Ratio (SNR) while PS is preferred at high SNR, 4) there exist two optimal IRS development locations, one close to the AP and one close to the UE, 5) the output SNR scales linearly with the number of transmit antennas and quadratically with the number of IRS elements, 6) due to rectifier nonlinearity, the output DC current scales quadratically with the number of transmit antennas and quartically with the number of IRS elements, 7) at different R-E points, the optimal IRS reflection coefficients coincide for narrowband SWIPT but differ for broadband SWIPT, 8) the proposed algorithms are robust to practical limitations as inaccurate cascaded CSIT and finite IRS reflection states.
 			\label{re:3.2}
 		\end{response}
 
@@ -329,7 +322,7 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We have updated the discussion carefully and the reviewer is referred to the updated manuscript.
 			\label{re:3.3}
 		\end{response}
 
@@ -339,7 +332,7 @@
 		\end{point}
 
 		\begin{response}
-			The reviewer is referred to Response \ref{re:1.1}. We have incorporated the channel estimation issue into the revised manuscript by citing those references.
+			We have added those citations and considered the influence of imperfect cascaded CSIT on the R-E performance. The reviewer is referred to Response \ref{re:1.1} for details.
 			\label{re:3.4}
 		\end{response}
 
@@ -349,7 +342,16 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			Thank you for the suggestion. On top of the previous version, we have introduced two closed-form adaptive waveform design under TS and PS modes and compared the results with the original BCD algorithm. Fig.~\ref{fi:re_noise} -- \ref{fi:re_reflector} demonstrate that the low-complexity BCD algorithm achieves near-optimal performance under different configurations. Moreover, we have investigated the impact of imperfect cascaded CSIT and quantized IRS on the achievable R-E region in Fig.~\ref{fi:re_csi} and \ref{fi:re_quantization}. It can be concluded that the proposed algorithms are robust to CSIT inaccuracy of the AP-IRS-UE link, and even $b=1$ (i.e. two-state reflection) brings considerable R-E gain over the benchmark scheme without IRS. These observations demonstrate the advantage of the proposed joint waveform, active and passive beamforming design in practical IRS-aided SWIPT systems.
+
+			\begin{figure}[!h]
+				\centering
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/re_quantization.tex}
+				}
+				\caption{Average R-E region with quantized IRS for $M=1$, $N=16$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{10}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
+				\label{fi:re_quantization}
+			\end{figure}
 			\label{re:3.5}
 		\end{response}
 
