@@ -106,10 +106,10 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for raising this issue. The rank-\num{1} property of the IRS matrix $\boldsymbol{\Phi}$ to the relaxed problem (25a) -- (25d) is suggested by the CVX software [39] under different configurations. Although the strict convergence and local optimality of the BCD Algorithm~3 relies on this conclusion, it is intricate to provide a mathematical proof due to the coupled objective (24) and the log sum constraint (25b). Instead, we define the eigen ratio as $\nu=\max_l\lambda_l(\boldsymbol{\Phi})/\sum_l\lambda_l(\boldsymbol{\Phi})$ where $\lambda_l(\boldsymbol{\Phi})$ is the $l$-th eigenvalue of $\boldsymbol{\Phi}$. Since $\nu=1$ means $\boldsymbol{\Phi}$ is rank-\num{1}, we claim $\boldsymbol{\Phi}$ is approximately rank-\num{1} when $1-\nu \approx 0$. Table~\ref{ta:eigen_ratio} shows the maximum value of $1-\nu$ over \num{20} R-E samples of \num{300} tested channel realizations for both BCD algorithms. With reasonable precision, we conclude that $\boldsymbol{\Phi}$ is always rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint (25e) can be relaxed with negligible performance loss, $\bar{\boldsymbol{\phi}}$ can be directly obtained through eigen decomposition, and the assumption of Proposition~3 always hold such that the BCD Algorithm~3 converges to local optimal points.
+			Thank you for raising this issue. The rank-\num{1} property of the IRS matrix $\boldsymbol{\Phi}$ to the relaxed problem (25a) -- (25d) is suggested by the CVX software [39] under different configurations. Although the local optimality of the BCD Algorithm~3 relies on this conclusion, it is intricate to provide a mathematical proof due to the coupled objective (24) and the log sum constraint (25b). Instead, we define the eigen ratio as $\nu=\max_l\lambda_l(\boldsymbol{\Phi})/\sum_l\lambda_l(\boldsymbol{\Phi})$ where $\lambda_l(\boldsymbol{\Phi})$ is the $l$-th eigenvalue of $\boldsymbol{\Phi}$. Since $\nu=1$ means $\boldsymbol{\Phi}$ is rank-\num{1}, we claim $\boldsymbol{\Phi}$ is approximately rank-\num{1} when $1-\nu \approx 0$. For all intermediate $\boldsymbol{\Phi}$ achieved by Algorithm~1, Table~1 shows the maximum value of $1-\nu$ of \num{20} R-E samples over \num{300} tested channel realizations for both BCD algorithms. With reasonable precision, we conclude that $\boldsymbol{\Phi}$ is always rank-\num{1} under different configurations for all tested channel realizations. It suggests that the rank constraint (25e) can be relaxed, the phase shift $\boldsymbol{\phi}$ can be extracted by eigen decomposition without performance loss, and Algorithm~1, 3 and 4 converge to local optimal points.
 
 			\begin{table*}[!h]
-				\caption{The maximum value of $1-\nu$ over all R-E samples during BCD and LC-BCD algorithms for all tested channel realizations}
+				\caption{The maximum value of $1-\nu$ of all R-E samples over all tested channel realizations for BCD and LC-BCD algorithms}
 				\label{ta:eigen_ratio}
 				\centering
 				\resizebox{\columnwidth}{!}{
@@ -118,7 +118,7 @@
 						\multicolumn{2}{|c|}{\multirow{2}{*}{}} & \multicolumn{3}{c|}{$M$} & \multicolumn{3}{c|}{$N$} & \multicolumn{3}{c|}{$L$} & \multicolumn{2}{c|}{$B$} \\ \cline{3-13}
 						\multicolumn{2}{|c|}{} & \num{1} & \num{2} & \num{4} & \num{1} & \num{4} & \num{16} & \num{20} & \num{40} & \num{80} & \SI{1}{\MHz} & \SI{10}{\MHz} \\ \hline
 						$\max(1 - \nu)$ & BCD & \num{5.5511} & \num{6.6613} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{6.6613} & \num{5.5511} \\ \cline{2-13}
-						$[\times \num{e-16}]$ & LC & \num{6.6613} & \num{6.6613} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{8.8818} & \num{6.6613} & \num{6.6613} & \num{5.5511} \\ \hline
+						$[\times \num{e-16}]$ & LC-BCD & \num{6.6613} & \num{6.6613} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{5.5511} & \num{6.6613} & \num{8.8818} & \num{6.6613} & \num{6.6613} & \num{5.5511} \\ \hline
 					\end{tabular}
 				}
 			\end{table*}
@@ -142,7 +142,7 @@
 		\end{point}
 
 		\begin{response}
-			We agree with the reviewer that the relaxation on the rank-one constraint deserves more attention. However, as discussed in Response~\ref{re:1.2}, multi-user IRS-aided SWIPT is out the scope of this paper and we would like to provide some general ideas to address this issue. For any passive beamforming problem with unit-rank constraint (which is non-convex), we can either relax the constraint and use Gaussian randomization method to obtain a high-quality solution [38], or replace the unit-rank constraint $\mathrm{rank}(\boldsymbol{\Phi})=1$ with the constraint on largest singular value $\mathrm{Tr}(\boldsymbol{\Phi})-\sigma_{\max} (\boldsymbol{\Phi}) \le 0$ then solve the problem by the penalty method [33], \cite{Wu2021}. Both techniques are expected to provide a unit-rank solution with performance very close to the original solution.
+			We agree with the reviewer that the relaxation on the rank-one constraint deserves more attention. However, as discussed in Response~\ref{re:1.2}, multi-user IRS-aided SWIPT is out the scope of this paper and we would like to provide some general approaches to address this issue. For any passive beamforming problem with unit-rank constraint (which is non-convex), we can either relax the constraint and use Gaussian randomization method to obtain a high-quality solution [38], or replace the unit-rank constraint with the constraint on largest singular value $\mathrm{Tr}(\boldsymbol{\Phi})-\sigma_{\max} (\boldsymbol{\Phi}) \le 0$ then solve the problem by the penalty method [33], \cite{Wu2021}. Both techniques are expected to provide a unit-rank solution with performance very close to the original solution.
 			\label{re:1.5}
 		\end{response}
 	\end{reviewersection}
@@ -223,7 +223,7 @@
 		\end{point}
 
 		\begin{response}
-			Problem (25) is not a Semidefinite Programming (SDP) due to the $(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2$ term in (24). Hence, existing complexity analysis tools cannot be direct applied to Algorithm~1 and 4. For Algorithm~2, the computational complexity scales exponentially with the number of subbands [36, 43], but an analytical expression cannot be derived on top of relevant literatures. To facilitate practical SWIPT implementation, we propose two closed-form adaptive waveform amplitude design by combining WF and SMF under TS and PS setups. The optimal waveform design for WIT corresponds to the WF strategy that assigns the amplitude of modulated tone $n$ by
+			Problem (25) is not a Semidefinite Programming (SDP) due to the squared term in the objective function. Hence, existing complexity analysis tools cannot be direct applied to Algorithm~1 and 4. For Algorithm~2, the computational complexity scales exponentially with the number of subbands [36, 43], but an analytical expression cannot be derived on top of relevant literatures. To facilitate practical SWIPT implementation, we propose two closed-form adaptive waveform amplitude design by combining WF and SMF under TS and PS setups. The optimal waveform design for WIT corresponds to the WF strategy that assigns the amplitude of modulated tone $n$ by
 			\begin{equation}\label{eq:wf}
 				s_{\mathrm{I}, n} = \sqrt{2\left(\mu - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}
 			\end{equation}
@@ -294,7 +294,7 @@
 		\end{point}
 
 		\begin{response}
-			We appreciate your suggestion and have modified the manuscript to emphasize this point. Both SWIPT and IRS aim to achieve spectrum and energy efficient communication, and the effective channel enhancement and low power consumption of IRS are expected to bring more opportunities to SWIPT. A major challenge for SWIPT is that information decoding and energy harvesting have different sensitivity on the received signal. Although conventional radios as Wi-Fi and Bluetooth can support a signal strength of \num{-90} to \SI{-100}{\dBm}, most existing harvesters can only capture signals at \num{-20} to \SI{-30}{\dBm} power level. Since the transmit power is strictly constrained by government regulations, it is crucial to increase the end-to-end power transfer efficiency to boost the harvested power and extend the system coverage. Therefore, we believe the passive beamforming ability of the IRS can significantly enhance WPT and SWIPT performance.
+			We appreciate your suggestion and have modified the manuscript to emphasize this point. Both SWIPT and IRS aim to achieve spectrum and energy efficient communication, and the smart channel control and low power consumption of IRS are expected to bring more opportunities to SWIPT. A major challenge for SWIPT is that information decoding and energy harvesting have different sensitivity on the received signal. Although conventional radios as Wi-Fi and Bluetooth can support a signal strength of \num{-90} to \SI{-100}{\dBm}, most existing harvesters can only capture signals at \num{-20} to \SI{-30}{\dBm} power level. Since the transmit power is strictly constrained by government regulations, it is crucial to increase the end-to-end power transfer efficiency to boost the harvested power and extend the system coverage. Therefore, we believe the passive beamforming ability of the IRS can significantly enhance WPT and SWIPT performance.
 			\label{re:3.1}
 		\end{response}
 
@@ -332,7 +332,7 @@
 		\end{point}
 
 		\begin{response}
-			We have added those citations and considered the influence of imperfect cascaded CSIT on the R-E performance. The reviewer is referred to Response \ref{re:1.1} for details.
+			We have added those citations and considered the influence of imperfect cascaded CSIT on the R-E performance. The reviewer is referred to Response \ref{re:1.1} for details. Simulation result in Fig.~\ref{fi:re_csi} demonstrates the robustness of the proposed passive beamforming algorithm to cascaded CSIT inaccuracy for broadband SWIPT with different number of IRS elements.
 			\label{re:3.4}
 		\end{response}
 
