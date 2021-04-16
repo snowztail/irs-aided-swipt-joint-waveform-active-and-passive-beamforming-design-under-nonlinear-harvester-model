@@ -60,7 +60,7 @@ nChannels = 1;
 % number of reflecting elements in IRS
 Variable.nReflectors = [20, 40];
 % estimation error variance of the cascaded channel
-Variable.cascadedErrorVarianceRatio = [0.1, 1, 10];
+Variable.cascadedErrorVarianceRatio = [0.1, 10];
 Variable.cascadedErrorVariance = Variable.cascadedErrorVarianceRatio * path_loss(incidentDistance) * path_loss(reflectiveDistance);
 
 %% * PBS
