@@ -32,7 +32,6 @@ legendString = cell(length(Variable.nReflectors), length(Variable.cascadedErrorV
 plotHandle = gobjects(length(Variable.nReflectors), length(Variable.cascadedErrorVariance) + 1);
 hold all;
 for iReflector = 1 : length(Variable.nReflectors)
-	nSubbands = Variable.nReflectors(iReflector);
 	for iError = 1 : length(Variable.cascadedErrorVariance)
 		plotHandle(iReflector, iError) = plot(reErrorCsi{iReflector, iError}(1, :) / nSubbands, 1e6 * reErrorCsi{iReflector, iError}(2, :));
 		legendString{iReflector, iError} = sprintf('$\\epsilon_n^2 = %s \\Lambda_I\\Lambda_R$ $(L = %s)$', num2str(Variable.cascadedErrorVarianceRatio(iError)), num2str(Variable.nReflectors(iReflector)));
