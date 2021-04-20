@@ -110,7 +110,7 @@
 
 			\emph{Organization:} Section~\ref{se:system_model} introduces the system model, transceiving modes, rectifier nonlinearity and R-E tradeoff. Section~\ref{se:problem_formulation} formulates the problem and tackles the waveform, active and passive beamforming optimization. Section~\ref{se:performance_evaluation} evaluates the proposed algorithms by simulation results. Section~\ref{se:conclusion_and_future_works} concludes the paper.
 
-			\emph{Notations:} Scalars, vectors and matrices are denoted respectively by italic, bold lower-case, and bold upper-case letters. $\boldsymbol{0}$ denotes zero vector or matrix. $\boldsymbol{I}$ denotes the identity matrix. $j$ denotes the imaginary unit. $\mathbb{R}^{x \times y}$ and $\mathbb{C}^{x \times y}$ denotes the subspace spanned respectively by real and complex $x \times y$ matrices. $\Re\{\cdot\}$ and $\Im\{\cdot\}$ denote respectively the real and imaginary part of a complex entity. $(\cdot)^*$, $(\cdot)^T$, $(\cdot)^H$, $(\cdot)^+$, $\lvert{\cdot}\rvert$, $\lVert{\cdot}\rVert$ represent respectively the conjugate, transpose, conjugate transpose, ramp function, absolute value, and Euclidean norm. $\arg(\cdot)$, $\mathrm{rank}(\cdot)$, $\mathrm{tr}(\cdot)$, $\mathrm{diag}(\cdot)$ and $\mathrm{diag}^{-1}(\cdot)$ denote respectively the argument, rank, trace, a square matrix with input vector on the main diagonal, and a vector as the main diagonal of the input matrix. $\boldsymbol{x} \succeq \boldsymbol{0}$ means every element of $\boldsymbol{x}$ is nonnegative, and $\boldsymbol{S} \succeq \boldsymbol{0}$ means $\boldsymbol{S}$ is positive semi-definite. $\mathbb{A}\{\cdot\}$ extracts the DC component of a signal. $\mathbb{E}_X\{\cdot\}$ takes expectation with respect to random variable $X$ ($X$ is omitted for simplicity). The distribution of a CSCG random vector with mean $\boldsymbol{0}$ and covariance $\boldsymbol{\Sigma}$ is denoted by $\mathcal{CN}(\boldsymbol{0},\boldsymbol{\Sigma})$. $\sim$ means ``distributed as''. $(\cdot)^{\star}$ and $(\cdot)^{(i)}$ denote respectively the stationary value and the value at iteration $i$.
+			\emph{Notations:} Scalars, vectors and matrices are denoted respectively by italic, bold lower-case, and bold upper-case letters. $j$ denotes the imaginary unit. $\boldsymbol{0}$ and $\boldsymbol{1}$ denote respectively zero and one vector or matrix. $\boldsymbol{I}$ denotes the identity matrix. $\mathbb{R}^{x \times y}$ and $\mathbb{C}^{x \times y}$ denotes the subspace spanned respectively by real and complex $x \times y$ matrices. $\Re\{\cdot\}$ and $\Im\{\cdot\}$ denote respectively the real and imaginary part of a complex entity. $(\cdot)^*$, $(\cdot)^T$, $(\cdot)^H$, $(\cdot)^+$, $\lvert{\cdot}\rvert$, $\lVert{\cdot}\rVert$ represent respectively the conjugate, transpose, conjugate transpose, ramp function, absolute value, and Euclidean norm. $\arg(\cdot)$, $\mathrm{rank}(\cdot)$, $\mathrm{tr}(\cdot)$, $\mathrm{diag}(\cdot)$ and $\mathrm{diag}^{-1}(\cdot)$ denote respectively the argument, rank, trace, a square matrix with input vector on the main diagonal, and a vector that retrieves the main diagonal of the input matrix. $\boldsymbol{S} \succeq \boldsymbol{0}$ means $\boldsymbol{S}$ is positive semi-definite. $\mathbb{A}\{\cdot\}$ extracts the DC component of a signal. $\mathbb{E}_X\{\cdot\}$ takes expectation with respect to random variable $X$ ($X$ is omitted for simplicity). The distribution of a CSCG random vector with mean $\boldsymbol{0}$ and covariance $\boldsymbol{\Sigma}$ is denoted by $\mathcal{CN}(\boldsymbol{0},\boldsymbol{\Sigma})$. $\sim$ means ``distributed as''. $(\cdot)^{\star}$ and $(\cdot)^{(i)}$ denote respectively the stationary value and the value at iteration $i$.
 		\end{subsection}
 	\end{section}
 
@@ -294,7 +294,7 @@
 			{\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho}{z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho)}{\label{op:original}}{\label{ob:original}}
 			\addConstraint{R(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\rho) \ge \bar{R}}\label{co:original_rate}
 			\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{w}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{w}_{\mathrm{P}}}\rVert^2\right)\le{P}}\label{co:original_power}
-			\addConstraint{\lvert{\phi_l}\rvert=1, \quad l=1,\dots,L}\label{co:original_modulus}
+			\addConstraint{\lvert{\boldsymbol{\phi}}\rvert=\boldsymbol{1}}\label{co:original_modulus}
 			\addConstraint{0 \le \rho \le 1.}
 		\end{maxi!}
 
@@ -343,26 +343,32 @@
 				& \quad - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2.\label{eq:taylor_3}
 			\end{align}
 
-			Plugging \eqref{eq:taylor_1} -- \eqref{eq:taylor_3} into \eqref{eq:z_irs}, we obtain the DC current approximation \eqref{eq:z_irs_approx} and transform problem~\eqref{op:original} to
+			Since $\boldsymbol{C}_{\mathrm{I/P},0}$ and $\boldsymbol{\Phi}$ are Hermitian matrices, $t_{\mathrm{I/P},0}=\mathrm{tr}(\boldsymbol{C}_{\mathrm{I/P},0}\boldsymbol{\Phi})$ is real and we have
+
+			\begin{equation}\label{eq:coupled_terms}
+				\sum_{k=-N+1}^{N-1} \Re\left\{2 t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} = \sum_{k=-N+1}^{N-1} 2 t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*
+			\end{equation}
+
+			Plugging \eqref{eq:taylor_1} -- \eqref{eq:coupled_terms} into \eqref{eq:z_irs}, we obtain the DC current approximation \eqref{eq:z_irs_approx} and transform problem~\eqref{op:original} to
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}
 					\tilde{z}(\boldsymbol{\Phi}^{(i)})
-					& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}^{(i)}+t_{\mathrm{P},0}^{(i)}) + \frac{3}{8}{\beta_4}{\rho^2} \left(4 t_{\mathrm{I},0}^{(i)}t_{\mathrm{I},0}^{(i-1)} - 2 (t_{\mathrm{I},0}^{(i-1)})^2 + \sum_{k=-N+1}^{N-1}{2 \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*}\right)\nonumber\\
+					& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}^{(i)}+t_{\mathrm{P},0}^{(i)}) + \frac{3}{8}{\beta_4}{\rho^2} \left(4 t_{\mathrm{I},0}^{(i)}t_{\mathrm{I},0}^{(i-1)} - 2 (t_{\mathrm{I},0}^{(i-1)})^2 + \sum_{k=-N+1}^{N-1}{2 t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^* - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*}\right)\nonumber\\
 					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left(\frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\right).\label{eq:z_irs_approx}
 				\end{align}
 			\end{figure*}
 			\begin{maxi!}
 				{\boldsymbol{\Phi}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{ob:irs}}
 				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_rate}
-				\addConstraint{\boldsymbol{\Phi}_{l',l'}=1, \quad l'=1,\dots,L+1}\label{co:irs_modulus}
+				\addConstraint{\mathrm{diag}^{-1}(\boldsymbol{\Phi})=\boldsymbol{1}}\label{co:irs_modulus}
 				\addConstraint{\boldsymbol{\Phi}\succeq{\boldsymbol{0}}}\label{co:irs_sd}
-				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_rank}}
+				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
 			\end{maxi!}
-			which is not a Semidefinite Programming (SDP) due to the quadratic objective function \eqref{eq:z_irs_approx}. Since the remaining non-convexity of problem~\eqref{op:irs} origins from the rank-\num{1} constraint~\eqref{co:irs_rank}, we apply the rank relaxation technique that is widely adopted in SDP to formulate a convex problem~\eqref{ob:irs} -- \eqref{co:irs_sd}. The tightness of rank relaxation is verified below.
+			which is not a Semidefinite Programming (SDP) due to the quadratic objective function \eqref{eq:z_irs_approx}. Since the remaining non-convexity of problem~\eqref{op:irs} origins from the rank-\num{1} constraint~\eqref{co:irs_rank}, we apply the rank relaxation technique that is widely adopted in SDP \cite{Luo2010a} to formulate a convex problem~\eqref{ob:irs} -- \eqref{co:irs_sd}. The tightness of rank relaxation is verified below.
 
 			\begin{proposition}\label{pr:relaxation}
-				Any solution $\boldsymbol{\Phi}$ to the relaxed passive beamforming problem~\eqref{ob:irs} -- \eqref{co:irs_sd} satisfies $\mathrm{rank}(\boldsymbol{\Phi})=1$ such that \eqref{co:irs_rank} is tight and no loss is introduced by rank relaxation.
+				Any optimal solution $\boldsymbol{\Phi}^\star$ to the relaxed passive beamforming problem~\eqref{ob:irs} -- \eqref{co:irs_sd} satisfies $\mathrm{rank}(\boldsymbol{\Phi}^\star)=1$ such that \eqref{co:irs_rank} is tight and no loss is introduced by rank relaxation.
 			\end{proposition}
 
 			\begin{proof}\label{pf:relaxation}
@@ -545,7 +551,7 @@
 			where the scaling ratio $\alpha \ge 1$ scales the matched filter to exploit the rectifier nonlinearity. In the low-complexity TS waveform scheme, modulated amplitude \eqref{eq:wf} is used in the data session and multisine amplitude \eqref{eq:smf} is used in the energy session. In contrast, the low-complexity PS scheme jointly designs the waveform balancing ratio $\delta$ and splitting ratio $\rho$, and choose the modulated and multisine amplitudes as
 			\begin{align}
 				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\mu - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+} \label{eq:s_i}\\
-				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha \label{eq:s_p}
+				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha. \label{eq:s_p}
 			\end{align}
 
 			Besides, minor modifications are required for passive beamforming to cooperate with the low-complexity waveform schemes. To achieve the WIT point ($\eta=\rho=0$), the achievable rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:z_irs_approx} should be maximized. To achievable non-WIT points, the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is now characterized by varying either $\eta$ or $\delta$ and $\rho$. Algorithm~\ref{al:m-sca} summarizes the modified passive beamforming design for low-complexity PS mode. The tightness of rank relaxation and local optimality can be proved similar to Proposition~\ref{pr:relaxation} and \ref{pr:sca}, and the details are omitted here.
@@ -742,47 +748,54 @@
 
 	\begin{appendix}
 		\begin{subsection}{Proof of Proposition~\ref{pr:relaxation}}\label{ap:relaxation}
-			Problem~\eqref{op:irs} after rank constraint relaxation is convex with respect to $\boldsymbol{\Phi}$ and satisfies the Slater's condition \cite{Boyd2004}, hence strong duality holds and the duality gap is zero. The Lagrangian function of problem \eqref{ob:irs} -- \eqref{co:irs_sd} at iteration $i$ is given by equation \eqref{eq:lagrangian}, where $\mu$, $\boldsymbol{\nu}$, $\boldsymbol{\Upsilon}$ denote respectively the scalar, vector and matrix Lagrange multiplier associated with constraint~\eqref{co:irs_rate}, \eqref{co:irs_modulus} and \eqref{co:irs_sd}. $\zeta$ collects all constant terms irrelevant to $\boldsymbol{\Phi}^{(i)}$.
+			For any feasible $\boldsymbol{\Phi}$ to problem~\eqref{op:irs}, $\mathrm{tr}(\boldsymbol{\Phi})=L+1$ always hold due to the modulus constraint~\eqref{co:irs_modulus}. Therefore, we add a constant term $-\mathrm{tr}(\boldsymbol{\Phi})$ to \eqref{ob:irs} and formulate an equivalent problem as
+			\begin{maxi!}
+				{\boldsymbol{\Phi}}{-\mathrm{tr}(\boldsymbol{\Phi})+\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs_equivalent}}{\label{ob:irs_equivalent}}
+				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_equivalent_rate}
+				\addConstraint{\mathrm{diag}^{-1}(\boldsymbol{\Phi})=\boldsymbol{1}}\label{co:irs_equivalent_modulus}
+				\addConstraint{\boldsymbol{\Phi}\succeq{\boldsymbol{0}}}\label{co:irs_equivalent_sd}
+				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_equivalent_rank}}
+			\end{maxi!}
+
+			By applying rank constraint relaxation, problem~\eqref{ob:irs_equivalent} -- \eqref{co:irs_equivalent_sd} is convex with respect to $\boldsymbol{\Phi}$ and satisfies the Slater's condition \cite{Boyd2004}, thus strong duality holds. The corresponding Lagrangian function at iteration $i$ is given by equation \eqref{eq:lagrangian}, where $\mu$, $\boldsymbol{\nu}$, $\boldsymbol{\Upsilon}$ denote respectively the scalar, vector and matrix Lagrange multiplier associated with constraint~\eqref{co:irs_equivalent_rate}, \eqref{co:irs_equivalent_modulus} and \eqref{co:irs_equivalent_sd}, and $\zeta$ collects all terms irrelevant to $\boldsymbol{\Phi}^{(i)}$.
 			\begin{figure*}[!b]
 				\hrule
-				\begin{align}\label{eq:lagrangian}
+				\begin{flalign}\label{eq:lagrangian}
 					\mathcal{L}
-					&= - \frac{1}{2} \beta_2 \rho \mathrm{tr}\Bigl(
+					&= \mathrm{tr}\left(\boldsymbol{\Phi}^{(i)}\right) - \frac{1}{2} \beta_2 \rho \mathrm{tr}\Bigl(
 							(\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^{(i)}
 						\Bigr) - \frac{3}{8} \beta_4 \rho^2 \Biggl(
 							4 t_{\mathrm{I},0}^{(i-1)} \mathrm{tr}\Bigl(
 								\boldsymbol{C}_{\mathrm{I},0} \boldsymbol{\Phi}^{(i)}
-							\Bigr) + \sum_{k=-N+1}^{N-1} 2 \Re\Bigl\{
-								(t_{\mathrm{P},k}^{(i-1)})^* \mathrm{tr}\Bigl(
-									\boldsymbol{C}_{\mathrm{P},k} \boldsymbol{\Phi}^{(i)}
-								\Bigr)
-							\Bigr\}\nonumber\\
+							\Bigr) + \sum_{k=-N+1}^{N-1} 2 (t_{\mathrm{P},k}^{(i-1)})^* \mathrm{tr}\Bigl(
+								\boldsymbol{C}_{\mathrm{P},k} \boldsymbol{\Phi}^{(i)}
+							\Bigr)
+							&&\nonumber\\
 					&\quad+ 2 (t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) \mathrm{tr}\Bigl(
 								(\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^{(i)}
 							\Bigr) - \mathrm{tr}^2 \Bigl(
 								(\boldsymbol{C}_{\mathrm{I},0} - \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^{(i)}
 							\Bigr)
-						\Biggr)\nonumber + \mu \Biggl(
+						\Biggr) + \mu \Biggl(
 						2^{\bar{R}} - \prod_{n=1}^N \biggl(
 							1 + \frac{(1-\rho) \mathrm{tr}\Bigl(
 								\boldsymbol{C}_n \boldsymbol{\Phi}^{(i)}
 							\Bigr)}{\sigma_n^2}
 						\biggr)
-					\Biggr)\nonumber\\
+					\Biggr)&&\nonumber\\
 					&\quad+ \mathrm{tr}\biggl(
 						\mathrm{diag}(\boldsymbol{\nu}) \odot \Bigl(
 							\boldsymbol{\Phi}^{(i)} \odot \boldsymbol{I} - \boldsymbol{I}
 						\Bigr)
 					\biggr) - \mathrm{tr} \Bigl(
 						\boldsymbol{\Upsilon} \boldsymbol{\Phi}^{(i)}
-					\Bigr) + \zeta
-				\end{align}
+					\Bigr) + \zeta,&&
+				\end{flalign}
 			\end{figure*}
-			The corresponding Karush–Kuhn–Tucker (KKT) conditions on the primal and dual solutions can be expressed as
-
+			The Karush–Kuhn–Tucker (KKT) conditions on the primal and dual solutions are
 			\begin{subequations}
 				\begin{equation}\label{eq:lagrange_multiplier}
-					\mu^\star \ge 0, \boldsymbol{\nu}^\star \succeq \boldsymbol{0}, \boldsymbol{\Upsilon}^\star \succeq \boldsymbol{0},
+					\mu^\star \ge 0, \boldsymbol{\Upsilon}^\star \succeq \boldsymbol{0},
 				\end{equation}
 				\begin{equation}\label{eq:complementary_slackness}
 					\boldsymbol{\nu}^\star \odot \mathrm{diag}^{-1}(\boldsymbol{\Phi}^\star) = \boldsymbol{0}, \boldsymbol{\Upsilon}^\star \boldsymbol{\Phi}^\star = \boldsymbol{0},
@@ -792,6 +805,45 @@
 				\end{equation}
 			\end{subequations}
 
+			We derive the gradient explicitly and rewrite \eqref{eq:gradient} as
+			\begin{equation}
+				\boldsymbol{\Upsilon}^\star = \boldsymbol{I} - \boldsymbol{\Delta}^\star
+			\end{equation}
+			where $\boldsymbol{\Delta}^\star$ is defied in \eqref{eq:delta}.
+			\begin{figure*}[!b]
+				\begin{flalign}\label{eq:delta}
+					\boldsymbol{\Delta}^\star
+					&= \frac{1}{2} \beta_2 \rho (\boldsymbol{C}_{\mathrm{I},0}+\boldsymbol{C}_{\mathrm{P},0}) + \frac{3}{4} \beta_4 \rho^2
+						\Biggl(
+							2 t_{\mathrm{I},0}^{(i-1)} \boldsymbol{C}_{\mathrm{I},0} + \sum_{k=-N+1}^{N-1} (t_{\mathrm{P},k}^{(i-1)})^* \boldsymbol{C}_{\mathrm{P},k} + (t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) (\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0})&&\nonumber\\
+					&\quad- (\boldsymbol{C}_{\mathrm{I},0} - \boldsymbol{C}_{\mathrm{P},0}) \mathrm{tr}\Bigl(
+								(\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^\star
+							\Bigr)
+						\Biggr) + \mu^\star \sum_{n=1}^N \frac{(1-\rho) \boldsymbol{C}_n}{\sigma_n^2} \prod_{n'=1,n' \ne n}^N \Biggl(
+						1 + \frac{(1-\rho)\mathrm{tr}\Bigl(
+							\boldsymbol{C}_{n'} \boldsymbol{\Phi}^\star
+						\Bigr)}{\sigma_{n'}^2}
+					\Biggr) - \mathrm{diag}(\boldsymbol{\nu^\star}).&&
+				\end{flalign}
+			\end{figure*}
+			Note that \eqref{eq:complementary_slackness} suggests $\mathrm{rank}(\boldsymbol{\Upsilon}^\star)+\mathrm{rank}(\boldsymbol{\Phi}^\star) \le L+1$. By reusing the proof in Appendix A of \cite{Xu2020}, we conclude $\mathrm{rank}(\boldsymbol{\Upsilon}^\star) \ge L$. On the other hand, $\boldsymbol{\Phi}^\star$ cannot be zero matrix and $\mathrm{rank}(\boldsymbol{\Phi}^\star) \ge 1$. Therefore, any optimal solution $\boldsymbol{\Phi}^\star$ to the relaxed problem~\eqref{op:irs_equivalent} satisfies $\mathrm{rank}(\boldsymbol{\Phi}^\star)=1$. Due to the equivalence between \eqref{ob:irs} and \eqref{ob:irs_equivalent}, $\boldsymbol{\Phi}^\star$ is also optimal to the relaxed problem~\eqref{op:irs} and Proposition~\ref{pr:relaxation} holds.
+			% \begin{figure*}[!b]
+			% 	\begin{flalign}\label{eq:lagrangian_gradient}
+			% 		\nabla_{\boldsymbol{\Phi}^\star} \mathcal{L}
+			% 		&= \boldsymbol{I} - \frac{1}{2} \beta_2 \rho (\boldsymbol{C}_{\mathrm{I},0}+\boldsymbol{C}_{\mathrm{P},0}) - \frac{3}{4} \beta_4 \rho^2
+			% 			\Biggl(
+			% 				2 t_{\mathrm{I},0}^{(i-1)} \boldsymbol{C}_{\mathrm{I},0} + \sum_{k=-N+1}^{N-1} (t_{\mathrm{P},k}^{(i-1)})^* \boldsymbol{C}_{\mathrm{P},k} + (t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) (\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0})&&\nonumber\\
+			% 		&\quad- (\boldsymbol{C}_{\mathrm{I},0} - \boldsymbol{C}_{\mathrm{P},0}) \mathrm{tr}\Bigl(
+			% 					(\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^\star
+			% 				\Bigr)
+			% 			\Biggr) - \mu^\star \sum_{n=1}^N \frac{(1-\rho) \boldsymbol{C}_n}{\sigma_n^2} \prod_{n'=1,n' \ne n}^N \Biggl(
+			% 			1 + \frac{(1-\rho)\mathrm{tr}\Bigl(
+			% 				\boldsymbol{C}_{n'} \boldsymbol{\Phi}^\star
+			% 			\Bigr)}{\sigma_{n'}^2}
+			% 		\Biggr)&&\nonumber\\
+			% 		&\quad+ \mathrm{diag}(\boldsymbol{\nu^\star}) - \boldsymbol{\Upsilon}^\star.&&
+			% 	\end{flalign}
+			% \end{figure*}
 		\end{subsection}
 
 		\begin{subsection}{Proof of Proposition~\ref{pr:sca}}\label{ap:sca}
