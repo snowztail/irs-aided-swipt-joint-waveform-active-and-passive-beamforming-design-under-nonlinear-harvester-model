@@ -316,3 +316,6 @@ octave-workspace
 
 # Data
 *.mat
+
+# Mendeley BiB fix
+mendeleyBibFix
