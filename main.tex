@@ -93,7 +93,7 @@
 		\begin{subsection}{Intelligent Reflecting Surface}
 			Intelligent Reflecting Surface (IRS) has recently emerged as a promising technique that adapts the propagation environment to enhance the spectrum and energy efficiency. In practice, an IRS consists of multiple individual sub-wavelength reflecting elements to adjust the amplitude and phase of the incoming signal for a smart reflection (i.e., passive beamforming). Different from the relay, backscatter, and Frequency-Selective Surface (FSS) \cite{Anwar2018}, the IRS adaptively assists the primary transmission with passive components to suppress thermal noise but is limited to frequency-dependent reflection.
 
-			Inspired by the development of real-time reconfigurable metamaterials \cite{Cui2014}, the authors of \cite{Liaskos2018} introduced a programmable metasurface that steers or polarizes the electromagnetic wave at a specific frequency to mitigate signal attenuation. Motivated by this, \cite{Wu2018} proposed an IRS-assisted Multiple-Input Single-Output (MISO) system and jointly optimized the precoder at the Access Point (AP) and the phase shifts at the IRS to minimize the transmit power. The active and passive beamforming problem was then extended to the discrete phase shift case \cite{Wu2019a} and the multi-user case \cite{Wu2019}. In \cite{Abeywickrama2019}, the authors investigated the impact of non-zero resistance on the reflection pattern and emphasized the dependency of the reflection amplitude on the phase shift for practical IRS. To estimate the cascaded AP-IRS-User Equipment (UE) link without RF-chains at the IRS, practical protocols were developed based on element-wise on/off switching \cite{Nadeem2019}, reflection pattern design \cite{You2019,Kang2020}, and compressed sensing \cite{Wang2020}. The authors of \cite{Yang2020} considered a novel dynamic passive beamforming for Orthogonal Frequency-Division Multiplexing (OFDM) systems, where the reflection coefficient is varied over consequent time slots to enable flexible resource allocation over time-frequency Resource Blocks (RBs). In \cite{Dai2020}, a prototype IRS with \num{256} \num{2}-bit elements based on Positive Intrinsic-Negative (PIN) diodes was developed to support real-time high-definition video transmission at \si{GHz} and mmWave frequency.
+			Inspired by the development of real-time reconfigurable metamaterials \cite{Cui2014}, the authors of \cite{Liaskos2018} introduced a programmable metasurface that steers or polarizes the electromagnetic wave at a specific frequency to mitigate signal attenuation. Motivated by this, \cite{Wu2018} proposed an IRS-assisted Multiple-Input Single-Output (MISO) system and jointly optimized the precoder at the Access Point (AP) and the phase shifts at the IRS to minimize the transmit power. The active and passive beamforming problem was then extended to the discrete phase shift case \cite{Wu2019a} and the multi-user case \cite{Wu2019}. In \cite{Abeywickrama2019}, the authors investigated the impact of non-zero resistance on the reflection pattern and emphasized the dependency of the reflection amplitude on the phase shift for practical IRS. To estimate the cascaded AP-IRS-User Equipment (UE) link without RF-chains at the IRS, practical protocols were developed based on element-wise on/off switching \cite{Nadeem2019}, training sequence and reflection pattern design \cite{You2019,Kang2020}, and compressed sensing \cite{Wang2020}. The authors of \cite{Yang2020} considered a novel dynamic passive beamforming for Orthogonal Frequency-Division Multiplexing (OFDM) systems, where the reflection coefficient is varied over consequent time slots to enable flexible resource allocation over time-frequency Resource Blocks (RBs). In \cite{Dai2020}, a prototype IRS with \num{256} \num{2}-bit elements based on Positive Intrinsic-Negative (PIN) diodes was developed to support real-time high-definition video transmission at \si{GHz} and mmWave frequency.
 		\end{subsection}
 
 
@@ -106,7 +106,7 @@
 
 			\emph{Third}, we introduce two closed-form adaptive waveform schemes to avoid the exponential complexity of the GP algorithm. The Water-Filling (WF) strategy for modulated waveform and SMF strategy for multisine waveform are combined under TS and PS setups to facilitate practical SWIPT implementation. To accommodate the low-complexity waveform schemes, we modify the passive beamforming algorithm and characterize the R-E region by varying the duration ratio for TS and the waveform and splitting ratios for PS. The proposed low-complexity designs achieve near-optimal R-E performance under different configurations.
 
-			\emph{Fourth}, we provide numerical results to evaluate the proposed algorithms. It is concluded that 1) multisine waveform is beneficial to multi-carrier energy transfer, especially when the number of subbands is large, 2) TS is preferred at low Signal-to-Noise Ratio (SNR) while PS is preferred at high SNR, 3) there exist two optimal IRS development locations, one close to the AP and one close to the UE, 4) the output SNR scales linearly with the number of transmit antennas and quadratically with the number of IRS elements, 5) due to rectifier nonlinearity, the output DC current scales quadratically with the number of transmit antennas and quartically with the number of IRS elements, 6) to achieve different R-E boundary points, the active and passive beamforming can be fixed for narrowband SWIPT but need adaptive design for broadband SWIPT, 7) the proposed algorithms are robust to practical restrictions as inaccurate cascaded CSIT and finite IRS reflection states.
+			\emph{Fourth}, we provide numerical results to evaluate the proposed algorithms. It is concluded that 1) multisine waveform is beneficial to multi-carrier energy transfer, especially when the number of subbands is large, 2) TS is preferred at low Signal-to-Noise Ratio (SNR) while PS is preferred at high SNR, 3) there exist two optimal IRS development locations, one close to the AP and one close to the UE, 4) the output SNR scales linearly with the number of transmit antennas and quadratically with the number of IRS elements, 5) due to rectifier nonlinearity, the output DC current scales quadratically with the number of transmit antennas and quartically with the number of IRS elements, 6) to achieve different R-E tradeoff, the active and passive beamforming can be fixed for narrowband SWIPT but need adaptive design for broadband SWIPT, 7) the proposed algorithms are robust to practical restrictions as inaccurate cascaded CSIT and finite IRS reflection states.
 
 			\emph{Organization:} Section~\ref{se:system_model} introduces the system model, transceiving modes, rectifier nonlinearity and R-E tradeoff. Section~\ref{se:problem_formulation} formulates the problem and tackles the waveform, active and passive beamforming optimization. Section~\ref{se:performance_evaluation} evaluates the proposed algorithms by simulation results. Section~\ref{se:conclusion_and_future_works} concludes the paper.
 
@@ -554,11 +554,11 @@
 				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha. \label{eq:s_p}
 			\end{align}
 
-			Besides, minor modifications are required for passive beamforming to cooperate with the low-complexity waveform schemes. To achieve the WIT point ($\eta=\rho=0$), the achievable rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:z_irs_approx} should be maximized. To achievable non-WIT points, the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is now characterized by varying either $\eta$ or $\delta$ and $\rho$. Algorithm~\ref{al:m-sca} summarizes the modified passive beamforming design for low-complexity PS mode. The tightness of rank relaxation and local optimality can be proved similar to Proposition~\ref{pr:relaxation} and \ref{pr:sca}, and the details are omitted here.
+			Besides, minor modifications are required for passive beamforming to cooperate with the low-complexity waveform schemes. To achieve the WIT point ($\eta=\rho=0$), the achievable rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:z_irs_approx} should be maximized. To achievable non-WIT points, the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is now characterized by varying either $\eta$ or $\delta$ and $\rho$. Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design for low-complexity PS mode. The tightness of rank relaxation and local optimality can be proved similar to Proposition~\ref{pr:relaxation} and \ref{pr:sca}, and the details are omitted here.
 
 			\begin{algorithm}[!t]
 				\caption{Modified: IRS Phase Shift.}
-				\label{al:m-sca}
+				\label{al:m_sca}
 				\begin{algorithmic}[1]
 					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},\sigma_n,\boldsymbol{w}_{\mathrm{I/P},n},\rho,\epsilon$, $\forall n$
 					\State Construct $\boldsymbol{V},\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n},\boldsymbol{C}_{\mathrm{I/P},k}$, $\forall n,k$
@@ -581,18 +581,18 @@
 				\end{algorithmic}
 			\end{algorithm}
 
-			On top of the closed-form waveform schemes and the modified passive beamforming strategy, we propose a Low-Complexity-BCD (LC-BCD) algorithm that iteratively updates the phase shift $\boldsymbol{\phi}$ by Algorithm~\ref{al:m-sca}, the active beamforming $\boldsymbol{b}_{\mathrm{I/P},n}$, $\forall n$ by equation \eqref{eq:b_n}, and the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ by \eqref{eq:wf}, \eqref{eq:smf} for TS or \eqref{eq:s_i}, \eqref{eq:s_p} for PS, until convergence. The LC-BCD algorithm for PS mode is summarized in Algorithm~\ref{al:lc-bcd}.
+			On top of the closed-form waveform schemes and the modified passive beamforming strategy, we propose a Low-Complexity-BCD (LC-BCD) algorithm that iteratively updates the phase shift $\boldsymbol{\phi}$ by Algorithm~\ref{al:m_sca}, the active beamforming $\boldsymbol{b}_{\mathrm{I/P},n}$, $\forall n$ by equation \eqref{eq:b_n}, and the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ by \eqref{eq:wf}, \eqref{eq:smf} for TS or \eqref{eq:s_i}, \eqref{eq:s_p} for PS, until convergence. The LC-BCD algorithm for PS mode is summarized in Algorithm~\ref{al:lc_bcd}.
 
 			\begin{algorithm}[!t]
 				\caption{LC-BCD: Waveform and Beamforming.}
-				\label{al:lc-bcd}
+				\label{al:lc_bcd}
 				\begin{algorithmic}[1]
 					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},P,\sigma_n,\delta,\rho,\epsilon$, $\forall n$
 					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{b}_{\mathrm{I/P},n}^{(0)},\boldsymbol{s}_{\mathrm{I/P}}^{(0)}$, $\forall n$
 					\State Set $\boldsymbol{w}_{\mathrm{I/P},n}^{(0)}$, $\forall n$ by \eqref{eq:w}
 					\Repeat
 						\State $i \gets i + 1$
-						\State Get $\boldsymbol{\phi}^{(i)}$ based on $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)}$ by Algorithm~\ref{al:m-sca}
+						\State Get $\boldsymbol{\phi}^{(i)}$ based on $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)}$ by Algorithm~\ref{al:m_sca}
 						\State Update $\boldsymbol{h}_n^{(i)},\boldsymbol{b}_n^{(i)}$, $\forall n$ by \eqref{eq:h_n}, \eqref{eq:b_n}
 						\State Update $\boldsymbol{s}_{\mathrm{I}}^{(i)},\boldsymbol{s}_{\mathrm{P}}^{(i)}$ by \eqref{eq:s_i}, \eqref{eq:s_p}
 						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{eq:w}
@@ -714,7 +714,7 @@
 			\caption{Average R-E region for ideal, adaptive, fixed and no IRS versus $B$ for $M=1$, $N=16$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
 		\end{figure}
 
-		Fig.~\ref{fi:re_irs_1mhz} and \ref{fi:re_irs_10mhz} explore the R-E region with different IRS strategies for narrowband and broadband SWIPT. The ideal Frequency-Selective (FS) IRS assumes the reflection coefficient of each element is independent and controllable at different frequencies. The adaptive IRS adjusts the passive beamforming for different rate constraints by Algorithm~\ref{al:sca}. The WIT/WPT-optimized IRS is retrieved by Algorithm~\ref{al:m-sca} then fixed for the whole R-E region (i.e., the boundary is obtained by varying the waveform amplitude and splitting ratio). \emph{First,} random IRS and no IRS perform worse than other schemes since no passive beamforming is exploited. Their R-E boundaries coincide because the antenna mode reflection of the random IRS is canceled out after averaging over channel realizations. \emph{Second,} the performance of non-random IRS are similar when the bandwidth is small, while the adaptive IRS outperforms the WIT/WPT-optimized IRS but is worse than the ideal FS IRS when the bandwidth is large. In the former case, the subband responses are close to each other such that the tradeoff in Remark~\ref{re:subband_tradeoff} becomes insignificant, and the auxiliary channels can be roughly maximized at all subbands. It suggests that for narrowband SWIPT, the optimal passive beamforming of any R-E point is roughly optimal for the whole R-E region, which can be approximated in closed form (by aligning the auxiliary channel with the direct channel) when a single transmit antenna is used at the AP. On the other hand, the optimal reflection coefficient varies at different R-E points for broadband SWIPT, since the information and power transfer prefer different channel strength distribution in the frequency domain. By adaptive passive beamforming, the channel strength can be either amplified at few strongest subbands to enhance the rate at low SNR, or spread evenly to boost the output DC power. It emphasizes the R-E advantage of adaptive passive beamforming Algorithm~\ref{al:sca} for broadband SWIPT.
+		Fig.~\ref{fi:re_irs_1mhz} and \ref{fi:re_irs_10mhz} explore the R-E region with different IRS strategies for narrowband and broadband SWIPT. The ideal Frequency-Selective (FS) IRS assumes the reflection coefficient of each element is independent and controllable at different frequencies. The adaptive IRS adjusts the passive beamforming for different rate constraints by Algorithm~\ref{al:sca}. The WIT/WPT-optimized IRS is retrieved by Algorithm~\ref{al:m_sca} then fixed for the whole R-E region (i.e., the boundary is obtained by varying the waveform amplitude and splitting ratio). \emph{First,} random IRS and no IRS perform worse than other schemes since no passive beamforming is exploited. Their R-E boundaries coincide because the antenna mode reflection of the random IRS is canceled out after averaging over channel realizations. \emph{Second,} the performance of non-random IRS are similar when the bandwidth is small, while the adaptive IRS outperforms the WIT/WPT-optimized IRS but is worse than the ideal FS IRS when the bandwidth is large. In the former case, the subband responses are close to each other such that the tradeoff in Remark~\ref{re:subband_tradeoff} becomes insignificant, and the auxiliary channels can be roughly maximized at all subbands. It suggests that for narrowband SWIPT, the optimal passive beamforming of any R-E point is roughly optimal for the whole R-E region, which can be approximated in closed form (by aligning the auxiliary channel with the direct channel) when a single transmit antenna is used at the AP. On the other hand, the optimal reflection coefficient varies at different R-E points for broadband SWIPT, since the information and power transfer prefer different channel strength distribution in the frequency domain. By adaptive passive beamforming, the channel strength can be either amplified at few strongest subbands to enhance the rate at low SNR, or spread evenly to boost the output DC power. It emphasizes the R-E advantage of adaptive passive beamforming Algorithm~\ref{al:sca} for broadband SWIPT.
 
 		\begin{figure}[!t]
 			\centering
@@ -754,7 +754,7 @@
 				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_equivalent_rate}
 				\addConstraint{\mathrm{diag}^{-1}(\boldsymbol{\Phi})=\boldsymbol{1}}\label{co:irs_equivalent_modulus}
 				\addConstraint{\boldsymbol{\Phi}\succeq{\boldsymbol{0}}}\label{co:irs_equivalent_sd}
-				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_equivalent_rank}}
+				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_equivalent_rank}}
 			\end{maxi!}
 
 			By applying rank constraint relaxation, problem~\eqref{ob:irs_equivalent}--\eqref{co:irs_equivalent_sd} is convex with respect to $\boldsymbol{\Phi}$ and satisfies the Slater's condition \cite{Boyd2004}, thus strong duality holds. The corresponding Lagrangian function at iteration $i$ is given by equation \eqref{eq:lagrangian}, where $\mu$, $\boldsymbol{\nu}$, $\boldsymbol{\Upsilon}$ denote respectively the scalar, vector and matrix Lagrange multiplier associated with constraint~\eqref{co:irs_equivalent_rate}, \eqref{co:irs_equivalent_modulus} and \eqref{co:irs_equivalent_sd}, and $\zeta$ collects all terms irrelevant to $\boldsymbol{\Phi}^{(i)}$.
@@ -801,10 +801,11 @@
 					\boldsymbol{\nu}^\star \odot \mathrm{diag}^{-1}(\boldsymbol{\Phi}^\star) = \boldsymbol{0}, \boldsymbol{\Upsilon}^\star \boldsymbol{\Phi}^\star = \boldsymbol{0},
 				\end{equation}
 				\begin{equation}\label{eq:gradient}
-					\nabla_{\boldsymbol{\Phi}^\star} \mathcal{L} = 0,
+					\nabla_{\boldsymbol{\Phi}^\star} \mathcal{L} = 0.
 				\end{equation}
 			\end{subequations}
-			and we derive the gradient explicitly and rewrite \eqref{eq:gradient} as
+
+			We then derive the gradient explicitly and rewrite \eqref{eq:gradient} as
 			\begin{equation}
 				\boldsymbol{\Upsilon}^\star = \boldsymbol{I} - \boldsymbol{\Delta}^\star
 			\end{equation}
@@ -825,24 +826,8 @@
 					\Biggr) - \mathrm{diag}(\boldsymbol{\nu^\star}).&&
 				\end{flalign}
 			\end{figure*}
+
 			Note that \eqref{eq:complementary_slackness} suggests $\mathrm{rank}(\boldsymbol{\Upsilon}^\star)+\mathrm{rank}(\boldsymbol{\Phi}^\star) \le L+1$. By reusing the proof in Appendix A of \cite{Xu2020}, we conclude $\mathrm{rank}(\boldsymbol{\Upsilon}^\star) \ge L$. On the other hand, $\boldsymbol{\Phi}^\star$ cannot be zero matrix and $\mathrm{rank}(\boldsymbol{\Phi}^\star) \ge 1$. Therefore, any optimal solution $\boldsymbol{\Phi}^\star$ to the relaxed problem~\eqref{op:irs_equivalent} satisfies $\mathrm{rank}(\boldsymbol{\Phi}^\star)=1$. Due to the equivalence between \eqref{ob:irs} and \eqref{ob:irs_equivalent}, $\boldsymbol{\Phi}^\star$ is also optimal to the relaxed problem~\eqref{op:irs} and Proposition~\ref{pr:relaxation} holds.
-			% \begin{figure*}[!b]
-			% 	\begin{flalign}\label{eq:lagrangian_gradient}
-			% 		\nabla_{\boldsymbol{\Phi}^\star} \mathcal{L}
-			% 		&= \boldsymbol{I} - \frac{1}{2} \beta_2 \rho (\boldsymbol{C}_{\mathrm{I},0}+\boldsymbol{C}_{\mathrm{P},0}) - \frac{3}{4} \beta_4 \rho^2
-			% 			\Biggl(
-			% 				2 t_{\mathrm{I},0}^{(i-1)} \boldsymbol{C}_{\mathrm{I},0} + \sum_{k=-N+1}^{N-1} (t_{\mathrm{P},k}^{(i-1)})^* \boldsymbol{C}_{\mathrm{P},k} + (t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) (\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0})&&\nonumber\\
-			% 		&\quad- (\boldsymbol{C}_{\mathrm{I},0} - \boldsymbol{C}_{\mathrm{P},0}) \mathrm{tr}\Bigl(
-			% 					(\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^\star
-			% 				\Bigr)
-			% 			\Biggr) - \mu^\star \sum_{n=1}^N \frac{(1-\rho) \boldsymbol{C}_n}{\sigma_n^2} \prod_{n'=1,n' \ne n}^N \Biggl(
-			% 			1 + \frac{(1-\rho)\mathrm{tr}\Bigl(
-			% 				\boldsymbol{C}_{n'} \boldsymbol{\Phi}^\star
-			% 			\Bigr)}{\sigma_{n'}^2}
-			% 		\Biggr)&&\nonumber\\
-			% 		&\quad+ \mathrm{diag}(\boldsymbol{\nu^\star}) - \boldsymbol{\Upsilon}^\star.&&
-			% 	\end{flalign}
-			% \end{figure*}
 		\end{subsection}
 
 		\begin{subsection}{Proof of Proposition~\ref{pr:sca}}\label{ap:sca}
