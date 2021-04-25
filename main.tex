@@ -102,7 +102,7 @@
 
 			\emph{First}, we propose a novel IRS-aided SWIPT architecture based on joint waveform, active and passive beamforming design. To make an efficient use of the rectifier nonlinearity, we superpose a multi-carrier unmodulated power waveform (deterministic multisine) to a multi-carrier modulated information waveform and evaluate the performance under TS and PS modes. The proposed joint waveform, active and passive beamforming architecture exploits rectifier nonlinearity, beamforming gain, and channel selectivity across spatial and frequency domains to enlarge the achievable R-E region. This is the first paper to propose a joint waveform, active and passive beamforming architecture for IRS-aided SWIPT. By doing so, it is also the first paper to properly model the harvester nonlinearity (including its impact on both power and shape of the incoming waveform) and account for its crucial role in IRS-aided SWIPT.
 
-			\emph{Second}, we characterize the achievable R-E region with multiple energy maximization problems with different rate constraints and solve each boundary point by a Block Coordinate Descent (BCD) algorithm based on the Channel State Information at the Transmitter (CSIT). For active beamforming, we prove that the global optimal active information and power precoders coincide at Maximum-Ratio Transmission (MRT) under rectifier nonlinearity. For passive beamforming, we propose a Successive Convex Approximation (SCA) algorithm that obtains the IRS phase shift by a relax-then-extract method, where the performance loss by rank relaxation is proved negligible. Finally, the superposed waveform is optimized by the Geometric Programming (GP) technique. The IRS phase shift, active precoder, and waveform amplitude are updated iteratively until convergence. This is the first paper to jointly optimize waveform and active/passive beamforming in IRS-aided SWIPT.
+			\emph{Second}, we characterize the achievable R-E region with multiple energy maximization problems with different rate constraints and solve each boundary point by a Block Coordinate Descent (BCD) algorithm based on the Channel State Information at the Transmitter (CSIT). For active beamforming, we prove that the global optimal active information and power precoders coincide at Maximum-Ratio Transmission (MRT) under rectifier nonlinearity. For passive beamforming, we propose a Successive Convex Approximation (SCA) algorithm and obtain the IRS phase shift by eigen decomposition with optimality proof. Finally, the superposed waveform is optimized by the Geometric Programming (GP) technique. The IRS phase shift, active precoder, and waveform amplitude are updated iteratively until convergence. This is the first paper to jointly optimize waveform and active/passive beamforming in IRS-aided SWIPT.
 
 			\emph{Third}, we introduce two closed-form adaptive waveform schemes to avoid the exponential complexity of the GP algorithm. The Water-Filling (WF) strategy for modulated waveform and SMF strategy for multisine waveform are combined under TS and PS setups to facilitate practical SWIPT implementation. To accommodate the low-complexity waveform schemes, we modify the passive beamforming algorithm and characterize the R-E region by varying the duration ratio for TS and the combining and splitting ratios for PS. The proposed low-complexity designs achieve near-optimal R-E performance under different configurations.
 
@@ -175,7 +175,55 @@
 
 
 		\begin{subsection}{Receiving Modes}
-			As illustrated in Fig.TODO, there are two practical schemes \cite{Zhou2013} for the co-located information decoder and energy harvester to utilize the superposed signal. The TS receiver divides each transmission block into orthogonal data and energy sessions with duration $1-\eta$ and $\eta$, respectively. During each session, the transmitter optimizes the waveform for either Wireless Information Transfer (WIT) or WPT, while the receiver actives the information decoder or the energy harvester correspondingly. Varying $\eta$ from \num{0} to \num{1} characterizes a R-E segment from the WIT point to the WPT point. On the other hand, the PS receiver splits the incoming signal into individual data and energy streams with power ratio $1-\rho$ and $\rho$, respectively. The data stream is fed into the information decoder while the energy stream is fed into the energy harvester. During each transmission block, the superposed waveform and splitting ratio are jointly designed to achieve different R-E tradeoff. In the following context, we focus on the analysis over the PS receiver because the TS receiver can be regarded as a special case (i.e., a time sharing between $\rho=0$ and $\rho=1$).
+			\begin{figure}[!t]
+				\centering
+				\subfloat[TS receiver\label{fi:ts_receiver}]{
+					\resizebox{0.9\columnwidth}{!}{
+						\centering
+						\begin{circuitikz}[transform shape]
+							\draw (0,0) node[bareRXantenna](r){RX}(r.center)
+								to[short,-o] ++(0,-1) node[below]{Time Switcher}
+								to[short] node[spdt,anchor=in](s){} ++(0.5,0);
+
+							\draw (s.out 1) node[above right]{$1-\eta$}
+								to ++(1.25,0)
+								to ++(0,0.5)
+								to ++(1,0)
+								to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Information Decoder} ++(0,0);
+
+							\draw (s.out 2) node[below right]{$\eta$}
+								to ++(1.25,0)
+								to ++(0,-0.5)
+								to ++(1,0)
+								to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Energy Harvester} ++(0,0);
+						\end{circuitikz}
+					}
+				}
+				\\
+				\subfloat[PS receiver\label{fi:ps_receiver}]{
+					\resizebox{0.9\columnwidth}{!}{
+						\begin{circuitikz}[transform shape]
+							\draw (0,0) node[bareRXantenna](r){RX}(r.center)
+								to[short,-o] ++(0,-1)
+								to node[coupler,anchor=left up](c){Power Splitter} ++(1,0);
+							\draw (c.right up)
+								to[short,-o] ++(0.5,0) node[above right]{$1-\rho$}
+								to ++(0,0.5)
+								to ++(1,0)
+								to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Information Decoder} ++(0,0);
+							\draw (c.right down)
+								to[short,-o] ++(0.5,0) node[below right]{$\rho$}
+								to ++(0,-0.5)
+								to ++(1,0)
+								to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Energy Harvester} ++(0,0);
+						\end{circuitikz}
+					}
+				}
+				\caption{Practical co-located receiving modes.}
+				\label{fi:receiver}
+			\end{figure}
+
+			As illustrated in Fig.~\ref{fi:receiver}, there are two practical schemes \cite{Zhou2013} for the co-located information decoder and energy harvester to utilize the superposed signal. The TS receiver divides each transmission block into orthogonal data and energy sessions with duration $1-\eta$ and $\eta$, respectively. During each session, the transmitter optimizes the waveform for either Wireless Information Transfer (WIT) or WPT, while the receiver actives the information decoder or the energy harvester correspondingly. Varying $\eta$ from \num{0} to \num{1} characterizes a R-E segment from the WIT point to the WPT point. On the other hand, the PS receiver splits the incoming signal into individual data and energy streams with power ratio $1-\rho$ and $\rho$, respectively. The data stream is fed into the information decoder while the energy stream is fed into the energy harvester. During each transmission block, the superposed waveform and splitting ratio are jointly designed to achieve different R-E tradeoff. In the following context, we focus on the analysis over the PS receiver because the TS receiver can be regarded as a special case (i.e., a time sharing between $\rho=0$ and $\rho=1$).
 		\end{subsection}
 
 
@@ -191,7 +239,7 @@
 		\begin{subsection}{Energy Harvester}
 			\begin{figure}[!t]
 				\centering
-				\subfloat[Antenna equivalent circuit\label{ci:antenna_equivalent_circuit}]{
+				\subfloat[Antenna equivalent circuit\label{fi:antenna_equivalent_circuit}]{
 					\resizebox{0.45\columnwidth}{!}{
 						\begin{circuitikz}[transform shape]
 							\draw (0,0) to [sV=$v_{\mathrm{S}}$] (0,2);
@@ -204,7 +252,7 @@
 						\end{circuitikz}
 					}
 				}
-				\subfloat[A single diode rectifier\label{ci:single_diode_rectifier}]{
+				\subfloat[A single diode rectifier\label{fi:single_diode_rectifier}]{
 					\resizebox{0.45\columnwidth}{!}{
 						\begin{circuitikz}[transform shape]
 							\draw (0,0) to [sV=$v_{\mathrm{in}}$] (0,2);
@@ -222,9 +270,9 @@
 				\caption{Receive antenna and energy harvester circuits.}
 			\end{figure}
 
-			In this section, we briefly revisit a tractable nonlinear rectenna model that relates the harvester output DC current to the received signal. Fig.~\ref{ci:antenna_equivalent_circuit} illustrates the equivalent circuit of an ideal antenna, where the antenna has an resistance $R_{\mathrm{A}}$ and the incoming signal creates an voltage source $v_{\mathrm{S}}(t)$. Let $R_{\mathrm{in}}$ be the total input resistance of the rectifier and matching network, and we assume the voltage across the matching network is negligible. When perfectly matched (i.e., $R_{\mathrm{in}}=R_{\mathrm{A}}$), the rectifier input voltage is $v_{\mathrm{in}}(t)=y(t)\sqrt{\rho R_{\mathrm{A}}}$.
+			Importantly the rectenna model used in this section, taken from \cite{Clerckx2016a}, captures the dependency of the output DC current on both the power and shape of the received signal. This is critical for efficient signal designs in WPT and SWIPT \cite{Clerckx2021}. Fig.~\ref{fi:antenna_equivalent_circuit} illustrates the equivalent circuit of an ideal antenna, where the antenna has an resistance $R_{\mathrm{A}}$ and the incoming signal creates an voltage source $v_{\mathrm{S}}(t)$. Let $R_{\mathrm{in}}$ be the total input resistance of the rectifier and matching network, and we assume the voltage across the matching network is negligible. When perfectly matched (i.e., $R_{\mathrm{in}}=R_{\mathrm{A}}$), the rectifier input voltage is $v_{\mathrm{in}}(t)=y(t)\sqrt{\rho R_{\mathrm{A}}}$.
 
-			Rectifiers consist of nonlinear components like diode and capacitor to produce DC output and store energy \cite{Pinuela2013}. Consider a simplified rectifier model in Fig.~\ref{ci:single_diode_rectifier} where a single series diode is followed by a low-pass filter with a parallel load. As detailed in \cite{Clerckx2016a}, a truncated Taylor expansion of the diode I-V characteristic equation suggests that, when the subband frequencies are evenly-spaced, maximizing the average output DC current is equivalent to maximizing a monotonic function\footnote{Note that this small-signal expansion model is only valid for the nonlinear operation region of the diode, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}.}
+			Rectifiers consist of nonlinear components like diode and capacitor to produce DC output and store energy \cite{Pinuela2013}. Consider a simplified rectifier model in Fig.~\ref{fi:single_diode_rectifier} where a single series diode is followed by a low-pass filter with a parallel load. As detailed in \cite{Clerckx2016a}, a truncated Taylor expansion of the diode I-V characteristic equation suggests that, when the subband frequencies are evenly-spaced, maximizing the average output DC current is equivalent to maximizing a monotonic function\footnote{Note that this small-signal expansion model is only valid for the nonlinear operation region of the diode, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}.}
 			\begin{equation}\label{eq:z}
 				z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho)=\sum_{i\,\mathrm{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\mathrm{A}}^{i/2}}{\mathbb{E}\left\{\mathbb{A}\left\{y(t)^i\right\}\right\}}
 			\end{equation}
@@ -548,13 +596,13 @@
 			\begin{equation}\label{eq:smf}
 				s_{\mathrm{P}, n} = \sqrt{\frac{2 P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha
 			\end{equation}
-			where the scaling ratio $\alpha \ge 1$ scales the matched filter to exploit the rectifier nonlinearity. In the low-complexity TS waveform scheme, modulated amplitude \eqref{eq:wf} is used in the data session and multisine amplitude \eqref{eq:smf} is used in the energy session. In contrast, the low-complexity PS scheme jointly designs the combining ratio $\delta$ and splitting ratio $\rho$, and choose the modulated and multisine amplitudes as
+			where the scaling ratio $\alpha \ge 1$ is assumed known and can be adjusted to exploit the rectifier nonlinearity and frequency selectivity. In the low-complexity TS waveform scheme, modulated amplitude \eqref{eq:wf} is used in the data session and multisine amplitude \eqref{eq:smf} is used in the energy session. In contrast, the low-complexity PS scheme jointly designs the combining ratio $\delta$ and splitting ratio $\rho$, and choose the modulated and multisine amplitudes as
 			\begin{align}
 				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\mu - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+} \label{eq:s_i}\\
 				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha. \label{eq:s_p}
 			\end{align}
 
-			Besides, minor modifications are required for passive beamforming to cooperate with the low-complexity waveform schemes. To achieve the WIT point ($\eta=\rho=0$), the achievable rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:z_irs_approx} should be maximized. To achievable non-WIT points, the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is now characterized by varying either $\eta$ or $\delta$ and $\rho$. Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design for low-complexity PS mode. The tightness of rank relaxation and local optimality can be proved similar to Proposition~\ref{pr:relaxation} and \ref{pr:sca}, and the details are omitted here.
+			Besides, minor modifications are required for passive beamforming to accommodate the low-complexity waveform power allocation schemes. To achieve the WIT point ($\eta=\rho=0$), the achievable rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:z_irs_approx} should be maximized. To achievable any non-WIT point (i.e., with non-zero DC current), the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is now characterized by varying either $\eta$ or $\delta$ and $\rho$. Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design for low-complexity PS mode. The tightness of rank relaxation and local optimality can be proved similar to Proposition~\ref{pr:relaxation} and \ref{pr:sca}, and the details are omitted here.
 
 			\begin{algorithm}[!t]
 				\caption{Modified: IRS Phase Shift.}
@@ -657,7 +705,7 @@
 					\input{assets/re_distance.tex}
 				}
 			}
-			\subfloat[Path loss\label{fi:path_loss}]{
+			\subfloat[Path loss product\label{fi:path_loss}]{
 				\resizebox{0.45\columnwidth}{!}{
 					\input{assets/path_loss.tex}
 				}
@@ -697,7 +745,7 @@
 			\caption{Average R-E region, WIT SNR and WPT DC current versus $L$ for $M=1$, $N=16$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{1}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{0.5}{\meter}$.}
 		\end{figure}
 
-		The impacts of the number of transmit antennas $M$ and IRS elements $L$ on the R-E behavior are revealed in Fig.~\ref{fi:re_tx} and \ref{fi:re_reflector}. \emph{First,} adding either active or passive elements enhances the equivalent channel strength to boost both information and power transfer. Interestingly, it has negligible influence on the optimal receiving mode because the rate and current are proportionally amplified that preserves the general trend of the R-E boundary. \emph{Second,} passive beamforming has a larger array gain and power scaling order than active beamforming. This behavior is more obvious in Fig.~\ref{fi:scaling_tx} and \ref{fi:scaling_reflector} for the case of WIT and WPT. As a reference, the Adaptive Single Sinewave (ASS) allocates all power to the sine wave at the strongest subband and is optimal for WPT with linear harvester model \cite{Clerckx2016a}. For active beamforming, doubling $M$ brings a \SI{3}{\dB} gain at the output SNR that corresponds to a transmit array gain of $M$ and a doubled harvester input power. Thanks to the rectenna nonlinearity, the output DC current ends up with a nearly four-time (\SI{12}{\dB}) increase that suggests an active scaling law in the order of $M^2$. On the other hand, when the IRS is very close to the AP, doubling $L$ increases the output SNR up to \SI{6}{\dB} that implies a reflect array gain of $L^2$. An interpretation is that the IRS coherently combines the incoming signal with a receive array gain $L$, then performs an equal gain reflection with a transmit array gain $L$. Hence, doubling IRS elements brings a four-fold increase on the received signal power that further amplifies the harvested DC current by \num{16} times (\SI{24}{\dB}), corresponding to a passive scaling law in the order of $L^4$. Compared with active antennas, the IRS achieves higher array gain and power scaling order using passive elements with frequency-dependent reflection, but a very large $L$ is required to compensate the double fading of the auxiliary link. Moreover, the ASS strategy exploits no harvester nonlinearity and ends up with a nearly \SI{20}{\dB} current gap with SMF and GP. These observations demonstrate the R-E benefit of passive beamforming and emphasize the importance of accounting the harvester nonlinearity in the passive beamforming design.
+		The impacts of the number of transmit antennas $M$ and IRS elements $L$ on the R-E behavior are revealed in Fig.~\ref{fi:re_tx} and \ref{fi:re_reflector}. \emph{First,} adding either active or passive elements enhances the equivalent channel strength and boosts both information and power transfer, but has negligible influence on the optimal receiving strategy. \emph{Second,} passive beamforming has a larger array gain and power scaling order than active beamforming. This behavior is more obvious in Fig.~\ref{fi:scaling_tx} and \ref{fi:scaling_reflector} for the case of WIT and WPT. As a reference, the Adaptive Single Sinewave (ASS) allocates all power to the sine wave at the strongest subband and is optimal for WPT with linear harvester model \cite{Clerckx2016a}. For active beamforming, doubling $M$ brings a \SI{3}{\dB} gain at the output SNR, which corresponds to a transmit array gain of $M$ and a doubled harvester input power. Thanks to the rectenna nonlinearity, the output DC current ends up with a nearly four-time (\SI{12}{\dB}) increase, which suggests an active scaling law in the order of $M^2$. On the other hand, when the IRS is very close to the AP, doubling $L$ increases the output SNR up to \SI{6}{\dB}, which implies a reflect array gain of $L^2$. An interpretation is that the IRS coherently combines the incoming signal with a receive array gain $L$, then performs an equal gain reflection with a transmit array gain $L$. Hence, doubling the number of IRS elements brings a four-fold increase on the received signal power that further amplifies the harvested DC current by \num{16} times (\SI{24}{\dB}), corresponding to a passive scaling law in the order of $L^4$. Compared with active antennas, the IRS achieves higher array gain and power scaling order using passive elements with frequency-dependent reflection, but a very large $L$ is required to compensate the double fading of the auxiliary link. Moreover, the ASS strategy does not exploit the harvester nonlinearity and ends up with a nearly \SI{20}{\dB} current gap compared to SMF and GP. These observations demonstrate the R-E benefit of passive beamforming and emphasize the importance of accounting for the harvester nonlinearity in the passive beamforming design.
 
 		\begin{figure}[!t]
 			\centering
@@ -714,7 +762,7 @@
 			\caption{Average R-E region for ideal, adaptive, fixed and no IRS versus $B$ for $M=1$, $N=16$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
 		\end{figure}
 
-		Fig.~\ref{fi:re_irs_1mhz} and \ref{fi:re_irs_10mhz} explore the R-E region with different IRS strategies for narrowband and broadband SWIPT. The ideal Frequency-Selective (FS) IRS assumes the reflection coefficient of each element is independent and controllable at different frequencies. The adaptive IRS adjusts the passive beamforming for different rate constraints by Algorithm~\ref{al:sca}. The WIT/WPT-optimized IRS is retrieved by Algorithm~\ref{al:m_sca} then fixed for the whole R-E region (i.e., the boundary is obtained by varying the waveform amplitude and splitting ratio). \emph{First,} random IRS and no IRS perform worse than other schemes since no passive beamforming is exploited. Their R-E boundaries coincide because the antenna mode reflection of the random IRS is canceled out after averaging over channel realizations. \emph{Second,} the performance of non-random IRS are similar when the bandwidth is small, while the adaptive IRS outperforms the WIT/WPT-optimized IRS but is worse than the ideal FS IRS when the bandwidth is large. In the former case, the subband responses are close to each other such that the tradeoff in Remark~\ref{re:subband_tradeoff} becomes insignificant, and the auxiliary links can be roughly maximized at all subbands. It suggests that for narrowband SWIPT, the optimal passive beamforming of any R-E point is roughly optimal for the whole R-E region, which can be approximated in closed form (by aligning the auxiliary link with the direct channel) when a single transmit antenna is used at the AP. On the other hand, the optimal reflection coefficient varies at different R-E points for broadband SWIPT, since the information and power transfer prefer different channel strength distribution in the frequency domain. By adaptive passive beamforming, the channel strength can be either amplified at few strongest subbands to enhance the rate at low SNR, or spread evenly to boost the output DC power. It emphasizes the R-E advantage of adaptive passive beamforming Algorithm~\ref{al:sca} for broadband SWIPT.
+		Fig.~\ref{fi:re_irs_1mhz} and \ref{fi:re_irs_10mhz} explore the R-E region with different IRS strategies for narrowband and broadband SWIPT. The ideal Frequency-Selective (FS) IRS assumes the reflection coefficient of each element is independent and controllable at different frequencies. The adaptive IRS adjusts the passive beamforming by Algorithm~\ref{al:sca} under different rate constraints, and the WIT/WPT-optimized IRS is retrieved by Algorithm~\ref{al:m_sca} then fixed for the whole R-E region (i.e., only update the waveform amplitude and splitting ratio). Random IRS means the phase shift of all elements are modelled as i.i.d. uniform random variables over $[0, 2\pi)$. \emph{First,} random IRS and no IRS perform worse than other schemes since no passive beamforming is exploited. Their R-E boundaries coincide because the antenna mode reflection of the random IRS is canceled out after averaging over the channel realizations. \emph{Second,} the performance of ideal, adaptive and fixed IRS are similar when the bandwidth is small, while the adaptive IRS outperforms the WIT/WPT-optimized IRS but is worse than the ideal FS IRS when the bandwidth is large. In the former case, the subband responses are close to each other such that the tradeoff in Remark~\ref{re:subband_tradeoff} becomes insignificant, and the auxiliary link can be roughly maximized at all subbands. It suggests that for narrowband SWIPT, the optimal passive beamforming of any R-E point is close to optimal for the whole R-E region, which can be approximated in closed form (by aligning the auxiliary link with the direct channel) when a single transmit antenna is used at the AP. On the other hand, the optimal reflection coefficient varies at different R-E points for broadband SWIPT, since the information and power transfer prefer different channel strength distribution in the frequency domain. By adaptive passive beamforming, the channel strength can be either amplified at the few strongest subbands to enhance the rate at low SNR, or spread evenly to boost the output DC power. It emphasizes the R-E advantage of adaptive passive beamforming Algorithm~\ref{al:sca} for broadband SWIPT.
 
 		\begin{figure}[!t]
 			\centering
@@ -740,9 +788,9 @@
 
 
 	\begin{section}{Conclusion and Future Works}\label{se:conclusion_and_future_works}
-		This paper investigated the R-E tradeoff of a single user in a novel IRS-aided multi-carrier MISO SWIPT system. Uniquely, we consider the joint waveform, active and passive beamforming design under rectifier nonlinearity and practical receiving modes to maximize the achievable R-E region. A three-stage BCD algorithm is proposed to solve the problem. In the first stage, the IRS phase shift is obtained by combining the SCA technique with a relax-then-extract step. In the second and third stages, the active precoder is derived in closed form, and the waveform amplitude is optimized by the reversed GP method. We also propose and combine closed-form adaptive waveform schemes with a modified passive beamforming strategy to formulate a low-complexity BCD algorithm that achieves near-optimal performance. Numerical results reveal significant R-E gains by considering harvester nonlinearity in the passive beamforming design. Compared with active antennas, IRS elements are limited to frequency-dependent reflection but able to integrate coherent combining and equal gain transmission in a fully passive manner to boost the array gain and power scaling order. However, a large number of reflecting elements may be required to compensate the double fading in the auxiliary link.
+		This paper investigated the R-E tradeoff of a single user in a novel IRS-aided multi-carrier MISO SWIPT system. Uniquely, we consider the joint waveform, active and passive beamforming design under rectifier nonlinearity and practical receiving modes to maximize the achievable R-E region. A three-stage BCD algorithm is proposed to solve the problem. In the first stage, the IRS phase shift is obtained by combining the SCA technique with eigen decomposition. In the second and third stages, the active precoder is derived in closed form, and the waveform amplitude is optimized by the reversed GP method. We also propose and combine closed-form adaptive waveform schemes with a modified passive beamforming strategy to formulate a low-complexity BCD algorithm that achieves near-optimal performance. Numerical results reveal significant R-E gains by considering harvester nonlinearity in the passive beamforming design. Compared with active antennas, IRS elements are limited to frequency-dependent reflection but able to integrate coherent combining and equal gain transmission in a fully passive manner to boost the array gain and power scaling order. However, a large number of reflecting elements may be required to compensate the double fading in the auxiliary link.
 
-        One particular unanswered question of this paper is how to design waveform, active and passive beamforming in a multi-user multi-carrier IRS-aided SWIPT system. Also, practical IRS patterns with direction- and frequency-dependent reflection could be considered in future works.
+        One particular unanswered question of this paper is how to design waveform, active and passive beamforming in a multi-user multi-carrier IRS-aided SWIPT system. Also, the use of more involved IRS architecture based on partially/fully-connected and/or direction- and frequency-dependent reflection could be considered in future works.
 	\end{section}
 
 
