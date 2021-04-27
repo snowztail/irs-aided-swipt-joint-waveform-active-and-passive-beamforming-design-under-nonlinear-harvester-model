@@ -5,6 +5,8 @@
 \usepackage[short]{optidef}
 \usepackage[caption=false,font=footnotesize]{subfig}
 \usepackage{adjustbox}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -49,6 +51,9 @@
 
 \renewcommand{\thetable}
 	{T\arabic{table}}
+
+\renewcommand{\thealgorithm}
+	{A\arabic{algorithm}}
 
 \newcommand{\reviewer}
 	{\stepcounter{reviewer} \bigskip \hrule \section*{Reviewer \thereviewer}}
@@ -118,7 +123,7 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for raising this issue. To prove the rank-\num{1} property of the IRS matrix $\boldsymbol{\Phi}$, we notice that for any feasible $\boldsymbol{\Phi}$ to problem~\eqref{M-op:irs}, $\mathrm{tr}(\boldsymbol{\Phi})=L+1$ always holds due to the modulus constraint~\eqref{M-co:irs_modulus}. Therefore, we add a constant term $-\mathrm{tr}(\boldsymbol{\Phi})$ to \eqref{M-ob:irs} and formulate an equivalent problem as
+			Thank you for raising this issue. To prove the rank-\num{1} property of the IRS matrix $\boldsymbol{\Phi}$, we notice that for any feasible $\boldsymbol{\Phi}$ to problem~\eqref{M-op:irs}, $\mathrm{tr}(\boldsymbol{\Phi})=L+1$ always holds due to the modulus constraint~\eqref{M-co:irs_modulus}. Therefore, we add a constant term $-\mathrm{tr}(\boldsymbol{\Phi})$ to \eqref{M-ob:irs} and recast problem~\eqref{M-op:irs} as
 			\begin{maxi!}
 				{\boldsymbol{\Phi}}{-\mathrm{tr}(\boldsymbol{\Phi})+\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs_equivalent}}{\label{ob:irs_equivalent}}
 				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_equivalent_rate}
@@ -282,7 +287,7 @@
 		\end{point}
 
 		\begin{response}
-			Algorithm~\ref{M-al:sca}--\ref{M-al:lc_bcd} provide local optimal solutions with local convergence proof, and the performance indeed depends on the initialization. For the passive beamforming Algorithm~\ref{M-al:sca} and \ref{M-al:m_sca}, we initialize the phase shift of all IRS elements as i.i.d. uniform random variables over $[0, 2\pi)$. For Algorithm~\ref{M-al:gp}, we initialize the modulated waveform by the Water-Filling (WF) strategy \ref{eq:wf} and the multisine waveform by the Scaled Matched Filter (SMF) scheme \ref{eq:smf}, and assume $\rho^{(0)}=\bar{\rho}^{(0)}=1$. These parameters are used for general initialization and regulated automatically afterwards. However, as Algorithm~\ref{M-al:bcd} and \ref{M-al:lc_bcd} only converge to local optimal solutions, few R-E points might be strictly worse (with less rate and energy) than the others especially when $N$ is very large. To address this issue, we draw the R-E boundary from the high-rate low-energy (lower right) points to the low-rate high-energy (upper left) points. If a point is strictly dominated, we discard the candidate, reinitialize Algorithm~\ref{M-al:bcd} and \ref{M-al:lc_bcd} by the solution at the previous point, then perform the optimization again. For a tolerance of $\epsilon=10^{-8}$, Algorithm~\ref{M-al:sca}--\ref{M-al:lc_bcd} typically converge within 2, 7, 3, 2, 3 iterations, respectively.
+			Algorithm~\ref{M-al:sca}--\ref{M-al:bcd} provide local optimal solutions with local convergence proof, and the performance indeed depends on the initialization. For the passive beamforming Algorithm~\ref{M-al:sca} and \ref{M-al:m_sca}, we initialize the phase shift of all IRS elements as i.i.d. uniform random variables over $[0, 2\pi)$. For Algorithm~\ref{M-al:gp}, we initialize the modulated waveform by the Water-Filling (WF) strategy \ref{eq:wf} and the multisine waveform by the Scaled Matched Filter (SMF) scheme \ref{eq:smf}, and assume $\rho^{(0)}=\bar{\rho}^{(0)}=1$. These parameters are used for general initialization and regulated automatically afterwards. However, as Algorithm~\ref{M-al:sca}, \ref{M-al:gp} and \ref{M-al:m_sca} only converge to local optimal solutions, few R-E points might be strictly worse (with less rate and energy) than the others especially when $N$ is very large. To address this issue, we draw the R-E boundary from the high-rate low-energy (lower right) points to the low-rate high-energy (upper left) points. If a point is strictly dominated, we discard the candidate, reinitialize Algorithm~\ref{M-al:bcd} and \ref{M-al:lc_bcd} by the solution at the previous point, then perform the optimization again. For a tolerance of $\epsilon=10^{-8}$, Algorithm~\ref{M-al:sca}--\ref{M-al:lc_bcd} typically converge within 2, 7, 3, 2, 3 iterations, respectively.
 
 			We also would like to point out that, even in the absence of IRS, the problem of joint waveform and beamforming design for SWIPT is also non-convex and algorithms only converging toward a local optimum have been identified, with the global optimum remaining unsolved.
 			\label{re:2.6}
@@ -294,21 +299,66 @@
 		\end{point}
 
 		\begin{response}
-			Problem \eqref{M-op:irs} is not a Semidefinite Programming (SDP) due to the squared term in the objective function. Hence, existing complexity analysis tools cannot be direct applied to Algorithm~\ref{M-al:sca} and \ref{M-al:m_sca}. For Algorithm~\ref{M-al:gp}, the computational complexity scales exponentially with the number of subbands \cite{M-Huang2017,M-Chiang2005} but an analytical expression cannot be derived on top of relevant literatures. To facilitate practical SWIPT implementation and address the reviewer's comment, we have added in the revised manuscript two closed-form adaptive waveform amplitude design by combining WF and SMF under TS and PS setups. The optimal waveform design for WIT corresponds to the WF strategy that assigns the amplitude of modulated tone $n$ by
+			Problem \eqref{M-op:irs} is not a Semidefinite Programming (SDP) due to the squared term in the objective function. Hence, existing complexity analysis tools cannot be direct applied to Algorithm~\ref{M-al:sca} and \ref{M-al:m_sca}. For Algorithm~\ref{M-al:gp}, the computational complexity scales exponentially with the number of subbands \cite{M-Huang2017,M-Chiang2005} but an analytical expression cannot be derived on top of relevant literatures. To facilitate practical SWIPT implementation and address the reviewer's comment, we have added in the revised manuscript two closed-form adaptive waveform amplitude schemes by combining WF and SMF in the time and power domains. For WIT, the optimal WF strategy assigns the amplitude of modulated tone $n$ by
 			\begin{equation}\label{eq:wf}
-				s_{\mathrm{I}, n} = \sqrt{2\left(\mu - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}
+				s_{\mathrm{I}, n} = \sqrt{2\left(\lambda - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}
 			\end{equation}
-			where $\mu$ is chosen to satisfy the power constraint $\lVert{\boldsymbol{s}_I}\rVert^2 / 2 \le P$. The closed-form solution can be obtained by iterative power allocation \cite{M-Tse2005} and the details are omitted here. On the other hand, SMF was proposed in \cite{M-Clerckx2017} as a suboptimal WPT resource allocation scheme that assigns the amplitude of sinewave $n$ by
+			where $\lambda$ is chosen to satisfy the power constraint $\lVert{\boldsymbol{s}_I}\rVert^2 / 2 \le P$. The closed-form solution can be obtained by iterative power allocation \cite{M-Tse2005}, and the details are omitted here. On the other hand, SMF was proposed in \cite{M-Clerckx2017} as a suboptimal WPT resource allocation scheme that assigns the amplitude of sinewave $n$ by
 			\begin{equation}\label{eq:smf}
 				s_{\mathrm{P}, n} = \sqrt{\frac{2 P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha
 			\end{equation}
-			where the scaling ratio $\alpha \ge 1$ scales the matched filter to exploit the rectifier nonlinearity. In the low-complexity TS waveform scheme, modulated amplitude \eqref{eq:wf} is used in the data session and multisine amplitude \eqref{eq:smf} is used in the energy session. In contrast, the low-complexity PS scheme jointly designs the waveform balancing ratio $\delta$ and splitting ratio $\rho$, and choose the modulated and multisine amplitudes as
+			where the scaling ratio $\alpha \ge 1$ is given and can be adjusted to exploit the rectifier nonlinearity and frequency selectivity. When the receiver works in TS mode, there is no superposition in the suboptimal waveform design. Modulated waveform with amplitude \eqref{eq:wf} is used in the data session while multisine waveform with amplitude \eqref{eq:smf} is used in the energy session. When the receiver works in PS mode, we jointly design the combining ratio $\delta$ with the splitting ratio $\rho$, and assign the superposed waveform amplitudes as
 			\begin{align}
-				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\mu - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+} \label{eq:s_i}\\
+				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\lambda - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}, \label{eq:s_i}\\
 				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha. \label{eq:s_p}
 			\end{align}
 
-			Besides, minor modifications are required for passive beamforming to cooperate with the low-complexity waveform schemes. To achieve the WIT point ($\eta=\rho=0$), the achievable rate \eqref{M-eq:R_irs} instead of the DC current \eqref{M-eq:z_irs_approx} should be maximized. To achievable non-WIT points, the rate constraint \eqref{M-co:irs_rate} should be dropped as the R-E region is now characterized by varying either $\eta$ or $\delta$ and $\rho$. Algorithm~\ref{M-al:m_sca} summarizes the modified passive beamforming design for low-complexity PS mode. The tightness of rank relaxation and local optimality can be proved similar to Proposition~\ref{M-pr:relaxation} and \ref{M-pr:sca}, and the details are omitted here. Fig.~\ref{fi:re_noise}--\ref{fi:re_reflector} demonstrate that the LC-BCD Algorithm~\ref{M-al:lc_bcd} achieves near-optimal performance under different configurations.
+			Besides, minor modifications are required for passive beamforming to accommodate both low-complexity waveform schemes. To achieve the WIT point ($\eta=\rho=0$), the achievable rate \eqref{M-eq:R_irs} instead of the DC current \eqref{M-eq:z_irs_approx} should be maximized. To achievable any non-WIT point (i.e., $z \ne 0$), the rate constraint \eqref{M-co:irs_rate} should be dropped as the R-E region is instead characterized by varying either $\eta$ or $\delta$ and $\rho$. The Modified-SCA (M-SCA) Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design when the receiver works in PS mode. The tightness of rank relaxation and local optimality are proved similar to Proposition~\ref{M-pr:relaxation} and \ref{M-pr:sca} thus omitted here.
+			\begin{algorithm}[!h]
+				\caption{M-SCA: IRS Phase Shift.}
+				\label{al:m_sca}
+				\begin{algorithmic}[1]
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},\sigma_n,\boldsymbol{w}_{\mathrm{I/P},n},\rho,\epsilon$, $\forall n$
+					\State Construct $\boldsymbol{V},\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n},\boldsymbol{C}_{\mathrm{I/P},k}$, $\forall n,k$
+					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\Phi}^{(0)}$
+					\If{$\rho=0$}
+						\State Get $\boldsymbol{\Phi}^{\star}$ by maximizing \eqref{M-eq:R_irs} s.t. \eqref{M-co:irs_modulus}, \eqref{M-co:irs_sd}
+					\Else
+						\State Set $t_{\mathrm{I/P},k}^{(0)}$, $\forall k$ by \eqref{M-eq:t_k}
+						\Repeat
+							\State $i \gets i + 1$
+								\State Get $\boldsymbol{\Phi}^{(i)}$ by maximizing \eqref{M-eq:z_irs_approx} s.t. \eqref{M-co:irs_modulus}, \eqref{M-co:irs_sd}
+								\State Update $t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by \eqref{M-eq:t_k}
+								\State Compute $z^{(i)}$ by \eqref{M-eq:z_irs}
+						\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
+						\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
+					\EndIf
+					\State Get $\bar{\boldsymbol{\phi}}^\star$ by eigen decomposition, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
+					\State Set $\theta_l^\star=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$, $\forall l$, $\boldsymbol{\phi}^{\star}=[e^{j\theta_1^\star},\dots,e^{j\theta_L^\star}]^H$
+					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$
+				\end{algorithmic}
+			\end{algorithm}
+			For the low-complexity design, when the receiver works in PS mode, we instead obtain the phase shift by Algorithm~\ref{al:m_sca} and the waveform amplitude by \eqref{eq:s_i} and \eqref{eq:s_p}. The steps are summarized in the Low Complexity-BCD (LC-BCD) Algorithm~\ref{al:lc_bcd}.
+			\begin{algorithm}[!h]
+				\caption{LC-BCD: Waveform and Beamforming.}
+				\label{al:lc_bcd}
+				\begin{algorithmic}[1]
+					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},P,\sigma_n,\delta,\rho,\epsilon$, $\forall n$
+					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{b}_{\mathrm{I/P},n}^{(0)},\boldsymbol{s}_{\mathrm{I/P}}^{(0)}$, $\forall n$
+					\State Set $\boldsymbol{w}_{\mathrm{I/P},n}^{(0)}$, $\forall n$ by \eqref{M-eq:w}
+					\Repeat
+						\State $i \gets i + 1$
+						\State Get $\boldsymbol{\phi}^{(i)}$ based on $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)}$ by Algorithm~\ref{al:m_sca}
+						\State Update $\boldsymbol{h}_n^{(i)},\boldsymbol{b}_n^{(i)}$, $\forall n$ by \eqref{M-eq:h_n}, \eqref{M-eq:b_n}
+						\State Update $\boldsymbol{s}_{\mathrm{I}}^{(i)},\boldsymbol{s}_{\mathrm{P}}^{(i)}$ by \eqref{eq:s_i}, \eqref{eq:s_p}
+						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{M-eq:w}
+						\State Compute $R^{(i)},z^{(i)}$ by \eqref{M-eq:R_waveform}, \eqref{M-eq:z_waveform}
+					\Until $\lvert R^{(i)} - R^{(i-1)} \rvert \le \epsilon$ or $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
+					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)},\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)}$
+					\State \textbf{Output} $\boldsymbol{\phi}^{\star},\boldsymbol{w}_{\mathrm{I}}^{\star},\boldsymbol{w}_{\mathrm{P}}^{\star}$
+				\end{algorithmic}
+			\end{algorithm}
+			Fig.~\ref{fi:re_noise}--\ref{fi:re_reflector} demonstrate that the LC-BCD Algorithm~\ref{al:lc_bcd} achieves near-optimal performance under different configurations.
 
 			\begin{figure}[!h]
 				\centering
@@ -378,13 +428,13 @@
 		\begin{response}
 			We have resummarized the contribution of this paper as follows.
 
-			\emph{First}, we propose a novel IRS-aided SWIPT architecture based on joint waveform, active and passive beamforming design. To make an efficient use of the rectifier nonlinearity, we superpose a multi-carrier unmodulated power waveform (deterministic multisine) to a multi-carrier modulated information waveform and evaluate the performance under TS and PS modes. The proposed joint waveform, active and passive beamforming architecture exploits rectifier nonlinearity, beamforming gain, and channel selectivity across spatial and frequency domains to enlarge the achievable R-E region. This is the first paper to propose a joint waveform, active and passive beamforming architecture for IRS-aided SWIPT. By doing so, it is also the first paper to properly model the harvester nonlinearity (including its impact on both power and shape of the incoming waveform) and account for its crucial role in IRS-aided SWIPT.
+			\emph{First}, we propose a novel IRS-aided SWIPT architecture based on joint waveform, active and passive beamforming design. To make an efficient use of the rectifier nonlinearity, we superpose a multi-carrier unmodulated power waveform (deterministic multisine) to a multi-carrier modulated information waveform and evaluate the performance under TS and PS receiving modes. The proposed joint waveform, active and passive beamforming architecture exploits rectifier nonlinearity, beamforming gain, and channel selectivity across spatial and frequency domains to enlarge the achievable R-E region. This is the first paper to propose a joint waveform, active and passive beamforming architecture for IRS-aided SWIPT. By doing so, it is also the first paper to properly model the harvester nonlinearity (including its impact on both power and shape of the incoming waveform) and account for its crucial role in IRS-aided SWIPT.
 
-			\emph{Second}, we characterize the achievable R-E region with multiple energy maximization problems with different rate constraints and solve each boundary point by a Block Coordinate Descent (BCD) algorithm based on the Channel State Information at the Transmitter (CSIT). For active beamforming, we prove that the global optimal active information and power precoders coincide at Maximum-Ratio Transmission (MRT) under rectifier nonlinearity. For passive beamforming, we propose a Successive Convex Approximation (SCA) algorithm that obtains the IRS phase shift by a relax-then-extract method, where the performance loss by rank relaxation is proved negligible. Finally, the superposed waveform is optimized by the Geometric Programming (GP) technique. The IRS phase shift, active precoder, and waveform amplitude are updated iteratively until convergence. This is the first paper to jointly optimize waveform and active/passive beamforming in IRS-aided SWIPT.
+			\emph{Second}, we characterize each R-E boundary point by energy maximization under rate constraint, and solve the problem by a Block Coordinate Descent (BCD) algorithm based on the Channel State Information at the Transmitter (CSIT). For active beamforming, we prove that the global optimal active information and power precoders coincide at Maximum-Ratio Transmission (MRT) even with rectifier nonlinearity. For passive beamforming, we propose a Successive Convex Approximation (SCA) algorithm and retrieve the IRS phase shift by eigen decomposition with optimality proof. Finally, the superposed waveform is optimized by the Geometric Programming (GP) technique. The IRS phase shift, active precoder, and waveform amplitude are updated iteratively until convergence. This is the first paper to jointly optimize waveform and active/passive beamforming in IRS-aided SWIPT.
 
-			\emph{Third}, we introduce two closed-form adaptive waveform schemes to avoid the exponential complexity of the GP algorithm. The Water-Filling (WF) strategy for modulated waveform and SMF strategy for multisine waveform are combined under TS and PS setups to facilitate practical SWIPT implementation. To accommodate the low-complexity waveform schemes, we modify the passive beamforming algorithm and characterize the R-E region by varying the duration ratio for TS and the waveform and splitting ratios for PS. The proposed low-complexity designs achieve near-optimal R-E performance under different configurations.
+			\emph{Third}, we introduce two closed-form adaptive waveform schemes to avoid the exponential complexity of the GP algorithm. The Water-Filling (WF) strategy for modulated waveform and the SMF strategy for multisine waveform are combined in the time domain and power domain to facilitate practical SWIPT implementation. To accommodate the suboptimal waveform schemes, we modify the passive beamforming algorithm and characterize the R-E region by varying the duration ratio under TS mode and the combining and splitting ratios under PS mode. The proposed low-complexity designs achieve near-optimal R-E performance in different scenarios.
 
-			\emph{Fourth}, we provide numerical results to evaluate the proposed algorithms. It is concluded that 1) multisine waveform is beneficial to multi-carrier energy transfer, especially when the number of subbands is large, 2) TS is preferred at low Signal-to-Noise Ratio (SNR) while PS is preferred at high SNR, 3) there exist two optimal IRS development locations, one close to the AP and one close to the UE, 4) the output SNR scales linearly with the number of transmit antennas and quadratically with the number of IRS elements, 5) due to rectifier nonlinearity, the output DC current scales quadratically with the number of transmit antennas and quartically with the number of IRS elements, 6) to achieve different R-E tradeoff, the active and passive beamforming can be fixed for narrowband SWIPT but need adaptive design for broadband SWIPT, 7) the proposed algorithms are robust to practical restrictions as inaccurate cascaded CSIT and finite IRS reflection states.
+			\emph{Fourth}, we provide numerical results to evaluate the proposed algorithms. It is concluded that 1) multisine waveform is beneficial to multi-carrier energy transfer especially when the number of subbands is large, 2) TS is preferred at low Signal-to-Noise Ratio (SNR) while PS is preferred at high SNR, 3) there exist two optimal IRS development locations, one close to the AP and one close to the UE, 4) the output SNR scales linearly with the number of transmit antennas and quadratically with the number of IRS elements, 5) due to rectifier nonlinearity, the output DC current scales quadratically with the number of transmit antennas and quartically with the number of IRS elements, 6) for narrowband SWIPT, the optimal active and passive beamforming for any R-E point are also optimal for the whole R-E region, 7) for broadband SWIPT, the optimal active and passive beamforming depend on the R-E tradeoff and require adaptive design, 8) the proposed algorithms are robust to practical restrictions as inaccurate cascaded CSIT and finite IRS reflection states.
 			\label{re:3.2}
 		\end{response}
 
@@ -414,7 +464,7 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for the suggestion. On top of the previous version, we have introduced two closed-form adaptive waveform design under TS and PS modes and compared the results with the original BCD Algorithm~\ref{M-al:bcd}. Fig.~\ref{fi:re_noise}--\ref{fi:re_reflector} demonstrate that the LC-BCD Algorithm~\ref{M-al:lc_bcd} achieves near-optimal performance under different configurations. Moreover, we have investigated in Fig.~\ref{fi:re_csi} and \ref{fi:re_quantization} the impact of imperfect cascaded CSIT and quantized IRS on the achievable R-E region. It can be concluded that the proposed algorithms are robust to CSIT inaccuracy of the cascaded link, and even $b=1$ (i.e. two-state reflection) brings considerable R-E gain over the benchmark scheme without IRS. These observations demonstrate the advantage of the proposed joint waveform, active and passive beamforming design in practical IRS-aided SWIPT systems.
+			Thank you for the suggestion. On top of the previous version, we have introduced two closed-form adaptive waveform design and compared the results with the original BCD Algorithm~\ref{M-al:bcd}. Fig.~\ref{fi:re_noise}--\ref{fi:re_reflector} demonstrate that the LC-BCD Algorithm~\ref{al:lc_bcd} achieves near-optimal performance under different configurations. Moreover, we have investigated in Fig.~\ref{fi:re_csi} and \ref{fi:re_quantization} the impact of imperfect cascaded CSIT and quantized IRS on the achievable R-E region. It can be concluded that the proposed algorithms are robust to CSIT inaccuracy of the cascaded link, and even $b=1$ (i.e. two-state reflection) brings considerable R-E gain over the benchmark scheme without IRS. These observations demonstrate the advantage of the proposed joint waveform, active and passive beamforming design in practical IRS-aided SWIPT systems.
 
 			\begin{figure}[!h]
 				\centering
