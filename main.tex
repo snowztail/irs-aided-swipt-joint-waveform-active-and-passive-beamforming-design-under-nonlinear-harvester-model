@@ -30,6 +30,7 @@
 % \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
 % \usepackage[cmintegrals]{newtxmath}
 \usepackage[short]{optidef}
+\usepackage[subtle]{savetrees}
 
 
 \interdisplaylinepenalty=2500
@@ -110,7 +111,7 @@
 
 			\emph{Organization:} Section~\ref{se:system_model} introduces the system model. Section~\ref{se:problem_formulation} formulates the problem and tackles the waveform, active and passive beamforming design. Section~\ref{se:performance_evaluation} provides simulation results. Section~\ref{se:conclusion_and_future_works} concludes the paper.
 
-			\emph{Notations:} Scalars, vectors and matrices are denoted respectively by italic, bold lower-case, and bold upper-case letters. $j$ denotes the imaginary unit. $\boldsymbol{0}$ and $\boldsymbol{1}$ denote respectively zero and one vector or matrix. $\boldsymbol{I}$ denotes the identity matrix. $\mathbb{R}^{x \times y}$ and $\mathbb{C}^{x \times y}$ denote respectively the subspace spanned by real and complex $x \times y$ matrices. $\Re\{\cdot\}$ and $\Im\{\cdot\}$ denote respectively the real and imaginary part of a complex entity. $(\cdot)^*$, $(\cdot)^T$, $(\cdot)^H$, $(\cdot)^+$, $\lvert{\cdot}\rvert$, $\lVert{\cdot}\rVert$ represent respectively the conjugate, transpose, conjugate transpose, ramp function, absolute value, and Euclidean norm. $\arg(\cdot)$, $\mathrm{rank}(\cdot)$, $\mathrm{tr}(\cdot)$, $\mathrm{diag}(\cdot)$ and $\mathrm{diag}^{-1}(\cdot)$ denote respectively the argument, rank, trace, a square matrix with input vector on the main diagonal, and a vector retrieving the main diagonal of the input matrix. $\boldsymbol{S} \succeq \boldsymbol{0}$ means $\boldsymbol{S}$ is positive semi-definite. $\mathbb{A}\{\cdot\}$ extracts the DC component of a signal. $\mathbb{E}_X\{\cdot\}$ takes expectation w.r.t. random variable $X$ ($X$ is omitted for simplicity). The distribution of a CSCG random vector with mean $\boldsymbol{0}$ and covariance $\boldsymbol{\Sigma}$ is denoted by $\mathcal{CN}(\boldsymbol{0},\boldsymbol{\Sigma})$. $\sim$ means ``distributed as''. $(\cdot)^{(i)}$ and $(\cdot)^{\star}$ denote respectively the $i$-th iterate and the stationary solution.
+			\emph{Notations:} Scalars, vectors and matrices are denoted respectively by italic, bold lower-case, and bold upper-case letters. $j$ denotes the imaginary unit. $\boldsymbol{0}$ and $\boldsymbol{1}$ denote respectively zero and one vector or matrix. $\boldsymbol{I}$ denotes the identity matrix. $\mathbb{R}^{x \times y}$ and $\mathbb{C}^{x \times y}$ denote respectively the subspace spanned by real and complex $x \times y$ matrices. $\Re\{\cdot\}$ retrieves the real part of a complex entity. $(\cdot)^*$, $(\cdot)^T$, $(\cdot)^H$, $(\cdot)^+$, $\lvert{\cdot}\rvert$, $\lVert{\cdot}\rVert$ represent respectively the conjugate, transpose, conjugate transpose, ramp function, absolute value, and Euclidean norm. $\arg(\cdot)$, $\mathrm{rank}(\cdot)$, $\mathrm{tr}(\cdot)$, $\mathrm{diag}(\cdot)$ and $\mathrm{diag}^{-1}(\cdot)$ denote respectively the argument, rank, trace, a square matrix with input vector on the main diagonal, and a vector retrieving the main diagonal of the input matrix. $\boldsymbol{S} \succeq \boldsymbol{0}$ means $\boldsymbol{S}$ is positive semi-definite. $\mathbb{A}\{\cdot\}$ extracts the DC component of a signal. $\mathbb{E}_X\{\cdot\}$ takes expectation w.r.t. random variable $X$ ($X$ is omitted for simplicity). The distribution of a CSCG random vector with mean $\boldsymbol{0}$ and covariance $\boldsymbol{\Sigma}$ is denoted by $\mathcal{CN}(\boldsymbol{0},\boldsymbol{\Sigma})$. $\sim$ means ``distributed as''. $(\cdot)^{(i)}$ and $(\cdot)^{\star}$ denote respectively the $i$-th iterate and the stationary solution.
 		\end{subsection}
 	\end{section}
 
@@ -392,7 +393,6 @@
 			\end{align}
 
 			Note that $t_{\mathrm{I/P},0}=\mathrm{tr}(\boldsymbol{C}_{\mathrm{I/P},0}\boldsymbol{\Phi})$ is real because $\boldsymbol{C}_{\mathrm{I/P},0}$ and $\boldsymbol{\Phi}$ are Hermitian matrices. Due to symmetry \cite{Huang2017}, we have
-
 			\begin{equation}\label{eq:coupled_terms}
 				\sum_{k=-N+1}^{N-1} \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} = \sum_{k=-N+1}^{N-1} t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*.
 			\end{equation}
@@ -657,7 +657,8 @@
 			\caption{System layout in simulation.}
 			\label{fi:layout}
 		\end{figure}
-		To evaluate the performance of the proposed IRS-aided SWIPT system, we consider the layout in Fig.~\ref{fi:layout} where the IRS moves along a line parallel to the AP-UE path. Let $d_{\mathrm{H}}$, $d_{\mathrm{V}}$ be the horizontal and vertical distances from the AP to the IRS, and denote respectively $d_{\mathrm{D}}$, $d_{\mathrm{I}}=\sqrt{d_{\mathrm{H}}^2+d_{\mathrm{V}}^2}$, $d_{\mathrm{R}}=\sqrt{(d_{\mathrm{D}}-d_{\mathrm{H}})^2+d_{\mathrm{V}}^2}$ as the distance of direct, incident and reflective links. Consider a large open space Wi-Fi-like environment at center frequency \SI{5.18}{\GHz}, where the fading parameters follow IEEE TGn channel model D \cite{Erceg2004} and the reference path loss is \SI{-35}{\dB} at \SI{1}{\meter}. Denote $\Lambda_{\mathrm{D}},\Lambda_{\mathrm{I}},\Lambda_{\mathrm{R}}$ as the path loss of direct, incident and reflective links. All channels are assumed NLoS with taps modelled as i.i.d. CSCG random variables of unit average sum-power, corresponding to a normalized multipath response. Rectenna parameters are chosen as $k_2=0.0034$, $k_4=0.3829$, $R_{\mathrm{A}}=\SI{50}{\ohm}$ such that $\beta_2=0.17$ and $\beta_4=957.25$. The average Effective Isotropic Radiated Power (EIRP) is fixed to $P=\SI{36}{\dBm}$ and the receive antenna gain is \SI{2}{\dBi}. For the algorithms, the scaling ratio is $\alpha=2$, the tolerance is $\epsilon=10^{-8}$, and we assume $\delta=\rho$ for simplicity. Each R-E region is averaged over \num{300} channel realizations, and the $x$-axis is normalized to per-subband rate $R/N$.
+
+		To evaluate the performance of the proposed IRS-aided SWIPT system, we consider the layout in Fig.~\ref{fi:layout} where the IRS moves along a line parallel to the AP-UE path. Let $d_{\mathrm{H}}$, $d_{\mathrm{V}}$ be the horizontal and vertical distances from the AP to the IRS, and denote respectively $d_{\mathrm{D}}$, $d_{\mathrm{I}}=\sqrt{d_{\mathrm{H}}^2+d_{\mathrm{V}}^2}$, $d_{\mathrm{R}}=\sqrt{(d_{\mathrm{D}}-d_{\mathrm{H}})^2+d_{\mathrm{V}}^2}$ as the distance of direct, incident and reflective links. Consider a large open space Wi-Fi-like environment at center frequency \SI{5.18}{\GHz}, where the fading parameters follow IEEE TGn channel model D \cite{Erceg2004} and the reference path loss is \SI{-35}{\dB} at \SI{1}{\meter}. Denote $\Lambda_{\mathrm{D}},\Lambda_{\mathrm{I}},\Lambda_{\mathrm{R}}$ as the path loss of direct, incident and reflective links. All channels are assumed NLoS with taps modelled as i.i.d. CSCG random variables of unit average sum-power, corresponding to a normalized multipath response. Rectenna parameters are chosen as $k_2=0.0034$, $k_4=0.3829$, $R_{\mathrm{A}}=\SI{50}{\ohm}$ such that $\beta_2=0.17$ and $\beta_4=957.25$. The average Effective Isotropic Radiated Power (EIRP) is fixed to $P=\SI{36}{\dBm}$ and the receive antenna gain is \SI{2}{\dBi}. Moreover, the scaling ratio is $\alpha=2$, the tolerance is $\epsilon=10^{-8}$, and we assume $\delta=\rho$ for simplicity. Each R-E region is averaged over \num{300} channel realizations, and the $x$-axis is normalized to per-subband rate $R/N$.
 
 		\begin{figure}[!t]
 			\centering
@@ -852,7 +853,7 @@
 			\begin{equation}
 				\boldsymbol{\Upsilon}^\star = \boldsymbol{I} - \boldsymbol{\Delta}^\star
 			\end{equation}
-			where $\boldsymbol{\Delta}^\star$ is defied in \eqref{eq:delta}.
+			where $\boldsymbol{\Delta}^\star$ is given by \eqref{eq:delta}.
 			\begin{figure*}[!b]
 				\begin{flalign}\label{eq:delta}
 					\boldsymbol{\Delta}^\star
