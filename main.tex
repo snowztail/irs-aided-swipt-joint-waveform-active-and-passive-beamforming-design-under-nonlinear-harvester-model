@@ -337,7 +337,6 @@
 			\addConstraint{\lvert{\boldsymbol{\phi}}\rvert=\boldsymbol{1}}\label{co:original_modulus}
 			\addConstraint{0 \le \rho \le 1.}
 		\end{maxi!}
-
 		Problem~\eqref{op:original} is intricate due to the coupled variables in \eqref{ob:original}, \eqref{co:original_rate} and the non-convex constraint \eqref{co:original_modulus}. To obtain a feasible solution, we propose two BCD algorithms that iteratively updates 1) the IRS phase shift, 2) the active precoder, 3) the waveform amplitude and splitting ratio, until convergence.
 
 
@@ -370,7 +369,6 @@
 				& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{\mathrm{I},0}^2 + \sum_{k=-N+1}^{N-1}{t_{\mathrm{P},k}t_{\mathrm{P},k}^*}\right)\nonumber\\
 				& \quad + \frac{3}{2}{\beta_4}{\rho^2}t_{\mathrm{I},0}t_{\mathrm{P},0}.\label{eq:I_irs}
 			\end{align}
-
 			To maximize the non-concave expression \eqref{eq:I_irs}, we successively lower bound the second-order terms by their first-order Taylor expansions \cite{Adali2010}. Based on the solution at iteration $i - 1$, the approximations at iteration $i$ are
 			\begin{align}
 				(t_{\mathrm{I},0}^{(i)})^2
@@ -378,23 +376,19 @@
 				t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i)})^*
 				& \ge 2 \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*,\label{eq:taylor_2}\\
 				t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i)}
-				& = \frac{1}{4}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\nonumber\\
-				& \ge \frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})\nonumber\\
-				& \quad - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2.\label{eq:taylor_3}
+				& \ge t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i-1)} + t_{\mathrm{P},0}^{(i)} t_{\mathrm{I},0}^{(i-1)} - t_{\mathrm{I},0}^{(i-1)} t_{\mathrm{P},0}^{(i-1)}.\label{eq:taylor_3}
 			\end{align}
-
 			Note that $t_{\mathrm{I/P},0}=\mathrm{tr}(\boldsymbol{C}_{\mathrm{I/P},0}\boldsymbol{\Phi})$ is real because $\boldsymbol{C}_{\mathrm{I/P},0}$ and $\boldsymbol{\Phi}$ are Hermitian matrices. Due to symmetry \cite{Huang2017}, we have
 			\begin{equation}\label{eq:coupled_terms}
 				\sum_{k=-N+1}^{N-1} \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} = \sum_{k=-N+1}^{N-1} t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*.
 			\end{equation}
-
 			Plugging \eqref{eq:taylor_1}--\eqref{eq:coupled_terms} into \eqref{eq:I_irs}, we obtain the DC current approximation $\tilde{I}$ as \eqref{eq:I_irs_approx} and transform problem~\eqref{op:original} to
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}
 					\tilde{I}(\boldsymbol{\Phi}^{(i)})
 					& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}^{(i)}+t_{\mathrm{P},0}^{(i)}) + \frac{3}{8}{\beta_4}{\rho^2} \left(4 t_{\mathrm{I},0}^{(i)}t_{\mathrm{I},0}^{(i-1)} - 2 (t_{\mathrm{I},0}^{(i-1)})^2 + \sum_{k=-N+1}^{N-1}{2 t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^* - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*}\right)\nonumber\\
-					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left(\frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\right).\label{eq:I_irs_approx}
+					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left(t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i-1)} + t_{\mathrm{P},0}^{(i)} t_{\mathrm{I},0}^{(i-1)} - t_{\mathrm{I},0}^{(i-1)} t_{\mathrm{P},0}^{(i-1)}\right).\label{eq:I_irs_approx}
 				\end{align}
 			\end{figure*}
 			\begin{maxi!}
@@ -483,7 +477,6 @@
 				\addConstraint{R(\boldsymbol{s}_{\mathrm{I}},\rho) \ge \bar{R}}
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{s}_\mathrm{P}}\rVert^2\right)\le{P}.}
 			\end{maxi!}
-
 			Following \cite{Clerckx2018b}, we introduce auxiliary variables $t'',\bar{\rho}$ and transform problem~\eqref{op:waveform} into a reversed GP
 			\begin{mini!}
 				{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho,\bar{\rho},t''}{\frac{1}{t''}}{\label{op:waveform_rgp}}{}
@@ -492,7 +485,6 @@
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{s}_\mathrm{P}}\rVert^2\right) \le P}\label{co:waveform_power}
 				\addConstraint{\rho + \bar{\rho} \le 1.}
 			\end{mini!}
-
 			The denominators of \eqref{co:waveform_rate} and \eqref{co:waveform_objective} consist of posynomials \cite{Boyd2007} that can be decomposed as sums of monomials
 			\begin{align}
 				1+\frac{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}{\sigma_n^2} &\triangleq \sum_{m_{\mathrm{I},n}}g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n},\bar{\rho})\label{eq:g_I},\\
@@ -511,7 +503,6 @@
 				\gamma_{m_{\mathrm{I},n}}^{(i)} & = \frac{g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{\mathrm{I},n}^{(i-1)})^2}\big/{\sigma_n^2}}\label{eq:gamma_I},\\
 				\gamma_{m_\mathrm{P}}^{(i)} & = \frac{g_{m_\mathrm{P}}(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}{I(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}.
 			\end{align}
-
 			With \eqref{eq:gamma_I} and \eqref{eq:gamma_P}, problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2008}. We update $\boldsymbol{s}_{\mathrm{I}}^{(i)},\boldsymbol{s}_\mathrm{P}^{(i)},\rho^{(i)}$ iteratively until convergence. The joint waveform amplitude and splitting ratio design is summarized in the GP Algorithm~\ref{al:gp}.
 			\begin{algorithm}[!t]
 				\caption{GP: Waveform Amplitude and Splitting Ratio.}
@@ -557,7 +548,6 @@
 				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\lambda - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}, \label{eq:s_i}\\
 				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha. \label{eq:s_p}
 			\end{align}
-
 			Besides, minor modifications are required for passive beamforming to accommodate both low-complexity waveform schemes. To achieve the WIT point (i.e., $\eta=\rho=0$), the rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:I_irs_approx} should be maximized. To achieve any non-WIT point (i.e., $I \ne 0$), the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is instead characterized by varying either $\eta$ or $\delta$ and $\rho$. The Modified-SCA (M-SCA) Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design when the receiver works in PS mode. The tightness of rank relaxation and local optimality are proved similar to Proposition~\ref{pr:relaxation} and \ref{pr:sca} thus omitted here.
 
 			\begin{algorithm}[!t]
@@ -791,26 +781,24 @@
 				\addConstraint{\boldsymbol{\Phi}\succeq{\boldsymbol{0}}}\label{co:irs_equivalent_sd}
 				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_equivalent_rank}}
 			\end{maxi!}
-
 			By applying rank constraint relaxation, problem~\eqref{ob:irs_equivalent}--\eqref{co:irs_equivalent_sd} is convex w.r.t. $\boldsymbol{\Phi}$ and satisfies the Slater's condition \cite{Boyd2004}, thus strong duality holds. The corresponding Lagrangian function at iteration $i$ is given by \eqref{eq:lagrangian}, where $\mu$, $\boldsymbol{\nu}$, $\boldsymbol{\Upsilon}$ denote respectively the scalar, vector and matrix Lagrange multiplier associated with constraint~\eqref{co:irs_equivalent_rate}, \eqref{co:irs_equivalent_modulus} and \eqref{co:irs_equivalent_sd}, and $\zeta$ collects all terms irrelevant to $\boldsymbol{\Phi}^{(i)}$.
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}\label{eq:lagrangian}
 					\mathcal{L}
-					&= \mathrm{tr}\left(\boldsymbol{\Phi}^{(i)}\right) - \frac{1}{2} \beta_2 \rho \mathrm{tr}\Bigl(
+					& = \mathrm{tr}\left(\boldsymbol{\Phi}^{(i)}\right) - \frac{1}{2} \beta_2 \rho \mathrm{tr}\Bigl(
 							(\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^{(i)}
-						\Bigr) - \frac{3}{8} \beta_4 \rho^2 \Biggl(
-							4 t_{\mathrm{I},0}^{(i-1)} \mathrm{tr}\Bigl(
+						\Bigr) - \frac{3}{4} \beta_4 \rho^2 \Biggl(
+							2 t_{\mathrm{I},0}^{(i-1)} \mathrm{tr}\Bigl(
 								\boldsymbol{C}_{\mathrm{I},0} \boldsymbol{\Phi}^{(i)}
-							\Bigr) + \sum_{k=-N+1}^{N-1} 2 (t_{\mathrm{P},k}^{(i-1)})^* \mathrm{tr}\Bigl(
+							\Bigr) + \sum_{k=-N+1}^{N-1} (t_{\mathrm{P},k}^{(i-1)})^* \mathrm{tr}\Bigl(
 								\boldsymbol{C}_{\mathrm{P},k} \boldsymbol{\Phi}^{(i)}
-							\Bigr)
-							\nonumber\\
-					&\quad+ 2 (t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) \mathrm{tr}\Bigl(
-								(\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^{(i)}
-							\Bigr) - \mathrm{tr}^2 \Bigl(
-								(\boldsymbol{C}_{\mathrm{I},0} - \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^{(i)}
-							\Bigr)
+							\Bigr)\nonumber\\
+					& \quad + 2 t_{\mathrm{P},0}^{(i-1)} \mathrm{tr}\Bigl(
+							\boldsymbol{C}_{\mathrm{I},0} \boldsymbol{\Phi}^{(i)}
+						\Bigr) + 2 t_{\mathrm{I},0}^{(i-1)} \mathrm{tr}\Bigl(
+							\boldsymbol{C}_{\mathrm{P},0} \boldsymbol{\Phi}^{(i)}
+						\Bigr)
 						\Biggr) + \mu \Biggl(
 						2^{\bar{R}} - \prod_{n=1}^N \biggl(
 							1 + \frac{(1-\rho) \mathrm{tr}\Bigl(
@@ -818,7 +806,7 @@
 							\Bigr)}{\sigma_n^2}
 						\biggr)
 					\Biggr)\nonumber\\
-					&\quad+ \mathrm{tr}\biggl(
+					& \quad + \mathrm{tr}\biggl(
 						\mathrm{diag}(\boldsymbol{\nu}) \odot \Bigl(
 							\boldsymbol{\Phi}^{(i)} \odot \boldsymbol{I} - \boldsymbol{I}
 						\Bigr)
@@ -839,7 +827,6 @@
 					\nabla_{\boldsymbol{\Phi}^\star} \mathcal{L} = 0.
 				\end{equation}
 			\end{subequations}
-
 			We then derive the gradient explicitly and rewrite \eqref{eq:gradient} as
 			\begin{equation}
 				\boldsymbol{\Upsilon}^\star = \boldsymbol{I} - \boldsymbol{\Delta}^\star
@@ -848,13 +835,11 @@
 			\begin{figure*}[!b]
 				\begin{align}\label{eq:delta}
 					\boldsymbol{\Delta}^\star
-					&= \frac{1}{2} \beta_2 \rho (\boldsymbol{C}_{\mathrm{I},0}+\boldsymbol{C}_{\mathrm{P},0}) + \frac{3}{4} \beta_4 \rho^2
+					& = \frac{1}{2} \beta_2 \rho (\boldsymbol{C}_{\mathrm{I},0}+\boldsymbol{C}_{\mathrm{P},0}) + \frac{3}{4} \beta_4 \rho^2
 						\Biggl(
-							2 t_{\mathrm{I},0}^{(i-1)} \boldsymbol{C}_{\mathrm{I},0} + \sum_{k=-N+1}^{N-1} (t_{\mathrm{P},k}^{(i-1)})^* \boldsymbol{C}_{\mathrm{P},k} + (t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) (\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0})\nonumber\\
-					&\quad- (\boldsymbol{C}_{\mathrm{I},0} - \boldsymbol{C}_{\mathrm{P},0}) \mathrm{tr}\Bigl(
-								(\boldsymbol{C}_{\mathrm{I},0} + \boldsymbol{C}_{\mathrm{P},0}) \boldsymbol{\Phi}^\star
-							\Bigr)
-						\Biggr) + \mu^\star \sum_{n=1}^N \frac{(1-\rho) \boldsymbol{C}_n}{\sigma_n^2} \prod_{n'=1,n' \ne n}^N \Biggl(
+							2 t_{\mathrm{I},0}^{(i-1)} \boldsymbol{C}_{\mathrm{I},0} + \sum_{k=-N+1}^{N-1} (t_{\mathrm{P},k}^{(i-1)})^* \boldsymbol{C}_{\mathrm{P},k} + 2 t_{\mathrm{P},0}^{(i-1)} \boldsymbol{C}_{\mathrm{I},0} + 2 t_{\mathrm{I},0}^{(i-1)} \boldsymbol{C}_{\mathrm{P},0}
+						\Biggr)\nonumber\\
+					& \quad + \mu^\star \sum_{n=1}^N \frac{(1-\rho) \boldsymbol{C}_n}{\sigma_n^2} \prod_{n'=1,n' \ne n}^N \Biggl(
 						1 + \frac{(1-\rho)\mathrm{tr}\Bigl(
 							\boldsymbol{C}_{n'} \boldsymbol{\Phi}^\star
 						\Bigr)}{\sigma_{n'}^2}
