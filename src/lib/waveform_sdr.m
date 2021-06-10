@@ -73,7 +73,7 @@ function [current, infoAmplitude, powerAmplitude] = waveform_sdr(beta2, beta4, c
             % \tilde{z}
             currentSca = (1 / 2) * beta2 * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
                 + (3 / 8) * beta4 * (2 * (2 * infoAuxiliary(nSubbands) * infoAuxiliary_(nSubbands) - infoAuxiliary_(nSubbands) ^ 2) + 2 * real(powerAuxiliary_' * powerAuxiliary) - powerAuxiliary_' * powerAuxiliary_) ...
-                + (3 / 2) * beta4 * ((1 / 2) * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) - (1 / 4) * (infoAuxiliary_(nSubbands) + powerAuxiliary_(nSubbands)) ^ 2 - (1 / 4) * (infoAuxiliary(nSubbands) - powerAuxiliary(nSubbands)) ^ 2);
+				+ (3 / 2) * beta4 * (infoAuxiliary(nSubbands) * powerAuxiliary_(nSubbands) + powerAuxiliary(nSubbands) * infoAuxiliary_(nSubbands) - infoAuxiliary_(nSubbands) * powerAuxiliary_(nSubbands));
             maximize currentSca;
             subject to
                 (1 / 2) * (trace(infoMatrix) + trace(powerMatrix)) <= txPower;
