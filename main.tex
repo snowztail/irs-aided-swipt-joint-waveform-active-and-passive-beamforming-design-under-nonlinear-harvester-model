@@ -396,19 +396,20 @@
 				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_rate}
 				\addConstraint{\mathrm{diag}^{-1}(\boldsymbol{\Phi})=\boldsymbol{1}}\label{co:irs_modulus}
 				\addConstraint{\boldsymbol{\Phi}\succeq{\boldsymbol{0}}}\label{co:irs_sd}
-				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1\label{co:irs_rank}}
+				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_rank}}
 			\end{maxi!}
-			which is not a Semidefinite Programming (SDP) due to the quadratic objective function \eqref{eq:I_irs_approx}. The remaining non-convexity of problem~\eqref{op:irs} origins from the rank-\num{1} constraint~\eqref{co:irs_rank} and we relax it to formulate a convex problem \cite{Luo2010}. The tightness of rank relaxation is verified below.
+			We then apply Semi-Definite Relaxation (SDR) to the unit-rank constraint \eqref{co:irs_rank} and formulate a Semi-Definite Programming (SDP) with approximation accuracy no greater than $\pi/4$ \cite{Luo2010}. In this specific case, we found the solution provided by CVX toolbox \cite{Grant2008} to \eqref{ob:irs}-\eqref{co:irs_sd} is always rank-\num{1}. This conclusion is summarized below.
 
 			\begin{proposition}\label{pr:relaxation}
-				Any optimal solution $\boldsymbol{\Phi}^\star$ to the relaxed passive beamforming problem~\eqref{ob:irs}--\eqref{co:irs_sd} is rank-\num{1} such that \eqref{co:irs_rank} is tight and no loss is introduced by rank relaxation.
+				Any optimal solution $\boldsymbol{\Phi}^\star$ to the relaxed passive beamforming problem~\eqref{ob:irs}--\eqref{co:irs_sd} is rank-\num{1} such that \eqref{co:irs_rank} is tight and no loss is introduced by SDR.
 			\end{proposition}
 
 			\begin{proof}\label{pf:relaxation}
 				See Appendix~\ref{ap:relaxation}.
 			\end{proof}
 
-			Problem~\eqref{op:irs} after rank relaxation can be solved by existing optimization tools such as CVX \cite{Grant2008}. We update $\boldsymbol{\Phi}^{(i)}$ until convergence, extract $\bar{\boldsymbol{\phi}}^\star$ by eigen decomposition, and retrieve the phase shift by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. The passive beamforming design is summarized in the SCA Algorithm~\ref{al:sca}.
+			In summary, we update $\boldsymbol{\Phi}^{(i)}$ until convergence, extract $\bar{\boldsymbol{\phi}}^\star$ by eigen decomposition, and retrieve the phase shift by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. The passive beamforming design is summarized in the SCA Algorithm~\ref{al:sca}, where the relaxed problem \eqref{ob:irs}--\eqref{co:irs_sd} involves a $(L+1)$-order positive semi-definite matrix variable and $(L+2)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:sca} is $\mathcal{O}\left(I_{\mathrm{SCA}}(L+2)^4 (L+1)^{0.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{SCA}}$ denotes the number of SCA iterations \cite{Luo2010}.
+
 			\begin{algorithm}[!t]
 				\caption{SCA: IRS Phase Shift.}
 				\label{al:sca}
@@ -503,7 +504,8 @@
 				\gamma_{m_{\mathrm{I},n}}^{(i)} & = \frac{g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{\mathrm{I},n}^{(i-1)})^2}\big/{\sigma_n^2}}\label{eq:gamma_I},\\
 				\gamma_{m_\mathrm{P}}^{(i)} & = \frac{g_{m_\mathrm{P}}(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}{I(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}.
 			\end{align}
-			With \eqref{eq:gamma_I} and \eqref{eq:gamma_P}, problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2008}. We update $\boldsymbol{s}_{\mathrm{I}}^{(i)},\boldsymbol{s}_\mathrm{P}^{(i)},\rho^{(i)}$ iteratively until convergence. The joint waveform amplitude and splitting ratio design is summarized in the GP Algorithm~\ref{al:gp}.
+			With \eqref{eq:gamma_I} and \eqref{eq:gamma_P}, problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2008}. We update $\boldsymbol{s}_{\mathrm{I}}^{(i)},\boldsymbol{s}_\mathrm{P}^{(i)},\rho^{(i)}$ iteratively until convergence. The joint waveform amplitude and splitting ratio design is summarized in the GP Algorithm~\ref{al:gp}, which achieves local optimality at the cost of exponential computational complexity \cite{Chiang2005}.
+
 			\begin{algorithm}[!t]
 				\caption{GP: Waveform Amplitude and Splitting Ratio.}
 				\label{al:gp}
@@ -535,7 +537,7 @@
 
 
 		\begin{subsection}{Low-Complexity Adaptive Design}
-			The GP Algorithm~\ref{al:gp} achieves local optimality with exponential computational complexity \cite{Chiang2005}. To facilitate practical SWIPT implementation, we propose two closed-form adaptive waveform amplitude schemes by combining WF and SMF in the time and power domains. For WIT, the optimal WF strategy assigns the amplitude of modulated tone $n$ by
+			To facilitate practical SWIPT implementation, we propose two closed-form adaptive waveform amplitude schemes by combining WF and SMF in the time and power domains. For WIT, the optimal WF strategy assigns the amplitude of modulated tone $n$ by
 			\begin{equation}\label{eq:wf}
 				s_{\mathrm{I}, n} = \sqrt{2\left(\lambda - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}
 			\end{equation}
@@ -548,7 +550,7 @@
 				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\lambda - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}, \label{eq:s_i}\\
 				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha. \label{eq:s_p}
 			\end{align}
-			Besides, minor modifications are required for passive beamforming to accommodate both low-complexity waveform schemes. To achieve the WIT point (i.e., $\eta=\rho=0$), the rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:I_irs_approx} should be maximized. To achieve any non-WIT point (i.e., $I \ne 0$), the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is instead characterized by varying either $\eta$ or $\delta$ and $\rho$. The Modified-SCA (M-SCA) Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design when the receiver works in PS mode. The tightness of rank relaxation and local optimality are proved similar to Proposition~\ref{pr:relaxation} and \ref{pr:sca} thus omitted here.
+			Besides, minor modifications are required for passive beamforming to accommodate both low-complexity waveform schemes. To achieve the WIT point (i.e., $\eta=\rho=0$), the rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:I_irs_approx} should be maximized. To achieve any non-WIT point (i.e., $I \ne 0$), the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is instead characterized by varying either $\eta$ or $\delta$ and $\rho$. The Modified-SCA (M-SCA) Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design when the receiver works in PS mode. The proofs of SDR tightness and local optimality are similar to Appendices~\ref{ap:relaxation} and \ref{ap:sca} thus omitted here. Compared with Algorithm~\ref{al:sca}, the rate constraint \eqref{co:irs_rate} is dropped and each SDP in Algorithm~\ref{al:m_sca} involves $(L+1)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:m_sca} is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations \cite{Luo2010}.
 
 			\begin{algorithm}[!t]
 				\caption{M-SCA: IRS Phase Shift.}
@@ -578,7 +580,8 @@
 
 
 		\begin{subsection}{Block Coordinate Descent}
-			Based on the direct and cascaded CSIT, we iteratively update the passive beamforming $\boldsymbol{\phi}$ by Algorithm~\ref{al:sca}, the active precoder $\boldsymbol{b}_{\mathrm{I/P},n}$, $\forall n$ by equation \eqref{eq:b_n}, and the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ and splitting ratio $\rho$ by Algorithm~\ref{al:gp}, until convergence. The steps are summarized in the BCD Algorithm~\ref{al:bcd}. For the low-complexity design, when the receiver works in PS mode, we instead obtain the phase shift by Algorithm~\ref{al:m_sca} and the waveform amplitude by \eqref{eq:s_i} and \eqref{eq:s_p}. The steps are summarized in the Low Complexity-BCD (LC-BCD) Algorithm~\ref{al:lc_bcd}.
+			Based on the direct and cascaded CSIT, we iteratively update the passive beamforming $\boldsymbol{\phi}$ by Algorithm~\ref{al:sca}, the active precoder $\boldsymbol{b}_{\mathrm{I/P},n}$, $\forall n$ by equation \eqref{eq:b_n}, and the waveform amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ and splitting ratio $\rho$ by Algorithm~\ref{al:gp}, until convergence. The steps are summarized in the BCD Algorithm~\ref{al:bcd}, which achieves local optimality with exponential computational complexity.
+
 			\begin{algorithm}[!t]
 				\caption{BCD: Waveform, Beamforming and Splitting Ratio.}
 				\label{al:bcd}
@@ -599,6 +602,16 @@
 				\end{algorithmic}
 			\end{algorithm}
 
+			\begin{proposition}\label{pr:bcd}
+				For any feasible initial point, the BCD Algorithm~\ref{al:bcd} is guaranteed to converge to local optimal points of the original waveform and beamforming problem~\eqref{op:original}.
+			\end{proposition}
+
+			\begin{proof}\label{pf:bcd}
+				See Appendix~\ref{ap:bcd}
+			\end{proof}
+
+			For the low-complexity design, when the receiver works in PS mode, we instead obtain the phase shift by Algorithm~\ref{al:m_sca} and the waveform amplitude by \eqref{eq:s_i} and \eqref{eq:s_p}. The steps are summarized in the Low Complexity-BCD (LC-BCD) Algorithm~\ref{al:lc_bcd}. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{Luo2010}.
+
 			\begin{algorithm}[!t]
 				\caption{LC-BCD: Waveform and Beamforming.}
 				\label{al:lc_bcd}
@@ -618,14 +631,6 @@
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star},\boldsymbol{w}_{\mathrm{I}}^{\star},\boldsymbol{w}_{\mathrm{P}}^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
-
-			\begin{proposition}\label{pr:bcd}
-				For any feasible initial point, the BCD Algorithm~\ref{al:bcd} is guaranteed to converge to local optimal points of the original waveform and beamforming problem~\eqref{op:original}.
-			\end{proposition}
-
-			\begin{proof}\label{pf:bcd}
-				See Appendix~\ref{ap:bcd}
-			\end{proof}
 		\end{subsection}
 	\end{section}
 
@@ -781,7 +786,7 @@
 				\addConstraint{\boldsymbol{\Phi}\succeq{\boldsymbol{0}}}\label{co:irs_equivalent_sd}
 				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_equivalent_rank}}
 			\end{maxi!}
-			By applying rank constraint relaxation, problem~\eqref{ob:irs_equivalent}--\eqref{co:irs_equivalent_sd} is convex w.r.t. $\boldsymbol{\Phi}$ and satisfies the Slater's condition \cite{Boyd2004}, thus strong duality holds. The corresponding Lagrangian function at iteration $i$ is given by \eqref{eq:lagrangian}, where $\mu$, $\boldsymbol{\nu}$, $\boldsymbol{\Upsilon}$ denote respectively the scalar, vector and matrix Lagrange multiplier associated with constraint~\eqref{co:irs_equivalent_rate}, \eqref{co:irs_equivalent_modulus} and \eqref{co:irs_equivalent_sd}, and $\zeta$ collects all terms irrelevant to $\boldsymbol{\Phi}^{(i)}$.
+			By applying SDR, problem~\eqref{ob:irs_equivalent}--\eqref{co:irs_equivalent_sd} is convex w.r.t. $\boldsymbol{\Phi}$ and satisfies the Slater's condition \cite{Boyd2004}, thus strong duality holds. The corresponding Lagrangian function at iteration $i$ is given by \eqref{eq:lagrangian}, where $\mu$, $\boldsymbol{\nu}$, $\boldsymbol{\Upsilon}$ denote respectively the scalar, vector and matrix Lagrange multiplier associated with constraint~\eqref{co:irs_equivalent_rate}, \eqref{co:irs_equivalent_modulus} and \eqref{co:irs_equivalent_sd}, and $\zeta$ collects all terms irrelevant to $\boldsymbol{\Phi}^{(i)}$.
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}\label{eq:lagrangian}
