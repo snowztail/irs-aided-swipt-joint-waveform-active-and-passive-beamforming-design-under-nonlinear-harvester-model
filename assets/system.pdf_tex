@@ -1,4 +1,4 @@
-%% Creator: Inkscape 1.0.2 (e86c870879, 2021-01-15), www.inkscape.org
+%% Creator: Inkscape 1.1 (c4e8f9ed74, 2021-05-24), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'system.pdf' (pdf, eps, ps)
 %%
@@ -57,8 +57,9 @@
     \put(0,0.17667814){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}AP\end{tabular}}}}%
     \put(0.40311473,0.4870151){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IRS\end{tabular}}}}%
     \put(0.98057233,0.06003159){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}UE\end{tabular}}}}%
-    \put(0.43103666,0.19497484){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{h}_{\mathrm{D},n}^H$\end{tabular}}}}%
+    \put(0.44884934,0.17122459){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{h}_{\mathrm{D},n}^H$\end{tabular}}}}%
     \put(0.65980059,0.31091294){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{h}_{\mathrm{R},n}^H$\end{tabular}}}}%
-    \put(0.19246568,0.41956903){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{H}_{\mathrm{I},n}$\end{tabular}}}}%
+    \put(0.23895025,0.43856967){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{H}_{\mathrm{I},n}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{system.pdf}}%
   \end{picture}%
 \endgroup%
