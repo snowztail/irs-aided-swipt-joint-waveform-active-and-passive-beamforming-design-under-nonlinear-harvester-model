@@ -270,13 +270,13 @@
 				\caption{Receive antenna and energy harvester circuits.}
 			\end{figure}
 
-			Importantly the rectenna model used in this section, taken from \cite{Clerckx2016a}, captures the dependency of the output DC current on both the power and shape of the received signal. This is critical for efficient signal designs in WPT and SWIPT \cite{Clerckx2021}. Fig.~\ref{fi:antenna_equivalent_circuit} illustrates the equivalent circuit of an ideal antenna, where the antenna has an resistance $R_{\mathrm{A}}$ and the incoming signal creates an voltage source $v_{\mathrm{S}}(t)$. Let $R_{\mathrm{in}}$ be the total input resistance of the rectifier and matching network, and we assume the voltage across the matching network is negligible. When perfectly matched (i.e., $R_{\mathrm{in}}=R_{\mathrm{A}}$), the rectifier input voltage is $v_{\mathrm{in}}(t)=y(t)\sqrt{\rho R_{\mathrm{A}}}$.
+			Importantly, the rectenna model used in this section taken from \cite{Clerckx2016a} captures the dependency of the output DC current on both the power and shape of the received signal. This is critical for efficient signal designs in WPT and SWIPT \cite{Clerckx2021}. Fig.~\ref{fi:antenna_equivalent_circuit} illustrates the equivalent circuit of an ideal antenna, where the antenna has an resistance $R_{\mathrm{A}}$ and the incoming signal creates an voltage source $v_{\mathrm{S}}(t)$. Let $R_{\mathrm{in}}$ be the total input resistance of the rectifier and matching network, and we assume the voltage across the matching network is negligible. When perfectly matched (i.e., $R_{\mathrm{in}}=R_{\mathrm{A}}$), the rectifier input voltage is $v_{\mathrm{in}}(t)=y(t)\sqrt{\rho R_{\mathrm{A}}}$.
 
 			Rectifiers consist of nonlinear components like diode and capacitor to produce DC output and store energy \cite{Pinuela2013}. Consider a simplified rectifier model in Fig.~\ref{fi:single_diode_rectifier} where a single series diode is followed by a low-pass filter with a parallel load. As detailed in \cite{Clerckx2016a}, a truncated Taylor expansion of the diode I-V characteristic equation suggests that, when the subband frequencies are evenly-spaced, maximizing the average output DC current is equivalent to maximizing a monotonic function\footnote{Note that this small-signal expansion model is only valid for the nonlinear operation region of the diode, and the I-V relationship would be linear if the diode behavior is dominated by the load \cite{Clerckx2016a}.}
-			\begin{equation}\label{eq:I}
-				I(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho)=\sum_{i\,\mathrm{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\mathrm{A}}^{i/2}}{\mathbb{E}\left\{\mathbb{A}\left\{y(t)^i\right\}\right\}}
+			\begin{equation}\label{eq:z}
+				z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho)=\sum_{i\,\mathrm{even},i\ge2}^{n_0}{k_i}{\rho^{i/2}}{R_{\mathrm{A}}^{i/2}}{\mathbb{E}\left\{\mathbb{A}\left\{y(t)^i\right\}\right\}}
 			\end{equation}
-			where $n_0$ is the truncation order and $k_i \triangleq i_{\mathrm{S}}/i!(n'v_{\mathrm{T}})^i$ is the diode coefficient ($i_{\mathrm{S}}$ is the reverse bias saturation current, $n'$ is the diode ideality factor, $v_{\mathrm{T}}$ is the thermal voltage). With a slight abuse of notation, we refer to $I$ as the average output DC current in this paper. It can be observed that the conventional linear harvester model, where the output DC power equals the sum of the power harvested on each frequency, is a special case of \eqref{eq:I} with $n_0=2$. However, due to the coupling effect among different frequencies, some high-order AC components compensate each other and further contribute to the output DC power. In other words, even-order terms with $i \ge 4$ account for the diode nonlinear behavior. For simplicity, we choose $n_0=4$ to investigate the fundamental rectifier nonlinearity, and define $\beta_2 \triangleq {k_2}{R_{\mathrm{A}}}$, $\beta_4 \triangleq {k_4}{R_{\mathrm{A}}^2}$ to rewrite $I$ by \eqref{eq:I_expand}. Note that $\mathbb{E}\left\{\lvert\tilde{x}_{\mathrm{I},n}\rvert^2\right\}=1$ but $\mathbb{E}\left\{\lvert\tilde{x}_{\mathrm{I},n}\rvert^4\right\}=2$, which applies a modulation gain on the nonlinear DC terms. Moreover, we define $\boldsymbol{h} \triangleq [\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{w}_{\mathrm{I/P}} \triangleq [\boldsymbol{w}_{\mathrm{I/P},1}^T,\dots,\boldsymbol{w}_{\mathrm{I/P},N}^T]^T \in \mathbb{C}^{MN \times 1}$, and $\boldsymbol{W}_{\mathrm{I/P}} \triangleq \boldsymbol{w}_{\mathrm{I/P}}\boldsymbol{w}_{\mathrm{I/P}}^H \in \mathbb{C}^{MN \times MN}$. As illustrated by Fig.~\ref{fi:block_diagonal}, $\boldsymbol{W}_{\mathrm{I/P}}$ can be divided into $N \times N$ blocks of size $M \times M$, and we let $\boldsymbol{W}_{\mathrm{I/P},k}$ keep its block diagonal $k \in \{-N+1,\dots,N-1\}$ and set all other blocks to $\boldsymbol{0}$. Hence, the components of $I$ reduce to \eqref{eq:y_I2}--\eqref{eq:y_P4}.
+			where $n_0$ is the truncation order and $k_i \triangleq i_{\mathrm{S}}/i!(n'v_{\mathrm{T}})^i$ is the diode coefficient ($i_{\mathrm{S}}$ is the reverse bias saturation current, $n'$ is the diode ideality factor, $v_{\mathrm{T}}$ is the thermal voltage). With a slight abuse of notation, we refer to $z$ as the average output DC current in this paper. It can be observed that the conventional linear harvester model, where the output DC power equals the sum of the power harvested on each frequency, is a special case of \eqref{eq:z} with $n_0=2$. However, due to the coupling effect among different frequencies, some high-order AC components compensate each other and further contribute to the output DC power. In other words, even-order terms with $i \ge 4$ account for the diode nonlinear behavior. For simplicity, we choose $n_0=4$ to investigate the fundamental rectifier nonlinearity, and define $\beta_2 \triangleq {k_2}{R_{\mathrm{A}}}$, $\beta_4 \triangleq {k_4}{R_{\mathrm{A}}^2}$ to rewrite $z$ by \eqref{eq:z_expand}. Note that $\mathbb{E}\left\{\lvert\tilde{x}_{\mathrm{I},n}\rvert^2\right\}=1$ but $\mathbb{E}\left\{\lvert\tilde{x}_{\mathrm{I},n}\rvert^4\right\}=2$, which applies a modulation gain on the nonlinear DC terms. Moreover, we define $\boldsymbol{h} \triangleq [\boldsymbol{h}_1^T,\dots,\boldsymbol{h}_N^T]^T \in \mathbb{C}^{MN \times 1}$, $\boldsymbol{w}_{\mathrm{I/P}} \triangleq [\boldsymbol{w}_{\mathrm{I/P},1}^T,\dots,\boldsymbol{w}_{\mathrm{I/P},N}^T]^T \in \mathbb{C}^{MN \times 1}$, and $\boldsymbol{W}_{\mathrm{I/P}} \triangleq \boldsymbol{w}_{\mathrm{I/P}}\boldsymbol{w}_{\mathrm{I/P}}^H \in \mathbb{C}^{MN \times MN}$. As illustrated by Fig.~\ref{fi:block_diagonal}, $\boldsymbol{W}_{\mathrm{I/P}}$ can be divided into $N \times N$ blocks of size $M \times M$, and we let $\boldsymbol{W}_{\mathrm{I/P},k}$ keep its block diagonal $k \in \{-N+1,\dots,N-1\}$ and set all other blocks to $\boldsymbol{0}$. Hence, the components of $z$ reduce to \eqref{eq:y_I2}--\eqref{eq:y_P4}.
 
 			\begin{figure*}[!t]
 				\begin{equation*}
@@ -306,7 +306,7 @@
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}
-					&I(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho) = \beta_2\rho\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}+6\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr),\label{eq:I_expand}\\
+					&z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho) = \beta_2\rho\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr)+\beta_4\rho^2\Bigl(\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\}+\mathbb{A}\left\{y_{\mathrm{P}}^4(t)\right\}+6\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\}\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\}\Bigr),\label{eq:z_expand}\\
 					&\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^2(t)\right\}\right\} = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h},\label{eq:y_I2}\\
 					&\mathbb{E}\left\{\mathbb{A}\left\{y_{\mathrm{I}}^4(t)\right\}\right\} = \frac{3}{4}\left(\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n})^*}\right)^2 = \frac{3}{4}(\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{I},0}\boldsymbol{h})^2,\label{eq:y_I4}\\
 					&\mathbb{A}\left\{y_{\mathrm{P}}^2(t)\right\} = \frac{1}{2}\sum_{n=1}^N{(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})(\boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{P},n})^*} = \frac{1}{2}\boldsymbol{h}^H\boldsymbol{W}_{\mathrm{P},0}\boldsymbol{h},\label{eq:y_P2}\\
@@ -320,7 +320,7 @@
 			The achievable R-E region is defined as
 			\begin{align}
 				\mathcal{C}_{\mathrm{R-E}}
-				&\triangleq \biggl\{(R_{\mathrm{ID}}, I_{\mathrm{EH}}) \in \mathbb{R}_+^2 \mid R_{\mathrm{ID}} \le R, I_{\mathrm{EH}} \le I,\nonumber\\
+				&\triangleq \biggl\{(R_{\mathrm{ID}}, z_{\mathrm{EH}}) \in \mathbb{R}_+^2 \mid R_{\mathrm{ID}} \le R, z_{\mathrm{EH}} \le z,\nonumber\\
 				&\quad \frac{1}{2}\left(\lVert{\boldsymbol{w}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{w}_{\mathrm{P}}}\rVert^2\right) \le P\biggr\}
 			\end{align}
 			where $P$ is the average transmit power budget and \num{1/2} converts the peak value of sine waves to the average value.
@@ -331,13 +331,13 @@
 	\begin{section}{Problem Formulation}\label{se:problem_formulation}
 		We characterize each R-E boundary point through a current maximization problem subject to sum rate, transmit power, and IRS magnitude constraints as
 		\begin{maxi!}
-			{\scriptstyle{\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho}}{I(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho)}{\label{op:original}}{\label{ob:original}}
+			{\scriptstyle{\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho}}{z(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\boldsymbol{w}_{\mathrm{P}},\rho)}{\label{op:original}}{\label{ob:original}}
 			\addConstraint{R(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\rho) \ge \bar{R}}\label{co:original_rate}
 			\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{w}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{w}_{\mathrm{P}}}\rVert^2\right)\le{P}}\label{co:original_power}
 			\addConstraint{\lvert{\boldsymbol{\phi}}\rvert=\boldsymbol{1}}\label{co:original_modulus}
 			\addConstraint{0 \le \rho \le 1.}
 		\end{maxi!}
-		Problem~\eqref{op:original} is intricate due to the coupled variables in \eqref{ob:original}, \eqref{co:original_rate} and the non-convex constraint \eqref{co:original_modulus}. To obtain a feasible solution, we propose two BCD algorithms that iteratively updates 1) the IRS phase shift, 2) the active precoder, 3) the waveform amplitude and splitting ratio, until convergence.
+		Problem~\eqref{op:original} is intricate due to the coupled variables in \eqref{ob:original}, \eqref{co:original_rate} and the non-convex constraint \eqref{co:original_modulus}. To obtain a feasible solution, we propose a BCD algorithm that iteratively updates 1) the IRS phase shift, 2) the active precoder, 3) the waveform amplitude and splitting ratio, until convergence.
 
 
 		\begin{subsection}{Passive Beamforming}
@@ -360,16 +360,16 @@
 				& = \mathrm{tr}(\boldsymbol{M}\boldsymbol{W}_{\mathrm{I/P},k}\boldsymbol{M}^H\boldsymbol{\Phi})\nonumber\\
 				& = \mathrm{tr}(\boldsymbol{C}_{\mathrm{I/P},k}\boldsymbol{\Phi})\label{eq:t_k}
 			\end{align}
-			where $\boldsymbol{V} \triangleq [\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M} \triangleq [\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{\mathrm{I/P},k} \triangleq \boldsymbol{M}\boldsymbol{W}_{\mathrm{I/P},k}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. On top of this, \eqref{eq:R} and \eqref{eq:I_expand} reduce respectively to
+			where $\boldsymbol{V} \triangleq [\boldsymbol{V}_1,\dots,\boldsymbol{V}_N] \in \mathbb{C}^{L \times MN}$, $\boldsymbol{M} \triangleq [\boldsymbol{V}^H, \boldsymbol{h}_{D}]^H \in \mathbb{C}^{(L+1) \times MN}$, $\boldsymbol{C}_{\mathrm{I/P},k} \triangleq \boldsymbol{M}\boldsymbol{W}_{\mathrm{I/P},k}\boldsymbol{M}^H \in \mathbb{C}^{(L+1)\times(L+1)}$. On top of this, \eqref{eq:R} and \eqref{eq:z_expand} reduce respectively to
 			\begin{align}
 				R(\boldsymbol{\Phi})
 				& = \sum_{n=1}^{N}{\log_2\left(1+\frac{(1-\rho)\mathrm{tr}(\boldsymbol{C}_n\boldsymbol{\Phi})}{\sigma_n^2}\right)},\label{eq:R_irs}\\
-				I(\boldsymbol{\Phi})
+				z(\boldsymbol{\Phi})
 				& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}+t_{\mathrm{P},0})\nonumber\\
 				& \quad + \frac{3}{8}{\beta_4}{\rho^2} \left(2t_{\mathrm{I},0}^2 + \sum_{k=-N+1}^{N-1}{t_{\mathrm{P},k}t_{\mathrm{P},k}^*}\right)\nonumber\\
-				& \quad + \frac{3}{2}{\beta_4}{\rho^2}t_{\mathrm{I},0}t_{\mathrm{P},0}.\label{eq:I_irs}
+				& \quad + \frac{3}{2}{\beta_4}{\rho^2}t_{\mathrm{I},0}t_{\mathrm{P},0}.\label{eq:z_irs}
 			\end{align}
-			To maximize the non-concave expression \eqref{eq:I_irs}, we successively lower bound the second-order terms by their first-order Taylor expansions \cite{Adali2010}. Based on the solution at iteration $i - 1$, the approximations at iteration $i$ are
+			To maximize the non-concave expression \eqref{eq:z_irs}, we successively lower bound the second-order terms by their first-order Taylor expansions \cite{Adali2010}. Based on the solution at iteration $i - 1$, the approximations at iteration $i$ are
 			\begin{align}
 				(t_{\mathrm{I},0}^{(i)})^2
 				& \ge 2 t_{\mathrm{I},0}^{(i)}t_{\mathrm{I},0}^{(i-1)} - (t_{\mathrm{I},0}^{(i-1)})^2,\label{eq:taylor_1}\\
@@ -382,17 +382,17 @@
 			\begin{equation}\label{eq:coupled_terms}
 				\sum_{k=-N+1}^{N-1} \Re\left\{t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*\right\} = \sum_{k=-N+1}^{N-1} t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^*.
 			\end{equation}
-			Plugging \eqref{eq:taylor_1}--\eqref{eq:coupled_terms} into \eqref{eq:I_irs}, we obtain the DC current approximation $\tilde{I}$ as \eqref{eq:I_irs_approx} and transform problem~\eqref{op:original} to
+			Plugging \eqref{eq:taylor_1}--\eqref{eq:coupled_terms} into \eqref{eq:z_irs}, we obtain the DC current approximation $\tilde{z}$ as \eqref{eq:z_irs_approx} and transform problem~\eqref{op:original} to
 			\begin{figure*}[!b]
 				\hrule
 				\begin{align}
-					\tilde{I}(\boldsymbol{\Phi}^{(i)})
+					\tilde{z}(\boldsymbol{\Phi}^{(i)})
 					& = \frac{1}{2}{\beta_2}{\rho}(t_{\mathrm{I},0}^{(i)}+t_{\mathrm{P},0}^{(i)}) + \frac{3}{8}{\beta_4}{\rho^2} \left(4 t_{\mathrm{I},0}^{(i)}t_{\mathrm{I},0}^{(i-1)} - 2 (t_{\mathrm{I},0}^{(i-1)})^2 + \sum_{k=-N+1}^{N-1}{2 t_{\mathrm{P},k}^{(i)} (t_{\mathrm{P},k}^{(i-1)})^* - t_{\mathrm{P},k}^{(i-1)} (t_{\mathrm{P},k}^{(i-1)})^*}\right)\nonumber\\
-					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left(t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i-1)} + t_{\mathrm{P},0}^{(i)} t_{\mathrm{I},0}^{(i-1)} - t_{\mathrm{I},0}^{(i-1)} t_{\mathrm{P},0}^{(i-1)}\right).\label{eq:I_irs_approx}
+					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left(t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i-1)} + t_{\mathrm{P},0}^{(i)} t_{\mathrm{I},0}^{(i-1)} - t_{\mathrm{I},0}^{(i-1)} t_{\mathrm{P},0}^{(i-1)}\right).\label{eq:z_irs_approx}
 				\end{align}
 			\end{figure*}
 			\begin{maxi!}
-				{\scriptstyle{\boldsymbol{\Phi}}}{\tilde{I}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{ob:irs}}
+				{\scriptstyle{\boldsymbol{\Phi}}}{\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs}}{\label{ob:irs}}
 				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_rate}
 				\addConstraint{\mathrm{diag}^{-1}(\boldsymbol{\Phi})=\boldsymbol{1}}\label{co:irs_modulus}
 				\addConstraint{\boldsymbol{\Phi}\succeq{\boldsymbol{0}}}\label{co:irs_sd}
@@ -405,7 +405,7 @@
 			\end{proposition}
 
 			\begin{proof}\label{pf:relaxation}
-				See Appendix~\ref{ap:relaxation}.
+				Please refer to Appendix~\ref{ap:relaxation}.
 			\end{proof}
 
 			In summary, we update $\boldsymbol{\Phi}^{(i)}$ until convergence, extract $\bar{\boldsymbol{\phi}}^\star$ by eigen decomposition, and retrieve the phase shift by $\theta_l^{\star}=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$. The passive beamforming design is summarized in the SCA Algorithm~\ref{al:sca}, where the relaxed problem \eqref{ob:irs}--\eqref{co:irs_sd} involves a $(L+1)$-order positive semi-definite matrix variable and $(L+2)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:sca} is $\mathcal{O}\left(I_{\mathrm{SCA}}(L+2)^4 (L+1)^{0.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{SCA}}$ denotes the number of SCA iterations \cite{Luo2010}.
@@ -418,12 +418,13 @@
 					\State Construct $\boldsymbol{V},\boldsymbol{M},\boldsymbol{M}_n,\boldsymbol{C}_{n},\boldsymbol{C}_{\mathrm{I/P},k}$, $\forall n,k$
 					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\Phi}^{(0)}$
 					\State Set $t_{\mathrm{I/P},k}^{(0)}$, $\forall k$ by \eqref{eq:t_k}
+					\State Compute $z^{(0)}$ by \eqref{eq:z_irs}
 					\Repeat
 						\State $i \gets i + 1$
 						\State Get $\boldsymbol{\Phi}^{(i)}$ by solving \eqref{ob:irs}--\eqref{co:irs_sd}
 						\State Update $t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by \eqref{eq:t_k}
-						\State Compute $I^{(i)}$ by \eqref{eq:I_irs}
-					\Until $\lvert I^{(i)}-I^{(i-1)} \rvert \le \epsilon$
+						\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
+					\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
 					\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
 					\State Get $\bar{\boldsymbol{\phi}}^\star$ by eigen decomposition, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
 					\State Set $\theta_l^\star=\arg(\bar{\phi}_l^\star/\bar{\phi}_{L+1}^\star)$, $\forall l$, $\boldsymbol{\phi}^{\star}=[e^{j\theta_1^\star},\dots,e^{j\theta_L^\star}]^H$
@@ -436,7 +437,7 @@
 			\end{proposition}
 
 			\begin{proof}\label{pf:sca}
-				See Appendix~\ref{ap:sca}.
+				Please refer to Appendix~\ref{ap:sca}.
 			\end{proof}
 		\end{subsection}
 
@@ -455,7 +456,7 @@
 			\end{proposition}
 
 			\begin{proof}\label{pf:mrt}
-				See Appendix~\ref{ap:mrt}.
+				Please refer to Appendix~\ref{ap:mrt}.
 			\end{proof}
 		\end{subsection}
 
@@ -465,31 +466,31 @@
 			\begin{equation}\label{eq:R_waveform}
 				R(\boldsymbol{s}_{\mathrm{I}},\rho) = \log_2\prod_{n=1}^N\left(1+\frac{(1-\rho)\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}{\sigma_n^2}\right)
 			\end{equation}
-			and the DC current \eqref{eq:I_expand} rewrites as \eqref{eq:I_waveform}, so that problem~\eqref{op:original} boils down to
+			and the DC current \eqref{eq:z_expand} rewrites as \eqref{eq:z_waveform}, so that problem~\eqref{op:original} boils down to
 			\begin{figure*}[!b]
 				\begin{align}
-					I(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)
+					z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)
 					& = \frac{1}{2}{\beta_2}{\rho} \sum_{n=1}^N \lVert{\boldsymbol{h}_n}\rVert^2(s_{\mathrm{I},n}^2+s_{\mathrm{P},n}^2) + \frac{3}{8}{\beta_4}{\rho^2} \left( 2\sum_{n_1,n_2} \prod_{j=1}^2 \lVert{\boldsymbol{h}_{n_j}}\rVert^2 s_{\mathrm{I},{n_j}}^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}} \prod_{j=1}^4 \lVert{\boldsymbol{h}_{n_j}}\rVert s_{\mathrm{P},{n_j}} \right)\nonumber\\
-					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left( \sum_{n_1,n_2} \lVert{\boldsymbol{h}_{n_1}}\rVert^2 \lVert{\boldsymbol{h}_{n_2}}\rVert^2 s_{\mathrm{I},{n_1}}^2 s_{\mathrm{P},{n_2}}^2 \right).\label{eq:I_waveform}
+					& \quad + \frac{3}{2}{\beta_4}{\rho^2} \left( \sum_{n_1,n_2} \lVert{\boldsymbol{h}_{n_1}}\rVert^2 \lVert{\boldsymbol{h}_{n_2}}\rVert^2 s_{\mathrm{I},{n_1}}^2 s_{\mathrm{P},{n_2}}^2 \right).\label{eq:z_waveform}
 				\end{align}
 			\end{figure*}
 			\begin{maxi!}
-				{\scriptstyle{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho}}{I(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)}{\label{op:waveform}}{}
+				{\scriptstyle{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho}}{z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)}{\label{op:waveform}}{}
 				\addConstraint{R(\boldsymbol{s}_{\mathrm{I}},\rho) \ge \bar{R}}
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{s}_\mathrm{P}}\rVert^2\right)\le{P}.}
 			\end{maxi!}
-			Following \cite{Clerckx2018b}, we introduce auxiliary variables $t'',\bar{\rho}$ and transform problem~\eqref{op:waveform} into a reversed GP
+			Following \cite{Clerckx2018b}, we introduce auxiliary variables $t'',\bar{\rho}$\footnote{It is trivial to conclude $\bar{\rho}^{\star}=1-\rho^{\star}$ because the R-E tradeoff is maximized when no signal is wasted at the receiver.} and transform problem~\eqref{op:waveform} into a reversed GP
 			\begin{mini!}
 				{\scriptstyle{\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho,\bar{\rho},t''}}{\frac{1}{t''}}{\label{op:waveform_rgp}}{}
-				\addConstraint{\frac{t''}{I(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)} \le 1}\label{co:waveform_objective}
+				\addConstraint{\frac{t''}{z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)} \le 1}\label{co:waveform_objective}
 				\addConstraint{\frac{2^{\bar{R}}}{\prod_{n=1}^N \left(1+{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}\big/{\sigma_n^2}\right)} \le 1}\label{co:waveform_rate}
 				\addConstraint{\frac{1}{2}\left(\lVert{\boldsymbol{s}_{\mathrm{I}}}\rVert^2+\lVert{\boldsymbol{s}_\mathrm{P}}\rVert^2\right) \le P}\label{co:waveform_power}
-				\addConstraint{\rho + \bar{\rho} \le 1.}
+				\addConstraint{\rho + \bar{\rho} \le 1.}\label{co:waveform_splitting_ratio}
 			\end{mini!}
 			The denominators of \eqref{co:waveform_rate} and \eqref{co:waveform_objective} consist of posynomials \cite{Boyd2007} that can be decomposed as sums of monomials
 			\begin{align}
 				1+\frac{\bar{\rho}\lVert{\boldsymbol{h}_n}\rVert^2 s_{\mathrm{I},n}^2}{\sigma_n^2} &\triangleq \sum_{m_{\mathrm{I},n}}g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n},\bar{\rho})\label{eq:g_I},\\
-				I(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho) &\triangleq \sum_{m_\mathrm{P}}{g_{m_\mathrm{P}}(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)}\label{eq:g_P}
+				z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho) &\triangleq \sum_{m_\mathrm{P}}{g_{m_\mathrm{P}}(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)}\label{eq:g_P}
 			\end{align}
 			where $m_{\mathrm{I},n}=2$ and $m_\mathrm{P}=(2N^3+6N^2+7N)/3$. We upper bound \eqref{eq:g_I} and \eqref{eq:g_P} by the Arithmetic Mean-Geometric Mean (AM-GM) inequality \cite{Chiang2005} and transform problem~\eqref{op:waveform_rgp} to
 			\begin{mini!}
@@ -502,7 +503,7 @@
 			where $\gamma_{m_{\mathrm{I},n}},\gamma_{m_\mathrm{P}} \ge 0$, $\sum_{m_{\mathrm{I},n}}\gamma_{m_{\mathrm{I},n}}=\sum_{m_\mathrm{P}}\gamma_{m_\mathrm{P}}=1$. The tightness of the AM-GM inequality depends on $\{\gamma_{m_{\mathrm{I},n}},\gamma_{m_\mathrm{P}}\}$, and a feasible choice at iteration $i$ is
 			\begin{align}
 				\gamma_{m_{\mathrm{I},n}}^{(i)} & = \frac{g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{\mathrm{I},n}^{(i-1)})^2}\big/{\sigma_n^2}}\label{eq:gamma_I},\\
-				\gamma_{m_\mathrm{P}}^{(i)} & = \frac{g_{m_\mathrm{P}}(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}{I(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}.
+				\gamma_{m_\mathrm{P}}^{(i)} & = \frac{g_{m_\mathrm{P}}(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}.
 			\end{align}
 			With \eqref{eq:gamma_I} and \eqref{eq:gamma_P}, problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2008}. We update $\boldsymbol{s}_{\mathrm{I}}^{(i)},\boldsymbol{s}_\mathrm{P}^{(i)},\rho^{(i)}$ iteratively until convergence. The joint waveform amplitude and splitting ratio design is summarized in the GP Algorithm~\ref{al:gp}, which achieves local optimality at the cost of exponential computational complexity \cite{Chiang2005}.
 
@@ -512,15 +513,15 @@
 				\begin{algorithmic}[1]
 					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_n,P,\sigma_n,\bar{R},\epsilon$, $\forall n$
 					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{s}_{\mathrm{I/P}}^{(0)}$, $\rho^{(0)}$
-					\State Compute $R^{(0)},I^{(0)}$ by \eqref{eq:R_waveform}, \eqref{eq:I_waveform}
+					\State Compute $R^{(0)},z^{(0)}$ by \eqref{eq:R_waveform}, \eqref{eq:z_waveform}
 					\State Set $\{g_{m_{\mathrm{I},n}}^{(0)},g_{m_\mathrm{P}}^{(0)}\}$, $\forall n$ by \eqref{eq:g_I}, \eqref{eq:g_P}
 					\Repeat
 						\State $i \gets i + 1$
 						\State Update $\{\gamma_{m_{\mathrm{I},n}}^{(i)},\gamma_{m_\mathrm{P}}^{(i)}\}$, $\forall n$ by \eqref{eq:gamma_I}, \eqref{eq:gamma_P}
 						\State Get $\boldsymbol{s}_{\mathrm{I/P}}^{(i)},\rho^{(i)}$ by solving problem~\eqref{op:waveform_gp}
-						\State Compute $R^{(i)},I^{(i)}$ by \eqref{eq:R_waveform}, \eqref{eq:I_waveform}
+						\State Compute $R^{(i)},z^{(i)}$ by \eqref{eq:R_waveform}, \eqref{eq:z_waveform}
 						\State Update $\{g_{m_{\mathrm{I},n}}^{(i)},g_{m_\mathrm{P}}^{(i)}\}$, $\forall n$ by \eqref{eq:g_I}, \eqref{eq:g_P}
-					\Until $\lvert I^{(i)} - I^{(i-1)} \rvert \le \epsilon$
+					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
 					\State Set $\boldsymbol{s}_{\mathrm{I/P}}^{\star}=\boldsymbol{s}_{\mathrm{I/P}}^{(i)},\rho^{\star}=\rho^{(i)}$
 					\State \textbf{Output} $\boldsymbol{s}_{\mathrm{I}}^{\star},\boldsymbol{s}_{\mathrm{P}}^{\star},\rho^{\star}$
 				\end{algorithmic}
@@ -531,7 +532,7 @@
 			\end{proposition}
 
 			\begin{proof}\label{pf:gp}
-				See \cite{Clerckx2016a,Clerckx2018b}.
+				Please refer to \cite{Clerckx2016a,Clerckx2018b}.
 			\end{proof}
 		\end{subsection}
 
@@ -550,7 +551,7 @@
 				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\lambda - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}, \label{eq:s_i}\\
 				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha. \label{eq:s_p}
 			\end{align}
-			Besides, minor modifications are required for passive beamforming to accommodate both low-complexity waveform schemes. To achieve the WIT point (i.e., $\eta=\rho=0$), the rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:I_irs_approx} should be maximized. To achieve any non-WIT point (i.e., $I \ne 0$), the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is instead characterized by varying either $\eta$ or $\delta$ and $\rho$. The Modified-SCA (M-SCA) Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design when the receiver works in PS mode. The proofs of SDR tightness and local optimality are similar to Appendices~\ref{ap:relaxation} and \ref{ap:sca} thus omitted here. Compared with Algorithm~\ref{al:sca}, the rate constraint \eqref{co:irs_rate} is dropped and each SDP in Algorithm~\ref{al:m_sca} involves $(L+1)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:m_sca} is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations \cite{Luo2010}.
+			Besides, minor modifications are required for passive beamforming to accommodate both low-complexity waveform schemes. To achieve the WIT point (i.e., $\eta=\rho=0$), the rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:z_irs_approx} should be maximized. To achieve any non-WIT point (i.e., $z \ne 0$), the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is instead characterized by varying either $\eta$ or $\delta$ and $\rho$. The Modified-SCA (M-SCA) Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design when the receiver works in PS mode. The proofs of SDR tightness and local optimality are similar to Appendices~\ref{ap:relaxation} and \ref{ap:sca} thus omitted here. Compared with Algorithm~\ref{al:sca}, the rate constraint \eqref{co:irs_rate} is dropped and each SDP in Algorithm~\ref{al:m_sca} involves $(L+1)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:m_sca} is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations \cite{Luo2010}.
 
 			\begin{algorithm}[!t]
 				\caption{M-SCA: IRS Phase Shift.}
@@ -563,12 +564,13 @@
 						\State Get $\boldsymbol{\Phi}^{\star}$ by maximizing \eqref{eq:R_irs} s.t. \eqref{co:irs_modulus}, \eqref{co:irs_sd}
 					\Else
 						\State Set $t_{\mathrm{I/P},k}^{(0)}$, $\forall k$ by \eqref{eq:t_k}
+						\State Compute $z^{(0)}$ by \eqref{eq:z_irs}
 						\Repeat
 							\State $i \gets i + 1$
-								\State Get $\boldsymbol{\Phi}^{(i)}$ by maximizing \eqref{eq:I_irs_approx} s.t. \eqref{co:irs_modulus}, \eqref{co:irs_sd}
+								\State Get $\boldsymbol{\Phi}^{(i)}$ by maximizing \eqref{eq:z_irs_approx} s.t. \eqref{co:irs_modulus}, \eqref{co:irs_sd}
 								\State Update $t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by \eqref{eq:t_k}
-								\State Compute $I^{(i)}$ by \eqref{eq:I_irs}
-						\Until $\lvert I^{(i)}-I^{(i-1)} \rvert \le \epsilon$
+								\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
+						\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
 						\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
 					\EndIf
 					\State Get $\bar{\boldsymbol{\phi}}^\star$ by eigen decomposition, $\boldsymbol{\Phi}^{\star}=\bar{\boldsymbol{\phi}}^\star(\bar{\boldsymbol{\phi}}^\star)^H$
@@ -589,14 +591,15 @@
 					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},P,\sigma_n,\bar{R},\epsilon$, $\forall n$
 					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{b}_{\mathrm{I/P},n}^{(0)},\boldsymbol{s}_{\mathrm{I/P}}^{(0)},\rho^{(0)}$, $\forall n$
 					\State Set $\boldsymbol{w}_{\mathrm{I/P},n}^{(0)}$, $\forall n$ by \eqref{eq:w}
+					\State Compute $z^{(0)}$ by \eqref{eq:z_waveform}
 					\Repeat
 						\State $i \gets i + 1$
 						\State Get $\boldsymbol{\phi}^{(i)}$ based on $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)},\rho^{(i-1)}$ by Algorithm~\ref{al:sca}
 						\State Update $\boldsymbol{h}_n^{(i)},\boldsymbol{b}_n^{(i)}$, $\forall n$ by \eqref{eq:h_n}, \eqref{eq:b_n}
 						\State Get $\boldsymbol{s}_{\mathrm{I/P}}^{(i)},\rho^{(i)}$ by Algorithm~\ref{al:gp}
 						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{eq:w}
-						\State Compute $I^{(i)}$ by \eqref{eq:I_waveform}
-					\Until $\lvert I^{(i)} - I^{(i-1)} \rvert \le \epsilon$
+						\State Compute $z^{(i)}$ by \eqref{eq:z_waveform}
+					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
 					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)},\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)},\rho^{\star}=\rho^{(i)}$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star},\boldsymbol{w}_{\mathrm{I}}^{\star},\boldsymbol{w}_{\mathrm{P}}^{\star},\rho^{\star}$
 				\end{algorithmic}
@@ -607,7 +610,7 @@
 			\end{proposition}
 
 			\begin{proof}\label{pf:bcd}
-				See Appendix~\ref{ap:bcd}
+				Please refer to Appendix~\ref{ap:bcd}
 			\end{proof}
 
 			For the low-complexity design, when the receiver works in PS mode, we instead obtain the phase shift by Algorithm~\ref{al:m_sca} and the waveform amplitude by \eqref{eq:s_i} and \eqref{eq:s_p}. The steps are summarized in the Low Complexity-BCD (LC-BCD) Algorithm~\ref{al:lc_bcd}. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{Luo2010}.
@@ -619,14 +622,15 @@
 					\State \textbf{Input} $\beta_2,\beta_4,\boldsymbol{h}_{\mathrm{D},n},\boldsymbol{V}_{n},P,\sigma_n,\delta,\rho,\epsilon$, $\forall n$
 					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)},\boldsymbol{b}_{\mathrm{I/P},n}^{(0)},\boldsymbol{s}_{\mathrm{I/P}}^{(0)}$, $\forall n$
 					\State Set $\boldsymbol{w}_{\mathrm{I/P},n}^{(0)}$, $\forall n$ by \eqref{eq:w}
+					\State Compute $R^{(0)},z^{(0)}$ by \eqref{eq:R_waveform}, \eqref{eq:z_waveform}
 					\Repeat
 						\State $i \gets i + 1$
 						\State Get $\boldsymbol{\phi}^{(i)}$ based on $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)}$ by Algorithm~\ref{al:m_sca}
 						\State Update $\boldsymbol{h}_n^{(i)},\boldsymbol{b}_n^{(i)}$, $\forall n$ by \eqref{eq:h_n}, \eqref{eq:b_n}
 						\State Update $\boldsymbol{s}_{\mathrm{I}}^{(i)},\boldsymbol{s}_{\mathrm{P}}^{(i)}$ by \eqref{eq:s_i}, \eqref{eq:s_p}
 						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{eq:w}
-						\State Compute $R^{(i)},I^{(i)}$ by \eqref{eq:R_waveform}, \eqref{eq:I_waveform}
-					\Until $\lvert R^{(i)} - R^{(i-1)} \rvert \le \epsilon$ or $\lvert I^{(i)} - I^{(i-1)} \rvert \le \epsilon$
+						\State Compute $R^{(i)},z^{(i)}$ by \eqref{eq:R_waveform}, \eqref{eq:z_waveform}
+					\Until $\lvert R^{(i)} - R^{(i-1)} \rvert \le \epsilon$ or $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
 					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)},\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)}$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star},\boldsymbol{w}_{\mathrm{I}}^{\star},\boldsymbol{w}_{\mathrm{P}}^{\star}$
 				\end{algorithmic}
@@ -644,7 +648,7 @@
 			\label{fi:layout}
 		\end{figure}
 
-		To evaluate the performance of the proposed IRS-aided SWIPT system, we consider the layout in Fig.~\ref{fi:layout} where the IRS moves along a line parallel to the AP-UE path. Let $d_{\mathrm{H}}$, $d_{\mathrm{V}}$ be the horizontal and vertical distances from the AP to the IRS, and denote respectively $d_{\mathrm{D}}$, $d_{\mathrm{I}}=\sqrt{d_{\mathrm{H}}^2+d_{\mathrm{V}}^2}$, $d_{\mathrm{R}}=\sqrt{(d_{\mathrm{D}}-d_{\mathrm{H}})^2+d_{\mathrm{V}}^2}$ as the distance of direct, incident and reflected links. $d_{\mathrm{D}}=\SI{12}{\meter}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$ are chosen as reference. Consider a large open space Wi-Fi-like environment at center frequency \SI{5.18}{\GHz}, where the fading parameters follow IEEE TGn channel model D \cite{Erceg2004} and the reference path loss is \SI{-35}{\dB} at \SI{1}{\meter}. Denote $\Lambda_{\mathrm{D}},\Lambda_{\mathrm{I}},\Lambda_{\mathrm{R}}$ as the path loss of direct, incident and reflected links. All channels are assumed NLoS with taps modelled as i.i.d. CSCG random variables. Rectenna parameters are chosen as $k_2=0.0034$, $k_4=0.3829$, $R_{\mathrm{A}}=\SI{50}{\ohm}$ such that $\beta_2=0.17$ and $\beta_4=957.25$. The average Effective Isotropic Radiated Power (EIRP) is fixed to $P=\SI{36}{\dBm}$ and the receive antenna gain is \SI{2}{\dBi}. Moreover, the scaling ratio is $\alpha=2$, the tolerance is $\epsilon=10^{-8}$, and we assume $\delta=\rho$ for simplicity. Each R-E region is averaged over \num{300} channel realizations, and the $x$-axis is normalized to per-subband rate $R/N$.
+		To evaluate the performance of the proposed IRS-aided SWIPT system, we consider the layout in Fig.~\ref{fi:layout} where the IRS moves along a line parallel to the AP-UE path. Let $d_{\mathrm{H}}$, $d_{\mathrm{V}}$ be the horizontal and vertical distances from the AP to the IRS, and denote respectively $d_{\mathrm{D}}$, $d_{\mathrm{I}}=\sqrt{d_{\mathrm{H}}^2+d_{\mathrm{V}}^2}$, $d_{\mathrm{R}}=\sqrt{(d_{\mathrm{D}}-d_{\mathrm{H}})^2+d_{\mathrm{V}}^2}$ as the distance of direct, incident and reflected links. $d_{\mathrm{D}}=\SI{12}{\meter}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$ are chosen as reference. We consider a large open space Wi-Fi-like environment at center frequency \SI{5.18}{\GHz}, where the fading parameters follow IEEE TGn channel model D \cite{Erceg2004} and the reference path loss is \SI{-35}{\dB} at \SI{1}{\meter}. Denote $\Lambda_{\mathrm{D}},\Lambda_{\mathrm{I}},\Lambda_{\mathrm{R}}$ as the path loss of direct, incident and reflected links. All channels are assumed NLoS with taps modelled as i.i.d. CSCG random variables. Rectenna parameters are chosen as $k_2=0.0034$, $k_4=0.3829$, $R_{\mathrm{A}}=\SI{50}{\ohm}$ such that $\beta_2=0.17$ and $\beta_4=957.25$. The average Effective Isotropic Radiated Power (EIRP) is fixed to $P=\SI{36}{\dBm}$ and the receive antenna gain is \SI{2}{\dBi}. Moreover, the scaling ratio is $\alpha=2$, the tolerance is $\epsilon=10^{-8}$, and we assume $\delta=\rho$ for simplicity. Each R-E region is averaged over \num{300} channel realizations, and the $x$-axis is normalized to per-subband rate $R/N$.
 
 		\begin{figure}[!t]
 			\centering
@@ -780,7 +784,7 @@
 		\begin{subsection}{Proof of Proposition~\ref{pr:relaxation}}\label{ap:relaxation}
 			For any feasible $\boldsymbol{\Phi}$ to problem~\eqref{op:irs}, $\mathrm{tr}(\boldsymbol{\Phi})=L+1$ always holds due to the modulus constraint~\eqref{co:irs_modulus}. Therefore, we add a constant term $-\mathrm{tr}(\boldsymbol{\Phi})$ to \eqref{ob:irs} and recast problem~\eqref{op:irs} as
 			\begin{maxi!}
-				{\scriptstyle{\boldsymbol{\Phi}}}{-\mathrm{tr}(\boldsymbol{\Phi})+\tilde{I}(\boldsymbol{\Phi})}{\label{op:irs_equivalent}}{\label{ob:irs_equivalent}}
+				{\scriptstyle{\boldsymbol{\Phi}}}{-\mathrm{tr}(\boldsymbol{\Phi})+\tilde{z}(\boldsymbol{\Phi})}{\label{op:irs_equivalent}}{\label{ob:irs_equivalent}}
 				\addConstraint{R(\boldsymbol{\Phi}) \ge \bar{R}}\label{co:irs_equivalent_rate}
 				\addConstraint{\mathrm{diag}^{-1}(\boldsymbol{\Phi})=\boldsymbol{1}}\label{co:irs_equivalent_modulus}
 				\addConstraint{\boldsymbol{\Phi}\succeq{\boldsymbol{0}}}\label{co:irs_equivalent_sd}
@@ -855,7 +859,7 @@
 		\end{subsection}
 
 		\begin{subsection}{Proof of Proposition~\ref{pr:sca}}\label{ap:sca}
-			The objective function \eqref{ob:irs} is non-decreasing over iterations because the solution to \eqref{ob:irs}--\eqref{co:irs_sd} at iteration $i-1$ is still feasible at iteration $i$. Also, the sequence $\{\tilde{I}(\boldsymbol{\Phi}^{(i)})\}_{i=1}^{\infty}$ is bounded above due to the unit-modulus constraint \eqref{co:irs_modulus}. Thus, Algorithm~\ref{al:sca} is guaranteed to converge. Besides, we notice that Algorithm~\ref{al:sca} is an inner approximation algorithm \cite{Marks1978}, because $\tilde{I}(\boldsymbol{\Phi}) \le I(\boldsymbol{\Phi})$, $\partial\tilde{I}(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}=\partial I(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}$ and the approximation \eqref{eq:taylor_1}--\eqref{eq:taylor_3} are asymptotically tight as $i \to \infty$ \cite{Li2013}. Therefore, it is guaranteed to provide a local optimal $\boldsymbol{\Phi}^{\star}$ to the relaxed passive beamforming problem. According to Proposition~\ref{pr:relaxation}, $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} such that $\boldsymbol{\phi}^{\star}$ can be extracted without performance loss and the local optimality inherits to the original problem~\eqref{op:original}.
+			The objective function \eqref{ob:irs} is non-decreasing over iterations because the solution to \eqref{ob:irs}--\eqref{co:irs_sd} at iteration $i-1$ is still feasible at iteration $i$. Also, the sequence $\{\tilde{z}(\boldsymbol{\Phi}^{(i)})\}_{i=1}^{\infty}$ is bounded above due to the unit-modulus constraint \eqref{co:irs_modulus}. Thus, Algorithm~\ref{al:sca} is guaranteed to converge. Besides, we notice that Algorithm~\ref{al:sca} is an inner approximation algorithm \cite{Marks1978}, because $\tilde{z}(\boldsymbol{\Phi}) \le z(\boldsymbol{\Phi})$, $\partial\tilde{z}(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}=\partial z(\boldsymbol{\Phi}^{(i)})/\partial\boldsymbol{\Phi}$ and the approximation \eqref{eq:taylor_1}--\eqref{eq:taylor_3} are asymptotically tight as $i \to \infty$ \cite{Li2013}. Therefore, it is guaranteed to provide a local optimal $\boldsymbol{\Phi}^{\star}$ to the relaxed passive beamforming problem. According to Proposition~\ref{pr:relaxation}, $\boldsymbol{\Phi}^{\star}$ is rank-\num{1} such that $\boldsymbol{\phi}^{\star}$ can be extracted without performance loss and the local optimality inherits to the original problem~\eqref{op:original}.
 		\end{subsection}
 
 		\begin{subsection}{Proof of Proposition~\ref{pr:mrt}}\label{ap:mrt}
