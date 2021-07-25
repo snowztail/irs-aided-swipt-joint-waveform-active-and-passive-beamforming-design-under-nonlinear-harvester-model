@@ -33,7 +33,7 @@ horizontalDistance = 2;
 % AP-IRS and IRS-user distance
 [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
 % center frequency
-centerFrequency = 5.18e9;
+centerFrequency = 2.4e9;
 % number of frequency bands
 nSubbands = 16;
 % channel fading mode ('flat' or 'selective')

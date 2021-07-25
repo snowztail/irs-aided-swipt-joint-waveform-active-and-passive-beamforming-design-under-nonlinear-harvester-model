@@ -29,7 +29,7 @@ directDistance = 12;
 % vertical distance from the IRS to the AP-user path
 verticalDistance = 2;
 % center frequency
-centerFrequency = 5.18e9;
+centerFrequency = 2.4e9;
 % bandwidth
 bandwidth = 1e6;
 % number of frequency bands
