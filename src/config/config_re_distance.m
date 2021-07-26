@@ -57,7 +57,7 @@ nChannels = 1;
 
 %% * Variable
 % projection of AP-IRS distance to the AP-user path
-Variable.horizontalDistance = [0, 0.6, 2];
+Variable.horizontalDistance = [0.6, 2, 6];
 % AP-IRS and IRS-user distances
 for iDistance = 1 : length(Variable.horizontalDistance)
     [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, Variable.horizontalDistance(iDistance));
