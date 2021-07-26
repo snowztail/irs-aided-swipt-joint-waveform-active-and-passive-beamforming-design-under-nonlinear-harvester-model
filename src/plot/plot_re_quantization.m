@@ -32,18 +32,18 @@ legendString = cell(1, length(Variable.nQuantizeBits) + 2);
 plotHandle = gobjects(1, length(Variable.nQuantizeBits) + 2);
 hold all;
 plotHandle(1) = plot(reNoIrs(1, :) / nSubbands, 1e6 * reNoIrs(2, :));
-legendString{1} = 'No IRS';
+legendString{1} = '$b = 0$';
 for iBit = 1 : length(Variable.nQuantizeBits)
     plotHandle(iBit + 1) = plot(reQuantized{iBit}(1, :) / nSubbands, 1e6 * reQuantized{iBit}(2, :));
 	legendString{iBit + 1} = sprintf('$b = %s$', num2str(Variable.nQuantizeBits(iBit)));
 end
 plotHandle(end) = plot(reIrs(1, :) / nSubbands, 1e6 * reIrs(2, :));
-legendString{end} = 'Unquantized IRS';
+legendString{end} = '$b \mathrel{\to} \infty$';
 hold off;
 grid on;
 legend(legendString);
 xlabel('Per-subband rate [bps/Hz]');
-ylabel('Output DC current [$\mu$A]');
+ylabel('DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
 box on;

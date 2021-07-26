@@ -37,13 +37,23 @@ for iDistance = 1 : length(Variable.horizontalDistance)
 end
 hold off;
 grid on;
-legend(legendString(:));
+% legend(legendString(:));
 xlabel('Per-subband rate [bps/Hz]');
-ylabel('Output DC current [$\mu$A]');
+ylabel('DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
 box on;
 apply_group_style(plotHandle(:), 2);
+
+dummyHandle = gobjects(1, 5);
+hold all;
+dummyHandle(1) = plot(-1, -1, 'color', '#000000', 'linestyle', '-');
+dummyHandle(2) = plot(-1, -1, 'color', '#000000', 'linestyle', '--');
+dummyHandle(3) = plot(-1, -1, 'color', '#0072BD', 'linestyle', 'none', 'marker', 'o');
+dummyHandle(4) = plot(-1, -1, 'color', '#D95319', 'linestyle', 'none', 'marker', '+');
+dummyHandle(5) = plot(-1, -1, 'color', '#EDB120', 'linestyle', 'none', 'marker', 's');
+hold off;
+legend(dummyHandle, 'BCD', 'LC-BCD', sprintf('$d_{\\mathrm{H}} = %s$ m', num2str(Variable.horizontalDistance(1))), sprintf('$d_{\\mathrm{H}} = %s$ m', num2str(Variable.horizontalDistance(2))), sprintf('$d_{\\mathrm{H}} = %s$ m', num2str(Variable.horizontalDistance(3))));
 
 savefig('../figures/re_distance.fig');
 matlab2tikz('../../assets/re_distance.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);

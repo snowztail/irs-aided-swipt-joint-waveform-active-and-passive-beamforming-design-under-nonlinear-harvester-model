@@ -24,9 +24,9 @@ end
 figure('name', 'Auxiliary path loss product vs AP-IRS horizontal distance', 'position', [0, 0, 500, 400]);
 plotHandle = plot(horizontalDistance, pow2db(1 ./ auxiliaryPathloss));
 grid on;
-legend('$\Lambda_I\Lambda_R$', 'location', 'ne')
+legend('$\Lambda_{\mathrm{I}}\Lambda_{\mathrm{R}}$', 'location', 'ne')
 xlabel('AP-IRS horizontal distance [m]');
-ylabel('Auxiliary path loss product [dB]');
+ylabel('Path loss product [dB]');
 box on;
 
 savefig('../figures/path_loss.fig');

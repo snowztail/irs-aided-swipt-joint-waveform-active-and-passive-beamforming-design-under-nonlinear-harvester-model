@@ -55,7 +55,7 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	grid on;
 	legend('Ideal FS IRS', 'Adaptive IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'Random IRS', 'No IRS');
 	xlabel('Per-subband rate [bps/Hz]');
-	ylabel('Output DC current [$\mu$A]');
+	ylabel('DC current [$\mu$A]');
 	xlim([0 inf]);
 	ylim([0 inf]);
     box on;

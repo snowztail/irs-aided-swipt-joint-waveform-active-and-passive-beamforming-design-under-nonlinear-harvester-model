@@ -55,7 +55,7 @@ hold off;
 grid on;
 legend(legendString);
 xlabel('Per-subband rate [bps/Hz]');
-ylabel('Output DC current [$\mu$A]');
+ylabel('DC current [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
 box on;
@@ -79,7 +79,7 @@ for iSubband = 1 : length(Variable.nSubbands)
 	hold off;
 	grid on;
     if iSubband == 1
-		legend('$s_I$', '$s_P$');
+		legend('{\boldmath${s}$}$_{\mathrm{I}}$', '{\boldmath${s}$}$_{\mathrm{P}}$');
 	elseif iSubband == 3
 		ylabel('Waveform amplitude');
 	elseif iSubband == 5
