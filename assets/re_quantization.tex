@@ -22,7 +22,7 @@ xlabel style={font=\color{white!15!black}},
 xlabel={Per-subband rate [bps/Hz]},
 ymin=0,
 ylabel style={font=\color{white!15!black}},
-ylabel={Output DC current [$\mu$A]},
+ylabel={DC current [$\mu$A]},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
@@ -52,7 +52,7 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 0.305635686628393	121.528588826179\\
 7.43328053375276e-05	136.374613977326\\
 };
-\addlegendentry{No IRS}
+\addlegendentry{$b = 0$}
 
 \addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
   table[row sep=crcr]{%
@@ -152,7 +152,7 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 0.342758857116452	226.737904029791\\
 2.10952477145562e-08	253.552694630028\\
 };
-\addlegendentry{Unquantized IRS}
+\addlegendentry{$b \mathrel{\to} \infty$}
 
 \end{axis}
 \end{tikzpicture}%
