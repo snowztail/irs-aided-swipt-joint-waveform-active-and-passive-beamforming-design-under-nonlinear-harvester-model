@@ -1,4 +1,4 @@
-function [irs, eigRatio] = irs_sdr(beta2, beta4, directChannel, cascadedChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates, tolerance)
+function [irs, eigRatio, scaIter] = irs_sdr(beta2, beta4, directChannel, cascadedChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates, tolerance)
     % Function:
     %   - optimize the IRS reflection coefficients to maximize the R-E region
     %
@@ -20,6 +20,7 @@ function [irs, eigRatio] = irs_sdr(beta2, beta4, directChannel, cascadedChannel,
     % Output:
 	%   - irs (\phi) [nReflectors * 1]: IRS reflection coefficients
 	%	- eigRatio (r): the maximum eigenvalue of the relaxed solution over the sum eigenvalue of the relaxed solution
+	%	- scaIter: R-E sample at each iteration
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank IRS outer product matrix
@@ -74,8 +75,18 @@ function [irs, eigRatio] = irs_sdr(beta2, beta4, directChannel, cascadedChannel,
     infoAuxiliary(nSubbands) = hermitianize(infoAuxiliary(nSubbands));
     powerAuxiliary(nSubbands) = hermitianize(powerAuxiliary(nSubbands));
 
+	% * Initial R-E point
+	current_ = (1 / 2) * beta2 * powerRatio * (infoAuxiliary(nSubbands) + powerAuxiliary(nSubbands)) ...
+            + (3 / 8) * beta4 * powerRatio ^ 2 * (2 * infoAuxiliary(nSubbands) ^ 2 + (powerAuxiliary' * powerAuxiliary)) ...
+            + (3 / 2) * beta4 * powerRatio ^ 2 * infoAuxiliary(nSubbands) * powerAuxiliary(nSubbands);
+	snr = zeros(nSubbands, 1);
+	for iSubband = 1 : nSubbands
+		snr(iSubband) = infoRatio * real(trace(rateMatrix{iSubband} * irsMatrix)) / noisePower;
+	end
+	rate_ = sum(log2(1 + snr));
+	scaIter = [rate_; current_];
+
     % * SCA
-    current_ = 0;
     isConverged = false;
     while ~isConverged
         % * Update auxiliaries
@@ -122,6 +133,7 @@ function [irs, eigRatio] = irs_sdr(beta2, beta4, directChannel, cascadedChannel,
         % * Test convergence
         isConverged = abs(current - current_) <= tolerance;
         current_ = current;
+		scaIter(:, end + 1) = [rate; current];
     end
     irsMatrix = full(irsMatrix);
 

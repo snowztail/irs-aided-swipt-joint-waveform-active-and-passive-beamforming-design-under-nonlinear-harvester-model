@@ -12,7 +12,7 @@ function [sample, solution] = re_sample_wit_wf(directChannel, cascadedChannel, t
     %
     % Output:
     %   - sample [2 * nSamples]: rate-energy sample
-    %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio and eigenvalue ratio
+    %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio, eigenvalue ratio, R-E sample at each iteration
     %
     % Comment:
     %   - solve SDR problem to obtain high-rank IRS outer product matrix
@@ -30,8 +30,11 @@ function [sample, solution] = re_sample_wit_wf(directChannel, cascadedChannel, t
     [compositeChannel] = composite_channel(directChannel, cascadedChannel, irs);
 
     % * Construct waveform (water-filling + MRT) and initialize splitting ratio
-    [~, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = water_filling(compositeChannel, txPower, noisePower);
+    [capacity_, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = water_filling(compositeChannel, txPower, noisePower);
     [infoWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
+
+	% * Initial R-E point
+	bcdIter = [capacity_; 0];
 
     % * Obtain coefficients
     % \boldsymbol{M}_n, \boldsymbol{C}_n
@@ -45,7 +48,6 @@ function [sample, solution] = re_sample_wit_wf(directChannel, cascadedChannel, t
 
     % * AO
     isConverged = false;
-	capacity_ = 0;
 	eigRatio = [];
     while ~isConverged
         % * Solve high-rank outer product matrix by CVX
@@ -104,9 +106,10 @@ function [sample, solution] = re_sample_wit_wf(directChannel, cascadedChannel, t
         % * Test convergence
         isConverged = abs(capacity - capacity_) <= tolerance;
         capacity_ = capacity;
+		bcdIter(:, end + 1) = [capacity; 0];
     end
 
 	sample = [capacity; eps];
-	solution = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
+	solution = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio, bcdIter);
 
 end

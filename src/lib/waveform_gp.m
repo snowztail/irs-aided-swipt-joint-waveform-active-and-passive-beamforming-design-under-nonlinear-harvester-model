@@ -1,4 +1,4 @@
-function [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = waveform_gp(beta2, beta4, channel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance)
+function [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio, gpIter] = waveform_gp(beta2, beta4, channel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint, tolerance)
     % Function:
     %   - jointly optimize waveform amplitude and splitting ratio to maximize the R-E region
     %
@@ -22,6 +22,7 @@ function [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
     %   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
     %   - infoRatio (\bar{\rho}): information splitting ratio
 	%   - powerRatio (\rho): power splitting ratio
+	%	- gpIter: R-E sample at each iteration
     %
     % Comment:
     %   - obtain waveform amplitude in frequency domain
@@ -42,6 +43,8 @@ function [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
     % \gamma_{I/P}
     [~, ~, currentExponent] = current_gp(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);
     [~, ~, rateExponent] = rate_gp(channelAmplitude, infoAmplitude, infoRatio, noisePower);
+    % The conservative initialization can lead to invalid initial R-E value, so this point is discarded in convergence analysis
+	gpIter = [];
 
     % * Iterative GP
     isConverged = false;
@@ -74,6 +77,7 @@ function [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] =
         % * Test convergence
         isConverged = abs(current - current_) <= tolerance;
         current_ = current;
+		gpIter(:, end + 1) = [rate; current];
     end
 
 end

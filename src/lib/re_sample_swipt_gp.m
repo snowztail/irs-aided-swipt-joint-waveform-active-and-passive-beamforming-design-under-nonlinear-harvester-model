@@ -16,7 +16,7 @@ function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChan
     %
     % Output:
     %   - sample [2 * nSamples]: rate-energy sample
-    %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio and eigenvalue ratio
+    %   - solution: IRS reflection coefficient, composite channel, waveform, splitting ratio, eigenvalue ratio and R-E sample at each iteration
     %
     % Comment:
     %   - AO algorithm only converge to stationary points
@@ -48,20 +48,27 @@ function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChan
                 % * Initialize with previous solution
                 struct2variables(solution{iSample - 1});
             end
-            [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+
+			% * Performance vs iterations
+			scaIter = {};
+			gpIter = {};
+
+			% * Apply GP first to ensure vaild initialization before looping
+            [rate_, current_, infoAmplitude, powerAmplitude, infoRatio, powerRatio, gpIter{end + 1}] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
             [infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
+			bcdIter = [rate_; current_];
 
             % * Alternating optimization
             isConverged = false;
-			current_ = 0;
 			eigRatio = [];
             while ~isConverged
-                [irs, eigRatio(end + 1)] = irs_sdr(beta2, beta4, directChannel, cascadedChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
+                [irs, eigRatio(end + 1), scaIter{end + 1}] = irs_sdr(beta2, beta4, directChannel, cascadedChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint(iSample), nCandidates, tolerance);
                 [compositeChannel] = composite_channel(directChannel, cascadedChannel, irs);
-                [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
+                [rate, current, infoAmplitude, powerAmplitude, infoRatio, powerRatio, gpIter{end + 1}] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
                 [infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
                 isConverged = abs(current - current_) <= tolerance;
                 current_ = current;
+				bcdIter(:, end + 1) = [rate; current];
             end
 
             % * Check whether strictly dominated
@@ -71,7 +78,7 @@ function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChan
             end
         end
         sample(:, iSample) = [rate; current];
-        solution{iSample} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio);
+        solution{iSample} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, eigRatio, scaIter, gpIter, bcdIter);
     end
 
 end

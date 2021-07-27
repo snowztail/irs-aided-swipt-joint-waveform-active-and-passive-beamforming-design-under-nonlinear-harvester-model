@@ -43,8 +43,13 @@ function [sample, solution] = re_sample_swipt_low_complexity(alpha, beta2, beta4
 		% * Design waveform ratio
 		waveformRatio = powerRatio;
 
+		% * Initial R-E point
+		[rate_, infoAmplitude] = water_filling(compositeChannel, txPower, noisePower, waveformRatio);
+		[current_, ~, powerAmplitude] = scaled_matched_filter(alpha, beta2, beta4, compositeChannel, txPower, waveformRatio);
+		lcBcdIter = [rate_; current_];
+		mScaIter = {};
+
 		isConverged = false;
-		current_ = 0;
 		eigRatio = [];
 		while ~isConverged
 			% * Design waveform by WF and SMF + MRT
@@ -53,7 +58,7 @@ function [sample, solution] = re_sample_swipt_low_complexity(alpha, beta2, beta4
 			[infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
 
 			% * Optimize IRS by SDR
-			[irs, eigRatio(end + 1)] = irs_sdr(beta2, beta4, directChannel, cascadedChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates, tolerance);
+			[irs, eigRatio(end + 1), mScaIter{end + 1}] = irs_sdr(beta2, beta4, directChannel, cascadedChannel, irs, infoWaveform, powerWaveform, infoRatio, powerRatio, noisePower, rateConstraint, nCandidates, tolerance);
 			[compositeChannel] = composite_channel(directChannel, cascadedChannel, irs);
 			channelAmplitude = vecnorm(compositeChannel, 2, 2);
 
@@ -64,9 +69,10 @@ function [sample, solution] = re_sample_swipt_low_complexity(alpha, beta2, beta4
 			% * Check convergence
 			isConverged = abs(current - current_) <= tolerance;
 			current_ = current;
+			lcBcdIter(:, end + 1) = [rate; current];
 		end
 		sample(:, iSample) = [rate; current];
-        solution{iSample} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, waveformRatio, eigRatio);
+        solution{iSample} = variables2struct(irs, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, waveformRatio, eigRatio, mScaIter, lcBcdIter);
 	end
 
 end
