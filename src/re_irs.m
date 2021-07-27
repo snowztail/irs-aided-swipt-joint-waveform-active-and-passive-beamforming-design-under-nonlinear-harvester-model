@@ -3,19 +3,19 @@ clear; clc; setup; config_re_irs;
 %% ! R-E region for ideal, adaptive, nonadaptive and no IRS
 reIdealIrsSample = cell(nChannels, length(Variable.bandwidth));
 reAdaptiveIrsSample = cell(nChannels, length(Variable.bandwidth));
+reLinearIrsSample = cell(nChannels, length(Variable.bandwidth));
 reWitIrsSample = cell(nChannels, length(Variable.bandwidth));
 reWptIrsSample = cell(nChannels, length(Variable.bandwidth));
 reRandomIrsSample = cell(nChannels, length(Variable.bandwidth));
 reNoIrsSample = cell(nChannels, length(Variable.bandwidth));
-reLcSample = cell(nChannels, length(Variable.bandwidth));
 
 reIdealIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reAdaptiveIrsSolution = cell(nChannels, length(Variable.bandwidth));
+reLinearIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reWitIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reWptIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reRandomIrsSolution = cell(nChannels, length(Variable.bandwidth));
 reNoIrsSolution = cell(nChannels, length(Variable.bandwidth));
-reLcSolution = cell(nChannels, length(Variable.bandwidth));
 
 for iChannel = 1 : nChannels
     % * Generate tap gains and delays
@@ -35,49 +35,49 @@ for iChannel = 1 : nChannels
 
 		% * Upper bound by frequency-selective IRS
 		[idealCompositeChannel] = composite_channel_ideal(directChannel, cascadedChannel);
-		[reIdealIrsSample{iChannel, iBandwidth}, reIdealIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, idealCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reIdealIrsSample{iChannel, iBandwidth}, reIdealIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_benchmark(alpha, beta2, beta4, idealCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Adaptive IRS and waveform design
 		[reAdaptiveIrsSample{iChannel, iBandwidth}, reAdaptiveIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 		witCompositeChannel = reAdaptiveIrsSolution{iChannel, iBandwidth}{1}.compositeChannel;
 		wptCompositeChannel = reAdaptiveIrsSolution{iChannel, iBandwidth}{end}.compositeChannel;
 
+		% * IRS design based on linear EH model, waveform design based on nonlinear model
+		[reLinearIrsSample{iChannel, iBandwidth}, reLinearIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_linear_irs(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+
 		% * Waveform optimization with nonadaptive WIT-optimized IRS
-		[reWitIrsSample{iChannel, iBandwidth}, reWitIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, witCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reWitIrsSample{iChannel, iBandwidth}, reWitIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_benchmark(alpha, beta2, beta4, witCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Waveform optimization with nonadaptive WPT-optimized IRS
-		[reWptIrsSample{iChannel, iBandwidth}, reWptIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, wptCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reWptIrsSample{iChannel, iBandwidth}, reWptIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_benchmark(alpha, beta2, beta4, wptCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Waveform design with random IRS
 		randomIrs = exp(1i * 2 * pi * rand(nReflectors, 1));
 		randomCompositeChannel = composite_channel(directChannel, cascadedChannel, randomIrs);
-		[reRandomIrsSample{iChannel, iBandwidth}, reRandomIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, randomCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reRandomIrsSample{iChannel, iBandwidth}, reRandomIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_benchmark(alpha, beta2, beta4, randomCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		% * Waveform optimization without IRS
-		[reNoIrsSample{iChannel, iBandwidth}, reNoIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
-
-		% * Low-complexity waveform design
-		[reLcSample{iChannel, iBandwidth}, reLcSolution{iChannel, iBandwidth}] = re_sample_swipt_low_complexity(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
+		[reNoIrsSample{iChannel, iBandwidth}, reNoIrsSolution{iChannel, iBandwidth}] = re_sample_swipt_benchmark(alpha, beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
 	end
 end
 
 % * Average over channel realizations
 reIdealIrsInstance = cell(1, length(Variable.bandwidth));
 reAdaptiveIrsInstance = cell(1, length(Variable.bandwidth));
+reLinearIrsInstance = cell(1, length(Variable.bandwidth));
 reWitIrsInstance = cell(1, length(Variable.bandwidth));
 reWptIrsInstance = cell(1, length(Variable.bandwidth));
 reRandomIrsInstance = cell(1, length(Variable.bandwidth));
 reNoIrsInstance = cell(1, length(Variable.bandwidth));
-reLcInstance = cell(1, length(Variable.bandwidth));
 
 for iBandwidth = 1 : length(Variable.bandwidth)
 	reIdealIrsInstance{iBandwidth} = mean(cat(3, reIdealIrsSample{:, iBandwidth}), 3);
 	reAdaptiveIrsInstance{iBandwidth} = mean(cat(3, reAdaptiveIrsSample{:, iBandwidth}), 3);
+	reLinearIrsInstance{iBandwidth} = mean(cat(3, reLinearIrsSample{:, iBandwidth}), 3);
 	reWitIrsInstance{iBandwidth} = mean(cat(3, reWitIrsSample{:, iBandwidth}), 3);
 	reWptIrsInstance{iBandwidth} = mean(cat(3, reWptIrsSample{:, iBandwidth}), 3);
 	reRandomIrsInstance{iBandwidth} = mean(cat(3, reRandomIrsSample{:, iBandwidth}), 3);
 	reNoIrsInstance{iBandwidth} = mean(cat(3, reNoIrsSample{:, iBandwidth}), 3);
-	reLcInstance{iBandwidth} = mean(cat(3, reLcSample{:, iBandwidth}), 3);
 end
 
 % * Save batch data
