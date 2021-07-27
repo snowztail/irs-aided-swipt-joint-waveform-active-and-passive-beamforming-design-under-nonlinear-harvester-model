@@ -22,7 +22,7 @@ for iChannel = 1 : nChannels
 	[cascadedChannel] = cascaded_channel(incidentChannel, reflectiveChannel);
 
 	% * R-E region without IRS
-	[reNoIrsSample{iChannel}, reNoIrsSolution{iChannel}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
+	[reNoIrsSample{iChannel}, reNoIrsSolution{iChannel}] = re_sample_swipt_benchmark(alpha, beta2, beta4, directChannel, txPower, noisePower, nSamples, tolerance);
 
 	% * R-E region with IRS
 	[reIrsSample{iChannel}, reIrsSolution{iChannel}] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);

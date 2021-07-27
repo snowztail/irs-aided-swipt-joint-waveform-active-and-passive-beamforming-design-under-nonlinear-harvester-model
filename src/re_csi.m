@@ -27,7 +27,7 @@ for iChannel = 1 : nChannels
 		% * R-E region with random IRS
 		randomIrs = exp(1i * 2 * pi * rand(nReflectors, 1));
 		randomCompositeChannel = composite_channel(directChannel, cascadedChannel, randomIrs);
-		[reRandomSample{iChannel, iReflector}, reRandomSolution{iChannel, iReflector}] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, randomCompositeChannel, txPower, noisePower, nSamples, tolerance);
+		[reRandomSample{iChannel, iReflector}, reRandomSolution{iChannel, iReflector}] = re_sample_swipt_benchmark(alpha, beta2, beta4, randomCompositeChannel, txPower, noisePower, nSamples, tolerance);
 
 		for iError = 1 : length(Variable.cascadedErrorVariance)
 			% * Update error variance of the cascaded channel

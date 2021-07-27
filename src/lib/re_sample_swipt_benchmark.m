@@ -1,4 +1,4 @@
-function [sample, solution] = re_sample_swipt_gp_benchmark(alpha, beta2, beta4, channel, txPower, noisePower, nSamples, tolerance)
+function [sample, solution] = re_sample_swipt_benchmark(alpha, beta2, beta4, channel, txPower, noisePower, nSamples, tolerance)
     % Function:
     %   - sample R-E region by computing the output DC current and rate
     %
