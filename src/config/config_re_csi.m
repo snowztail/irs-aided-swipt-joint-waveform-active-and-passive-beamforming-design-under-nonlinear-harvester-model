@@ -61,7 +61,7 @@ nChannels = 1;
 Variable.nReflectors = [20, 40];
 % estimation error variance of the cascaded channel
 Variable.cascadedErrorVarianceRatio = [0.1, 10];
-Variable.cascadedErrorVariance = Variable.cascadedErrorVarianceRatio * path_loss(incidentDistance) * path_loss(reflectiveDistance);
+Variable.cascadedErrorVariance = Variable.cascadedErrorVarianceRatio * path_loss(incidentDistance, centerFrequency) * path_loss(reflectiveDistance, centerFrequency);
 
 %% * PBS
 % number of individual jobs

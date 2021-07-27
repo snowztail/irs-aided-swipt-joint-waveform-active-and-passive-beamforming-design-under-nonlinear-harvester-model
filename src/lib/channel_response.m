@@ -20,8 +20,9 @@ function [channel] = channel_response(tapGain, tapDelay, distance, rxGain, subba
     % Author & Date: Yang (i@snowztail.com) - 16 Jun 20
 
 
-    [pathloss] = path_loss(distance);
+	centerFrequency = mean(subbandFrequency);
+    [pathloss] = path_loss(distance, centerFrequency);
     [fading] = multipath_fading(tapGain, tapDelay, subbandFrequency, fadingMode);
-    channel = sqrt(pathloss * rxGain) * fading;
+    channel = sqrt(rxGain / pathloss) * fading;
 
 end

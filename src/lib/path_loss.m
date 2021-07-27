@@ -1,4 +1,4 @@
-function [pathloss] = path_loss(distance)
+function [pathloss] = path_loss(distance, centerFrequency)
     % Function:
     %   - calculate the large-scale signal attenuation based on IEEE TGn channel model D
     %
@@ -10,7 +10,6 @@ function [pathloss] = path_loss(distance)
     %
     % Comment:
     %   - consists of the free space loss (exponent = 2) up to 10 m and typical urban loss (exponent = 3.5) onwards
-    %   - set reference path loss at 1 m as -40 dB (corresponding to 2.4 GHz center frequency)
     %
     % Reference:
     %   - V. Erceg et al., "TGn channel models," in Version 4. IEEE 802.11–03/940r4, May 2004.
@@ -19,9 +18,9 @@ function [pathloss] = path_loss(distance)
 
 
     if distance <= 10
-        pathloss = db2pow(-40) * distance ^ (-2);
+        pathloss = (4 * pi * distance * centerFrequency / 3e8) ^ 2;
     else
-        pathloss = db2pow(-40) * 10 ^ (-2) * (distance / 10) ^ (-3.5);
+        pathloss = (4 * pi * 10 * centerFrequency / 3e8) ^ 2 * (distance / 10) ^ 3.5;
     end
 
 end
