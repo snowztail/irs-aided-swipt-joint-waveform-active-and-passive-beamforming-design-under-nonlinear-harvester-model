@@ -553,7 +553,7 @@
 				s_{\mathrm{I}, n} &= \sqrt{2(1 - \delta)\left(\lambda - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}, \label{eq:s_i}\\
 				s_{\mathrm{P}, n} &= \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha. \label{eq:s_p}
 			\end{align}
-			Besides, minor modifications are required for passive beamforming to accommodate both low-complexity waveform schemes. To achieve the WIT point (i.e., $\eta=\rho=0$), the rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:z_irs_approx} should be maximized. To achieve any non-WIT point (i.e., $z \ne 0$), the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is instead characterized by varying either $\eta$ or $\delta$ and $\rho$. The Modified-SCA (M-SCA) Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design when the receiver works in PS mode. The proofs of SDR tightness and local optimality are similar to Appendices~\ref{ap:relaxation} and \ref{ap:sca} thus omitted here. Compared with Algorithm~\ref{al:sca}, the rate constraint \eqref{co:irs_rate} is dropped and each SDP in Algorithm~\ref{al:m_sca} involves $(L+1)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:m_sca} is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations \cite{Luo2010}.
+			Besides, minor modifications are required for passive beamforming to accommodate both low-complexity waveform schemes. To achieve the WIT point (i.e., $\eta=\rho=0$), the rate \eqref{eq:R_irs} instead of the DC current \eqref{eq:z_irs_approx} should be maximized. In such case, the current expression is dropped and no SCA is involved. To achieve any non-WIT point (i.e., $z \ne 0$), the rate constraint \eqref{co:irs_rate} should be dropped as the R-E region is instead characterized by varying either $\eta$ or $\delta$ and $\rho$. The Modified-SCA (M-SCA) Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design when the receiver works in PS mode. The proofs of SDR tightness and local optimality are similar to Appendices~\ref{ap:relaxation} and \ref{ap:sca} thus omitted here. Compared with Algorithm~\ref{al:sca}, the rate constraint \eqref{co:irs_rate} is dropped and each SDP in Algorithm~\ref{al:m_sca} involves $(L+1)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:m_sca} is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations \cite{Luo2010}. Note that $I_{\mathrm{M-SCA}}=1$ for the WIT point since the current expression is dropped and no SCA is involved.
 
 			\begin{algorithm}[!t]
 				\caption{M-SCA: IRS Phase Shift.}
@@ -615,7 +615,7 @@
 				Please refer to Appendix~\ref{ap:bcd}
 			\end{proof}
 
-			For the low-complexity design, when the receiver works in PS mode, we instead obtain the phase shift by Algorithm~\ref{al:m_sca} and the waveform amplitude by \eqref{eq:s_i} and \eqref{eq:s_p}. The steps are summarized in the Low Complexity-BCD (LC-BCD) Algorithm~\ref{al:lc_bcd}. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{Luo2010}.
+			For the low-complexity design, when the receiver works in PS mode, we instead obtain the phase shift by Algorithm~\ref{al:m_sca} and the waveform amplitude by \eqref{eq:s_i} and \eqref{eq:s_p}. In contrast to the BCD algorithm that obtains the R-E region by varying the rate constraint from maximum capacity $C_{\max}$\footnote{Recall in Remark~\ref{re:subband_tradeoff} that passive beamforming enables a resource allocation opportunity at the channel such that different capacities are achievable.} to \num{0}, the LC-BCD algorithm draws the R-E tradeoff by adjusting the combining and splitting ratios from \num{1} to \num{0}. For the WIT point, $C_{\max}$ can be obtained as a special case of LC-BCD algorithm where $\rho=0$ and the objective function becomes $R$ instead of $z$. The steps are summarized in the Low Complexity-BCD (LC-BCD) Algorithm~\ref{al:lc_bcd}. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{Luo2010}.
 
 			\begin{algorithm}[!t]
 				\caption{LC-BCD: Waveform and Beamforming.}
@@ -632,7 +632,12 @@
 						\State Update $\boldsymbol{s}_{\mathrm{I}}^{(i)}$, $\boldsymbol{s}_{\mathrm{P}}^{(i)}$ by \eqref{eq:s_i}, \eqref{eq:s_p}
 						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{eq:w}
 						\State Compute $R^{(i)}$, $z^{(i)}$ by \eqref{eq:R_waveform}, \eqref{eq:z_waveform}
-					\Until $\lvert R^{(i)} - R^{(i-1)} \rvert \le \epsilon$ or $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
+						\If{$\rho=0$}
+							\State $\Delta = R^{(i)} - R^{(i-1)}$
+						\Else
+							\State $\Delta = z^{(i)} - z^{(i-1)}$
+						\EndIf
+					\Until $\lvert \Delta \rvert \le \epsilon$
 					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)}$, $\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)}$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$, $\boldsymbol{w}_{\mathrm{I}}^{\star}$, $\boldsymbol{w}_{\mathrm{P}}^{\star}$
 				\end{algorithmic}
