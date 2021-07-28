@@ -12,6 +12,7 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{cite}
+\usepackage{framed}
 \usepackage{fullpage}
 \usepackage{mathtools}
 \usepackage{microtype}
@@ -22,7 +23,7 @@
 \usepackage{xr-hyper}
 \usepackage{hyperref}
 
-\externaldocument[M-]{submit}
+\externaldocument[M-]{../main}
 
 \DeclareSIUnit{\belm}{Bm}
 \DeclareSIUnit{\dBm}{\deci\belm}
@@ -74,7 +75,7 @@
 
 
 \begin{document}
-	\includepdf{letter_1.pdf}
+	\includepdf{letter_2.pdf}
 
 	\begin{reviewer}
 		\begin{point}
@@ -82,7 +83,42 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We appreciate your suggestion and agree that complexity analysis is necessary in algorithm evaluation.
+
+			For SCA Algorithm~\ref{M-al:sca}, in the previous manuscript, we applied SCA on $t_{\mathrm{I},0} t_{\mathrm{P},0}$ at iteration $i$ as
+			\begin{align}
+				t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i)}
+				& = \frac{1}{4}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\nonumber\\
+				& \ge \frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2,
+			\end{align}
+			which is generally feasible and widely adopted when $t_{\mathrm{I},0}$ and $t_{\mathrm{P},0}$ are variables. Hence, we claimed Algorithm~\ref{M-al:sca} ``is not a Semidefinite Programming (SDP) due to the quadratic objective function \eqref{M-eq:z_irs_approx}''. During revision, we realized that $t_{\mathrm{I/P},0}=\mathrm{tr}(\boldsymbol{C}_{\mathrm{I/P},0}\boldsymbol{\Phi})$ are essentially linear real expressions related to optimization variable $\boldsymbol{\Phi}$, and the SCA can be further reduced to
+			\begin{equation}
+				t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i)} \ge t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i-1)} + t_{\mathrm{P},0}^{(i)} t_{\mathrm{I},0}^{(i-1)} - t_{\mathrm{I},0}^{(i-1)} t_{\mathrm{P},0}^{(i-1)}.
+			\end{equation}
+			Therefore, the quadratic term in the objective function \eqref{M-eq:z_irs_approx} is eliminated and the updated problem~\ref{M-op:irs} is indeed an SDP. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:sca} is $\mathcal{O}\left(I_{\mathrm{SCA}}(L+2)^4 (L+1)^{0.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{SCA}}$ denotes the number of SCA iterations \cite{M-Luo2010}. In the updated manuscript, we made the revision as follows.
+			\begin{framed}
+				The passive beamforming design is summarized in the SCA Algorithm~\ref{M-al:sca}, where the relaxed problem \eqref{M-ob:irs}--\eqref{M-co:irs_sd} involves a $(L+1)$-order positive semi-definite matrix variable and $(L+2)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:sca} is $\mathcal{O}\left(I_{\mathrm{SCA}}(L+2)^4 (L+1)^{0.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{SCA}}$ denotes the number of SCA iterations \cite{M-Luo2010}.
+			\end{framed}
+
+			For GP Algorithm~\ref{M-al:gp}, the computational complexity is exponential w.r.t. the number of subbands \cite{M-Chiang2005}.
+			\begin{framed}
+				The joint waveform amplitude and splitting ratio design is summarized in the GP Algorithm~\ref{M-al:gp}, which achieves local optimality at the cost of exponential computational complexity \cite{M-Chiang2005}.
+			\end{framed}
+
+			For M-SCA Algorithm~\ref{M-al:m_sca}, each optimization problem involved is an SDP with $(L+1)$ variables and linear constraints, and the computational complexity is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$ where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations.
+			\begin{framed}
+				Compared with Algorithm~\ref{M-al:sca}, the rate constraint \eqref{M-co:irs_rate} is dropped and each SDP in Algorithm~\ref{M-al:m_sca} involves $(L+1)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:m_sca} is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations \cite{M-Luo2010}. Note that $I_{\mathrm{M-SCA}}=1$ for the WIT point since the current expression is dropped and no SCA is involved.
+			\end{framed}
+
+			For BCD Algorithm~\ref{M-al:bcd}, since Algorithm~\ref{M-al:gp} is involved per iteration, the computational complexity is exponential w.r.t. the number of subbands.
+			\begin{framed}
+				The steps are summarized in the BCD Algorithm~\ref{M-al:bcd}, which achieves local optimality with exponential computational complexity. [TODO]
+			\end{framed}
+
+			For LC-BCD Algorithm~\ref{M-al:lc_bcd}, both waveform and active beamforming are obtained in closed form, and the computational complexity of Algorithm~\ref{M-al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{M-Luo2010}.
+			\begin{framed}
+				Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{M-Luo2010}.
+			\end{framed}
 		\end{response}
 
 		\begin{point}
@@ -102,11 +138,45 @@
 		\end{response}
 
 		\begin{point}
-			The reviewer noticed that in Algorithm 5, there are two convergence criteria. It could be better if the authors can briefly interpret this issue.
+			The reviewer noticed that in Algorithm~\ref{M-al:lc_bcd}, there are two convergence criteria. It could be better if the authors can briefly interpret this issue.
 		\end{point}
 
 		\begin{response}
-			TODO
+			We incorporated two cases (WIT/non-WIT) into Algorithm~\ref{M-al:lc_bcd}. In each iteration, Algorithm~\ref{M-al:m_sca} is called. To obtain the WIT point, the rate \eqref{M-eq:R_irs} instead of the DC current \eqref{M-eq:z_irs_approx} should be maximized, such that the current expression is dropped and no SCA is involved. To clarify this point, we first updated the description on Algorithm~\ref{M-al:m_sca} as follows.
+			\begin{framed}
+				To achieve the WIT point (i.e., $\eta=\rho=0$), the rate \eqref{M-eq:R_irs} instead of the DC current \eqref{M-eq:z_irs_approx} should be maximized. In such case, the current expression is dropped and no SCA is involved.
+			\end{framed}
+			Correspondingly, to achieve the WIT point, the LC-BCD Algorithm~\ref{M-al:lc_bcd} should maximizes $R$ instead of $z$. Line~\ref{li:convergence_begin}--\ref{li:convergence_end} was modified to avoid ambiguity and Algorithm~\ref{M-al:lc_bcd} is indexed below by \ref{al:lc_bcd} .
+			\begin{algorithm}[!h]
+				\caption{LC-BCD: Waveform and Beamforming.}
+				\label{al:lc_bcd}
+				\begin{algorithmic}[1]
+					\State \textbf{Input} $\beta_2$, $\beta_4$, $\boldsymbol{h}_{\mathrm{D},n}$, $\boldsymbol{V}_{n}$, $P$, $\sigma_n$, $\delta$, $\rho$, $\epsilon$, $\forall n$
+					\State \textbf{Initialize} $i \gets 0$, $\boldsymbol{\phi}^{(0)}$, $\boldsymbol{b}_{\mathrm{I/P},n}^{(0)}$, $\boldsymbol{s}_{\mathrm{I/P}}^{(0)}$, $\forall n$
+					\State Set $\boldsymbol{w}_{\mathrm{I/P},n}^{(0)}$, $\forall n$ by \eqref{M-eq:w}
+					\State Compute $R^{(0)}$, $z^{(0)}$ by \eqref{M-eq:R_waveform}, \eqref{M-eq:z_waveform}
+					\Repeat
+						\State $i \gets i + 1$
+						\State Get $\boldsymbol{\phi}^{(i)}$ based on $\boldsymbol{w}_{\mathrm{I/P}}^{(i-1)}$ by Algorithm~\ref{M-al:m_sca}
+						\State Update $\boldsymbol{h}_n^{(i)}$, $\boldsymbol{b}_n^{(i)}$, $\forall n$ by \eqref{M-eq:h_n}, \eqref{M-eq:b_n}
+						\State Update $\boldsymbol{s}_{\mathrm{I}}^{(i)}$, $\boldsymbol{s}_{\mathrm{P}}^{(i)}$ by \eqref{M-eq:s_i}, \eqref{M-eq:s_p}
+						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{M-eq:w}
+						\State Compute $R^{(i)}$, $z^{(i)}$ by \eqref{M-eq:R_waveform}, \eqref{M-eq:z_waveform}
+						\If{$\rho=0$} \label{li:convergence_begin}
+							\State $\Delta = R^{(i)} - R^{(i-1)}$
+						\Else
+							\State $\Delta = z^{(i)} - z^{(i-1)}$
+						\EndIf
+					\Until $\lvert \Delta \rvert \le \epsilon$ \label{li:convergence_end}
+					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)}$, $\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)}$
+					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$, $\boldsymbol{w}_{\mathrm{I}}^{\star}$, $\boldsymbol{w}_{\mathrm{P}}^{\star}$
+				\end{algorithmic}
+			\end{algorithm}
+			The description was also updated as follows.
+			\begin{framed}
+				In contrast to the BCD algorithm that obtains the R-E region by varying the rate constraint from maximum capacity $C_{\max}$\footnotemark to \num{0}, the LC-BCD algorithm draws the R-E tradeoff by adjusting the combining and splitting ratios from \num{1} to \num{0}. For the WIT point, $C_{\max}$ can be obtained as a special case of LC-BCD algorithm where $\rho=0$ and the objective function becomes $R$ instead of $z$.
+			\end{framed}
+			\footnotetext{{Recall in Remark~\ref{M-re:subband_tradeoff} that passive beamforming enables a resource allocation opportunity at the channel such that different capacities are achievable.}}
 		\end{response}
 	\end{reviewer}
 
@@ -226,7 +296,7 @@
 		\end{response}
 
 		\begin{point}
-			The authors considered the practical reflection coefficient beamforming in the simulkation results. It is not cleaer how the authors obtain the discrte phase shift results. Direct quantization method and some other customized optimization technqiues for discrete phase shifts may have significant performance gap, see \cite{Wu2020c}. Also, this work adopts the same uniform quantization as the above work, which thus needs to be clarified in the paper.
+			The authors considered the practical reflection coefficient beamforming in the simulation results. It is not clear how the authors obtain the discrete phase shift results. Direct quantization method and some other customized optimization techniques for discrete phase shifts may have significant performance gap, see \cite{Wu2020c}. Also, this work adopts the same uniform quantization as the above work, which thus needs to be clarified in the paper.
 		\end{point}
 
 		\begin{response}
@@ -269,5 +339,5 @@
 	\end{reviewer}
 
 	\bibliographystyle{IEEEtran}
-	\bibliography{IEEEabrv,library.bib}
+	\bibliography{IEEEabrv,../library.bib}
 \end{document}
