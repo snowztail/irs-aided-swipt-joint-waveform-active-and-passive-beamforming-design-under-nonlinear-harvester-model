@@ -119,6 +119,7 @@
 			\begin{framed}
 				Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{M-Luo2010}.
 			\end{framed}
+			\label{re:1.1}
 		\end{response}
 
 		\begin{point}
@@ -137,7 +138,7 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			The system layout follows \cite{M-Wu2019} and we set the AP-UE distance to be larger than SWIPT literatures \cite{M-Clerckx2018b} and experiments \cite{M-Kim2020a} thanks to the IRS. For the center frequency, we consider \SI{2.4}{\GHz} due to its ubiquitous and license-free properties. Note that the path loss can be greatly reduced (and the R-E performance can be improved) if the system operates at much lower frequency, as considered in many IRS papers. In the previous manuscript, we made a mistake in the choice of reference path loss. As indicated by Comment~\ref{pt:3.3}, even the free-space path loss should be around \SI{40}{\dB} at \SI{1}{\meter}. To fix this issue, we updated the path loss model as IEEE TGn channel model D \cite{M-Erceg2004}, where the path loss exponent is set to \num{2} (i.e., free-space model) up to a breakpoint distance (\SI{10}{\meter} in model D) and \num{3.5} onwards. This has a similar effect to most IRS literatures that assign a large path loss exponent to the direct path and smaller ones to the incident and reflected paths to penalize the channel with large distance. As for the rectenna parameters, we forgot to mention that the parameters are taken from \cite{M-Clerckx2016a} and have added the reference to the revised manuscript.
 		\end{response}
 
 		\begin{point}
@@ -209,23 +210,40 @@
 		\end{response}
 
 		\begin{point}
-			In (14), the authors integrated the waveform design and active beamforming design into $\boldsymbol{w}_I$ and $\boldsymbol{w}_P$. However, they separately optimized them later. Is it possible to directly optimize $\boldsymbol{w}_I$ and $\boldsymbol{w}_P$ as a whole?
+			In \ref{M-op:original}, the authors integrated the waveform design and active beamforming design into $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$. However, they separately optimized them later. Is it possible to directly optimize $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ as a whole?
 		\end{point}
 
 		\begin{response}
-			TODO
+			For the single-user case, direct optimization on $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ is possible. The reviewer is referred to Algorithm 1 of \cite{M-Clerckx2018b} for more details, and the idea is briefly described as follows. First, $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ are complex variables of size $MN \times 1$. To enable GP tools (which apply to problems involving real-valued variables), we notice that the optimal phase of $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ should be designed to compensate the phase of the corresponding composite channel $\boldsymbol{h}$, namely
+			\begin{equation}
+				\arg(\boldsymbol{w}_{\mathrm{I}}) = \arg(\boldsymbol{w}_{\mathrm{P}}) = -\arg(\boldsymbol{h})
+			\end{equation}
+			such that, from the perspective of phase design, the current expression \ref{M-eq:z_expand} is maximized (where all $\cos$ terms peak at \num{1}) and the rate expression is maximized (where the phases align with those of matched filters). Therefore, the direct optimization on $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ boils down to amplitude optimization on $\boldsymbol{s}_{\mathrm{I}}$ and $\boldsymbol{s}_{\mathrm{P}}$, where $\boldsymbol{s}_{\mathrm{I/P}}=\lvert \boldsymbol{w}_{\mathrm{I/P}} \rvert$. GP tools can be applied at this stage and the number of real-valued variables are $2MN$. In contrast, the proposed Algorithm~\ref{M-al:gp} decoupled the design in the spatial and frequency domains, derived the global optimal active precoder, and leaves an resource allocation issue with $2N$ real-valued variables in the frequency domain. Since the computational complexity of GP scales exponentially with the number of variables, optimizing $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ as a whole can be very inefficient and not discussed in the manuscript. Accordingly, we have revised the manuscript as follows.
+			\begin{framed}
+				To avoid straightforward optimization over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$, we decouple the waveform in the spatial and frequency domains to reduce the size of variables.
+			\end{framed}
 		\end{response}
 
 		\begin{point}
-			In the low-complexity BCD, it is unclear how the authors dealt with the optimization of $\rho$ and $\delta$. In Algorithm 5, both of them are input. Did the authors perform a two-dimensional search here? Besides, they were assumed to be identical in the simulation. How will this assumption influence the performance loss?
+			In the low-complexity BCD, it is unclear how the authors dealt with the optimization of $\rho$ and $\delta$. In Algorithm~\ref{M-al:lc_bcd}, both of them are input. Did the authors perform a two-dimensional search here? Besides, they were assumed to be identical in the simulation. How will this assumption influence the performance loss?
 		\end{point}
 
 		\begin{response}
-			TODO
+			Thank you for raising this point. The combining ratio $\delta$ determines the weight on multisine power waveform at the transmitter, while the splitting ratio $\rho$ determines the priority of the energy harvester at the receiver. We notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point. Heuristically, $\delta$ and $\rho$ should approximately equal at each point to boost R-E tradeoff. Indeed, the LC-BCD algorithm draws the R-E tradeoff by performing a two-dimensional search that adjusts the combining and splitting ratios from \num{1} to \num{0}. However, based on the deduction above, we set $\delta=\rho$ is the simulation and obtain the R-E region by one-dimensional search instead. The results show that even a one-dimensional search for the LC-BCD algorithm can achieve a very good performance. We have summarized the point in the manuscript as follows.
+			\begin{framed}
+				\textellipsis where the combining ratio $\delta$ determines the weight on multisine power waveform at the transmitter and the splitting ratio $\rho$ determines the priority of the energy harvester at the receiver\footnotemark.
+
+				\textellipsis the LC-BCD algorithm draws the R-E tradeoff by performing a two-dimensional search that adjusts the combining and splitting ratios from \num{1} to \num{0}.
+
+				\textellipsis assume $\delta=\rho$ for simplicity (hence one-dimensional search to obtain the R-E region).
+
+				\textellipsis \emph{Third,} the LC-BCD algorithm achieves a very good R-E performance even if one-dimensional search is considered for $\delta=\rho$ over $[0,1]$. This conclusion is also verified in the following plots.
+			\end{framed}
+			\footnotetext{We notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point. Heuristically, $\delta^{\star}$ and $\rho^{\star}$ should approximately equal at each point to boost R-E tradeoff.}
 		\end{response}
 
 		\begin{point}
-			If possible, in Fig.11, the authors can show the performance of the design under the conventional linear harvester model, so as to show how much performance loss it would incur.
+			If possible, in Fig.~\ref{M-fi:re_irs_1mhz} and \ref{M-fi:re_irs_10mhz}, the authors can show the performance of the design under the conventional linear harvester model, so as to show how much performance loss it would incur.
 		\end{point}
 
 		\begin{response}
@@ -245,7 +263,7 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We have added complexity analysis in the revised manuscript. The reviewer is referred to Response~\ref{re:1.1} for details.
 		\end{response}
 
 		\begin{point}
@@ -253,29 +271,46 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We agree with the reviewer that the signal model requires more description. The manuscript has been updated as follows.
+			\begin{framed}
+				As suggested in \cite{M-Clerckx2018b}, we superpose a multi-carrier modulated information-bearing waveform to a multi-carrier unmodulated power-dedicated waveform (deterministic multisine) to boost the spectrum and energy efficiency. The information signal transmitted over subband $n \in \mathcal{N} \triangleq \{1, \dots, N\}$ at time $t$ is
+			\begin{equation}
+				\boldsymbol{x}_{\mathrm{I},n}(t) = \Re\left\{\boldsymbol{w}_{\mathrm{I},n} \tilde{x}_{\mathrm{I},n}(t) e^{j2{\pi}{f_n}{t}}\right\},
+			\end{equation}
+			where $\boldsymbol{w}_{\mathrm{I},n} \in \mathbb{C}^{M \times 1}$ is the information precoder at subband $n$, $\tilde{x}_{\mathrm{I},n}\sim\mathcal{CN}(0,1)$ is the information symbol at subband $n$, and $f_n$ is the frequency of subband $n$. On the other hand, the power signal transmitted over subband $n$ at time $t$ is
+			\begin{equation}
+				\boldsymbol{x}_{\mathrm{P},n}(t) = \Re\left\{\boldsymbol{w}_{\mathrm{P},n} e^{j2{\pi}{f_n}{t}}\right\},
+			\end{equation}
+			where $\boldsymbol{w}_{\mathrm{P},n} \in \mathbb{C}^{M \times 1}$ is the power precoder at subband $n$. Therefore, the superposed signal transmitted over all subbands at time $t$ is
+			\begin{equation}
+				\boldsymbol{x}(t) = \Re{\left\{\sum_{n=1}^N(\boldsymbol{w}_{\mathrm{I},n}\tilde{x}_{\mathrm{I},n}(t)+\boldsymbol{w}_{\mathrm{P},n}){e^{j2{\pi}{f_n}{t}}}\right\}}.
+			\end{equation}
+			\end{framed}
 		\end{response}
 
 		\begin{point}
-			In Remark 2, the meaning of the sentence, ``there exists a tradeoff for auxiliary link control in the frequency domain'', is not clear to me.
+			In Remark~\ref{M-re:subband_tradeoff}, the meaning of the sentence, ``there exists a tradeoff for auxiliary link control in the frequency domain'', is not clear to me.
 		\end{point}
 
 		\begin{response}
-			TODO
+			By ``auxiliary link control in the frequency domain'', we intended to emphasize that the auxiliary link cannot be designed independently at different frequencies, and a resource allocation opportunity at the channel arises thanks to the IRS. The composite channel can be tuned flexibly to satisfy the specific requirement of the multi-carrier transmission. For example, one can design the reflection pattern to either enhance the strongest subband (e.g., $\max_{\boldsymbol{\phi},n} \lVert \boldsymbol{h}_n \rVert$), or improve fairness among subbands (e.g., $\max_{\boldsymbol{\phi}} \min_n \lVert \boldsymbol{h}_n \rVert$). We have updated the Remark~\ref{M-re:subband_tradeoff} as follows.
+			\begin{framed}
+				The cascaded channel varies at different frequencies. Since we regard the reflection as frequency-flat, there exists a tradeoff for the passive beamforming design in the frequency domain. The composite channel can be tuned flexibly to satisfy the specific requirement of the multi-carrier transmission. For example, one can design the reflection pattern to either enhance the strongest subband (e.g., $\max_{\boldsymbol{\phi},n} \lVert \boldsymbol{h}_n \rVert$), or improve fairness among subbands (e.g., $\max_{\boldsymbol{\phi}} \min_n \lVert \boldsymbol{h}_n \rVert$). This is essentially a resource allocation opportunity at the channel enabled by the IRS. In the MISO case, a similar effect also exists in the spatial domain. Therefore, each reflection coefficient is indeed shared by $M$ antennas over $N$ subbands.
+			\end{framed}
 		\end{response}
 
 		\begin{point}
-			Some editorial comments: 1) ``a (-->an) M-antenna''; 2) ``through a (-->an) L-element IRS''; 3) ``the CSIT of direct and cascaded channels are (-->is) known''; 4) ``It demonstrated (-->demonstrates) that''; 5) In Figs. 9(b) and 10(b), the text in the y-axis is too long. Please divide it into two rows. Besides, the text in the x-axis of the upper figure is covered by the lower one.
+			Some editorial comments: 1) ``a (-->an) M-antenna''; 2) ``through a (-->an) L-element IRS''; 3) ``the CSIT of direct and cascaded channels are (-->is) known''; 4) ``It demonstrated (-->demonstrates) that''; 5) In Figs.~\ref{M-fi:scaling_tx} and \ref{M-fi:scaling_reflector}, the text in the y-axis is too long. Please divide it into two rows. Besides, the text in the x-axis of the upper figure is covered by the lower one.
 		\end{point}
 
 		\begin{response}
-			TODO
+			We sincerely appreciate your careful reading and rigorous feedbacks. The manuscript have been revised accordingly and we will endeavor to avoid similar issues in the future.
 		\end{response}
 	\end{reviewer}
 
 	\begin{reviewer}
 		\begin{point}
-			Proposition 5 is questionable. The algorithm may not converge to a local optimal due to the coupling constraint 14b.
+			Proposition~\ref{M-pr:bcd} is questionable. The algorithm may not converge to a local optimal due to the coupling constraint~\eqref{M-co:original_rate}.
 		\end{point}
 
 		\begin{response}
@@ -283,15 +318,16 @@
 		\end{response}
 
 		\begin{point}
-			The figures are too small. For example, Fig 10, the axis legend is not fully shown.
+			The figures are too small. For example, Fig.~\ref{M-fi:scaling_reflector}, the axis legend is not fully shown.
 		\end{point}
 
 		\begin{response}
-			TODO
+			We apologize for the inconvenience. The figures have been amplified and the legends have been calibrated.
 		\end{response}
 
 		\begin{point}
-			It is said that the reference path loss is -35 dB at 1m, while for the center frequency at 5.18 GHz, even adopting the free space path loss model also will lead a much sever path loss at 1 m. It is not clear how the authors calculate this.
+			It is said that the reference path loss is \SI{-35}{\dB} at \SI{1}{\meter}, while for the center frequency at \SI{5.18}{\GHz}, even adopting the free space path loss model also will lead a much sever path loss at \SI{1}{\meter}. It is not clear how the authors calculate this.
+			\label{pt:3.3}
 		\end{point}
 
 		\begin{response}
@@ -333,7 +369,7 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We have added complexity analysis in the revised manuscript. The reviewer is referred to Response~\ref{re:1.1} for details.
 		\end{response}
 
 		\begin{point}
