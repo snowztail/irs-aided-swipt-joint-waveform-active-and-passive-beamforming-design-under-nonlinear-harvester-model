@@ -95,7 +95,7 @@
 			\begin{equation}
 				t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i)} \ge t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i-1)} + t_{\mathrm{P},0}^{(i)} t_{\mathrm{I},0}^{(i-1)} - t_{\mathrm{I},0}^{(i-1)} t_{\mathrm{P},0}^{(i-1)}.
 			\end{equation}
-			Therefore, the quadratic term in the objective function \eqref{M-eq:z_irs_approx} is eliminated and the updated problem~\ref{M-op:irs} is indeed an SDP. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:sca} is $\mathcal{O}\left(I_{\mathrm{SCA}}(L+2)^4 (L+1)^{0.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{SCA}}$ denotes the number of SCA iterations \cite{M-Luo2010}. In the updated manuscript, we made the revision as follows.
+			Therefore, the quadratic term in the objective function \eqref{M-eq:z_irs_approx} is eliminated and the updated problem~\ref{M-op:irs} is indeed an SDP. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:sca} is $\mathcal{O}\left(I_{\mathrm{SCA}}(L+2)^4 (L+1)^{0.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{SCA}}$ denotes the number of SCA iterations \cite{M-Luo2010}. We have revised the manuscript as follows.
 			\begin{framed}
 				The passive beamforming design is summarized in the SCA Algorithm~\ref{M-al:sca}, where the relaxed problem \eqref{M-ob:irs}--\eqref{M-co:irs_sd} involves a $(L+1)$-order positive semi-definite matrix variable and $(L+2)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:sca} is $\mathcal{O}\left(I_{\mathrm{SCA}}(L+2)^4 (L+1)^{0.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{SCA}}$ denotes the number of SCA iterations \cite{M-Luo2010}.
 			\end{framed}
@@ -126,7 +126,10 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			Thank you for sharing this paper. Instead of optimizing the phase shift of each IRS element, it tailored a tile-based two-stage optimization framework for large-scale IRS to enable a flexible performance-complexity tradeoff. The model also adapts well to practical IRS models accounting AoA and AoD. In contrast, our paper is more focused on waveform design and rate-energy tradeoff for one SWIPT user with practical co-located information decoder and energy harvester. We have updated the manuscript as follows.
+			\begin{framed}
+				In \cite{Xu2021}, the authors proposed a scalable resource allocation framework for SWIPT systems involving large-scale IRS, where the reflectors are grouped into tiles and the optimization process is divided into an offline mode-design stage and an online mode-selection stage to reduce overall complexity. It was concluded that the tile-based two-stage algorithm not only enables a flexible balance between performance and complexity but also adapts well to the physics-based IRS model accounting AoA and AoD. To the best of our knowledge, all existing IRS-aided SWIPT papers considered resource allocation and beamforming design for dedicated information and energy users in a single-carrier network. In this paper, we instead build our design based on a proper nonlinear harvester modeling that captures the dependency of the output DC power on both the power and shape of the input waveform, and marry the benefits of joint multi-carrier waveform and active beamforming optimization for SWIPT with the passive beamforming capability of IRS, to investigate the R-E tradeoff for one SWIPT user with practical co-located information decoder and energy harvester.
+			\end{framed}
 		\end{response}
 
 		\begin{point}
@@ -142,7 +145,7 @@
 		\end{point}
 
 		\begin{response}
-			We incorporated two cases (WIT/non-WIT) into Algorithm~\ref{M-al:lc_bcd}. In each iteration, Algorithm~\ref{M-al:m_sca} is called. To obtain the WIT point, the rate \eqref{M-eq:R_irs} instead of the DC current \eqref{M-eq:z_irs_approx} should be maximized, such that the current expression is dropped and no SCA is involved. To clarify this point, we first updated the description on Algorithm~\ref{M-al:m_sca} as follows.
+			We incorporated two cases (WIT/non-WIT) into Algorithm~\ref{M-al:lc_bcd}. In each iteration, Algorithm~\ref{M-al:m_sca} is called. To obtain the WIT point, the rate \eqref{M-eq:R_irs} instead of the DC current \eqref{M-eq:z_irs_approx} should be maximized, such that the current expression is dropped and no SCA is involved. To clarify this point, we have updated the description on Algorithm~\ref{M-al:m_sca} as follows.
 			\begin{framed}
 				To achieve the WIT point (i.e., $\eta=\rho=0$), the rate \eqref{M-eq:R_irs} instead of the DC current \eqref{M-eq:z_irs_approx} should be maximized. In such case, the current expression is dropped and no SCA is involved.
 			\end{framed}
@@ -172,11 +175,11 @@
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$, $\boldsymbol{w}_{\mathrm{I}}^{\star}$, $\boldsymbol{w}_{\mathrm{P}}^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
-			The description was also updated as follows.
+			The description on Algorithm~\ref{M-al:lc_bcd} have been updated as follows.
 			\begin{framed}
 				In contrast to the BCD algorithm that obtains the R-E region by varying the rate constraint from maximum capacity $C_{\max}$\footnotemark to \num{0}, the LC-BCD algorithm draws the R-E tradeoff by adjusting the combining and splitting ratios from \num{1} to \num{0}. For the WIT point, $C_{\max}$ can be obtained as a special case of LC-BCD algorithm where $\rho=0$ and the objective function becomes $R$ instead of $z$.
 			\end{framed}
-			\footnotetext{{Recall in Remark~\ref{M-re:subband_tradeoff} that passive beamforming enables a resource allocation opportunity at the channel such that different capacities are achievable.}}
+			\footnotetext{Recall in Remark~\ref{M-re:subband_tradeoff} that passive beamforming enables a resource allocation opportunity at the channel such that different capacities are achievable.}
 		\end{response}
 	\end{reviewer}
 
@@ -300,7 +303,11 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			Thank you for the clarification. The discrete phase shift is obtained by quantizing the continuous phase shift obtained by Algorithm~\ref{M-al:bcd} to the uniform IRS codebook $\mathcal{C}_\phi = \{e^{j 2 \pi i / 2^b} \mid i = 1, \dots, 2^b\}$. We are aware that direct quantization can lead to performance loss compared with optimization over feasible phase shift set. In the revised manuscript, we have emphasized this point as follows.
+			\begin{framed}
+				On the other hand, since the practical reflection coefficient depends on the available element impedances, we consider a discrete uniform IRS codebook $\mathcal{C}_\phi = \{e^{j 2 \pi i / 2^b} \mid i = 1, \dots, 2^b\}$ and perform quantization on the continuous reflection coefficients returned by Algorithm~\ref{M-al:bcd} to reduce the circuit complexity and control overhead\footnotemark.
+			\end{framed}
+			\footnotetext{Note that this relax-then-quantize approach can bring notable performance loss compared with direct optimization over the discrete phase shift set, especially for a small $b$ (i.e., low-resolution IRS). The readers are referred to \cite{Wu2020c} for details.}
 		\end{response}
 
 		\begin{point}
@@ -334,7 +341,10 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			Thank you for mentioning this paper. The literature review has been updated accordingly as follows.
+			\begin{framed}
+				Deep reinforcement learning tools were also applied in \cite{Yang2021} to assist practical secure beamforming and reflection pattern design under QoS constraints for time-varying channels.
+			\end{framed}
 		\end{response}
 	\end{reviewer}
 
