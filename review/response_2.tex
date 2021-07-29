@@ -138,7 +138,7 @@
 		\end{point}
 
 		\begin{response}
-			The system layout follows \cite{M-Wu2019} and we set the AP-UE distance to be larger than SWIPT literatures \cite{M-Clerckx2018b} and experiments \cite{M-Kim2020a} thanks to the IRS. For the center frequency, we consider \SI{2.4}{\GHz} due to its ubiquitous and license-free properties. Note that the path loss can be greatly reduced (and the R-E performance can be improved) if the system operates at much lower frequency, as considered in many IRS papers. In the previous manuscript, we made a mistake in the choice of reference path loss. As indicated by Comment~\ref{pt:3.3}, even the free-space path loss should be around \SI{40}{\dB} at \SI{1}{\meter}. To fix this issue, we updated the path loss model as IEEE TGn channel model D \cite{M-Erceg2004}, where the path loss exponent is set to \num{2} (i.e., free-space model) up to a breakpoint distance (\SI{10}{\meter} in model D) and \num{3.5} onwards. This has a similar effect to most IRS literatures that assign a large path loss exponent to the direct path and smaller ones to the incident and reflected paths to penalize the channel with large distance. As for the rectenna parameters, we forgot to mention that the parameters are taken from \cite{M-Clerckx2016a} and have added the reference to the revised manuscript.
+			The system layout follows \cite{M-Wu2019} and we set the AP-UE distance to be larger than SWIPT literatures \cite{M-Clerckx2018b} and experiments \cite{M-Kim2020a} thanks to the IRS. For the center frequency, we consider \SI{2.4}{\GHz} due to its ubiquitous and license-free properties. Note that the path loss can be greatly reduced (and the R-E performance can be improved) if the system operates at much lower frequency, as considered in most IRS papers. In the previous manuscript, we made a mistake in the choice of reference path loss. As indicated by Comment~\ref{pt:3.3}, even the free-space path loss should be around \SI{40}{\dB} at \SI{1}{\meter}. To fix this issue, we updated the path loss model as IEEE TGn channel model D that is representative of small environments such as residential homes and small offices \cite{M-Erceg2004}. It has three clusters with \SI{50}{\ns} r.m.s. delay spread, and the path loss exponent is set to \num{2} (i.e., free-space model) up to breakpoint distance \SI{10}{\meter} and \num{3.5} onwards. This has a similar effect to most IRS literatures that assign a relatively large path loss exponent to the direct path and smaller ones to the incident and reflected paths to penalize the channel with large distance. As for the rectenna parameters, we forgot to mention that the parameters are taken from \cite{M-Clerckx2016a} and have added the reference to the revised manuscript.
 		\end{response}
 
 		\begin{point}
@@ -331,7 +331,7 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We agree with the reviewer that the reference path loss used in the simulation is faulty and we sincerely apologize for this issue. The parameter \SI{-35}{\dB} was considered in some IRS literatures without specifying the operating frequency, and it was taken in the previous simulations without a second consideration. In the corrected manuscript, we instead consider a center frequency at \SI{2.4}{\GHz} that corresponds to a free-space path loss of \SI{-40}{\dB} at \SI{1}{\meter}. The path loss used in the simulation is taken from IEEE TGn channel model D \cite{M-Erceg2004} where the slope is set to \num{2} (i.e., free-space model) up to breakpoint distance \SI{10}{\meter} and \num{3.5} onwards. This has a similar effect to most IRS literatures that assign a relatively large path loss exponent to the direct path and smaller ones to the incident and reflected paths to penalize the channel with large distance.
 		\end{response}
 
 		\begin{point}
@@ -351,7 +351,10 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We have added reference \cite{Xu2021} in the updated manuscript that models the saturation effect of energy harvesters and physical properties of the IRS. Its contributions have been summarized in the manuscript as follows.
+			\begin{framed}
+				In \cite{Xu2021}, the authors proposed a scalable resource allocation framework for SWIPT systems involving large-scale IRS, where the reflectors are grouped into tiles and the optimization process is divided into an offline mode-design stage and an online mode-selection stage to reduce overall complexity. It was concluded that the tile-based two-stage algorithm not only enables a flexible balance between performance and complexity but also adapts well to the physics-based IRS model accounting AoA and AoD.
+			\end{framed}
 		\end{response}
 
 		\begin{point}
@@ -359,7 +362,12 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We have incorporated the reference into the manuscript as follows.
+			\begin{framed}
+				\textellipsis The hardware architecture, design challenges and application opportunities of practical IRS are covered in \cite{Wu2020}.
+
+				\textellipsis A recent tutorial paper \cite{Wu2021c} provided a comprehensive overview on IRS-aided wireless-powered networks, where channel estimation, resource allocation and practical constraints are discussed in detail.
+			\end{framed}
 		\end{response}
 	\end{reviewer}
 
@@ -377,7 +385,7 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for mentioning this paper. The literature review has been updated accordingly as follows.
+			We have incorporated the reference into the manuscript as follows.
 			\begin{framed}
 				Deep reinforcement learning tools were also applied in \cite{Yang2021} to assist practical secure beamforming and reflection pattern design under QoS constraints for time-varying channels.
 			\end{framed}
