@@ -206,7 +206,10 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We believe this is an important issue and have modified the manuscript accordingly as follows.
+			\begin{framed}
+				\emph{First}, we propose a novel IRS-aided SWIPT architecture based on joint waveform, active and passive beamforming design under the diode nonlinear model proposed in \cite{M-Clerckx2016a}. Although this tractable harvester model accurately reveals how the input power level and waveform shape influence the output DC power, it also introduces design challenges such as frequency compensation (i.e., components of different frequencies compensate and produce DC), waveform coupling (i.e., different waveforms jointly contribute to DC), and high-order objective function.
+			\end{framed}
 		\end{response}
 
 		\begin{point}
@@ -255,7 +258,11 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We concluded that PS outperforms TS when the number of subcarrier is relatively small or when the SNR is relatively large. However, the analytical preconditions in the proposed system can be very hard to obtain because SNR can depend on many factors (e.g., distance of all paths, number of IRS elements, average noise power, etc.). Essentially, this behavior origins from the waveform selection and we would like to analyze it in a nutshell.
+
+			TS only performs a naive time-sharing between the WIT point and the WPT point. At the WIT point, only modulated waveform is used to maximize the achievable rate. At the WPT point, the optimal waveform depends on the number of subcarriers $N$. Although the modulated waveform has an modulation gain of \num{2} that outstands for a small $N$, it creates no DC coupling between frequencies and is outperformed by multisine for a large $N$. Therefore, for a relatively small $N$, the modulated waveform is used at both WIT and WPT point, and one can heuristically infer that no multisine waveform is needed for any point (this is verified in simulation). In this case, the R-E region is convex, which aligns with the conventional linear harvester model (PS outperforms TS and dedicated power waveform is unnecessary). However, as $N$ becomes sufficiently large, multisine waveform further boosts the WPT point due to its power benefit under nonlinear harvester model. It creates some concavity in the high-power region and accounts for the superiority of TS.
+
+			Similar effect exists for SNR. At high SNR, the SWIPT user can achieve a decent rate even if a small fraction of transmit power is allocated to the modulated waveform. Therefore, one can approach high-rate region fast at a small cost of DC power at high SNR. This is however impossible at low SNR.
 		\end{response}
 
 		\begin{point}
@@ -314,7 +321,14 @@
 		\end{point}
 
 		\begin{response}
-			TODO
+			We sincerely appreciate the reviewer for pointing out this issue. Indeed, the local optimality is not guaranteed as \eqref{M-co:original_rate} couples all blocks together. We have removed the claim on optimality and updated Proposition~\ref{M-pr:bcd} as follows.
+			\begin{framed}
+				For any feasible initial point, the BCD Algorithm~\ref{M-al:bcd} is guaranteed to converge.
+			\end{framed}
+			The proof has been modified correspondingly.
+			\begin{framed}
+				The objective function \eqref{M-ob:original} is non-decreasing over the iterations, because the IRS phase shift by Algorithm~\ref{M-al:sca} is local optimal, the active precoder by \eqref{M-eq:b_n} is global optimal, and the waveform amplitude and splitting ratio by Algorithm~\ref{M-al:gp} are local optimal. \eqref{M-ob:original} is also upper-bounded due to the unit-modulus constraint \eqref{M-co:original_modulus} and the transmit power constraint \eqref{M-co:original_power}. Therefore, Algorithm~\ref{M-al:bcd} is guaranteed to converge. However, it may not converge to optimal points since variables are coupled in constraint~\eqref{M-co:original_rate} \cite{M-Grippo2000}.
+			\end{framed}
 		\end{response}
 
 		\begin{point}
