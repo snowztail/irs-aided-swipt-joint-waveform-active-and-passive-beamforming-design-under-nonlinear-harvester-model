@@ -37,12 +37,17 @@ for iChannel = 1 : nChannels
 end
 
 % * Average over channel realizations
+reQuantizedInstance = cell(1, length(Variable.nQuantizeBits));
+flag = zeros(1, length(Variable.nQuantizeBits));
+
 reNoIrsInstance = mean(cat(3, reNoIrsSample{:}), 3);
 reIrsInstance = mean(cat(3, reIrsSample{:}), 3);
-reQuantizedInstance = cell(1, length(Variable.nQuantizeBits));
 for iBit = 1 : length(Variable.nQuantizeBits)
     reQuantizedInstance{iBit} = mean(cat(3, reQuantizedSample{:, iBit}), 3);
+	flag(iBit) = isempty(reNoIrsInstance) || isempty(reIrsInstance) || isempty(reQuantizedInstance{iBit});
 end
 
 % * Save batch data
-save(sprintf('data/re_quantization/re_quantization_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/re_quantization/re_quantization_%d.mat', iBatch));
+end

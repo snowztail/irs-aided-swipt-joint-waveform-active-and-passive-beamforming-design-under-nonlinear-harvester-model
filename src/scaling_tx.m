@@ -47,6 +47,9 @@ rateWf = mean(witWfSample(:, :, 1), 1);
 currentAss = mean(wptAssSample(:, :, 2), 1);
 currentSmf = mean(wptSmfSample(:, :, 2), 1);
 currentSdr = mean(wptSdrSample(:, :, 2), 1);
+flag = isempty(rateWf) || isempty(currentAss) || isempty(currentSmf) || isempty(currentSdr);
 
 % * Save batch data
-save(sprintf('data/scaling_tx/scaling_tx_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/scaling_tx/scaling_tx_%d.mat', iBatch));
+end

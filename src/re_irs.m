@@ -69,6 +69,7 @@ reWitIrsInstance = cell(1, length(Variable.bandwidth));
 reWptIrsInstance = cell(1, length(Variable.bandwidth));
 reRandomIrsInstance = cell(1, length(Variable.bandwidth));
 reNoIrsInstance = cell(1, length(Variable.bandwidth));
+flag = zeros(1, length(Variable.bandwidth));
 
 for iBandwidth = 1 : length(Variable.bandwidth)
 	reIdealIrsInstance{iBandwidth} = mean(cat(3, reIdealIrsSample{:, iBandwidth}), 3);
@@ -78,7 +79,10 @@ for iBandwidth = 1 : length(Variable.bandwidth)
 	reWptIrsInstance{iBandwidth} = mean(cat(3, reWptIrsSample{:, iBandwidth}), 3);
 	reRandomIrsInstance{iBandwidth} = mean(cat(3, reRandomIrsSample{:, iBandwidth}), 3);
 	reNoIrsInstance{iBandwidth} = mean(cat(3, reNoIrsSample{:, iBandwidth}), 3);
+	flag(iBandwidth) = isempty(reIdealIrsInstance{iBandwidth}) || isempty(reAdaptiveIrsInstance{iBandwidth}) || isempty(reLinearIrsInstance{iBandwidth}) || isempty(reWitIrsInstance{iBandwidth}) || isempty(reWptIrsInstance{iBandwidth}) || isempty(reRandomIrsInstance{iBandwidth}) || isempty(reNoIrsInstance{iBandwidth});
 end
 
 % * Save batch data
-save(sprintf('data/re_irs/re_irs_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/re_irs/re_irs_%d.mat', iBatch));
+end

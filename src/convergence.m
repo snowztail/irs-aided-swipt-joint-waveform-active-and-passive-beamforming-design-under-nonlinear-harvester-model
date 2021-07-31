@@ -16,6 +16,9 @@ clear; clc; setup; config_convergence;
 [aoSample, aoSolution] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 [lcSample, lcSolution] = re_sample_swipt_low_complexity(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance);
 
+flag = isempty(aoSample) || isempty(lcSample);
 
 % * Save batch data
-save('data/convergence.mat');
+if ~sum(flag(:))
+	save('data/convergence.mat');
+end

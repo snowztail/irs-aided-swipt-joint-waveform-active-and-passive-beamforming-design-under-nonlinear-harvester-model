@@ -45,12 +45,17 @@ end
 % * Average over channel realizations
 reRandomInstance = cell(length(Variable.nReflectors), 1);
 reErrorInstance = cell(length(Variable.nReflectors), length(Variable.cascadedErrorVariance));
+flag = zeros(length(Variable.nReflectors), length(Variable.cascadedErrorVariance));
+
 for iReflector = 1 : length(Variable.nReflectors)
 	reRandomInstance{iReflector} = mean(cat(3, reRandomSample{:, iReflector}), 3);
 	for iError = 1 : length(Variable.cascadedErrorVariance)
 		reErrorInstance{iReflector, iError} = mean(cat(4, reErrorSample{:, iReflector, iError}), 4);
+		flag(iReflector, iError) = isempty(reRandomInstance{iReflector}) || isempty(reErrorInstance{iReflector, iError});
 	end
 end
 
 % * Save batch data
-save(sprintf('data/re_csi/re_csi_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/re_csi/re_csi_%d.mat', iBatch));
+end

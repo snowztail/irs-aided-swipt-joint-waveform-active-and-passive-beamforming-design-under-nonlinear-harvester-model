@@ -35,10 +35,15 @@ end
 % * Average over channel realizations
 reAoInstance = cell(1, length(Variable.horizontalDistance));
 reLcInstance = cell(1, length(Variable.horizontalDistance));
+flag = zeros(1, length(Variable.horizontalDistance));
+
 for iDistance = 1 : length(Variable.horizontalDistance)
     reAoInstance{iDistance} = mean(cat(3, reAoSample{:, iDistance}), 3);
     reLcInstance{iDistance} = mean(cat(3, reLcSample{:, iDistance}), 3);
+	flag(iDistance) = isempty(reAoInstance{iDistance}) || isempty(reLcInstance{iDistance});
 end
 
 % * Save batch data
-save(sprintf('data/re_distance/re_distance_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/re_distance/re_distance_%d.mat', iBatch));
+end

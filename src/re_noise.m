@@ -32,10 +32,15 @@ end
 % * Average over channel realizations
 reAoInstance = cell(1, length(Variable.noisePower));
 reLcInstance = cell(1, length(Variable.noisePower));
+flag = zeros(1, length(Variable.noisePower));
+
 for iNoise = 1 : length(Variable.noisePower)
     reAoInstance{iNoise} = mean(cat(3, reAoSample{:, iNoise}), 3);
     reLcInstance{iNoise} = mean(cat(3, reLcSample{:, iNoise}), 3);
+	flag(iNoise) = isempty(reAoInstance{iNoise}) || isempty(reLcInstance{iNoise});
 end
 
 % * Save batch data
-save(sprintf('data/re_noise/re_noise_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/re_noise/re_noise_%d.mat', iBatch));
+end

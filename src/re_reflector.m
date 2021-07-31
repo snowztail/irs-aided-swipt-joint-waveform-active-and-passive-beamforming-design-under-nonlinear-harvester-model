@@ -33,10 +33,15 @@ end
 % * Average over channel realizations
 reAoInstance = cell(1, length(Variable.nReflectors));
 reLcInstance = cell(1, length(Variable.nReflectors));
+flag = zeros(1, length(Variable.nReflectors));
+
 for iReflector = 1 : length(Variable.nReflectors)
     reAoInstance{iReflector} = mean(cat(3, reAoSample{:, iReflector}), 3);
     reLcInstance{iReflector} = mean(cat(3, reLcSample{:, iReflector}), 3);
+	flag(iReflector) = isempty(reAoInstance{iReflector}) || isempty(reLcInstance{iReflector});
 end
 
 % * Save batch data
-save(sprintf('data/re_reflector/re_reflector_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/re_reflector/re_reflector_%d.mat', iBatch));
+end

@@ -33,10 +33,15 @@ end
 % * Average over channel realizations
 reAoInstance = cell(1, length(Variable.nTxs));
 reLcInstance = cell(1, length(Variable.nTxs));
+flag = zeros(1, length(Variable.nTxs));
+
 for iTx = 1 : length(Variable.nTxs)
     reAoInstance{iTx} = mean(cat(3, reAoSample{:, iTx}), 3);
     reLcInstance{iTx} = mean(cat(3, reLcSample{:, iTx}), 3);
+	flag(iTx) = isempty(reAoInstance{iTx}) || isempty(reLcInstance{iTx});
 end
 
 % * Save batch data
-save(sprintf('data/re_tx/re_tx_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/re_tx/re_tx_%d.mat', iBatch));
+end

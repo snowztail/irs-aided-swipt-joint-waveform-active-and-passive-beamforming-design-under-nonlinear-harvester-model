@@ -33,10 +33,15 @@ end
 % * Average over channel realizations
 reAoInstance = cell(1, length(Variable.nSubbands));
 reLcInstance = cell(1, length(Variable.nSubbands));
+flag = zeros(1, length(Variable.nSubbands));
+
 for iSubband = 1 : length(Variable.nSubbands)
 	reAoInstance{iSubband} = mean(cat(3, reAoSample{:, iSubband}), 3);
 	reLcInstance{iSubband} = mean(cat(3, reLcSample{:, iSubband}), 3);
+	flag(iSubband) = isempty(reAoInstance{iSubband}) || isempty(reLcInstance{iSubband});
 end
 
 % * Save batch data
-save(sprintf('data/re_subband/re_subband_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/re_subband/re_subband_%d.mat', iBatch));
+end

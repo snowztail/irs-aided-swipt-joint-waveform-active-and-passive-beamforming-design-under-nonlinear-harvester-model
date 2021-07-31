@@ -36,6 +36,9 @@ end
 % * Average over channel realizations
 reNlosInstance = mean(cat(3, reNlosSample{:}), 3);
 reLosInstance = mean(cat(3, reLosSample{:}), 3);
+flag = isempty(reNlosInstance) || isempty(reLosInstance);
 
 % * Save batch data
-save(sprintf('data/re_los/re_los_%d.mat', iBatch));
+if ~sum(flag(:))
+	save(sprintf('data/re_los/re_los_%d.mat', iBatch));
+end
