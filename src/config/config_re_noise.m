@@ -15,11 +15,11 @@ nRxs = 1;
 % number of users
 nUsers = 1;
 % average transmit power
-txPower = db2pow(6);
+txPower = db2pow(10);
 % IRS element gain
 irsGain = 1;
 % receive antenna gain
-rxGain = db2pow(2);
+rxGain = db2pow(3);
 
 %% * Channel
 % AP-user distance
