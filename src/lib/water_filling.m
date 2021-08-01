@@ -29,6 +29,7 @@ function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wate
 
     % * Get data
     nSubbands = size(channel, 1);
+	epsilon = 1e-4;
 
 	% * Obtain SNR and equivalent channel gain
     snr = txPower / noisePower;
@@ -58,8 +59,8 @@ function [capacity, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wate
     capacity = sum(log2(1 + infoAmplitude .^ 2 .* channelAmplitude' .^ 2 / noisePower));
 
 	% * Assign multisine waveform and splitting ratio
-    powerAmplitude = zeros(1, nSubbands) + eps;
-    infoRatio = 1 - eps;
-    powerRatio = eps;
+    powerAmplitude = zeros(1, nSubbands) + epsilon;
+    infoRatio = 1 - epsilon;
+    powerRatio = epsilon;
 
 end

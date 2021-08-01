@@ -26,19 +26,20 @@ function [current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wavef
 
     % * Get data
 	[nSubbands] = size(channel, 1);
+	epsilon = 1e-4;
 
     % * Initialize algorithm
     % \boldsymbol{a}, \boldsymbol{s}_{I/P}
 	channelAmplitude = vecnorm(channel, 2, 2);
 
 	% * Adaptive single sine
-	infoAmplitude = zeros(1, nSubbands) + eps;
-	powerAmplitude = zeros(1, nSubbands) + eps;
+	infoAmplitude = zeros(1, nSubbands) + epsilon;
+	powerAmplitude = zeros(1, nSubbands) + epsilon;
 	powerAmplitude(channelAmplitude == max(channelAmplitude)) = sqrt(2 * txPower);
 
 	% * Splitting ratio
-	infoRatio = eps;
-	powerRatio = 1 - eps;
+	infoRatio = epsilon;
+	powerRatio = 1 - epsilon;
 
 	% * Update output current
 	[current] = current_sdr(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);

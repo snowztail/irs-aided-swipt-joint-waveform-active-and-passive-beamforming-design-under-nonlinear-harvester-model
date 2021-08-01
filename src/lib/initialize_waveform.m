@@ -18,7 +18,7 @@ function [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_wav
     %
     % Comment:
     %   - the iterative GP algorithm is sensitive to initialization (only converges to stationary points)
-    %   - GP requires nonzero entries thus use eps to replace zero
+    %   - GP requires nonzero entries thus use epsilon to replace zero
     %   - cvx crashes when initial rate is far from constraint
     %       - use scaled matched filter to initialize power waveform with power P
     %       - use water-filling + MRT to initialize information waveform with power P
@@ -31,18 +31,19 @@ function [infoAmplitude, powerAmplitude, infoRatio, powerRatio] = initialize_wav
 
 	% * Get data
 	nSubbands = size(channel, 1);
+	epsilon = 1e-4;
 
 	% * Initialize modulated waveform by WF
 	[~, infoAmplitude] = water_filling(channel, txPower, noisePower);
 
 	% * If necessary, initialize multisine waveform by SMF
 	if nSubbands <= 2
-		powerAmplitude = zeros(1, nSubbands) + eps;
+		powerAmplitude = zeros(1, nSubbands) + epsilon;
 	else
 		[~, ~, powerAmplitude] = scaled_matched_filter(alpha, beta2, beta4, channel, txPower);
 	end
 
-	infoRatio = 1 - eps;
-    powerRatio = 1 - eps;
+	infoRatio = 1 - epsilon;
+    powerRatio = 1 - epsilon;
 
 end

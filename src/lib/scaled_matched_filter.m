@@ -31,14 +31,15 @@ function [current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = scale
     % * Get data
     nSubbands = size(channel, 1);
     channelAmplitude = vecnorm(channel, 2, 2);
+	epsilon = 1e-4;
 
     % * SMF power allocation based on equivalent channel strength
 	powerAmplitude = sqrt(2 * waveformRatio * txPower / sum(channelAmplitude .^ (2 * alpha))) * channelAmplitude' .^ alpha;
 
 	% * Assign modulated waveform and splitting ratio
-    infoAmplitude = zeros(1, nSubbands) + eps;
-    infoRatio = eps;
-    powerRatio = 1 - eps;
+    infoAmplitude = zeros(1, nSubbands) + epsilon;
+    infoRatio = epsilon;
+    powerRatio = 1 - epsilon;
 
 	% * Update output current
 	[current] = current_sdr(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio);
