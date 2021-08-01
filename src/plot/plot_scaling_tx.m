@@ -51,7 +51,7 @@ plotHandle(2) = plot(Variable.nTxs, mag2db(currentSmf));
 plotHandle(3) = plot(Variable.nTxs, mag2db(currentSdr));
 hold off;
 grid on;
-legend('ASS', 'SMF', 'GP', 'location', 'se', 'orientation', 'horizontal');
+legend('LEH', 'SMF', 'GP', 'location', 'se', 'orientation', 'horizontal');
 xlabel('Number of transmit antennas');
 ylabel('DC current [dBA]');
 xlim([Variable.nTxs(1), Variable.nTxs(end)]);
