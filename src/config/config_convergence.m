@@ -55,7 +55,7 @@ tolerance = 1e-8;
 % number of CSCG random vectors to generate
 nCandidates = 1e3;
 % number of samples in R-E curves
-nSamples = 20;
+nSamples = 2;
 % number of channel realizations
 nChannels = 1;
 % max number of iterations to show in convergence plots
