@@ -45,5 +45,5 @@ end
 
 % * Save batch data
 if ~sum(flag(:))
-	save(sprintf('data/re_waveform_%dreflectors.mat', nReflectors));
+	save('data/re_waveform.mat');
 end

@@ -1,7 +1,7 @@
 clear; clc; close all; config_re_waveform;
 
 %% * Load data
-load(sprintf('../data/re_waveform_%dreflectors.mat', nReflectors), 'reIrsSolution', 'reNoIrsSolution');
+load('../data/re_waveform.mat', 'reIrsSolution', 'reNoIrsSolution');
 
 witIrsInfoAmplitude = cell(1, length(Variable.nSubbands));
 witNoIrsInfoAmplitude = cell(1, length(Variable.nSubbands));
@@ -55,8 +55,8 @@ for iSubband = 1 : length(Variable.nSubbands)
 end
 xlabel('Sorted subband index');
 
-savefig(sprintf('../figures/channel_amplitude_%dreflectors.fig', nReflectors));
-matlab2tikz(sprintf('../../assets/channel_amplitude_%dreflectors.tex', nReflectors), 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}, ' 'scaled y ticks=false, ' 'yticklabel=\pgfkeys{/pgf/number format/.cd,fixed,precision=2}\pgfmathprintnumber{\tick}']);
+savefig('../figures/channel_amplitude.fig');
+matlab2tikz('../../assets/channel_amplitude.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}, ' 'scaled y ticks=false, ' 'yticklabel=\pgfkeys{/pgf/number format/.cd,fixed,precision=2}\pgfmathprintnumber{\tick}']);
 close;
 
 %% * Waveform amplitude
@@ -83,8 +83,8 @@ for iSubband = 1 : length(Variable.nSubbands)
 end
 xlabel('Sorted subband index');
 
-savefig(sprintf('../figures/waveform_wit_modulated_%dreflectors.fig', nReflectors));
-matlab2tikz(sprintf('../../assets/waveform_wit_modulated_%dreflectors.tex', nReflectors), 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
+savefig('../figures/waveform_wit_modulated.fig');
+matlab2tikz('../../assets/waveform_wit_modulated.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
 close;
 
 % * WPT modulated
@@ -110,8 +110,8 @@ for iSubband = 1 : length(Variable.nSubbands)
 end
 xlabel('Sorted subband index');
 
-savefig(sprintf('../figures/waveform_wpt_modulated_%dreflectors.fig', nReflectors));
-matlab2tikz(sprintf('../../assets/waveform_wpt_modulated_%dreflectors.tex', nReflectors), 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
+savefig('../figures/waveform_wpt_modulated.fig');
+matlab2tikz('../../assets/waveform_wpt_modulated.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
 close;
 
 % * WPT multisine
@@ -137,5 +137,5 @@ for iSubband = 1 : length(Variable.nSubbands)
 end
 xlabel('Sorted subband index');
 
-savefig(sprintf('../figures/waveform_wpt_multisine_%dreflectors.fig', nReflectors));
-matlab2tikz(sprintf('../../assets/waveform_wpt_multisine_%dreflectors.tex', nReflectors), 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
+savefig('../figures/waveform_wpt_multisine.fig');
+matlab2tikz('../../assets/waveform_wpt_multisine.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
