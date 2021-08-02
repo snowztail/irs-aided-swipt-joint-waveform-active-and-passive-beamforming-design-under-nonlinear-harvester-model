@@ -36,7 +36,7 @@ function [sample, solution] = re_sample_swipt_benchmark(alpha, beta2, beta4, cha
 
     % * WIT point
     sample(:, 1) = [capacity; 0];
-    solution{1} = variables2struct(infoAmplitude, powerAmplitude, infoRatio, powerRatio);
+    solution{1} = variables2struct(channel, infoAmplitude, powerAmplitude, infoRatio, powerRatio);
 
     % * Non-WIT points
     for iSample = 2 : nSamples
@@ -59,7 +59,7 @@ function [sample, solution] = re_sample_swipt_benchmark(alpha, beta2, beta4, cha
             end
         end
         sample(:, iSample) = [rate; current];
-        solution{iSample} = variables2struct(infoAmplitude, powerAmplitude, infoRatio, powerRatio);
+        solution{iSample} = variables2struct(channel, infoAmplitude, powerAmplitude, infoRatio, powerRatio);
     end
 
 end
