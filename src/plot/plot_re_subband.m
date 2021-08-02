@@ -79,11 +79,13 @@ for iSubband = 1 : length(Variable.nSubbands)
 	hold off;
 	grid on;
     if iSubband == 1
-		legend('{\boldmath${s}$}$_{\mathrm{I}}$', '{\boldmath${s}$}$_{\mathrm{P}}$');
+		legend('{\boldmath${s}$}$_{\mathrm{I}}$', '{\boldmath${s}$}$_{\mathrm{P}}$', 'location', 'northoutside', 'orientation', 'horizontal');
 	elseif iSubband == 3
 		ylabel('Waveform amplitude');
+	elseif iSubband == 4
+        yticks([0 1]);
 	elseif iSubband == 5
-		yticks([0, 0.4, 0.8]);
+        yticks([0 1]);
     end
     box on;
 end

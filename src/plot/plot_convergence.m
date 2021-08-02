@@ -1,9 +1,9 @@
 clear; clc; close all; config_convergence;
 
 %% * Retrieve data
-% * Load data and select one point with medium rate and current
+% * Load data and select the WPT point
 load('../data/convergence.mat');
-sampleIndex = ceil(nSamples / 2);
+sampleIndex = nSamples;
 
 % * Algorithm 1
 scaIter = aoSolution{sampleIndex}.scaIter{1}(2, :);
@@ -27,7 +27,7 @@ lcBcdIter(end : nIters) = lcBcdIter(end);
 
 %% * Convergence trends of SCA-based algorithms
 figure('name', 'Convergence trends of SCA-based algorithms', 'position', [0, 0, 500, 400]);
-scaPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
+scaPlot = tiledlayout(2, 1, 'tilespacing', 'loose');
 
 % * Algorithm 1
 nexttile;
@@ -73,7 +73,7 @@ close;
 
 %% * Convergence trends of BCD-based algorithms
 figure('name', 'Convergence trends of BCD-based algorithms', 'position', [0, 0, 500, 400]);
-bcdPlot = tiledlayout(2, 1, 'tilespacing', 'compact');
+bcdPlot = tiledlayout(2, 1, 'tilespacing', 'loose');
 
 % * Algorithm 4
 nexttile;
