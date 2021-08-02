@@ -39,7 +39,7 @@ bandwidth = 1e7;
 % channel fading mode ('flat' or 'selective')
 fadingMode = 'selective';
 % number of reflecting elements in IRS
-nReflectors = 20;
+nReflectors = 1e2;
 % spatial correlation
 corTx = eye(nTxs);
 corRx = eye(nRxs);
