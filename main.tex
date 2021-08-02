@@ -26,8 +26,6 @@
 \usepackage[RPvoltages]{circuitikz}
 \usepackage[T1]{fontenc}
 \usepackage[caption=false,font=footnotesize,subrefformat=parens,labelformat=parens]{subfig}
-% \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
-% \usepackage[cmintegrals]{newtxmath}
 \usepackage[short]{optidef}
 \usepackage[subtle]{savetrees}
 
@@ -674,31 +672,30 @@
 
 		Fig.~\subref*{fi:re_subband} illustrates the average R-E region versus the number of subband $N$. \emph{First,} it is observed that increasing $N$ reduces the per-subband rate but boosts the harvested energy. It is because less power is allocated to each subband but more balanced DC terms are introduced to boost the harvested energy. On the other hand, Fig.~\subref*{fi:waveform_subband} sorts the modulated/multisine amplitude $\boldsymbol{s}_{\mathrm{I/P}}$ for WPT in descending order. It demonstrates that a dedicated multisine waveform is unnecessary for a small $N$ but is required for a large $N$. This observation origins from the rectifier nonlinearity. Although both waveforms have equivalent second-order DC terms \eqref{eq:y_I2} and \eqref{eq:y_P2}, for the fourth-order terms \eqref{eq:y_I4} and \eqref{eq:y_P4}, the modulated waveform has $N^2$ monomials with a modulation gain of \num{2} while the multisine has $(2N^3+N)/3$ monomials. Hence, the benefit of multisine outstands for a sufficiently large $N$. \emph{Second,} the R-E region is convex for $N \in \{2,4\}$ and concave-convex for $N \in \{8,16\}$. This has the consequence that PS outperforms TS for a small $N$ and is outperformed for a large $N$. When $N$ is in between, the optimal strategy is a combination of both, i.e., a time sharing between the WPT point and the saddle SWIPT point obtained by PS (as the red curve in Fig.~\subref*{fi:re_subband}). For a relatively small $N$, the modulated waveform is used at both WIT and WPT point, and one can heuristically infer that no multisine waveform is needed for any R-E point (this is verified in simulation). In this case, the R-E region is convex, which aligns with the conventional linear harvester model (PS outperforms TS and dedicated power waveform is unnecessary). However, as $N$ becomes sufficiently large, multisine waveform further boosts the WPT point and creates some concavity in the high-power region, which accounts for the superiority of TS under nonlinear harvester model. In conclusion, the rectifier nonlinearity enlarges the R-E region by favoring a different waveform and receiving mode, both heavily depend on the number of subbands. \emph{Third,} the LC-BCD algorithm achieves a very good R-E performance even if one-dimensional search is considered for $\delta=\rho$ over $[0,1]$. This conclusion is also verified in the following plots.
 
-		% \begin{figure}[!t]
-		% 	\centering
-		% 	\subfloat[Channel]{
-		% 		\resizebox{0.45\columnwidth}{!}{
-		% 			\input{assets/channel_amplitude_100reflectors.tex}
-		% 		}
-		% 	}
-		% 	\subfloat[WIT waveform: modulated]{
-		% 		\resizebox{0.45\columnwidth}{!}{
-		% 			\input{assets/waveform_wit_modulated_100reflectors.tex}
-		% 		}
-		% 	}\\
-		% 	\subfloat[WPT waveform: modulated]{
-		% 		\resizebox{0.45\columnwidth}{!}{
-		% 			\input{assets/waveform_wpt_modulated_100reflectors.tex}
-		% 		}
-		% 	}
-		% 	\subfloat[WPT waveform: multisine]{
-		% 		\resizebox{0.45\columnwidth}{!}{
-		% 			\input{assets/waveform_wpt_multisine_100reflectors.tex}
-		% 		}
-		% 	}
-		% 	\caption{Sorted channel and waveform amplitude for WIT and WPT with and without IRS versus $N$ for $M=1$, $L=100$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{10}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
-		% 	\label{fi:amplitude}
-		% \end{figure}
+		\begin{figure}[!t]
+			\centering
+			\subfloat[Channel]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/channel_amplitude.tex}
+				}
+			}
+			\subfloat[WIT: modulated]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/waveform_wit_modulated.tex}
+				}
+			}\\
+			\subfloat[WPT: modulated]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/waveform_wpt_modulated.tex}
+				}
+			}
+			\subfloat[WPT: multisine]{
+				\resizebox{0.45\columnwidth}{!}{
+					\input{assets/waveform_wpt_multisine.tex}
+				}
+			}
+			\caption{Sorted channel and waveform amplitude for WIT and WPT with and without IRS versus $N$ for $M=1$, $L=100$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{10}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
+		\end{figure}
 
 		\begin{figure}[!t]
 			\centering
