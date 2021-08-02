@@ -43,14 +43,13 @@ function [sample, solution] = re_sample_swipt_low_complexity(alpha, beta2, beta4
 		% * Design waveform ratio
 		waveformRatio = powerRatio;
 
-		% * Initial R-E point
-		[rate_, infoAmplitude] = water_filling(compositeChannel, txPower, noisePower, waveformRatio);
-		[current_, ~, powerAmplitude] = scaled_matched_filter(alpha, beta2, beta4, compositeChannel, txPower, waveformRatio);
-		lcBcdIter = [rate_; current_];
+		% * Initialize R-E performance
+		lcBcdIter = sample(:, iSample - 1);
 		mScaIter = {};
 
 		isConverged = false;
 		eigRatio = [];
+        current_ = 0;
 		while ~isConverged
 			% * Design waveform by WF and SMF + MRT
 			[~, infoAmplitude] = water_filling(compositeChannel, txPower, noisePower, waveformRatio);

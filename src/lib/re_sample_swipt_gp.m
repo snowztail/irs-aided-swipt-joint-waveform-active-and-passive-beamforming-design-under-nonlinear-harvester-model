@@ -40,6 +40,9 @@ function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChan
     % * Non-WIT points
     for iSample = 2 : nSamples
         isDominated = false;
+
+		% * Initialize R-E performance
+        bcdIter = sample(:, iSample - 1);
         while true
             if ~isDominated
                 % * Default initialization
@@ -56,7 +59,6 @@ function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChan
 			% * Apply GP first to ensure vaild initialization before looping
             [rate_, current_, infoAmplitude, powerAmplitude, infoRatio, powerRatio, gpIter{end + 1}] = waveform_gp(beta2, beta4, compositeChannel, infoAmplitude, powerAmplitude, infoRatio, powerRatio, txPower, noisePower, rateConstraint(iSample), tolerance);
             [infoWaveform, powerWaveform] = precoder_mrt(compositeChannel, infoAmplitude, powerAmplitude);
-			bcdIter = [rate_; current_];
 
             % * Alternating optimization
             isConverged = false;
