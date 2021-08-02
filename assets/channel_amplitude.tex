@@ -12,8 +12,8 @@
 
 \begin{axis}[%
 width=4.036in,
-height=0.457in,
-at={(0.677in,3.397in)},
+height=0.407in,
+at={(0.677in,3.198in)},
 scale only axis,
 bar shift auto,
 xmin=0,
@@ -21,11 +21,12 @@ xmax=2,
 xtick={1},
 ymin=0,
 ymax=0.01,
+ytick={   0, 0.01},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
-legend style={legend cell align=left, align=left, draw=white!15!black},
-title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
+legend style={at={(0.5,1.03)}, anchor=south, legend columns=3, legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}, scaled y ticks=false, yticklabel=\pgfkeys{/pgf/number format/.cd,fixed,precision=2}\pgfmathprintnumber{\tick}
 ]
 \addplot[ybar, bar width=0.178, fill=mycolor1, draw=black, area legend] table[row sep=crcr] {%
 1	0.00540099400856952\\
@@ -58,8 +59,8 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 
 \begin{axis}[%
 width=4.036in,
-height=0.457in,
-at={(0.677in,2.663in)},
+height=0.407in,
+at={(0.677in,2.513in)},
 scale only axis,
 bar shift auto,
 xmin=0,
@@ -67,10 +68,11 @@ xmax=3,
 xtick={1, 2},
 ymin=0,
 ymax=0.01,
+ytick={   0, 0.01},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
-title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}, scaled y ticks=false, yticklabel=\pgfkeys{/pgf/number format/.cd,fixed,precision=2}\pgfmathprintnumber{\tick}
 ]
 \addplot[ybar, bar width=0.178, fill=mycolor1, draw=black, area legend] table[row sep=crcr] {%
 1	0.00314170999160457\\
@@ -100,8 +102,8 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 
 \begin{axis}[%
 width=4.036in,
-height=0.457in,
-at={(0.677in,1.928in)},
+height=0.407in,
+at={(0.677in,1.828in)},
 scale only axis,
 bar shift auto,
 xmin=0,
@@ -109,12 +111,13 @@ xmax=5,
 xtick={1, 2, 3, 4},
 ymin=0,
 ymax=0.01,
+ytick={   0, 0.01},
 ylabel style={font=\color{white!15!black}},
 ylabel={Channel amplitude},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
-title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}, scaled y ticks=false, yticklabel=\pgfkeys{/pgf/number format/.cd,fixed,precision=2}\pgfmathprintnumber{\tick}
 ]
 \addplot[ybar, bar width=0.178, fill=mycolor1, draw=black, area legend] table[row sep=crcr] {%
 1	0.0016696476908254\\
@@ -150,8 +153,8 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 
 \begin{axis}[%
 width=4.036in,
-height=0.457in,
-at={(0.677in,1.193in)},
+height=0.407in,
+at={(0.677in,1.143in)},
 scale only axis,
 bar shift auto,
 xmin=0,
@@ -159,10 +162,11 @@ xmax=9,
 xtick={1, 2, 3, 4, 5, 6, 7, 8},
 ymin=0,
 ymax=0.01,
+ytick={   0, 0.01},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
-title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}, scaled y ticks=false, yticklabel=\pgfkeys{/pgf/number format/.cd,fixed,precision=2}\pgfmathprintnumber{\tick}
 ]
 \addplot[ybar, bar width=0.178, fill=mycolor1, draw=black, area legend] table[row sep=crcr] {%
 1	0.00121164184157658\\
@@ -210,7 +214,7 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 
 \begin{axis}[%
 width=4.036in,
-height=0.457in,
+height=0.407in,
 at={(0.677in,0.458in)},
 scale only axis,
 bar shift auto,
@@ -221,10 +225,11 @@ xlabel style={font=\color{white!15!black}},
 xlabel={Sorted subband index},
 ymin=0,
 ymax=0.01,
+ytick={   0, 0.01},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
-title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}, scaled y ticks=false, yticklabel=\pgfkeys{/pgf/number format/.cd,fixed,precision=2}\pgfmathprintnumber{\tick}
 ]
 \addplot[ybar, bar width=0.178, fill=mycolor1, draw=black, area legend] table[row sep=crcr] {%
 1	0.0011086419762005\\
