@@ -1,0 +1,52 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=4.036in,
+height=3.396in,
+at={(0.677in,0.458in)},
+scale only axis,
+xmin=1,
+xmax=15,
+xtick={ 1,  5, 10, 15},
+xlabel style={font=\color{white!15!black}},
+xlabel={Iteration index},
+ymin=14,
+ymax=24,
+ylabel style={font=\color{white!15!black}},
+ylabel={DC current [$\mu$A]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.97,0.03)}, anchor=south east, legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
+]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	14.0633399337593\\
+2	17.9492713263444\\
+3	20.4029569404885\\
+4	21.8259074148655\\
+5	22.6090680785892\\
+6	23.042571930969\\
+7	23.2889303522541\\
+8	23.4322965064224\\
+9	23.5170488707544\\
+10	23.5676297219669\\
+11	23.5979913423487\\
+12	23.6162785790704\\
+13	23.6273172804852\\
+14	23.6339898147867\\
+15	23.6339898147867\\
+};
+\addlegendentry{GP}
+
+\end{axis}
+\end{tikzpicture}%

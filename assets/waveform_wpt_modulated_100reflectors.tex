@@ -10,23 +10,24 @@
 \begin{tikzpicture}
 
 \begin{axis}[%
-width=3.972in,
-height=0.503in,
-at={(0.666in,3.312in)},
+width=4.036in,
+height=0.474in,
+at={(0.677in,3.198in)},
 scale only axis,
 xmin=0,
 xmax=2,
 xtick={1},
 ymin=0,
 ymax=4.47213595499958,
+ytick={0, 2, 4},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
-legend style={legend cell align=left, align=left, draw=white!15!black},
+legend style={at={(0.5,1.03)}, anchor=south, legend columns=2, legend cell align=left, align=left, draw=white!15!black},
 title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}] table[row sep=crcr] {%
-1	4.47213594256269\\
+1	4.47213595034367\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\
@@ -35,7 +36,7 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 \addlegendentry{IRS: {\boldmath${s}$}$_{\mathrm{I}}$}
 
 \addplot[ycomb, color=mycolor2, line width=2.0pt, mark=x, mark options={solid, mycolor2}] table[row sep=crcr] {%
-1	4.47213594337198\\
+1	4.47213593685897\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\
@@ -46,31 +47,32 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 \end{axis}
 
 \begin{axis}[%
-width=3.972in,
-height=0.503in,
-at={(0.666in,2.598in)},
+width=4.036in,
+height=0.474in,
+at={(0.677in,2.513in)},
 scale only axis,
 xmin=0,
 xmax=3,
 xtick={1, 2},
 ymin=0,
 ymax=4.47213595499958,
+ytick={0, 2, 4},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
 title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}, forget plot] table[row sep=crcr] {%
-1	0.0184995683160857\\
-2	4.47209768702344\\
+1	0.000570870326956724\\
+2	4.4721359179404\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\
 3	0\\
 };
 \addplot[ycomb, color=mycolor2, line width=2.0pt, mark=x, mark options={solid, mycolor2}, forget plot] table[row sep=crcr] {%
-1	0.129245877350812\\
-2	4.47026793562064\\
+1	0.0110856763978608\\
+2	4.47212221176042\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\
@@ -79,15 +81,16 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 \end{axis}
 
 \begin{axis}[%
-width=3.972in,
-height=0.503in,
-at={(0.666in,1.883in)},
+width=4.036in,
+height=0.474in,
+at={(0.677in,1.828in)},
 scale only axis,
 xmin=0,
 xmax=5,
 xtick={1, 2, 3, 4},
 ymin=0,
 ymax=4.47213595499958,
+ytick={0, 2, 4},
 ylabel style={font=\color{white!15!black}},
 ylabel={Waveform amplitude},
 axis background/.style={fill=white},
@@ -96,20 +99,20 @@ ymajorgrids,
 title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}, forget plot] table[row sep=crcr] {%
-1	1.22062490140461e-05\\
-2	1.39192509615866e-05\\
-3	0.000167256169027754\\
-4	4.30544303806377\\
+1	1.82810775851695e-05\\
+2	3.53085892593064e-05\\
+3	3.54347120351704e-05\\
+4	4.42555930751421\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\
 5	0\\
 };
 \addplot[ycomb, color=mycolor2, line width=2.0pt, mark=x, mark options={solid, mycolor2}, forget plot] table[row sep=crcr] {%
-1	9.33422606187999e-05\\
-2	0.00147978695861402\\
-3	0.00191364123320196\\
-4	4.17157348848167\\
+1	1.22676166428777e-05\\
+2	2.19662118918467e-05\\
+3	2.35611473414708e-05\\
+4	4.38314990531919\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\
@@ -118,43 +121,44 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 \end{axis}
 
 \begin{axis}[%
-width=3.972in,
-height=0.503in,
-at={(0.666in,1.168in)},
+width=4.036in,
+height=0.474in,
+at={(0.677in,1.143in)},
 scale only axis,
 xmin=0,
 xmax=9,
 xtick={1, 2, 3, 4, 5, 6, 7, 8},
 ymin=0,
 ymax=4.47213595499958,
+ytick={0, 2, 4},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
 title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}, forget plot] table[row sep=crcr] {%
-1	1.79407563422514e-05\\
-2	1.85714620268948e-05\\
-3	1.93369863129044e-05\\
-4	2.05312064086965e-05\\
-5	2.39372760743564e-05\\
-6	0.000270300028092872\\
-7	0.0016215086351542\\
-8	0.0160756710767743\\
+1	6.25263040326118e-06\\
+2	6.27921380470113e-06\\
+3	6.34955721457943e-06\\
+4	6.35150273149039e-06\\
+5	6.42390701416729e-06\\
+6	6.42457974220412e-06\\
+7	6.47741859691329e-06\\
+8	6.47969375628299e-06\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\
 9	0\\
 };
 \addplot[ycomb, color=mycolor2, line width=2.0pt, mark=x, mark options={solid, mycolor2}, forget plot] table[row sep=crcr] {%
-1	2.10931097834311e-05\\
-2	0.000139552824561586\\
-3	0.000276023439508691\\
-4	0.00106782286234867\\
-5	0.00351285453513694\\
-6	0.00648184617722918\\
-7	0.107736181700373\\
-8	0.176305935466697\\
+1	2.07597912435039e-05\\
+2	2.10621157490525e-05\\
+3	2.27177871268911e-05\\
+4	2.34764127724776e-05\\
+5	0.000633429285281999\\
+6	0.00299168089473067\\
+7	0.0168627108170759\\
+8	0.0302609478988545\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\
@@ -163,9 +167,9 @@ title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE
 \end{axis}
 
 \begin{axis}[%
-width=3.972in,
-height=0.503in,
-at={(0.666in,0.454in)},
+width=4.036in,
+height=0.474in,
+at={(0.677in,0.458in)},
 scale only axis,
 xmin=0,
 xmax=17,
@@ -174,50 +178,51 @@ xlabel style={font=\color{white!15!black}},
 xlabel={Sorted subband index},
 ymin=0,
 ymax=4.47213595499958,
+ytick={0, 2, 4},
 axis background/.style={fill=white},
 xmajorgrids,
 ymajorgrids,
 title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}
 ]
 \addplot[ycomb, color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}, forget plot] table[row sep=crcr] {%
-1	2.1710720676869e-05\\
-2	2.17376236559091e-05\\
-3	2.17546727036312e-05\\
-4	2.17704747375875e-05\\
-5	2.1794882595919e-05\\
-6	2.18143527307804e-05\\
-7	2.18457881093868e-05\\
-8	2.19305951527728e-05\\
-9	2.19328455198334e-05\\
-10	2.21325751565748e-05\\
-11	2.22071274039942e-05\\
-12	2.25919792561307e-05\\
-13	2.32407144765052e-05\\
-14	3.96822628633167e-05\\
-15	7.14362303625945e-05\\
-16	0.000113723656309437\\
+1	1.46841221768753e-06\\
+2	1.46853581584948e-06\\
+3	1.46888556831603e-06\\
+4	1.46960879811052e-06\\
+5	1.47063822579491e-06\\
+6	1.47112726920342e-06\\
+7	1.47158812622008e-06\\
+8	1.47177039924161e-06\\
+9	1.47273523214333e-06\\
+10	1.47288042283048e-06\\
+11	1.47389962773962e-06\\
+12	1.47396082891411e-06\\
+13	1.47467419234042e-06\\
+14	1.47476166458671e-06\\
+15	1.47506643379659e-06\\
+16	1.47509099313304e-06\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\
 17	0\\
 };
 \addplot[ycomb, color=mycolor2, line width=2.0pt, mark=x, mark options={solid, mycolor2}, forget plot] table[row sep=crcr] {%
-1	2.55678240861943e-05\\
-2	2.83329978735535e-05\\
-3	0.000111062823999827\\
-4	0.000152254112563635\\
-5	0.000208409153895756\\
-6	0.000340769670268019\\
-7	0.000442331617111308\\
-8	0.000478575211543757\\
-9	0.000624300142407434\\
-10	0.00101777812439063\\
-11	0.00411301301403382\\
-12	0.00600022404275364\\
-13	0.0141022990885949\\
-14	0.0215927071517045\\
-15	0.0287996793460057\\
-16	0.035646104685323\\
+1	1.08632407458004e-05\\
+2	1.08877007745949e-05\\
+3	1.09594364217047e-05\\
+4	1.10938027865036e-05\\
+5	1.12827891666553e-05\\
+6	1.15378065652616e-05\\
+7	1.19617266900702e-05\\
+8	1.41613520483063e-05\\
+9	6.92466622068608e-05\\
+10	0.000224790946436711\\
+11	0.000536194940235116\\
+12	0.0020179447121528\\
+13	0.00228142595005787\\
+14	0.00484194141261625\\
+15	0.00509975660438143\\
+16	0.00611499201390601\\
 };
 \addplot[forget plot, color=white!15!black, line width=2.0pt] table[row sep=crcr] {%
 0	0\\

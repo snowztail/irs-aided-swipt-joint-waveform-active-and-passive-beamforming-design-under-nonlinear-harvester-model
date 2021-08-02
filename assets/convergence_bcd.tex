@@ -1,0 +1,93 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=4.036in,
+height=1.399in,
+at={(0.677in,2.455in)},
+scale only axis,
+xmin=1,
+xmax=15,
+xtick={ 1,  5, 10, 15},
+ymin=0,
+ymax=23.9521333022272,
+ylabel style={font=\color{white!15!black}},
+ylabel={DC current [$\mu$A]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.97,0.03)}, anchor=south east, legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}, /pgf/number format/.cd,fixed,precision=4
+]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	2.22044604925031e-10\\
+2	23.9477142509994\\
+3	23.9521333022272\\
+4	23.9521333022272\\
+5	23.9521333022272\\
+6	23.9521333022272\\
+7	23.9521333022272\\
+8	23.9521333022272\\
+9	23.9521333022272\\
+10	23.9521333022272\\
+11	23.9521333022272\\
+12	23.9521333022272\\
+13	23.9521333022272\\
+14	23.9521333022272\\
+15	23.9521333022272\\
+};
+\addlegendentry{BCD}
+
+\end{axis}
+
+\begin{axis}[%
+width=4.036in,
+height=1.399in,
+at={(0.677in,0.472in)},
+scale only axis,
+xmin=1,
+xmax=15,
+xtick={ 1,  5, 10, 15},
+xlabel style={font=\color{white!15!black}},
+xlabel={Iteration index},
+ymin=0,
+ymax=23.4661978529908,
+ylabel style={font=\color{white!15!black}},
+ylabel={DC current [$\mu$A]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.97,0.03)}, anchor=south east, legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}, /pgf/number format/.cd,fixed,precision=4
+]
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	2.22044604925031e-10\\
+2	23.4267512312375\\
+3	23.4652236267543\\
+4	23.4661978529908\\
+5	23.4661978529908\\
+6	23.4661978529908\\
+7	23.4661978529908\\
+8	23.4661978529908\\
+9	23.4661978529908\\
+10	23.4661978529908\\
+11	23.4661978529908\\
+12	23.4661978529908\\
+13	23.4661978529908\\
+14	23.4661978529908\\
+15	23.4661978529908\\
+};
+\addlegendentry{LC-BCD}
+
+\end{axis}
+\end{tikzpicture}%

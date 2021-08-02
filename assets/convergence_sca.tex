@@ -1,0 +1,93 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor2}{rgb}{0.85098,0.32549,0.09804}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=3.972in,
+height=1.383in,
+at={(0.666in,2.433in)},
+scale only axis,
+xmin=1,
+xmax=15,
+xtick={ 1,  5, 10, 15},
+ymin=23.6,
+ymax=24,
+ylabel style={font=\color{white!15!black}},
+ylabel={DC current [$\mu$A]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.97,0.03)}, anchor=south east, legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}, /pgf/number format/.cd,fixed,precision=4
+]
+\addplot [color=mycolor1, line width=2.0pt, mark=o, mark options={solid, mycolor1}]
+  table[row sep=crcr]{%
+1	23.6339898147867\\
+2	23.9359168430033\\
+3	23.9359212944279\\
+4	23.9359212944279\\
+5	23.9359212944279\\
+6	23.9359212944279\\
+7	23.9359212944279\\
+8	23.9359212944279\\
+9	23.9359212944279\\
+10	23.9359212944279\\
+11	23.9359212944279\\
+12	23.9359212944279\\
+13	23.9359212944279\\
+14	23.9359212944279\\
+15	23.9359212944279\\
+};
+\addlegendentry{SCA}
+
+\end{axis}
+
+\begin{axis}[%
+width=3.972in,
+height=1.383in,
+at={(0.666in,0.472in)},
+scale only axis,
+xmin=1,
+xmax=15,
+xtick={ 1,  5, 10, 15},
+xlabel style={font=\color{white!15!black}},
+xlabel={Iteration index},
+ymin=23.1,
+ymax=23.4267428478373,
+ylabel style={font=\color{white!15!black}},
+ylabel={DC current [$\mu$A]},
+axis background/.style={fill=white},
+xmajorgrids,
+ymajorgrids,
+legend style={at={(0.97,0.03)}, anchor=south east, legend cell align=left, align=left, draw=white!15!black},
+title style={font=\huge}, label style={font=\huge}, ticklabel style={font=\LARGE}, legend style={font=\LARGE}, /pgf/number format/.cd,fixed,precision=4
+]
+\addplot [color=mycolor2, dashed, line width=2.0pt, mark=+, mark options={solid, mycolor2}]
+  table[row sep=crcr]{%
+1	23.1650475635163\\
+2	23.4267359303359\\
+3	23.4267428478373\\
+4	23.4267428478373\\
+5	23.4267428478373\\
+6	23.4267428478373\\
+7	23.4267428478373\\
+8	23.4267428478373\\
+9	23.4267428478373\\
+10	23.4267428478373\\
+11	23.4267428478373\\
+12	23.4267428478373\\
+13	23.4267428478373\\
+14	23.4267428478373\\
+15	23.4267428478373\\
+};
+\addlegendentry{M-SCA}
+
+\end{axis}
+\end{tikzpicture}%
