@@ -69,9 +69,7 @@ for iSubband = 1 : length(Variable.nSubbands)
 	stem(1 : Variable.nSubbands(iSubband), witIrsInfoAmplitude{iSubband}, 'marker', 'o');
     stem(1 : Variable.nSubbands(iSubband), witNoIrsInfoAmplitude{iSubband}, 'marker', 'x');
 	xlim([0 Variable.nSubbands(iSubband) + 1]);
-	ylim([0 sqrt(2 * txPower)]);
     xticks(1 : Variable.nSubbands(iSubband));
-	yticks([0 2 4]);
 	hold off;
 	grid on;
     if iSubband == 1
@@ -79,6 +77,12 @@ for iSubband = 1 : length(Variable.nSubbands)
 	elseif iSubband == 3
 		ylabel('Waveform amplitude');
     end
+	if Variable.nSubbands(iSubband) <= 4
+		yticks([0 2 4]);
+	else
+		ylim([0 2]);
+		yticks([0 1 2]);
+	end
     box on;
 end
 xlabel('Sorted subband index');
@@ -96,9 +100,7 @@ for iSubband = 1 : length(Variable.nSubbands)
 	stem(1 : Variable.nSubbands(iSubband), wptIrsInfoAmplitude{iSubband}, 'marker', 'o');
     stem(1 : Variable.nSubbands(iSubband), wptNoIrsInfoAmplitude{iSubband}, 'marker', 'x');
 	xlim([0 Variable.nSubbands(iSubband) + 1]);
-	ylim([0 sqrt(2 * txPower)]);
     xticks(1 : Variable.nSubbands(iSubband));
-	yticks([0 2 4]);
 	hold off;
 	grid on;
     if iSubband == 1
@@ -106,6 +108,12 @@ for iSubband = 1 : length(Variable.nSubbands)
 	elseif iSubband == 3
 		ylabel('Waveform amplitude');
     end
+	if Variable.nSubbands(iSubband) <= 4
+		yticks([0 2 4]);
+	else
+		ylim([0 1]);
+		yticks([0 1]);
+	end
     box on;
 end
 xlabel('Sorted subband index');
@@ -123,9 +131,7 @@ for iSubband = 1 : length(Variable.nSubbands)
 	stem(1 : Variable.nSubbands(iSubband), wptIrsPowerAmplitude{iSubband}, 'marker', 'o');
     stem(1 : Variable.nSubbands(iSubband), wptNoIrsPowerAmplitude{iSubband}, 'marker', 'x');
 	xlim([0 Variable.nSubbands(iSubband) + 1]);
-	ylim([0 sqrt(2 * txPower)]);
     xticks(1 : Variable.nSubbands(iSubband));
-	yticks([0 2 4]);
 	hold off;
 	grid on;
     if iSubband == 1
@@ -133,6 +139,13 @@ for iSubband = 1 : length(Variable.nSubbands)
 	elseif iSubband == 3
 		ylabel('Waveform amplitude');
     end
+	if Variable.nSubbands(iSubband) <= 4
+		ylim([0 1]);
+		yticks([0 1]);
+	else
+		ylim([0 sqrt(2 * txPower)]);
+		yticks([0 2 4]);
+	end
     box on;
 end
 xlabel('Sorted subband index');
