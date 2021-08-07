@@ -129,7 +129,7 @@
 				& = \frac{1}{4}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2\nonumber\\
 				& \ge \frac{1}{2}(t_{\mathrm{I},0}^{(i)} + t_{\mathrm{P},0}^{(i)})(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)}) - \frac{1}{4}(t_{\mathrm{I},0}^{(i-1)} + t_{\mathrm{P},0}^{(i-1)})^2 - \frac{1}{4}(t_{\mathrm{I},0}^{(i)} - t_{\mathrm{P},0}^{(i)})^2,
 			\end{align}
-			which is generally feasible and widely adopted when $t_{\mathrm{I},0}$ and $t_{\mathrm{P},0}$ are variables. Hence, we claimed Algorithm~\ref{M-al:sca} ``is not a Semidefinite Programming (SDP) due to the quadratic objective function \eqref{M-eq:z_irs_approx}''. During revision, we realized that $t_{\mathrm{I/P},0}=\mathrm{tr}(\boldsymbol{C}_{\mathrm{I/P},0}\boldsymbol{\Phi})$ are essentially linear real expressions related to optimization variable $\boldsymbol{\Phi}$, and the SCA can be further reduced to
+			which is feasible for any $t_{\mathrm{I/P},0}^{(i)} \in \mathbb{R}$ and widely adopted when $t_{\mathrm{I},0}$ and $t_{\mathrm{P},0}$ are variables. Hence, we claimed Algorithm~\ref{M-al:sca} `is not a Semidefinite Programming (SDP) due to the quadratic objective function \eqref{M-eq:z_irs_approx}'. During revision, we realized that $t_{\mathrm{I/P},0}=\mathrm{tr}(\boldsymbol{C}_{\mathrm{I/P},0}\boldsymbol{\Phi})$ are essentially linear real expressions related to optimization variable $\boldsymbol{\Phi}$, and the SCA can be further reduced to
 			\begin{equation}
 				t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i)} \ge t_{\mathrm{I},0}^{(i)} t_{\mathrm{P},0}^{(i-1)} + t_{\mathrm{P},0}^{(i)} t_{\mathrm{I},0}^{(i-1)} - t_{\mathrm{I},0}^{(i-1)} t_{\mathrm{P},0}^{(i-1)}.
 			\end{equation}
@@ -145,7 +145,7 @@
 
 			For M-SCA Algorithm~\ref{M-al:m_sca}, each optimization problem involved is an SDP with $(L+1)$ variables and linear constraints, and the computational complexity is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$ where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations.
 			\begin{framed}
-				Compared with Algorithm~\ref{M-al:sca}, the rate constraint \eqref{M-co:irs_rate} is dropped and each SDP in Algorithm~\ref{M-al:m_sca} involves $(L+1)$ linear constraints. Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:m_sca} is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations \cite{M-Luo2010}. Note that $I_{\mathrm{M-SCA}}=1$ for the WIT point where no SCA is involved.
+				Since each SDP involves $(L+1)$ linear constraints, the computational complexity of Algorithm~\ref{M-al:m_sca} is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations \cite{M-Luo2010}. Note that no SCA is involved at the WIT point where $I_{\mathrm{M-SCA}}=1$.
 			\end{framed}
 
 			For BCD Algorithm~\ref{M-al:bcd}, since Algorithm~\ref{M-al:gp} is involved per iteration, the computational complexity is exponential w.r.t. the number of subbands.
@@ -155,7 +155,7 @@
 
 			For LC-BCD Algorithm~\ref{M-al:lc_bcd}, both waveform and active beamforming are obtained in closed form, and the computational complexity of Algorithm~\ref{M-al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{M-Luo2010}.
 			\begin{framed}
-				Given a solution accuracy $\epsilon_{\mathrm{IPM}}$ for the interior-point method, the computational complexity of Algorithm~\ref{M-al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{M-Luo2010}.
+				The computational complexity of Algorithm~\ref{M-al:lc_bcd} is $\mathcal{O}\left(I_{\mathrm{LC-BCD}}I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{LC-BCD}}$ denotes the number of LC-BCD iterations \cite{M-Luo2010}.
 			\end{framed}
 			\label{re:1.1}
 		\end{response}
@@ -165,9 +165,9 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for sharing this paper. Instead of optimizing the phase shift of each IRS element, it tailored a tile-based two-stage optimization framework for large-scale IRS to enable a flexible performance-complexity tradeoff. The model also adapts well to practical IRS models accounting AoA and AoD. In contrast, our paper is more focused on waveform design and rate-energy tradeoff for one SWIPT user with practical co-located information decoder and energy harvester. We have updated the manuscript as follows.
+			Thank you for sharing this paper. Instead of optimizing the phase shift of each IRS element, it tailored a tile-based two-stage optimization framework for large-scale IRS to enable a flexible performance-complexity tradeoff. The model also adapts well to practical IRS models accounting AoA and AoD. We would like to kindly highlight that \cite{Xu2021} was not available at the time of submission of this manuscript. \cite{Xu2021} was indeed submitted in April 2021, i.e. several months after our submission to TCOM in Nov 2020. We therefore believe it is for authors of \cite{Xu2021} to further enrich the survey part of their manuscript by making it more comprehensive and discuss the difference between \cite{Xu2021} and this paper. Nevertheless to address the reviewer comments, we now compare with \cite{Xu2021c} which appeared on arXiv shortly before our submission.
 			\begin{framed}
-				In \cite{Xu2021}, the authors proposed a scalable resource allocation framework for SWIPT systems involving large-scale IRS, where the reflectors are grouped into tiles and the optimization process is divided into an offline mode-design stage and an online mode-selection stage. It was concluded that the proposed two-stage algorithm not only enables a flexible balance between performance and complexity but also adapts well to practical IRS and harvester models.
+				Based on practical IRS and energy harvester models, \cite{M-Xu2021c} introduced a scalable resource allocation framework for a large-scale tile-based IRS-assisted SWIPT system, where the optimization is divided into a reflection mode design stage and a joint reflection mode selection and precoder design stage. The proposed framework provides a flexible balance between performance and complexity.
 
 				\textellipsis To the best of our knowledge, all existing papers considered resource allocation and beamforming design for dedicated information and energy users in a single-carrier network. In this paper, we instead build our design based on a proper nonlinear harvester modeling that captures the dependency of the output DC power on both the power and shape of the input waveform, and marry the benefits of joint multi-carrier waveform and active beamforming optimization for SWIPT with the passive beamforming capability of IRS, to investigate the R-E tradeoff for one SWIPT user with practical co-located information decoder and energy harvester.
 			\end{framed}
@@ -178,7 +178,7 @@
 		\end{point}
 
 		\begin{response}
-			The system layout follows \cite{M-Wu2019}. For the center frequency, we consider \SI{2.4}{\GHz} due to its ubiquitous and license-free properties. Note that the path loss can be greatly reduced (and the R-E performance can be improved) if the system operates at much lower frequency, as considered in most IRS papers. In the previous manuscript, we made a mistake in the choice of reference path loss. As indicated by Comment~\ref{pt:3.3}, even the free-space path loss should be around \SI{40}{\dB} at \SI{1}{\meter}. To fix this issue, we updated the path loss model as IEEE TGn channel model D that is representative of small environments such as residential homes and small offices \cite{M-Erceg2004}. It has three clusters with \SI{50}{\ns} r.m.s. delay spread, and the path loss exponent is set to \num{2} (i.e., free-space model) up to breakpoint distance \SI{10}{\meter} and set to \num{3.5} onwards. This has a similar effect to most IRS literatures that assign a relatively large path loss exponent to the direct path and smaller ones to the incident and reflected paths to penalize the channel with large distance. We also raise the EIRP from \SI{36}{\dBm} to \SI{40}{\dBm} (which still complies with FCC regulations \cite{Afar2021}) and change the receive antenna gain from \SI{2}{\dBi} to \SI{3}{\dBi}. As for the rectenna parameters, the parameters are taken from \cite{M-Clerckx2016a} and the reference have been added to the revised manuscript.
+			The system layout follows \cite{M-Wu2019}. For the center frequency, we consider \SI{2.4}{\GHz} due to its ubiquitous and license-free properties. Note that the path loss can be greatly reduced (and the R-E performance can be improved) if the system operates at much lower frequency, as considered in most IRS papers. In the previous manuscript, we made a mistake in the choice of reference path loss. As indicated by Comment~\ref{pt:3.3}, even the free-space path loss should be around \SI{40}{\dB} at \SI{1}{\meter}. To fix this issue, we updated the path loss model as IEEE TGn channel model D that is representative of small environments such as residential homes and small offices \cite{M-Erceg2004}. It has three clusters with \SI{50}{\ns} r.m.s. delay spread, and the path loss exponent is \num{2} (i.e., free-space model) up to breakpoint distance \SI{10}{\meter} and \num{3.5} onwards to further penalize channels with large distance. We also raise the EIRP from \SI{36}{\dBm} to \SI{40}{\dBm} (which still complies with FCC regulations \cite{Afar2021}) and change the receive antenna gain from \SI{2}{\dBi} to \SI{3}{\dBi}. As for the rectenna parameters, the parameters are taken from \cite{M-Clerckx2016a} and the reference have been added to the revised manuscript.
 		\end{response}
 
 		\begin{point}
@@ -188,7 +188,7 @@
 		\begin{response}
 			We incorporated two cases (WIT/non-WIT) into Algorithm~\ref{M-al:lc_bcd}, where Algorithm~\ref{M-al:m_sca} is called during each iteration. To obtain the WIT point, the rate \eqref{M-eq:R_irs} instead of the DC current \eqref{M-eq:z_irs_approx} should be maximized, such that the current expression is dropped and no SCA is involved. To clarify this point, we have updated the description on Algorithm~\ref{M-al:m_sca} as follows.
 			\begin{framed}
-				To achieve the WIT point, the rate \eqref{M-eq:R_irs} instead of the DC current \eqref{M-eq:z_irs_approx} should be maximized. In such case, the current expression is dropped and no SCA is involved.
+				Besides, minor modifications are required for passive beamforming to accommodate the low-complexity waveform schemes. The rate constraint \eqref{M-co:irs_rate} should be dropped as the achievable rate is controlled by $\eta$ or $\{\delta,\rho\}$. To achieve the WIT point ($\rho=0$), the rate \eqref{M-eq:R_irs} should be maximized, the current expression \eqref{M-eq:z_irs_approx} should be dropped, and no SCA is involved.
 			\end{framed}
 			Correspondingly, to achieve the WIT point, the LC-BCD Algorithm~\ref{M-al:lc_bcd} should maximizes $R$ instead of $z$. Line~\ref{li:convergence_begin}--\ref{li:convergence_end} was modified to avoid ambiguity and Algorithm~\ref{M-al:lc_bcd} is indexed below by \ref{al:lc_bcd} .
 			\begin{algorithm}[!h]
@@ -218,9 +218,9 @@
 			\end{algorithm}
 			The description on Algorithm~\ref{M-al:lc_bcd} have been updated as follows.
 			\begin{framed}
-				Note that the BCD algorithm obtains the R-E region by varying the rate constraint from \num{0} to maximum capacity $C_{\max}$\footnotemark, and the LC-BCD algorithm characterizes the R-E tradeoff via two-dimensional search over $\delta$, $\rho$ from \num{0} to \num{1}. For the WIT point, $C_{\max}$ can be obtained in the special case where $\rho=0$ and the objective function becomes $R$ instead of $z$.
+				To achieve the WIT point ($\rho=0$), the rate \eqref{M-eq:R_irs} should be maximized to obtain the maximum capacity $C_{\max}$.\footnotemark Note that the BCD algorithm obtains the R-E region by varying the rate constraint from \num{0} to maximum capacity $C_{\max}$, while the LC-BCD algorithm obtains the R-E region by two-dimensional search over $\{\delta,\rho\}$ from \num{0} to \num{1}.
 			\end{framed}
-			\footnotetext{Recall in Remark~\ref{M-re:subband_tradeoff} that passive beamforming enables a resource allocation opportunity at the channel such that different capacities are achievable.}
+			\footnotetext{Recall in Remark~\ref{M-re:subband_tradeoff} that different subchannel designs lead to different capacities.}
 			\label{re:1.4}
 		\end{response}
 	\end{reviewer}
@@ -253,7 +253,7 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for the suggestion. Too see this, we first show one realization of direct channel amplitude (without IRS) and composite channel amplitude (with IRS) for WIT and WPT in Fig.~\ref{fi:channel_amplitude}. It is observed that under the configuration of choice, the WPT-optimized passive beamforming tends to concentrate the channel energy to relatively strong subbands, while the WIT-optimized passive beamforming achieves some balance among all subbands (similar to water-filling at high SNR).
+			Thank you for the suggestion. To see this, we first show one realization of direct channel amplitude (without IRS) and composite channel amplitude (with IRS) for WIT and WPT in Fig.~\ref{fi:channel_amplitude}. It is observed that under the configuration of choice, the WPT-optimized passive beamforming tends to concentrate the channel energy to relatively strong subbands, while the WIT-optimized passive beamforming achieves some balance among all subbands (similar to water-filling at high SNR).
 
 			\begin{figure}[!h]
 				\centering
@@ -289,8 +289,9 @@
 
 			We have modified the manuscript as follows to emphasize this point.
 			\begin{framed}
-				Fig.~\ref{M-fi:channel_amplitude} reveals how passive beamforming influence the channel amplitude and waveform design for one channel realization. \emph{First,} the passive beamforming enables a resource allocation opportunity at the channel as discussed in Remark~\ref{M-re:subband_tradeoff}. Under the specified configuration, the WPT-optimized IRS concentrates channel energy on strong subbands to widen the strength disparity. Correspondingly, the transmit power is focused on strong subbands to improve the energy efficiency, as observed in \ref{M-fi:waveform_wpt_modulated} and \ref{M-fi:waveform_wpt_multisine}. On the other hand, the WIT-optimized IRS provides a fair gain over all subchannels when $L$ is sufficiently large. This is reminiscent of the water-filling scheme at high SNR, but the resource allocation is performed at the channel by passive beamforming. \emph{Second,} the impact of passive beamforming on waveform design is subtle. The amplitude of modulated and multisine waveforms with and without IRS are shown in Figs.~\ref{M-fi:waveform_wit_modulated}--\ref{M-fi:waveform_wpt_multisine}. Note that no multisine is used for WIT and the case is not shown.
+				Fig.~\ref{M-fi:channel_amplitude} reveals how IRS influences the (sorted) channel amplitude and waveform design for one channel realization. Thanks to the flexible subchannel design enabled by passive beamforming, the optimal subchannel strength distribution for WIT and WPT are dissimilar. Under the specified configuration, the WPT-optimized IRS aligns the strong subbands to exploit the rectifier nonlinearity. On the other hand, the WIT-optimized IRS provides a fair gain over all subchannels when $L$ is sufficiently large. This is reminiscent of the water-filling scheme at high SNR, but is realized by channel alignment instead of resource allocation. Moreover, the amplitude of modulated and multisine waveforms with and without IRS are shown in Figs.~\ref{M-fi:waveform_wit_modulated}--\ref{M-fi:waveform_wpt_multisine}.\footnotemark It is concluded that adding an IRS to the SWIPT system has subtle impact on the waveform design.
 			\end{framed}
+			\footnotetext{Note that no multisine is used for WIT and the case is not shown.}
 			\label{re:2.2}
 		\end{response}
 
@@ -301,7 +302,7 @@
 		\begin{response}
 			We believe this is an important issue and have modified the manuscript accordingly as follows.
 			\begin{framed}
-				\emph{First}, we propose a novel IRS-aided SWIPT architecture based on joint waveform, active and passive beamforming design under the diode nonlinear model proposed in \cite{M-Clerckx2016a}. Although this tractable harvester model accurately reveals how the input power level and waveform shape influence the output DC power, it also introduces design challenges such as frequency compensation (i.e., components of different frequencies compensate and produce DC), waveform coupling (i.e., different waveforms jointly contribute to DC), and non-concavity from high-order objective function.
+				Although this tractable harvester model accurately reveals how the input power level and waveform shape influence the output DC power, it also introduces design challenges such as frequency coupling (i.e., components of different frequencies compensate and produce DC), waveform coupling (i.e., different waveforms jointly contribute to DC), and high-order objective function.
 			\end{framed}
 			\label{re:2.3}
 		\end{response}
@@ -315,7 +316,7 @@
 			\begin{equation}
 				\arg(\boldsymbol{w}_{\mathrm{I}}) = \arg(\boldsymbol{w}_{\mathrm{P}}) = -\arg(\boldsymbol{h}),
 			\end{equation}
-			such that, from the perspective of phase design, the current expression \ref{M-eq:z_expand} is maximized (where all $\cos$ terms peak at \num{1}) and the rate expression is maximized (where the phases align with those of matched filters). Therefore, the direct optimization on $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ boils down to amplitude optimization on $\boldsymbol{s}_{\mathrm{I}}$ and $\boldsymbol{s}_{\mathrm{P}}$, where $\boldsymbol{s}_{\mathrm{I/P}}=\lvert \boldsymbol{w}_{\mathrm{I/P}} \rvert$. GP tools can be applied at this stage and the number of real-valued variables are $2MN$. In contrast, the proposed Algorithm~\ref{M-al:gp} decoupled the design in the spatial and frequency domains, derived the global optimal active precoder, and leaves an resource allocation issue with $2N$ real-valued variables in the frequency domain. Since the computational complexity of GP scales exponentially with the number of variables, optimizing $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ as a whole can be very inefficient and not discussed in the manuscript. Accordingly, we have revised the manuscript as follows.
+			such that, from the perspective of phase design, the current expression \ref{M-eq:z_expand} is maximized (where all $\cos$ terms peak at \num{1}) and the rate expression is maximized (where the phases align with those of matched filters). Therefore, the direct optimization on $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ boils down to amplitude optimization on $\boldsymbol{s}_{\mathrm{I}}$ and $\boldsymbol{s}_{\mathrm{P}}$, where $\boldsymbol{s}_{\mathrm{I/P}}=\lvert \boldsymbol{w}_{\mathrm{I/P}} \rvert$. GP tools can be applied at this stage and the number of real-valued variables are $2MN$. In contrast, the proposed design decouples the design in the spatial and frequency domains, derives the global optimal active precoder, and leaves a resource allocation issue with $2N$ real-valued variables in the frequency domain. Since the computational complexity of GP scales exponentially with the number of variables, optimizing $\boldsymbol{w}_{\mathrm{I}}$ and $\boldsymbol{w}_{\mathrm{P}}$ as a whole can be very inefficient and not discussed in the manuscript. Accordingly, we have revised the manuscript as follows.
 			\begin{framed}
 				To avoid straightforward optimization over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$, we decouple the waveform in the spatial and frequency domains to reduce the size of variables.
 			\end{framed}
@@ -326,17 +327,17 @@
 		\end{point}
 
 		\begin{response}
-			Thank you for raising this point. The combining ratio $\delta$ determines the weight on multisine power waveform at the transmitter, while the splitting ratio $\rho$ determines the priority of the energy harvester at the receiver. We notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point. Heuristically, $\delta$ and $\rho$ should approximately equal at each point to boost R-E tradeoff. Indeed, the LC-BCD algorithm intends to draw the R-E tradeoff by performing a two-dimensional search that adjusts $\delta$ and $\rho$ from \num{0} to \num{1}. However, based on the deduction above, we set $\delta=\rho$ is the simulation and obtain the R-E region by one-dimensional search instead. The results show that even a one-dimensional search for the LC-BCD algorithm can achieve a very good performance. We have summarized the point in the manuscript as follows.
+			Thank you for raising this point. The combining ratio $\delta$ determines the priority on multisine power waveform at the transmitter, while the splitting ratio $\rho$ determines the priority of the energy harvester at the receiver. We notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point when $N$ is relatively large. Heuristically, $\delta$ and $\rho$ should approximately equal at each point to boost R-E tradeoff. Indeed, the LC-BCD algorithm intends to draw the R-E tradeoff by performing a two-dimensional search that adjusts $\delta$ and $\rho$ from \num{0} to \num{1}. However, based on the deduction above, we set $\delta=\rho$ is the simulation and obtain the R-E region by one-dimensional search instead. The results show that even a one-dimensional search for the LC-BCD algorithm can achieve a very good performance. We have summarized the point in the manuscript as follows.
 			\begin{framed}
-				\textellipsis where the combining ratio $\delta$ determines the weight on multisine power waveform at the transmitter and the splitting ratio $\rho$ determines the priority of the energy harvester at the receiver\footnotemark.
+				\textellipsis where the combining ratio $\delta$ determines the priority on multisine power waveform at the transmitter and the splitting ratio $\rho$ determines the priority of the energy harvester at the receiver\footnotemark.
 
-				\textellipsis and the LC-BCD algorithm characterizes the R-E tradeoff via two-dimensional search over $\delta$, $\rho$ from \num{0} to \num{1}.
+				\textellipsis Note that the BCD algorithm obtains the R-E region by varying the rate constraint from \num{0} to maximum capacity $C_{\max}$, while the LC-BCD algorithm obtains the R-E region by two-dimensional search over $\{\delta,\rho\}$ from \num{0} to \num{1}.
 
-				\textellipsis assume $\delta=\rho$ for simplicity (thus one-dimensional search for the R-E region).
+				\textellipsis assume $\delta=\rho$ for simplicity (thus one-dimensional search to obtain the R-E region).
 
-				\textellipsis  \emph{Third,} the LC-BCD algorithm achieves a decent R-E region even if one-dimensional search is considered for $\delta=\rho$ from \num{0} to \num{1}, which achieves a good balance between performance and complexity.
+				\textellipsis  Besides, the LC-BCD algorithm achieves a good balance between performance and complexity even if one-dimensional search is considered for $\delta=\rho$ from \num{0} to \num{1}.
 			\end{framed}
-			\footnotetext{We notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point. Heuristically, $\delta^{\star}$ and $\rho^{\star}$ should approximately equal at each point to boost R-E tradeoff.}
+			\footnotetext{We notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point when $N$ is relatively large. Heuristically, $\delta^{\star}$ and $\rho^{\star}$ should approximately equal at each point to boost R-E tradeoff.}
 		\end{response}
 
 		\begin{point}
@@ -346,7 +347,7 @@
 		\begin{response}
 			We would like to clarify that the performance loss under the conventional linear harvester model is revealed instead in Figs.~\ref{M-fi:scaling_tx} and \ref{M-fi:scaling_reflector}. Figs.~\ref{M-fi:re_irs_1mhz} and \ref{M-fi:re_irs_10mhz} are intended to compare different IRS strategies when both waveform and passive beamforming are designed under nonlinear harvester model. The authors believe that to design passive beamforming under linear harvester model when the waveform is designed under nonlinear harvester model might confuse the readers. On the other hand, we agree with the reviewer that the performance loss under linear harvester deserves more attention, and have changed the label in Figs.~\ref{M-fi:scaling_tx} and \ref{M-fi:scaling_reflector} from `ASS' to `LEH' and revised the manuscript as follows to make this point clear.
 			\begin{framed}
-				\emph{Second,} the conventional Linear Energy Harvester (LEH) model leads to power-inefficient design. To show the underlying performance loss, we truncate the DC objective function \eqref{M-eq:z} at $n_0=2$ such that, 1) in the passive beamforming problem, $z(\boldsymbol{\Phi}) = {\beta_2}{\rho}(t_{\mathrm{I},0}+t_{\mathrm{P},0})/2$ and no SCA is required, 2) in the waveform design problem, the WPT-optimal strategy is the Adaptive Single Sinewave (ASS) waveform strategy that allocates all power to the multisine at the strongest subband \cite{M-Clerckx2016a}. As shown in Figs.~\ref{M-fi:scaling_tx} and \ref{M-fi:scaling_reflector}, those conventional designs do not exploit the harvester nonlinearity and end up with a nearly \SI{20}{\dB} current gap compared to the nonlinear model-based SMF and GP.
+				Second, the conventional Linear Energy Harvester (LEH) model leads to a power-inefficient design. To investigate the performance loss, we truncate the DC objective function \eqref{M-eq:z} at $n_0=2$ such that 1) in the passive beamforming problem, $z(\boldsymbol{\Phi}) = {\beta_2}{\rho}(t_{\mathrm{I},0}+t_{\mathrm{P},0})/2$ and no SCA is required; 2) in the waveform design problem, the WPT-optimal strategy is the Adaptive Single Sinewave (ASS) waveform strategy that allocates all power to the multisine at the strongest subband \cite{M-Clerckx2016a}. As shown in Figs.~\ref{M-fi:scaling_tx} and \ref{M-fi:scaling_reflector}, those conventional designs do not exploit the harvester nonlinearity and end up with a nearly \SI{20}{\dB} gap compared to the nonlinear model-based SMF and GP designs.
 			\end{framed}
 		\end{response}
 
@@ -363,7 +364,7 @@
 
 			The manuscript has been updated as follows.
 			\begin{framed}
-				\emph{Second,} the R-E region is convex for $N \in \{2,4\}$ and concave-convex for $N \in \{8,16\}$, such that PS outperforms TS for a small $N$ and is outperformed for a large $N$. When $N$ is in between, the optimal strategy is a combination of both, i.e., a time sharing between the WPT point and the saddle PS SWIPT point (as denoted by the red curve in Fig.~\ref{M-fi:re_subband}). When $N$ is relatively small, only modulated waveform is used at both WIT and WPT point, and one can deduct that no multisine waveform is needed for the entire R-E region. It aligns with the conventional linear harvester model where the R-E region is convex, PS outperforms TS, and dedicated power waveform is unnecessary. As $N$ becomes sufficiently large, multisine waveform further boosts WPT and creates some concavity in the high-power region, which accounts for the superiority of TS under nonlinear harvester model. Therefore, we conclude that the rectifier nonlinearity enlarges the R-E region by favoring a different waveform and receiving mode, both heavily depending on $N$.
+				Second, the R-E region is convex for $N \in \{2,4\}$ and concave-convex for $N \in \{8,16\}$, such that PS outperforms TS for a small $N$ and is outperformed for a large $N$. When $N$ is in between, the optimal strategy is a combination of both, i.e., a time sharing between the WPT point and the saddle PS SWIPT point (as denoted by the red curve in Fig.~\ref{M-fi:re_subband}). When $N$ is relatively small, only modulated waveform is used at both WIT and WPT point, and one can infer that no multisine waveform is needed for the entire R-E region. It aligns with the conclusion based on conventional linear harvester model, namely the R-E region is convex, PS outperforms TS, and dedicated power waveform is unnecessary. As $N$ becomes sufficiently large, multisine waveform further boosts WPT and creates some concavity in the high-power region, which accounts for the superiority of TS under nonlinear harvester model. Therefore, we conclude that the rectifier nonlinearity enlarges the R-E region by favoring a different waveform and receiving mode, both heavily depending on $N$.
 			\end{framed}
 		\end{response}
 
@@ -402,9 +403,9 @@
 		\end{point}
 
 		\begin{response}
-			By `auxiliary link control in the frequency domain', we intended to emphasize that the auxiliary link cannot be designed independently at different frequencies, and a resource allocation opportunity at the channel arises thanks to the IRS. The composite channel can be tuned flexibly to satisfy the specific requirement of the multi-carrier transmission. For example, one can design the reflection pattern to either enhance the strongest subband (e.g., $\max_{\boldsymbol{\phi},n} \lVert \boldsymbol{h}_n \rVert$), or improve fairness among subbands (e.g., $\max_{\boldsymbol{\phi}} \min_n \lVert \boldsymbol{h}_n \rVert$). We have added Fig.~\ref{fi:channel_amplitude} and updated the Remark~\ref{M-re:subband_tradeoff} to clarify this point.
+			By `auxiliary link control in the frequency domain', we intended to emphasize that the auxiliary link cannot be designed independently at different frequencies, and subchannel design flexibility arises in the presence of IRS. The composite channel can be tuned adaptively to satisfy the specific requirement of the multi-carrier transmission. For example, one can design the reflection pattern to either enhance the strongest subband (e.g., $\max_{\boldsymbol{\phi},n} \lVert \boldsymbol{h}_n \rVert$), or improve fairness among subbands (e.g., $\max_{\boldsymbol{\phi}} \min_n \lVert \boldsymbol{h}_n \rVert$). We have added Fig.~\ref{fi:channel_amplitude} and updated the Remark~\ref{M-re:subband_tradeoff} to clarify this point.
 			\begin{framed}
-				The cascaded channel varies at different frequencies. Since the reflection cannot be designed independently at different subbands, there exists a tradeoff for the passive beamforming design in the frequency domain. The composite channel can be tuned flexibly to meet the specific requirement of multi-carrier SWIPT. For example, one can design the reflection pattern to either enhance the strongest subband (e.g., $\max_{\boldsymbol{\phi},n} \lVert \boldsymbol{h}_n \rVert$), or improve fairness among subbands (e.g., $\max_{\boldsymbol{\phi}} \min_n \lVert \boldsymbol{h}_n \rVert$). This is essentially a resource allocation opportunity at the channel enabled by the IRS. In the MISO case, a similar effect also exists in the spatial domain. Therefore, each reflection coefficient is indeed shared by $M$ antennas over $N$ subbands.
+				The cascaded channel varies at different subbands but the reflection cannot be designed independently at different frequencies. Therefore, there exists a tradeoff for the passive beamforming design in the frequency domain, and the composite channel should be tuned adaptively to meet the specific requirement of multi-carrier SWIPT. For example, one can design the reflection pattern to either enhance the strongest subband (e.g., $\max_{\boldsymbol{\phi},n} \lVert \boldsymbol{h}_n \rVert$), or improve the fairness among subbands (e.g., $\max_{\boldsymbol{\phi}} \min_n \lVert \boldsymbol{h}_n \rVert$). That is to say, IRS essentially enables an flexible subchannel design. In the MISO case, a similar effect also exists in the spatial domain. Therefore, each reflection coefficient is indeed shared by $M$ antennas over $N$ subbands.
 			\end{framed}
 			\label{re:2.10}
 		\end{response}
@@ -414,7 +415,7 @@
 		\end{point}
 
 		\begin{response}
-			We sincerely appreciate your careful reading and rigorous feedbacks. The manuscript have been revised accordingly and we will endeavor to avoid similar issues in the future.
+			We sincerely appreciate your careful reading and rigorous feedbacks. The manuscript have been revised accordingly and we will avoid similar issues as possible.
 		\end{response}
 	\end{reviewer}
 
@@ -449,11 +450,11 @@
 		\end{point}
 
 		\begin{response}
-			We agree with the reviewer that the reference path loss used in the simulation is faulty and we sincerely apologize for this issue. The parameter \SI{35}{\dB} was considered in some IRS literatures without specifying the operating frequency, and it was taken in the previous simulations without careful consideration. In the corrected manuscript, we instead consider a center frequency at \SI{2.4}{\GHz} that corresponds to a free-space path loss of \SI{40}{\dB} at \SI{1}{\meter}. The path loss used in the simulation is taken from IEEE TGn channel model D \cite{M-Erceg2004} where the slope is set to \num{2} (i.e., free-space model) up to a breakpoint distance of \SI{10}{\meter}, and set to \num{3.5} onwards. This has a similar effect to most IRS literatures that assign a relatively large path loss exponent to the direct path and smaller ones to the incident and reflected paths to penalize the channel with large distance.
+			We agree with the reviewer that the reference path loss used in the simulation is faulty and we sincerely apologize for this issue. The parameter \SI{35}{\dB} was considered in some IRS literatures without specifying the operating frequency, and it was taken in the previous simulations without careful consideration. In the corrected manuscript, we instead consider a center frequency at \SI{2.4}{\GHz} that corresponds to a free-space path loss of \SI{40}{\dB} at \SI{1}{\meter}. The path loss used in the simulation is taken from IEEE TGn channel model D \cite{M-Erceg2004} where the slope is \num{2} (i.e., free-space model) up to a breakpoint distance of \SI{10}{\meter}, and \num{3.5} onwards to penalize the channels with large distance.
 
 			In the updated manuscript, we raise the EIRP from \SI{36}{\dBm} to \SI{40}{\dBm} (which still complies with FCC regulations \cite{Afar2021}) and change the receive antenna gain from \SI{2}{\dBi} to \SI{3}{\dBi} to compensate the \SI{5}{\dB} difference. Please refer to the following specification for details.
 			\begin{framed}
-				We consider a large open space Wi-Fi-like environment at \SI{2.4}{\GHz} center frequency where the channel is modeled by IEEE TGn channel model D \cite{M-Erceg2004}. Specifically, the path loss exponent is set to \num{2} (i.e., free-space model) up to a breakpoint distance of \SI{10}{\meter}, and set to \num{3.5} onwards. All fadings are modeled as Non-Line-of-Sight (NLoS) with tap delays and powers specified in model D. The tap gains are modeled as i.i.d. CSCG variables. Rectenna parameters are set to $k_2=0.0034$, $k_4=0.3829$, $R_{\mathrm{A}}=\SI{50}{\ohm}$ \cite{M-Clerckx2016a} such that $\beta_2=0.17$ and $\beta_4=957.25$. We also choose the average Effective Isotropic Radiated Power (EIRP) as $P=\SI{40}{\dBm}$, the receive antenna gain as \SI{3}{\dBi}, the scaling ratio as $\alpha=2$, the tolerance as $\epsilon=10^{-8}$, and assume $\delta=\rho$ for simplicity (thus one-dimensional search for the R-E region).
+				We consider a large open space Wi-Fi-like environment at center frequency \SI{2.4}{\GHz} where the channel is modeled by IEEE TGn channel model D \cite{M-Erceg2004}. Specifically, the path loss exponent is \num{2} (i.e., free-space model) up to \SI{10}{\meter} and \num{3.5} onwards to further penalize the channels with large distance. All fadings are modeled as Non-LoS (NLoS) with tap delays and powers specified in model D, and the tap gains are modeled as i.i.d. CSCG variables. Rectenna parameters are set to $k_2=0.0034$, $k_4=0.3829$, $R_{\mathrm{A}}=\SI{50}{\ohm}$ \cite{M-Clerckx2016a} such that $\beta_2=0.17$ and $\beta_4=957.25$. We also choose the average Effective Isotropic Radiated Power (EIRP) as $P=\SI{40}{\dBm}$, the receive antenna gain as \SI{3}{\dBi}, the scaling ratio as $\alpha=2$, the tolerance as $\epsilon=10^{-8}$, and assume $\delta=\rho$ for simplicity (thus one-dimensional search to obtain the R-E region).
 			\end{framed}
 		\end{response}
 
@@ -464,9 +465,9 @@
 		\begin{response}
 			Thank you for the clarification. The discrete phase shift is obtained by quantizing the continuous phase shift obtained by Algorithm~\ref{M-al:bcd} to the uniform IRS codebook $\mathcal{C}_\phi = \{e^{j 2 \pi i / 2^b} \mid i = 1, \dots, 2^b\}$. We are aware that quantization can lead to performance loss compared with direct optimization over the feasible phase shift set. In the revised manuscript, we have emphasized this point as follows.
 			\begin{framed}
-				On the other hand, since the practical reflection coefficient depends on the available element impedances, we consider a discrete uniform IRS codebook $\mathcal{C}_\phi = \{e^{j 2 \pi i / 2^b} \mid i = 1, \dots, 2^b\}$ and perform quantization on the continuous reflection coefficients returned by Algorithm~\ref{M-al:bcd} to reduce the circuit complexity and control overhead\footnotemark.
+				On the other hand, since the practical reflection coefficient depends on the available element impedances, we consider a discrete uniform IRS codebook $\mathcal{C}_\phi = \{e^{j 2 \pi i / 2^b} \mid i = 1, \dots, 2^b\}$ and perform quantization on the continuous reflection coefficients obtained by Algorithm~\ref{M-al:bcd} to reduce the circuit complexity and control overhead.\footnotemark
 			\end{framed}
-			\footnotetext{Note that this relax-then-quantize approach can bring notable performance loss compared with direct optimization over the discrete phase shift set, especially for a small $b$ (i.e., low-resolution IRS). The readers are referred to \cite{Wu2020c} for details.}
+			\footnotetext{Note that this relax-then-quantize approach can bring notable performance loss compared with direct optimization over the discrete phase shift set, especially for a small $b$ (i.e., low-resolution IRS) \cite{Wu2020c}.}
 		\end{response}
 
 		\begin{point}
@@ -476,11 +477,11 @@
 		\begin{response}
 			We have added reference \cite{Xu2021} in the updated manuscript that models the saturation effect of energy harvesters and physical properties of the IRS. Its contributions have been summarized in the manuscript as follows.
 			\begin{framed}
-				In \cite{Xu2021}, the authors proposed a scalable resource allocation framework for SWIPT systems involving large-scale IRS, where the reflectors are grouped into tiles and the optimization process is divided into an offline mode-design stage and an online mode-selection stage to reduce overall complexity. It was concluded that the tile-based two-stage algorithm not only enables a flexible balance between performance and complexity but also adapts well to practical IRS and harvester models.
+				Based on practical IRS and energy harvester models, \cite{M-Xu2021c} introduced a scalable resource allocation framework for a large-scale tile-based IRS-assisted SWIPT system, where the optimization is divided into a reflection mode design stage and a joint reflection mode selection and precoder design stage. The proposed framework provides a flexible balance between performance and complexity.
 			\end{framed}
 			The future works has been updated as follows.
 			\begin{framed}
-				Also, harvester saturation effect and more involved IRS model based on direction- and frequency-dependent reflection \cite{M-Abeywickrama2020} and/or partially/fully-connected reflection \cite{M-Shen2020a} could be considered in future works.
+				Also, harvester saturation effect and practical IRS models with amplitude-phase coupling \cite{M-Abeywickrama2020}, angle-dependent reflection \cite{M-Tang2021}, frequency-dependent reflection, and/or partially/fully-connected architecture \cite{M-Shen2020a} could be considered in future works.
 			\end{framed}
 		\end{response}
 
@@ -489,11 +490,9 @@
 		\end{point}
 
 		\begin{response}
-			We have incorporated those references into the manuscript as follows.
+			Thank you for the suggestion and we have incorporated one magazine paper \cite{Wu2020} into the manuscript. A recent tutorial paper \cite{Wu2021c} provided a comprehensive overview on IRS-aided wireless-powered networks, where channel estimation, resource allocation and practical constraints are discussed in detail. However, the aforementioned paper appeared on arXiv after ours and have cited our work, and we decided not to cite it.
 			\begin{framed}
 				\textellipsis The hardware architecture, design challenges and application opportunities of practical IRS are covered in \cite{Wu2020}.
-
-				\textellipsis A recent tutorial paper \cite{Wu2021c} provided a comprehensive overview on IRS-aided wireless-powered networks, where channel estimation, resource allocation and practical constraints are discussed in detail.
 			\end{framed}
 		\end{response}
 	\end{reviewer}
@@ -512,10 +511,7 @@
 		\end{point}
 
 		\begin{response}
-			We have incorporated the reference into the manuscript as follows.
-			\begin{framed}
-				Deep reinforcement learning tools were also applied in \cite{Yang2021} to assist practical secure beamforming and reflection pattern design under QoS constraints for time-varying channels.
-			\end{framed}
+			We appreciate the reviewer for sharing this manuscript. It seeks deep reinforcement learning tools to assist practical secure beamforming and reflection pattern design under QoS constraints for time-varying channels. However, we have found this reference not very closely related to SWIPT and therefore decided not to cite it.
 		\end{response}
 	\end{reviewer}
 
