@@ -168,9 +168,9 @@
 		\begin{subsection}{Received Signal}
 			The received superposed signal at the single-antenna UE is\footnote{We assume that the time difference of signal arrival via direct and auxiliary link is negligible compared to the symbol period.}
 			\begin{equation}
-				y(t) = \Re\left\{\sum_{n=1}^N{\boldsymbol{h}_{n}^H}{(\boldsymbol{w}_{\mathrm{I},n}\tilde{x}_{\mathrm{I},n}(t)+\boldsymbol{w}_{\mathrm{P},n})}{e^{j2{\pi}{f_n}{t}}}+y_n(t)\right\},
+				y(t) = \Re\left\{\sum_{n=1}^N{\Bigl(\boldsymbol{h}_{n}^H}{(\boldsymbol{w}_{\mathrm{I},n}\tilde{x}_{\mathrm{I},n}(t)+\boldsymbol{w}_{\mathrm{P},n})+\tilde{n}_n(t)\Bigr)}{e^{j2{\pi}{f_n}{t}}}\right\},
 			\end{equation}
-			where $y_n(t)$ is the noise at RF band $n$. Note that the modulated component can be used for energy harvesting if necessary, but the multisine component carries no information and cannot be used for decoding.
+			where $\tilde{n}_n(t)$ is the noise at RF band $n$. Note that the modulated component can be used for energy harvesting if necessary, but the multisine component carries no information and cannot be used for decoding.
 		\end{subsection}
 
 
