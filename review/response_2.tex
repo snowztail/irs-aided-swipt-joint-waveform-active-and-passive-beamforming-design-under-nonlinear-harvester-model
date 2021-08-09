@@ -207,12 +207,12 @@
 						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{M-eq:w}
 						\State Compute $R^{(i)}$, $z^{(i)}$ by \eqref{M-eq:R_waveform}, \eqref{M-eq:z_waveform}
 						\If{$\rho=0$} \label{li:convergence_begin}
-							\State $\Delta = R^{(i)} - R^{(i-1)}$
+							\State $\Delta \gets  R^{(i)} - R^{(i-1)}$
 						\Else
-							\State $\Delta = z^{(i)} - z^{(i-1)}$
+							\State $\Delta \gets  z^{(i)} - z^{(i-1)}$
 						\EndIf
 					\Until $\lvert \Delta \rvert \le \epsilon$ \label{li:convergence_end}
-					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)}$, $\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)}$
+					\State Set $\boldsymbol{\phi}^{\star}\gets \boldsymbol{\phi}^{(i)}$, $\boldsymbol{w}_{\mathrm{I/P}}^{\star}\gets \boldsymbol{w}_{\mathrm{I/P}}^{(i)}$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$, $\boldsymbol{w}_{\mathrm{I}}^{\star}$, $\boldsymbol{w}_{\mathrm{P}}^{\star}$
 				\end{algorithmic}
 			\end{algorithm}

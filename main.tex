@@ -422,9 +422,9 @@
 						\State Update $t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by \eqref{eq:t_k}
 						\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
 					\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
-					\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
+					\State Set $\boldsymbol{\Phi}^{\star} \gets \boldsymbol{\Phi}^{(i)}$
 					\State Get $\hat{\boldsymbol{\phi}}^\star$ by eigen decomposition, $\boldsymbol{\Phi}^{\star}=\hat{\boldsymbol{\phi}}^\star(\hat{\boldsymbol{\phi}}^\star)^H$
-					\State Set $\boldsymbol{\phi}^{\star}=e^{j \arg\left([\hat{\boldsymbol{\phi}}^\star]_{(1:L)} \middle/ [\hat{\boldsymbol{\phi}}^\star]_{(L+1)}\right)}$
+					\State Set $\boldsymbol{\phi}^{\star} \gets e^{j \arg\left([\hat{\boldsymbol{\phi}}^\star]_{(1:L)} \middle/ [\hat{\boldsymbol{\phi}}^\star]_{(L+1)}\right)}$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
@@ -465,6 +465,7 @@
 			\end{equation}
 			and the DC current \eqref{eq:z_expand} rewrites as \eqref{eq:z_waveform}, so that problem~\eqref{op:original} boils down to
 			\begin{figure*}[!b]
+				\hrule
 				\begin{align}
 					z(\boldsymbol{s}_{\mathrm{I}},\boldsymbol{s}_\mathrm{P},\rho)
 					& = \frac{1}{2}{\beta_2}{\rho} \sum_{n=1}^N \lVert{\boldsymbol{h}_n}\rVert^2(s_{\mathrm{I},n}^2+s_{\mathrm{P},n}^2) + \frac{3}{8}{\beta_4}{\rho^2} \left( 2\sum_{n_1,n_2} \prod_{j=1}^2 \lVert{\boldsymbol{h}_{n_j}}\rVert^2 s_{\mathrm{I},{n_j}}^2 + \sum_{\substack{{n_1},{n_2},{n_3},{n_4}\\{n_1}+{n_2}={n_3}+{n_4}}} \prod_{j=1}^4 \lVert{\boldsymbol{h}_{n_j}}\rVert s_{\mathrm{P},{n_j}} \right)\nonumber\\
@@ -519,7 +520,7 @@
 						\State Compute $R^{(i)}$, $z^{(i)}$ by \eqref{eq:R_waveform}, \eqref{eq:z_waveform}
 						\State Update $g_{m_{\mathrm{I},n}}^{(i)}$, $g_{m_\mathrm{P}}^{(i)}$, $\forall n$ by \eqref{eq:g_I}, \eqref{eq:g_P}
 					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
-					\State Set $\boldsymbol{s}_{\mathrm{I/P}}^{\star}=\boldsymbol{s}_{\mathrm{I/P}}^{(i)}$, $\rho^{\star}=\rho^{(i)}$
+					\State Set $\boldsymbol{s}_{\mathrm{I/P}}^{\star} \gets \boldsymbol{s}_{\mathrm{I/P}}^{(i)}$, $\rho^{\star} \gets \rho^{(i)}$
 					\State \textbf{Output} $\boldsymbol{s}_{\mathrm{I}}^{\star}$, $\boldsymbol{s}_{\mathrm{P}}^{\star}$, $\rho^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
@@ -570,10 +571,10 @@
 								\State Update $t_{\mathrm{I/P},k}^{(i)}$, $\forall k$ by \eqref{eq:t_k}
 								\State Compute $z^{(i)}$ by \eqref{eq:z_irs}
 						\Until $\lvert z^{(i)}-z^{(i-1)} \rvert \le \epsilon$
-						\State Set $\boldsymbol{\Phi}^{\star}=\boldsymbol{\Phi}^{(i)}$
+						\State Set $\boldsymbol{\Phi}^{\star} \gets \boldsymbol{\Phi}^{(i)}$
 					\EndIf
 					\State Get $\hat{\boldsymbol{\phi}}^\star$ by eigen decomposition, $\boldsymbol{\Phi}^{\star}=\hat{\boldsymbol{\phi}}^\star(\hat{\boldsymbol{\phi}}^\star)^H$
-					\State Set $\boldsymbol{\phi}^{\star}=e^{j \arg\left([\hat{\boldsymbol{\phi}}^\star]_{(1:L)} \middle/ [\hat{\boldsymbol{\phi}}^\star]_{(L+1)}\right)}$
+					\State Set $\boldsymbol{\phi}^{\star} \gets e^{j \arg\left([\hat{\boldsymbol{\phi}}^\star]_{(1:L)} \middle/ [\hat{\boldsymbol{\phi}}^\star]_{(L+1)}\right)}$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
@@ -599,7 +600,7 @@
 						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{eq:w}
 						\State Compute $z^{(i)}$ by \eqref{eq:z_waveform}
 					\Until $\lvert z^{(i)} - z^{(i-1)} \rvert \le \epsilon$
-					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)}$, $\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)}$, $\rho^{\star}=\rho^{(i)}$
+					\State Set $\boldsymbol{\phi}^{\star} \gets \boldsymbol{\phi}^{(i)}$, $\boldsymbol{w}_{\mathrm{I/P}}^{\star} \gets \boldsymbol{w}_{\mathrm{I/P}}^{(i)}$, $\rho^{\star} \gets \rho^{(i)}$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$, $\boldsymbol{w}_{\mathrm{I}}^{\star}$, $\boldsymbol{w}_{\mathrm{P}}^{\star}$, $\rho^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
@@ -630,12 +631,12 @@
 						\State Update $\boldsymbol{w}_{\mathrm{I/P},n}^{(i)}$, $\forall n$ by \eqref{eq:w}
 						\State Compute $R^{(i)}$, $z^{(i)}$ by \eqref{eq:R_waveform}, \eqref{eq:z_waveform}
 						\If{$\rho=0$}
-							\State $\Delta = R^{(i)} - R^{(i-1)}$
+							\State $\Delta \gets R^{(i)} - R^{(i-1)}$
 						\Else
-							\State $\Delta = z^{(i)} - z^{(i-1)}$
+							\State $\Delta \gets z^{(i)} - z^{(i-1)}$
 						\EndIf
 					\Until $\lvert \Delta \rvert \le \epsilon$
-					\State Set $\boldsymbol{\phi}^{\star}=\boldsymbol{\phi}^{(i)}$, $\boldsymbol{w}_{\mathrm{I/P}}^{\star}=\boldsymbol{w}_{\mathrm{I/P}}^{(i)}$
+					\State Set $\boldsymbol{\phi}^{\star} \gets \boldsymbol{\phi}^{(i)}$, $\boldsymbol{w}_{\mathrm{I/P}}^{\star} \gets \boldsymbol{w}_{\mathrm{I/P}}^{(i)}$
 					\State \textbf{Output} $\boldsymbol{\phi}^{\star}$, $\boldsymbol{w}_{\mathrm{I}}^{\star}$, $\boldsymbol{w}_{\mathrm{P}}^{\star}$
 				\end{algorithmic}
 			\end{algorithm}
@@ -873,6 +874,7 @@
 			\end{equation}
 			where $\boldsymbol{\Delta}^\star$ is given by \eqref{eq:delta}.
 			\begin{figure*}[!b]
+				\hrule
 				\begin{align}\label{eq:delta}
 					\boldsymbol{\Delta}^\star
 					& = \frac{1}{2} \beta_2 \rho (\boldsymbol{C}_{\mathrm{I},0}+\boldsymbol{C}_{\mathrm{P},0}) + \frac{3}{4} \beta_4 \rho^2
