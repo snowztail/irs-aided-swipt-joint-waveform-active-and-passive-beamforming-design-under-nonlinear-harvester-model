@@ -228,9 +228,9 @@
 
 
 		\begin{subsection}{Information Decoder}
-			A major benefit of the superposed waveform is that the multisine is deterministic and creates no interference to the modulated waveform \cite{Clerckx2018b}. Therefore, the achievable rate is\footnote{It is achievable with waveform cancellation or translated demodulation \cite{Clerckx2018b}.}
+			A major benefit of the superposed waveform is that the multisine is deterministic and creates no interference to the modulated waveform \cite{Clerckx2018b}. Therefore, the achievable rate is\footnote{Requires waveform cancellation or translated demodulation \cite{Clerckx2018b}.}
 			\begin{equation}\label{eq:R}
-				R(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\rho) = \sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert \boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n} \rvert^2}{\sigma_n^2},\right)}
+				R(\boldsymbol{\phi},\boldsymbol{w}_{\mathrm{I}},\rho) = \sum_{n=1}^N{\log_2\left(1+\frac{(1-\rho)\lvert \boldsymbol{h}_{n}^H\boldsymbol{w}_{\mathrm{I},n} \rvert^2}{\sigma_n^2}\right)},
 			\end{equation}
 			where $\sigma_n^2$ is the variance of the noise at the RF-band and during the RF-to-baseband conversion on tone $n$.
 		\end{subsection}
