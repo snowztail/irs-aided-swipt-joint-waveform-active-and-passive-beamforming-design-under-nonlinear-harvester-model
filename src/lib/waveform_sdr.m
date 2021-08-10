@@ -13,7 +13,7 @@ function [current, infoAmplitude, powerAmplitude] = waveform_sdr(beta2, beta4, c
     %   - tolerance (\epsilon): minimum current gain per iteration
     %
     % Output:
-	%	- current (z): objective function to maximize output DC current
+	%	- current (z): objective function to maximize output DC
     %   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
 	%   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
     %

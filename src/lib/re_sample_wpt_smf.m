@@ -1,6 +1,6 @@
 function [sample, solution] = re_sample_wpt_smf(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
-    %   - optimize the waveform and IRS reflection coefficients to maximize average output DC current
+    %   - optimize the waveform and IRS reflection coefficients to maximize average output DC
     %
     % Input:
     %   - alpha: scale ratio of SMF

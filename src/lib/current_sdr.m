@@ -1,6 +1,6 @@
 function [current] = current_sdr(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio)
     % Function:
-    %   - formulate output DC current as a function of waveform amplitudes
+    %   - formulate output DC as a function of waveform amplitudes
     %
     % Input:
     %   - beta2: coefficients on second-order current terms
@@ -11,7 +11,7 @@ function [current] = current_sdr(beta2, beta4, channelAmplitude, infoAmplitude, 
     %   - powerRatio (\rho): power splitting ratio
     %
     % Output:
-    %	- current (z): objective function to maximize output DC current
+    %	- current (z): objective function to maximize output DC
     %
     % Comment:
     %   - based on SDR expression

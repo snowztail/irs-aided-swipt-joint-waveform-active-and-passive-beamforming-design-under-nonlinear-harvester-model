@@ -1,6 +1,6 @@
 function [sample, solution] = re_sample_wpt_ass(beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, tolerance)
     % Function:
-    %   - optimize the waveform and IRS reflection coefficients based on linear harvetser model to maximize average output DC current
+    %   - optimize the waveform and IRS reflection coefficients based on linear harvetser model to maximize average output DC
     %
     % Input:
     %   - beta2: coefficients on second-order current terms

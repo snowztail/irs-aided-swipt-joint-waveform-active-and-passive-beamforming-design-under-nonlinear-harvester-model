@@ -11,7 +11,7 @@ function [current, infoAmplitude, powerAmplitude, infoRatio, powerRatio] = wavef
     %   - powerRatio (\rho): power splitting ratio
     %
 	% Output:
-	%	- current (z): objective function to maximize output DC current
+	%	- current (z): objective function to maximize output DC
 	%   - infoAmplitude (s_I) [1 * nSubbands]: amplitude of information waveform in frequency domain
 	%   - powerAmplitude (s_P) [1 * nSubbands]: amplitude of power waveform in frequency domain
     %

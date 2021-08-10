@@ -1,6 +1,6 @@
 function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, channelAmplitude, infoAmplitude, powerAmplitude, powerRatio)
     % Function:
-    %   - formulate output DC current as a function of waveform amplitudes
+    %   - formulate output DC as a function of waveform amplitudes
     %   - decompose current as sum of monomials
     %
     % Input:
@@ -12,7 +12,7 @@ function [current, currentMonomial, currentExponent] = current_gp(beta2, beta4, 
     %   - powerRatio (\rho): power splitting ratio
     %
     % Output:
-    %	- current (z): objective posynomial to maximize output DC current
+    %	- current (z): objective posynomial to maximize output DC
     %   - currentMonomial (g_P): GM monomials
     %   - currentExponent (\gamma_P): GM exponents
     %

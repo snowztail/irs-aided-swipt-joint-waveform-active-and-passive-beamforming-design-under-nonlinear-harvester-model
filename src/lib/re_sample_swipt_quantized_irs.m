@@ -1,6 +1,6 @@
 function [sample, solution] = re_sample_swipt_quantized_irs(beta2, beta4, directChannel, cascadedChannel, noisePower, nQuantizeBits, solution)
     % Function:
-    %   - sample R-E region by computing the output DC current and rate
+    %   - sample R-E region by computing the output DC and rate
     %
     % Input:
     %   - beta2: coefficients on second-order current terms

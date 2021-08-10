@@ -1,6 +1,6 @@
 function [sample, solution] = re_sample_swipt_gp(alpha, beta2, beta4, directChannel, cascadedChannel, txPower, noisePower, nCandidates, nSamples, tolerance)
     % Function:
-    %   - sample R-E region by computing the output DC current and rate
+    %   - sample R-E region by computing the output DC and rate
     %
     % Input:
     %   - alpha: scale ratio of SMF
