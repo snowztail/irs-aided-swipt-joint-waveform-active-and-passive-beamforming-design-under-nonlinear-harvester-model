@@ -27,9 +27,9 @@ rxGain = db2pow(3);
 % AP-user distance
 directDistance = 12;
 % vertical distance from the IRS to the AP-user path
-verticalDistance = 0.5;
+verticalDistance = 0.2;
 % projection of AP-IRS distance to the AP-user path
-horizontalDistance = 0.5;
+horizontalDistance = 0.2;
 % AP-IRS and IRS-user distance
 [incidentDistance, reflectiveDistance] = coordinate(directDistance, verticalDistance, horizontalDistance);
 % center frequency
