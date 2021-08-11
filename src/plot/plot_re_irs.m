@@ -46,21 +46,20 @@ save('../data/re_irs.mat');
 
 %% * R-E plots
 for iBandwidth = 1 : length(Variable.bandwidth)
-	figure('name', sprintf('R-E region for ideal, adaptive (linear and nonlinear EH model), nonadaptive, random and no IRS for $B = %d$ MHz', Variable.bandwidth(iBandwidth) / 1e6), 'position', [0, 0, 500, 400]);
+	figure('name', sprintf('R-E region for ideal, adaptive, nonadaptive, random and no IRS for $B = %d$ MHz', Variable.bandwidth(iBandwidth) / 1e6), 'position', [0, 0, 500, 400]);
 	plotHandle = gobjects(1, 6);
 	hold all;
 	plotHandle(1) = plot(reIdealIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reIdealIrs{iBandwidth}(2, :));
 	plotHandle(2) = plot(reAdaptiveIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reAdaptiveIrs{iBandwidth}(2, :));
-	plotHandle(3) = plot(reLinearIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reLinearIrs{iBandwidth}(2, :));
-	plotHandle(4) = plot(reWitIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reWitIrs{iBandwidth}(2, :));
-	plotHandle(5) = plot(reWptIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reWptIrs{iBandwidth}(2, :));
-	plotHandle(6) = plot(reRandomIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reRandomIrs{iBandwidth}(2, :));
-	plotHandle(7) = plot(reNoIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reNoIrs{iBandwidth}(2, :));
+	plotHandle(3) = plot(reWitIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reWitIrs{iBandwidth}(2, :));
+	plotHandle(4) = plot(reWptIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reWptIrs{iBandwidth}(2, :));
+	plotHandle(5) = plot(reRandomIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reRandomIrs{iBandwidth}(2, :));
+	plotHandle(6) = plot(reNoIrs{iBandwidth}(1, :) / nSubbands, 1e6 * reNoIrs{iBandwidth}(2, :));
 	hold off;
 	grid on;
-	legend('Ideal FS IRS', 'Adaptive nonlinear IRS', 'Adaptive linear IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'Random IRS', 'No IRS');
+	legend('Ideal FS IRS', 'Adaptive IRS', 'WIT-optimized IRS', 'WPT-optimized IRS', 'Random IRS', 'No IRS');
 	xlabel('Per-subband rate [bps/Hz]');
-	ylabel('DC current [$\mu$A]');
+	ylabel('DC [$\mu$A]');
 	xlim([0 inf]);
 	ylim([0 inf]);
     box on;

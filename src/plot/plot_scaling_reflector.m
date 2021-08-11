@@ -53,7 +53,7 @@ hold off;
 grid on;
 legend('LEH', 'SMF', 'GP', 'location', 'se', 'orientation', 'horizontal');
 xlabel('Number of reflectors');
-ylabel('DC current [dBA]');
+ylabel('DC [dBA]');
 xlim([Variable.nReflectors(1), Variable.nReflectors(end)]);
 xticks(Variable.nReflectors(1 : 2 : end));
 yticks(-100 : 20 : 0);

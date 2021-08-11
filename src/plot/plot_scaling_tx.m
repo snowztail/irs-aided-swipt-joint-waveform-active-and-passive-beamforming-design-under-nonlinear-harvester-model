@@ -53,7 +53,7 @@ hold off;
 grid on;
 legend('LEH', 'SMF', 'GP', 'location', 'se', 'orientation', 'horizontal');
 xlabel('Number of transmit antennas');
-ylabel('DC current [dBA]');
+ylabel('DC [dBA]');
 xlim([Variable.nTxs(1), Variable.nTxs(end)]);
 xticks(Variable.nTxs([1, 2 : 2 : end]));
 yticks(-100 : 20 : 0);

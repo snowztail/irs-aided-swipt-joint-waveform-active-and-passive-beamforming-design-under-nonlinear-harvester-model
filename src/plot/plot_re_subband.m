@@ -55,7 +55,7 @@ hold off;
 grid on;
 legend(legendString);
 xlabel('Per-subband rate [bps/Hz]');
-ylabel('DC current [$\mu$A]');
+ylabel('DC [$\mu$A]');
 xlim([0 inf]);
 ylim([0 inf]);
 box on;
