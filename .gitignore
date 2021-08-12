@@ -314,8 +314,8 @@ codegen/
 # Octave session info
 octave-workspace
 
-# Data
-*.mat
+# Batch data
+src/data/*/*
 
 # Mendeley BiB fix
 mendeleyBibFix
