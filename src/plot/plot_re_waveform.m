@@ -56,7 +56,7 @@ end
 xlabel('Sorted subband index');
 
 savefig('../figures/channel_amplitude.fig');
-matlab2tikz('../../assets/channel_amplitude.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}, ' 'scaled y ticks=false, ' 'yticklabel=\pgfkeys{/pgf/number format/.cd,fixed,precision=2}\pgfmathprintnumber{\tick}']);
+matlab2tikz('../../assets/channel_amplitude.tex', 'extraaxisoptions', ['title style={font=\large}, ' 'label style={font=\large}, ' 'ticklabel style={font=\large}, ' 'legend style={font=\large}, ' 'scaled y ticks=false, ' 'yticklabel=\pgfkeys{/pgf/number format/.cd,fixed,precision=2}\pgfmathprintnumber{\tick}']);
 close;
 
 %% * Waveform amplitude
@@ -88,7 +88,7 @@ end
 xlabel('Sorted subband index');
 
 savefig('../figures/waveform_wit_modulated.fig');
-matlab2tikz('../../assets/waveform_wit_modulated.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
+matlab2tikz('../../assets/waveform_wit_modulated.tex', 'extraaxisoptions', ['title style={font=\large}, ' 'label style={font=\large}, ' 'ticklabel style={font=\large}, ' 'legend style={font=\large}']);
 close;
 
 % * WPT modulated
@@ -119,7 +119,7 @@ end
 xlabel('Sorted subband index');
 
 savefig('../figures/waveform_wpt_modulated.fig');
-matlab2tikz('../../assets/waveform_wpt_modulated.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
+matlab2tikz('../../assets/waveform_wpt_modulated.tex', 'extraaxisoptions', ['title style={font=\large}, ' 'label style={font=\large}, ' 'ticklabel style={font=\large}, ' 'legend style={font=\large}']);
 close;
 
 % * WPT multisine
@@ -151,4 +151,4 @@ end
 xlabel('Sorted subband index');
 
 savefig('../figures/waveform_wpt_multisine.fig');
-matlab2tikz('../../assets/waveform_wpt_multisine.tex', 'extraaxisoptions', ['title style={font=\huge}, ' 'label style={font=\huge}, ' 'ticklabel style={font=\LARGE}, ' 'legend style={font=\LARGE}']);
+matlab2tikz('../../assets/waveform_wpt_multisine.tex', 'extraaxisoptions', ['title style={font=\large}, ' 'label style={font=\large}, ' 'ticklabel style={font=\large}, ' 'legend style={font=\large}']);
