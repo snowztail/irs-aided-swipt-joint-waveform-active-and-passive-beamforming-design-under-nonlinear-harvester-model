@@ -321,6 +321,6 @@ octave-workspace
 mendeleyBibFix
 
 # Review-related
-submit*
-letter*
-main-*
+# submit*
+# letter*
+# main-*
