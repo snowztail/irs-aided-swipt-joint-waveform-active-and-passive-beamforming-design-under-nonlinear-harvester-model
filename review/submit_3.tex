@@ -450,7 +450,7 @@
 		\end{subsection}
 
 		\begin{subsection}{Active Beamforming}
-			\hl{The original waveform and active beamforming problem~\eqref{op:original} is over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$. Next, we decouple the design in spatial and frequency domains, enable independent optimizations correspondingly, and reduces the size of variables from $2MN$ to $2(M+N)$.} The weight on subband $n$ is essentially
+			\hl{The original waveform and active beamforming problem~\eqref{op:original} is over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$. Next, we decouple the design in spatial and frequency domains, enable independent optimizations correspondingly, and reduce the size of variables from $2MN$ to $2(M+N)$.} The weight on subband $n$ is essentially
 			\begin{equation}\label{eq:w}
 				\boldsymbol{w}_{\mathrm{I/P}, n} = s_{\mathrm{I/P}, n} \boldsymbol{b}_{\mathrm{I/P}, n},
 			\end{equation}
@@ -555,7 +555,7 @@
 			\begin{align}
 				s_{\mathrm{I}, n} = \sqrt{2(1 - \delta)\left(\lambda - \frac{\sigma_n^2}{P \lVert{\boldsymbol{h}_n}\rVert^2}\right)^+}, \quad s_{\mathrm{P}, n} = \sqrt{\frac{2 \delta P}{\sum_{n=1}^N \lVert{\boldsymbol{h}_n \rVert^{2 \alpha}}}}\lVert{\boldsymbol{h}_n}\rVert^\alpha, \label{eq:s_ip}
 			\end{align}
-			where the combining ratio $\delta$ determines the priority of multisine waveform at the transmitter, and the splitting ratio $\rho$ determines the priority of the energy harvester at the receiver.\footnote{We notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point when $N$ is relatively large. Heuristically, $\delta^{\star}$ and $\rho^{\star}$ should approximately equal at each point to boost the R-E tradeoff.}
+			where the $\delta$ determines the power ratio of multisine waveform at the transmitter, and $\rho$ determines the power ratio of the energy harvester at the receiver.\footnote{We notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point when $N$ is relatively large. \hl{Intuitively, $\delta^{\star}$ and $\rho^{\star}$ should be positively correlated for efficient SWIPT design.}}
 
 			Besides, minor modifications are required for passive beamforming to accommodate the low-complexity waveform schemes. Specifically, the rate constraint \eqref{co:irs_rate} should be dropped as the achievable rate is controlled by $\eta$ or $\{\delta,\rho\}$. To achieve the WIT point ($\rho=0$), the rate \eqref{eq:R_irs} should be maximized, the current expression \eqref{eq:z_irs_approx} is not needed and no SCA is involved. The Modified-SCA (M-SCA) Algorithm~\ref{al:m_sca} summarizes the modified passive beamforming design when the receiver works in PS mode. Similarly, no loss is introduced by SDR and local optimality is guaranteed. The proofs are omitted here. Since each SDP involves $(L+1)$ linear constraints, the computational complexity of Algorithm~\ref{al:m_sca} is $\mathcal{O}\left(I_{\mathrm{M-SCA}}(L+1)^{4.5} \log(\epsilon_{\mathrm{IPM}}^{-1})\right)$, where $I_{\mathrm{M-SCA}}$ denotes the number of M-SCA iterations \cite{Luo2010}. Note that no SCA is involved at the WIT point where $I_{\mathrm{M-SCA}}=1$.
 

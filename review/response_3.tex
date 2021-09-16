@@ -141,10 +141,14 @@
 		\end{point}
 
 		\begin{response}
-			We sincerely appreciate your opinions and would like to clarify this point in more details. First, recall that the combining ratio $\delta$ determines the priority of multisine waveform at the transmitter, and the splitting ratio $\rho$ determines the priority of the energy harvester at the receiver. Each $(\delta, \rho)$ pair input to Algorithm~\ref{M-al:lc_bcd} corresponds to a unique R-E boundary point, and the achievable R-E region of the LC-BCD algorithm can be obtained by performing a two-dimensional search from $(0, 0)$ to $(1, 1)$. Hence, the case of equal $\delta$ and $\rho$ is strictly no better than the case where $\delta$ and $\rho$ are not necessarily equal.
+			We sincerely appreciate your opinions and would like to clarify this point in more details. First, recall that the combining ratio $\delta$ determines the power ratio of multisine waveform at the transmitter, and the splitting ratio $\rho$ determines the power ratio of the energy harvester at the receiver. Each $(\delta, \rho)$ pair input to Algorithm~\ref{M-al:lc_bcd} corresponds to a unique R-E boundary point, and the achievable R-E region of the LC-BCD algorithm can be obtained by performing a two-dimensional search from $(0, 0)$ to $(1, 1)$. Hence, the case of equal $\delta$ and $\rho$ is strictly no better than the case where $\delta$ and $\rho$ are not necessarily equal.
 
-			On the other hand, we notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point when $N$ is relatively large. Heuristically, $\delta^{\star}$ and $\rho^{\star}$ should approximately equal at each R-E point. Therefore, we assume in the simulation that $\delta=\rho$ at all points to further reduce the algorithm complexity (by performing one-dimensional search instead of two-dimensional search). Simulation results showed that even the case of equal $\delta$ and $\rho$ can achieve a good R-E performance. Accordingly, we have updated the manuscript as follows.
+			On the other hand, we notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point when $N$ is relatively large. Intuitively, $\delta^{\star}$ and $\rho^{\star}$ should be positively correlated for efficient SWIPT design. Therefore, we assume in the simulation that $\delta=\rho$ at all points to further reduce the algorithm complexity (by performing one-dimensional search instead of two-dimensional search). Simulation results showed that even the case of equal $\delta$ and $\rho$ can achieve a good R-E performance. Accordingly, we have updated the manuscript as follows.
 			\begin{framed}
+				Intuitively, $\delta^{\star}$ and $\rho^{\star}$ should be positively correlated for efficient SWIPT design.
+
+				\textellipsis
+
 				Note that the BCD algorithm obtains the R-E region by varying the rate constraint from \num{0} to $C_{\max}$, while the achievable R-E region of the LC-BCD algorithm can be obtained by performing a two-dimensional search over $(\delta, \rho)$ from $(0, 0)$ to $(1, 1)$.
 
 				\textellipsis
@@ -159,10 +163,10 @@
 		\end{point}
 
 		\begin{response}
-			The original waveform and active beamforming problem~\eqref{M-op:original} is over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$. By decoupling the design in spatial and frequency domains, we enable independent optimizations respectively from spatial and frequency domains and reduces the size of variables from $2MN$ to $2(M+N)$. This point has been clarified in the manuscript as follows.
+			The original waveform and active beamforming problem~\eqref{M-op:original} is over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$. By decoupling the design in spatial and frequency domains, we enable independent optimizations respectively from spatial and frequency domains and reduce the size of variables from $2MN$ to $2(M+N)$. This point has been clarified in the manuscript as follows.
 
 			\begin{framed}
-				The original waveform and active beamforming problem~\eqref{M-op:original} is over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$. Next, we decouple the design in spatial and frequency domains, enable independent optimizations correspondingly, and reduces the size of variables from $2MN$ to $2(M+N)$.
+				The original waveform and active beamforming problem~\eqref{M-op:original} is over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$. Next, we decouple the design in spatial and frequency domains, enable independent optimizations correspondingly, and reduce the size of variables from $2MN$ to $2(M+N)$.
 			\end{framed}
 		\end{response}
 
