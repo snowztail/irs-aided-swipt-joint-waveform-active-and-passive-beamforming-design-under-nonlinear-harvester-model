@@ -1,0 +1,182 @@
+\documentclass{article}
+
+
+\usepackage[T1]{fontenc}
+\usepackage[short]{optidef}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage[normalem]{ulem}
+\usepackage{adjustbox}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage{fullpage}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{multirow}
+\usepackage{pdfpages}
+\usepackage{pgfplots}
+\usepackage{siunitx}
+\usepackage{xr-hyper}
+\usepackage{hyperref}
+
+\externaldocument[M-]{../submit_3}
+
+\DeclareSIUnit{\belm}{Bm}
+\DeclareSIUnit{\dBm}{\deci\belm}
+\DeclareSIUnit{\beli}{Bi}
+\DeclareSIUnit{\dBi}{\deci\beli}
+\DeclareSIUnit{\belA}{BA}
+\DeclareSIUnit{\dBA}{\deci\belA}
+
+\newcounter{reviewer}
+\setcounter{reviewer}{0}
+\newcounter{point}[reviewer]
+\setcounter{point}{0}
+\newcounter{response}[reviewer]
+\setcounter{response}{0}
+
+\let\svbibcite\bibcite
+\def\bibcite#1#2{\svbibcite{#1}{R#2}}
+\makeatletter
+\let\svbiblabel\@biblabel
+\def\@biblabel#1{\svbiblabel{R#1}}
+\makeatother
+
+\renewcommand{\theequation}
+	{E\arabic{equation}}
+
+\renewcommand{\thefigure}
+	{F\arabic{figure}}
+
+\renewcommand{\thetable}
+	{T\arabic{table}}
+
+\renewcommand{\thealgorithm}
+	{A\arabic{algorithm}}
+
+\newcommand{\editor}
+	{\bigskip \hrule \section*{Editor}}
+
+\newcommand{\reviewer}
+	{\stepcounter{reviewer} \bigskip \hrule \section*{Reviewer \thereviewer}}
+
+\renewcommand{\thepoint}
+	{\thereviewer.\arabic{point}}
+
+\renewcommand{\theresponse}
+	{\thereviewer.\arabic{response}}
+
+\newenvironment{point}
+	{\refstepcounter{point} \bigskip \noindent {\textbf{Comment~\thepoint} } ---\ \itshape}
+	{\par}
+
+\newenvironment{response}
+	{\refstepcounter{response} \medskip \noindent \textbf{Response:}\ }
+	{\medskip}
+
+
+\begin{document}
+	\includepdf{letter_3.pdf}
+
+	\begin{editor}
+		\begin{point}
+			Provide more in-depth theoretical analysis on the performance of IRS-Aided SWIPT and discuss its implementation issues in practical systems such as how to obtain the information required by the system.
+		\end{point}
+
+		\begin{response}
+			Thank you for the comments. Please refer to Response~\ref{re:2.1} and \ref{re:4.1}.
+		\end{response}
+	\end{editor}
+
+	\begin{reviewer}
+		We would like to express our appreciation for the time and effort dedicated to the reviewing of our paper.
+	\end{reviewer}
+
+	\begin{reviewer}
+		\begin{point}
+			It is strongly suggested to add more theoretical verification in the manuscript, e.g., the one shown in Response 2.1, in addition to the numerical verification. To avoid exceeding the page counts, the authors may want to adjust the layout/contents of their manuscript.
+		\end{point}
+
+		\begin{response}
+			We appreciate this suggestion and believe adding a theoretical verification would make the discussion more convincing. The analysis in previous Response 2.1 has been incorporated into the updated manuscript as follows.
+			\begin{framed}
+				Third, doubling $M$ brings a \SI{3}{\dB} gain at the output SNR and a \SI{12}{\dBA} increase at the harvested DC, which verified that active beamforming has an array gain of $M$ \cite{M-Tse2005} with power scaling order $M^2$ under the truncated nonlinear harvester model \cite{M-Clerckx2016a,M-Clerckx2018b}. Fourth, when the IRS is very close to the AP or UE, doubling $L$ can bring a \SI{6}{\dB} gain at the output SNR and a \SI{24}{\dBA} increase at the harvested DC. From the perspective of WIT, it suggests that passive beamforming can reach an array gain of $L^2$, as indicated by \cite{M-Wu2019}. An interpretation is that the IRS coherently combines the incoming signal with a receive array gain $L$, then performs an equal gain reflection with a transmit array gain $L$. From the perspective of WPT, it suggests that passive beamforming comes with a power scaling order $L^4$ under the truncated nonlinear harvester model. We then verify this novel observation in a simplified case where the power is uniformly allocated over multisine, all channels are frequency-flat, and $L$ is sufficiently large such that the direct channel becomes negligible. Let $X$ be the cascaded small-scale fading coefficient. The DC in such case reduces to
+				\begin{equation}
+					z = \beta_2 \Lambda_{\mathrm{R}}^2 \Lambda_{\mathrm{I}}^2 \lvert X \rvert^2 L^2 P + \beta_4 \frac{2N^2 + 1}{2N} \Lambda_{\mathrm{R}}^4 \Lambda_{\mathrm{I}}^4 \lvert X \rvert^4 L^4 P^2,
+				\end{equation}
+				which scales quartically with $L$.
+			\end{framed}
+			\label{re:2.1}
+		\end{response}
+
+		\begin{point}
+			As shown in Response 2.2, as Compared to the conventional no-IRS system, the IRS mainly affects the effective channel instead of the waveform design. This observation is crucial and may be highlighted in the conclusions.
+		\end{point}
+
+		\begin{response}
+			We agree with the reviewer that this is indeed an important conclusion, and have emphasized it in both the contribution and conclusion. The manuscript has been updated as follows.
+			\begin{framed}
+				1) IRS enables constructive reflection and flexible subchannel design in the frequency domain that is essential for SWIPT systems; 2) IRS mainly affects the effective channel instead of the waveform design;
+
+				\textellipsis
+
+				Unlike active antennas, IRS elements cannot be designed independently across frequencies, but can integrate coherent combining and equal gain transmission to enable constructive reflection and flexible subchannel design. Compared to the conventional no-IRS system, the IRS mainly affects the effective channel instead of the waveform design.
+			\end{framed}
+		\end{response}
+	\end{reviewer}
+
+	\begin{reviewer}
+		We would like to express our appreciation for the time and effort dedicated to the reviewing of our paper.
+	\end{reviewer}
+
+	\begin{reviewer}
+		\begin{point}
+			If $\delta$ and $\rho$ are unequal at each point, how to obtain the R-E region in the simulation? What is the difference of R-E region between the situation of $\delta$ and $\rho$ are unequal or equal?
+		\end{point}
+
+		\begin{response}
+			We sincerely appreciate your opinions and would like to clarify this point in more details. First, recall that the combining ratio $\delta$ determines the priority of multisine waveform at the transmitter, and the splitting ratio $\rho$ determines the priority of the energy harvester at the receiver. Each $(\delta, \rho)$ pair input to Algorithm~\ref{M-al:lc_bcd} corresponds to a unique R-E boundary point, and the achievable R-E region of the LC-BCD algorithm can be obtained by performing a two-dimensional search from $(0, 0)$ to $(1, 1)$. Hence, the case of equal $\delta$ and $\rho$ is strictly no better than the case where $\delta$ and $\rho$ are not necessarily equal.
+
+			On the other hand, we notice that $\delta^{\star}=\rho^{\star}=0$ at the WIT point and $\delta^{\star}=\rho^{\star}=1$ at the WPT point when $N$ is relatively large. Heuristically, $\delta^{\star}$ and $\rho^{\star}$ should approximately equal at each R-E point. Therefore, we assume in the simulation that $\delta=\rho$ at all points to further reduce the algorithm complexity (by performing one-dimensional search instead of two-dimensional search). Simulation results showed that even the case of equal $\delta$ and $\rho$ can achieve a good R-E performance. Accordingly, we have updated the manuscript as follows.
+			\begin{framed}
+				Note that the BCD algorithm obtains the R-E region by varying the rate constraint from \num{0} to $C_{\max}$, while the achievable R-E region of the LC-BCD algorithm can be obtained by performing a two-dimensional search over $(\delta, \rho)$ from $(0, 0)$ to $(1, 1)$.
+
+				\textellipsis
+
+				To further reduce the complexity, we assume $\delta=\rho$ for simplicity and perform a one-dimensional search from \num{0} to \num{1} to obtain a inner R-E bound for the LC-BCD algorithm.
+			\end{framed}
+			\label{re:4.1}
+		\end{response}
+
+		\begin{point}
+			How does the decoupling process of the waveform in the spatial and frequency domains reduce the size of variables in the Response of Comment 2.4?
+		\end{point}
+
+		\begin{response}
+			The original waveform and active beamforming problem~\eqref{M-op:original} is over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$. By decoupling the design in spatial and frequency domains, we enable independent optimizations respectively from spatial and frequency domains and reduces the size of variables from $2MN$ to $2(M+N)$. This point has been clarified in the manuscript as follows.
+
+			\begin{framed}
+				The original waveform and active beamforming problem~\eqref{M-op:original} is over complex vectors $\boldsymbol{w}_{\mathrm{I/P}}$ of size $MN \times 1$. Next, we decouple the design in spatial and frequency domains, enable independent optimizations correspondingly, and reduces the size of variables from $2MN$ to $2(M+N)$.
+			\end{framed}
+		\end{response}
+
+		\begin{point}
+			Clarify the system model with more details in Section II. For example, what is the meaning of WIT point and WPT point? What is the positional relationship among AP, IRS and UE?
+		\end{point}
+
+		\begin{response}
+			We agree with the reviewer that the description on WIT/WPT points in Section II can be ambiguous for readers. We have instead change the wording as follows.
+			\begin{framed}
+				\sout{Varying $\eta$ from \num{0} to \num{1} characterizes a R-E segment from the WIT point to the WPT point.} The duration ratio $\eta$ controls the R-E tradeoff and is independent from the waveform and beamforming design.
+			\end{framed}
+			Besides, there is no constraint on the positional relationship among AP, IRS and UE. The authors believe the system model fits general ideal point-to-point IRS-aided SWIPT systems. An example is given in Fig.\ref{M-fi:layout}, and we would like to keep the model as is.
+		\end{response}
+	\end{reviewer}
+
+\end{document}
