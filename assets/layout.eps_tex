@@ -1,6 +1,6 @@
-%% Creator: Inkscape 1.1 (c4e8f9ed74, 2021-05-24), www.inkscape.org
+%% Creator: Inkscape 1.1.1 (3bf5ae0d25, 2021-09-20, custom), www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
-%% Accompanies image file 'system.pdf' (pdf, eps, ps)
+%% Accompanies image file 'layout.eps' (pdf, eps, ps)
 %%
 %% To include the image in your LaTeX document, write
 %%   \input{<filename>.pdf_tex}
@@ -38,7 +38,7 @@
   \newcommand*\fsize{\dimexpr\f@size pt\relax}%
   \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{252.6289184bp}%
+    \setlength{\unitlength}{531.87119731bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -50,16 +50,17 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.49847854)%
+  \begin{picture}(1,0.23032857)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
-    \put(0,0){\includegraphics[width=\unitlength,page=1]{system.pdf}}%
-    \put(0,0.17667814){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}AP\end{tabular}}}}%
-    \put(0.40311473,0.4870151){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IRS\end{tabular}}}}%
-    \put(0.98057233,0.06003159){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}UE\end{tabular}}}}%
-    \put(0.44884934,0.17122459){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{h}_{\mathrm{D},n}^H$\end{tabular}}}}%
-    \put(0.65980059,0.31091294){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{h}_{\mathrm{R},n}^H$\end{tabular}}}}%
-    \put(0.23895025,0.43856967){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$\boldsymbol{H}_{\mathrm{I},n}$\end{tabular}}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=2]{system.pdf}}%
+    \put(0,0){\includegraphics[width=\unitlength]{layout.eps}}%
+    \put(0.38647428,0.00287898){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{D}}$\end{tabular}}}}%
+    \put(0.14949207,0.00287898){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{H}}$\end{tabular}}}}%
+    \put(0.23993575,0.10706673){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{V}}$\end{tabular}}}}%
+    \put(0.20060952,0.21919453){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}IRS\end{tabular}}}}%
+    \put(-0.00019095,0.02739621){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}AP\end{tabular}}}}%
+    \put(0.98031715,0.02749398){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}UE\end{tabular}}}}%
+    \put(0.1045645,0.10706673){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{I}}$\end{tabular}}}}%
+    \put(0.64040854,0.10706673){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}$d_{\mathrm{R}}$\end{tabular}}}}%
   \end{picture}%
 \endgroup%

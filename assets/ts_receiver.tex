@@ -1,0 +1,17 @@
+\begin{circuitikz}[transform shape]
+	\draw (0,0) node[bareRXantenna](r){Rx}(r.center)
+		to[short,-o] ++(0,-1) node[below]{Time Switcher}
+		to[short] node[spdt,anchor=in](s){} ++(0.5,0);
+
+	\draw (s.out 1) node[above right]{$1-\eta$}
+		to ++(1.25,0)
+		to ++(0,0.5)
+		to ++(1,0)
+		to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Information Decoder} ++(0,0);
+
+	\draw (s.out 2) node[below right]{$\eta$}
+		to ++(1.25,0)
+		to ++(0,-0.5)
+		to ++(1,0)
+		to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Energy Harvester} ++(0,0);
+\end{circuitikz}

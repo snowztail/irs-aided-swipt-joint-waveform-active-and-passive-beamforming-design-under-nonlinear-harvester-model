@@ -1,0 +1,9 @@
+\begin{circuitikz}[transform shape]
+	\draw (0,0) to [sV=$v_{\mathrm{S}}$] (0,2);
+	\draw (0,2) to [short] (1,2);
+	\draw (1,2) to [R=$R_{\mathrm{A}}$] (3,2);
+	\draw (3,2) to [short] (4,2);
+	\draw (4,2) to [R=$R_{\mathrm{in}}$, v<=$v_{\mathrm{in}}$] (4,0);
+	\draw (4,0) to [short] (2,0) node[ground](GND){};
+	\draw (2,0) to [short] (0,0);
+\end{circuitikz}

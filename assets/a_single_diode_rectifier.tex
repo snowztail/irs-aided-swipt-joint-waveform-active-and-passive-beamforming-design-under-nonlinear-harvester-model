@@ -1,0 +1,11 @@
+\begin{circuitikz}[transform shape]
+	\draw (0,0) to [sV=$v_{\mathrm{in}}$] (0,2);
+	\draw (0,2) to [short] (0.25,2);
+	\draw (0.25,2) to [D, v<=$v_{\mathrm{D}}$, i=$i_{\mathrm{D}}$] (2.25,2);
+	\draw (2.25,2) to [short, -*] (2.5,2);
+	\draw (2.5,2) to [C, l_=$C$, -*] (2.5,0);
+	\draw (2.5,2) to [short] (4,2);
+	\draw (4,2) to [R=$R_{\mathrm{L}}$, v<=$v_{\mathrm{out}}$, i=$i_{\mathrm{out}}$] (4,0);
+	\draw (4,0) to [short] (2,0) node[ground](GND){};
+	\draw (2,0) to [short] (0,0);
+\end{circuitikz}
