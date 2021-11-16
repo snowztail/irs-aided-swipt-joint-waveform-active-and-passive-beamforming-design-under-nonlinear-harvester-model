@@ -47,7 +47,7 @@ for iSubband = 1 : length(Variable.nSubbands)
 	hold off;
 	grid on;
     if iSubband == 1
-		legend('No IRS', 'IRS: WIT', 'IRS: WPT', 'location', 'northoutside', 'orientation', 'horizontal');
+		legend('No IRS', 'WIT-optimized', 'WPT-optimized', 'location', 'northoutside', 'orientation', 'horizontal');
 	elseif iSubband == 3
 		ylabel('Channel amplitude');
     end
