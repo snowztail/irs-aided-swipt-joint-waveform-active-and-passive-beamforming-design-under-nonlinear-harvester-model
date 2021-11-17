@@ -11,6 +11,7 @@
 \usepackage{cite}
 \usepackage{colortbl}
 \usepackage{environ}
+\usepackage{graphicx}
 \usepackage{grffile}
 \usepackage{hyperref}
 \usepackage{import}
@@ -119,7 +120,7 @@
 		\begin{figure}[!t]
 			\centering
 			\def\svgwidth{0.9\columnwidth}
-			\import{assets/}{system.pdf_tex}
+			\import{assets/}{system.eps_tex}
 			\caption{An IRS-aided multi-carrier MISO SWIPT system.}
 			\label{fi:system}
 		\end{figure}
@@ -181,44 +182,13 @@
 				\centering
 				\subfloat[TS receiver\label{fi:ts_receiver}]{
 					\resizebox{0.9\columnwidth}{!}{
-						\centering
-						\begin{circuitikz}[transform shape]
-							\draw (0,0) node[bareRXantenna](r){Rx}(r.center)
-								to[short,-o] ++(0,-1) node[below]{Time Switcher}
-								to[short] node[spdt,anchor=in](s){} ++(0.5,0);
-
-							\draw (s.out 1) node[above right]{$1-\eta$}
-								to ++(1.25,0)
-								to ++(0,0.5)
-								to ++(1,0)
-								to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Information Decoder} ++(0,0);
-
-							\draw (s.out 2) node[below right]{$\eta$}
-								to ++(1.25,0)
-								to ++(0,-0.5)
-								to ++(1,0)
-								to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Energy Harvester} ++(0,0);
-						\end{circuitikz}
+						\includegraphics{assets/ts_receiver.eps}
 					}
 				}
 				\\
 				\subfloat[PS receiver\label{fi:ps_receiver}]{
 					\resizebox{0.9\columnwidth}{!}{
-						\begin{circuitikz}[transform shape]
-							\draw (0,0) node[bareRXantenna](r){Rx}(r.center)
-								to[short,-o] ++(0,-1)
-								to node[coupler,anchor=left up](c){Power Splitter} ++(1,0);
-							\draw (c.right up)
-								to[short,-o] ++(0.5,0) node[above right]{$1-\rho$}
-								to ++(0,0.5)
-								to ++(1,0)
-								to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Information Decoder} ++(0,0);
-							\draw (c.right down)
-								to[short,-o] ++(0.5,0) node[below right]{$\rho$}
-								to ++(0,-0.5)
-								to ++(1,0)
-								to node[draw,minimum height=2em,minimum width=10em,anchor=west]{Energy Harvester} ++(0,0);
-						\end{circuitikz}
+						\includegraphics{assets/ps_receiver.eps}
 					}
 				}
 				\caption{Diagrams of practical co-located receivers.}
@@ -243,30 +213,12 @@
 				\centering
 				\subfloat[Antenna equivalent circuit\label{fi:antenna_equivalent_circuit}]{
 					\resizebox{0.45\columnwidth}{!}{
-						\begin{circuitikz}[transform shape]
-							\draw (0,0) to [sV=$v_{\mathrm{S}}$] (0,2);
-							\draw (0,2) to [short] (1,2);
-							\draw (1,2) to [R=$R_{\mathrm{A}}$] (3,2);
-							\draw (3,2) to [short] (4,2);
-							\draw (4,2) to [R=$R_{\mathrm{in}}$, v<=$v_{\mathrm{in}}$] (4,0);
-							\draw (4,0) to [short] (2,0) node[ground](GND){};
-							\draw (2,0) to [short] (0,0);
-						\end{circuitikz}
+						\includegraphics{assets/antenna_equivalent_circuit.eps}
 					}
 				}
 				\subfloat[A single diode rectifier\label{fi:single_diode_rectifier}]{
 					\resizebox{0.45\columnwidth}{!}{
-						\begin{circuitikz}[transform shape]
-							\draw (0,0) to [sV=$v_{\mathrm{in}}$] (0,2);
-							\draw (0,2) to [short] (0.25,2);
-							\draw (0.25,2) to [D, v<=$v_{\mathrm{D}}$, i=$i_{\mathrm{D}}$] (2.25,2);
-							\draw (2.25,2) to [short, -*] (2.5,2);
-							\draw (2.5,2) to [C, l_=$C$, -*] (2.5,0);
-							\draw (2.5,2) to [short] (4,2);
-							\draw (4,2) to [R=$R_{\mathrm{L}}$, v<=$v_{\mathrm{out}}$, i=$i_{\mathrm{out}}$] (4,0);
-							\draw (4,0) to [short] (2,0) node[ground](GND){};
-							\draw (2,0) to [short] (0,0);
-						\end{circuitikz}
+						\includegraphics{assets/a_single_diode_rectifier.eps}
 					}
 				}
 				\caption{Equivalent circuits of receive antenna and energy harvester.}
@@ -642,7 +594,7 @@
 		\begin{figure}[!t]
 			\centering
 			\def\svgwidth{0.9\columnwidth}
-			\import{assets/}{layout.pdf_tex}
+			\import{assets/}{layout.eps_tex}
 			\caption{System layout in simulation.}
 			\label{fi:layout}
 		\end{figure}
@@ -652,7 +604,7 @@
 		\begin{figure}[!t]
 			\centering
 			\resizebox{0.8\columnwidth}{!}{
-				\input{assets/channel_amplitude.tex}
+				\includegraphics{assets/channel_amplitude.eps}
 			}
 			\caption{Sorted equivalent subchannel amplitude with and without IRS versus $N$ for $M=1$, $L=100$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{10}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
 			\label{fi:channel_amplitude}
@@ -664,12 +616,12 @@
 			\centering
 			\subfloat[R-E region\label{fi:re_subband}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/re_subband.tex}
+					\includegraphics{assets/re_subband.eps}
 				}
 			}
 			\subfloat[WPT waveform amplitude\label{fi:waveform_subband}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/waveform_subband.tex}
+					\includegraphics{assets/waveform_subband.eps}
 				}
 			}
 			\caption{Average R-E region and WPT waveform amplitude versus $N$ for $M=1$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{1}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
@@ -681,15 +633,15 @@
 			\centering
 			\subfloat[R-E region\label{fi:re_noise}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/re_noise.tex}
+					\includegraphics{assets/re_noise.eps}
 				}
 			}
 			\subfloat[Splitting ratio\label{fi:splitting_ratio_noise}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/splitting_ratio_noise.tex}
+					\includegraphics{assets/splitting_ratio_noise.eps}
 				}
 			}
-			\caption{Average R-E region and Splitting ratio versus $\sigma_n^2$ for $M=1$, $N=16$, $L=20$, $B=\SI{1}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
+			\caption{Average R-E region and splitting ratio versus $\sigma_n^2$ for $M=1$, $N=16$, $L=20$, $B=\SI{1}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
 		\end{figure}
 
 		The average noise power influences the R-E region as shown in Fig.~\subref*{fi:re_noise}. First, we note that the R-E region is roughly concave/convex at low/high SNR such that TS/PS are preferred correspondingly. At low SNR, the power is allocated to the modulated waveform on a few strongest subbands to achieve a high rate. As the rate constraint $\bar{R}$ decreases, Algorithm~\ref{al:gp} activates more subbands that further boosts the harvested DC power because of frequency coupling and harvester nonlinearity. Second, there exists a turning point in the R-E region, especially for a low noise level ($\sigma_n^2 \le \SI{-40}{\dBm}$). The reason is that when $\bar{R}$ departs slightly from the maximum value, the algorithm tends to adjust the splitting ratio $\rho$ rather than allocate more power to the multisine waveform, since a small amplitude multisine could be inefficient for energy purpose. As $\bar{R}$ further decreases, thanks to the advantage of multisine, a superposed waveform with a small $\rho$ can outperform a modulated waveform with a large $\rho$. The result proves the benefit of superposed waveform and the necessity of joint waveform and splitting ratio optimization. Besides, the LC-BCD algorithm achieves a good balance between performance and complexity even if one-dimensional search is considered for $\delta=\rho$ from \num{0} to \num{1}.
@@ -698,12 +650,12 @@
 			\centering
 			\subfloat[R-E region\label{fi:re_distance}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/re_distance.tex}
+					\includegraphics{assets/re_distance.eps}
 				}
 			}
 			\subfloat[Path loss product\label{fi:path_loss}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/path_loss.tex}
+					\includegraphics{assets/path_loss.eps}
 				}
 			}
 			\caption{Average R-E region and path loss versus $d_{\mathrm{H}}$ for $M=1$, $N=16$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{1}{\MHz}$ and $d_{\mathrm{V}}=\SI{2}{\meter}$.}
@@ -715,12 +667,12 @@
 			\centering
 			\subfloat[R-E region\label{fi:re_tx}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/re_tx.tex}
+					\includegraphics{assets/re_tx.eps}
 				}
 			}
 			\subfloat[WIT SNR and WPT DC\label{fi:scaling_tx}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/scaling_tx.tex}
+					\includegraphics{assets/scaling_tx.eps}
 				}
 			}
 			\caption{Average R-E region, WIT SNR and WPT DC versus $M$ for $N=16$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{1}{\MHz}$, $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{0.2}{\meter}$.}
@@ -729,13 +681,13 @@
 		\begin{figure}[!t]
 			\centering
 			\subfloat[R-E region\label{fi:re_reflector}]{
-				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/re_reflector.tex}
+				\resizebox{0.425\columnwidth}{!}{
+					\includegraphics{assets/re_reflector.eps}
 				}
 			}
 			\subfloat[WIT SNR and WPT DC\label{fi:scaling_reflector}]{
-				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/scaling_reflector.tex}
+				\resizebox{0.475\columnwidth}{!}{
+					\includegraphics{assets/scaling_reflector.eps}
 				}
 			}
 			\caption{Average R-E region, WIT SNR and WPT DC versus $L$ for $M=1$, $N=16$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{1}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{0.2}{\meter}$.}
@@ -751,12 +703,12 @@
 			\centering
 			\subfloat[$B=\SI{1}{\MHz}$\label{fi:re_irs_1mhz}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/re_irs_1mhz.tex}
+					\includegraphics{assets/re_irs_1mhz.eps}
 				}
 			}
 			\subfloat[$B=\SI{10}{\MHz}$\label{fi:re_irs_10mhz}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/re_irs_10mhz.tex}
+					\includegraphics{assets/re_irs_10mhz.eps}
 				}
 			}
 			\caption{Average R-E region for ideal, adaptive, fixed and no IRS versus $B$ for $M=1$, $N=16$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$.}
@@ -768,12 +720,12 @@
 			\centering
 			\subfloat[Imperfect cascaded CSIT\label{fi:re_csi}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/re_csi.tex}
+					\includegraphics{assets/re_csi.eps}
 				}
 			}
 			\subfloat[Quantized IRS\label{fi:re_quantization}]{
 				\resizebox{0.45\columnwidth}{!}{
-					\input{assets/re_quantization.tex}
+					\includegraphics{assets/re_quantization.eps}
 				}
 			}
 			\caption{Average R-E region with imperfect cascaded CSIT and quantized IRS for $M=1$, $N=16$, $L=20$, $\sigma_n^2=\SI{-40}{\dBm}$, $B=\SI{10}{\MHz}$ and $d_{\mathrm{H}}=d_{\mathrm{V}}=\SI{2}{\meter}$. $\epsilon_{n}=0$ and $\epsilon_{n}=\infty$ correspond respectively to perfect CSIT and no CSIT (and random IRS); $b=0$ and $b \to \infty$ correspond respectively to no IRS and continuous IRS.}
