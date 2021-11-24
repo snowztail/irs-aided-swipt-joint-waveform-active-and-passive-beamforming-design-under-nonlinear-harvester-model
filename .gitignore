@@ -315,7 +315,7 @@ codegen/
 octave-workspace
 
 # Batch data
-src/data/*/*
+# src/data/*/*
 
 # Mendeley BiB fix
 mendeleyBibFix
