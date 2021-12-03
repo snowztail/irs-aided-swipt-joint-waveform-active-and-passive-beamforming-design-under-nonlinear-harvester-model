@@ -57,6 +57,7 @@
 
 
 \begin{document}
+	\bstctlcite{IEEEexample:BSTcontrol}
 	\title{IRS-Aided SWIPT:\\Joint Waveform, Active and Passive Beamforming Design Under Nonlinear Harvester Model}
 	\author{
 		\IEEEauthorblockN{
@@ -67,7 +68,7 @@
 		\thanks{
 			The authors are with the Department of Electrical and Electronic Engineering, Imperial College London, London SW7 2AZ, U.K. (e-mail: \{yang.zhao18, b.clerckx, zhenyuan.feng19\}@imperial.ac.uk).
 
-			This paper has been submitted for publication.
+			Digital Object Identifier 10.1109/TCOMM.2021.3129931.
 		}
 	}
 	\maketitle
@@ -349,7 +350,7 @@
 				\addConstraint{\boldsymbol{\Phi}\succeq{\boldsymbol{0}}}\label{co:irs_sd}
 				\addConstraint{\mathrm{rank}(\boldsymbol{\Phi})=1.\label{co:irs_rank}}
 			\end{maxi!}
-			We then apply Semi-Definite Relaxation (SDR) to the unit-rank constraint \eqref{co:irs_rank} and formulate a Semi-Definite Programming (SDP) with approximation accuracy no greater than $\pi/4$ \cite{Luo2010b}. In this specific case, we found the solution provided by CVX toolbox \cite{Grant2008} to \eqref{ob:irs}-\eqref{co:irs_sd} is always rank-\num{1}. This conclusion is summarized below.
+			We then apply Semi-Definite Relaxation (SDR) to the unit-rank constraint \eqref{co:irs_rank} and formulate a Semi-Definite Programming (SDP) with approximation accuracy no greater than $\pi/4$ \cite{Luo2010b}. In this specific case, we found the solution provided by CVX toolbox \cite{Grant2016} to \eqref{ob:irs}-\eqref{co:irs_sd} is always rank-\num{1}. This conclusion is summarized below.
 
 			\begin{proposition}\label{pr:relaxation}
 				Any optimal solution $\boldsymbol{\Phi}^\star$ to the relaxed passive beamforming problem~\eqref{ob:irs}--\eqref{co:irs_sd} is rank-\num{1} such that \eqref{co:irs_rank} is tight and no loss is introduced by SDR.
@@ -457,7 +458,7 @@
 				\gamma_{m_{\mathrm{I},n}}^{(i)} & = \frac{g_{m_{\mathrm{I},n}}(s_{\mathrm{I},n}^{(i-1)},\bar{\rho}^{(i-1)})}{1+{\bar{\rho}^{(i-1)}\lVert{\boldsymbol{h}_n}\rVert^2 (s_{\mathrm{I},n}^{(i-1)})^2}\big/{\sigma_n^2}}\label{eq:gamma_I},\\
 				\gamma_{m_\mathrm{P}}^{(i)} & = \frac{g_{m_\mathrm{P}}(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}{z(\boldsymbol{s}_{\mathrm{I}}^{(i-1)},\boldsymbol{s}_\mathrm{P}^{(i-1)},\rho^{(i-1)})}\label{eq:gamma_P}.
 			\end{align}
-			With \eqref{eq:gamma_I} and \eqref{eq:gamma_P}, problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2008}. We update $\boldsymbol{s}_{\mathrm{I}}^{(i)},\boldsymbol{s}_\mathrm{P}^{(i)},\rho^{(i)}$ iteratively until convergence. The joint waveform amplitude and splitting ratio design is summarized in the GP Algorithm~\ref{al:gp}, which achieves local optimality at the cost of exponential computational complexity \cite{Chiang2005}.
+			With \eqref{eq:gamma_I} and \eqref{eq:gamma_P}, problem~\eqref{op:waveform_gp} can be solved by existing optimization tools such as CVX \cite{Grant2016}. We update $\boldsymbol{s}_{\mathrm{I}}^{(i)},\boldsymbol{s}_\mathrm{P}^{(i)},\rho^{(i)}$ iteratively until convergence. The joint waveform amplitude and splitting ratio design is summarized in the GP Algorithm~\ref{al:gp}, which achieves local optimality at the cost of exponential computational complexity \cite{Chiang2005}.
 
 			\begin{algorithm}[!t]
 				\caption{GP: Waveform Amplitude and Splitting Ratio.}
